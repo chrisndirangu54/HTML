@@ -27,7 +27,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 // Email configuration
-$to = 'info@tekntandao.com'; // Replace with your email address
+$to = 'chrisndirangu54@gmail.com'; // Replace with your email address
 $emailSubject = 'New Contact Form Submission: ' . $subject;
 $headers = "From: $email\r\n";
 $headers .= "Reply-To: $email\r\n";
