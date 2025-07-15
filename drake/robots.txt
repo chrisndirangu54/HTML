@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /assets/images/
+Disallow: /admin.html
+Disallow: /api/
+Disallow: /contact-attachments/
+
+# Block Firebase Storage direct access
+Disallow: /images/projects/
+Disallow: /contact-attachments/
+
+# External Node.js server (if hosted separately)
+Disallow: /api/contact
+
+# Sitemap (optional, add if you have one)
+# Sitemap: https://yourdomain.com/sitemap.xml
