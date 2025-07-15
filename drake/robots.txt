@@ -14,4 +14,4 @@ Disallow: /contact-attachments/
 Disallow: /api/contact
 
 # Sitemap (optional, add if you have one)
-# Sitemap: https://yourdomain.com/sitemap.xml
+# Sitemap: https://tekntandao.com/sitemap.xml
