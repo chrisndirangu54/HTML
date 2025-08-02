@@ -44,43 +44,44 @@
         <span class="bar"></span>
     </span>
 
-    <!-- Global Color (themes trigger video changes) -->
-    <div class="global-color">
-        <span class="setting-toggle">
-            <i class="las la-cog"></i>
-        </span>
-        <div class="inner">
-            <div class="overlay"></div>
-            <div class="global-color-option">
-                <span class="close-settings">
-                    <i class="las la-times"></i>
-                </span>
-                <h2>Configuration</h2>
-                <div class="global-color-option-inner">
-                    <p>Colors</p>
-                    <div class="color-boxed">
-                        <a href="#" class="clr-active" onclick="color1();"></a>
-                        <a href="#" onclick="color2();"></a>
-                        <a href="#" onclick="color3();"></a>
-                        <a href="#" onclick="color4();"></a>
-                        <a href="#" onclick="color5();"></a>
-                        <a href="#" onclick="color6();"></a>
-                        <a href="#" onclick="color7();"></a>
-                        <a href="#" onclick="color8();"></a>
-                    </div>
-                    <p>THEMES</p>
-                    <ul class="themes">
-                        <li class="active"><a href="#" onclick="changeTheme('earth-lines-sphere')">Earth Lines Sphere</a></li>
-                        <li><a href="#" onclick="changeTheme('3d-abstract-ball')">3D Abstract Ball</a></li>
-                        <li><a href="#" onclick="changeTheme('water-waves')">Water Waves</a></li>
-                        <li><a href="#" onclick="changeTheme('liquids-wavy')">Liquids Wavy</a></li>
-                        <li><a href="#" onclick="changeTheme('solid-color')">Solid Color</a></li>
-                        <li><a href="#" onclick="changeTheme('simple-strings')">Simple Strings</a></li>
-                    </ul>
+<div class="global-color">
+    <span class="setting-toggle">
+        <i class="las la-cog"></i>
+    </span>
+    <div class="inner">
+        <div class="overlay"></div>
+        <div class="global-color-option">
+            <span class="close-settings">
+                <i class="las la-times"></i>
+            </span>
+            <h2>Configuration</h2>
+            <div class="global-color-option-inner">
+                <p>Colors</p>
+                <div class="color-boxed">
+                    <a href="#" class="clr-active" onclick="color1();"></a>
+                    <a href="#" onclick="color2();"></a>
+                    <a href="#" onclick="color3();"></a>
+                    <a href="#" onclick="color4();"></a>
+                    <a href="#" onclick="color5();"></a>
+                    <a href="#" onclick="color6();"></a>
+                    <a href="#" onclick="color7();"></a>
+                    <a href="#" onclick="color8();"></a>
+                    <a href="#" onclick="color9();"></a>
                 </div>
+                <p>THEMES</p>
+                <ul class="themes">
+                    <li class="active"><a href="#" onclick="changeTheme('earth-lines-sphere')">Earth Lines Sphere</a></li>
+                    <li><a href="#" onclick="changeTheme('3d-abstract-ball')">3D Abstract Ball</a></li>
+                    <li><a href="#" onclick="changeTheme('water-waves')">Water Waves</a></li>
+                    <li><a href="#" onclick="changeTheme('liquids-wavy')">Liquids Wavy</a></li>
+                    <li><a href="#" onclick="changeTheme('solid-color')">Solid Color</a></li>
+                    <li><a href="#" onclick="changeTheme('simple-strings')">Simple Strings</a></li>
+                </ul>
             </div>
         </div>
     </div>
+</div>
+
 
     <!-- Rest of the HTML (sidebar, menu, main content) -->
 
@@ -760,38 +761,7 @@
     <script src="assets/js/main.js"></script>
     <script src="assets/js/ajax-form.js"></script>
     <script src="assets/js/color.js"></script>
-        <script>
-        function changeTheme(theme) {
-            const video = document.getElementById('background-video');
-            const themes = {
-                'earth-lines-sphere': 'assets/images/video1.mp4',
-                '3d-abstract-ball': 'assets/images/video2.mp4',
-                'water-waves': 'assets/images/video3.mp4',
-                'liquids-wavy': 'assets/images/video4.mp4',
-                'simple-strings': 'assets/images/video5.mp4',
-                'solid-color': null // Static image
-            };
 
-            // Remove active class from all themes
-            document.querySelectorAll('.themes li').forEach(li => li.classList.remove('active'));
-            // Add active class to selected theme
-            document.querySelector(`.themes a[onclick="changeTheme('${theme}')"]`).parentElement.classList.add('active');
-
-            if (theme === 'solid-color') {
-                // Switch to static image for Solid Color
-                video.style.display = 'none';
-                document.querySelector('.body-overlay').style.backgroundImage = `url('assets/images/solid-color.jpg')`;
-            } else {
-                // Switch video source for other themes
-                video.style.display = 'block';
-                document.querySelector('.body-overlay').style.backgroundImage = 'none';
-                const source = video.querySelector('source');
-                source.src = themes[theme];
-                video.load(); // Reload video
-                video.play();
-            }
-        }
-    </script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-H4YCVYBN9S">
     </script>
@@ -847,49 +817,256 @@
         {
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
-            "name": "Bureau",
+            "name": "TeknTandao PoS",
             "applicationCategory": "BusinessApplication",
-            "operatingSystem": "Android, iOS",
-            "description": "An intelligent app for Kenyan architecture firms, offering data-driven project management.",
-            "url": "https://tekntandao.com/projects/bureau"
+            "operatingSystem": "Web, Android, iOS",
+            "description": "An intelligent Point of Sale app for Kenyan businesses, streamlining transactions with data-driven sales analytics.",
+            "url": "https://tekntandao.com/projects/pos"
         },
         {
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
-            "name": "Moonex",
+            "name": "TeknTandao HRM",
             "applicationCategory": "BusinessApplication",
-            "operatingSystem": "Android, iOS",
-            "description": "A responsive app for Kenyan SMEs with data-driven financial and inventory insights.",
-            "url": "https://tekntandao.com/projects/moonex"
+            "operatingSystem": "Web, Android, iOS",
+            "description": "A responsive Human Resource Management app for Kenyan organizations, offering data-driven employee management and payroll insights.",
+            "url": "https://tekntandao.com/projects/hrm"
         },
         {
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
-            "name": "Taskly",
+            "name": "TeknTandao CRM",
             "applicationCategory": "BusinessApplication",
-            "operatingSystem": "Android, iOS",
-            "description": "A seamless app for Kenyan teams with intelligent task and performance analytics.",
-            "url": "https://tekntandao.com/projects/taskly"
+            "operatingSystem": "Web, Android, iOS",
+            "description": "A seamless Customer Relationship Management app for Kenyan businesses, enhancing customer engagement with intelligent analytics.",
+            "url": "https://tekntandao.com/projects/crm"
         },
         {
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
-            "name": "Hinterland",
+            "name": "TeknTandao ERP",
             "applicationCategory": "BusinessApplication",
-            "operatingSystem": "Android, iOS",
-            "description": "A modern app for Kenya’s real estate market with data-driven property insights.",
-            "url": "https://tekntandao.com/projects/hinterland"
+            "operatingSystem": "Web, Android, iOS",
+            "description": "A modern Enterprise Resource Planning app for Kenyan enterprises, integrating operations with data-driven resource insights.",
+            "url": "https://tekntandao.com/projects/erp"
         },
         {
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
-            "name": "Lewis",
+            "name": "TeknTandao HMS",
             "applicationCategory": "BusinessApplication",
-            "operatingSystem": "Android, iOS",
-            "description": "An intelligent app for Kenyan creatives to showcase work with seamless analytics.",
-            "url": "https://tekntandao.com/projects/lewis"
+            "operatingSystem": "Web, Android, iOS",
+            "description": "",
+            "url": ""
         }
+
     ]
     </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "TeknTandao",
+        "url": "https://tekntandao.com",
+        "description": "TeknTandao develops intelligent mobile apps for Kenya, including InsureTech, FoodTech, and productivity solutions.",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://tekntandao.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://tekntandao.com"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Projects",
+                "item": "https://tekntandao.com/projects"
+            }
+        ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "TeknTandao Projects",
+        "url": "https://tekntandao.com/projects",
+        "description": "Explore TeknTandao's innovative projects in InsureTech, FoodTech, and productivity solutions for Kenya.",
+        "mainEntityOfPage": {
+            "@type": "WebSite",
+            "@id": "https://tekntandao.com"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ImageObject",
+        "url": "https://tekntandao.com/assets/images/tekntandao-logo.png",
+        "width": 600,
+        "height": 60
+    }
+    </script>
+    <script>
+// Load saved settings on page load
+document.addEventListener('DOMContentLoaded', () => {
+    // Load saved color
+    const savedColor = localStorage.getItem('selectedColor');
+    console.log('Loaded color from localStorage:', savedColor); // Debug
+    if (savedColor && typeof window[savedColor] === 'function') {
+        window[savedColor](); // Apply saved color
+        // Update active class for color
+        document.querySelectorAll('.color-boxed a').forEach(link => {
+            link.classList.remove('clr-active');
+            if (link.getAttribute('onclick') === `${savedColor}();`) {
+                link.classList.add('clr-active');
+            }
+        });
+    } else {
+        console.warn('No valid saved color found or function does not exist:', savedColor);
+    }
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('selectedTheme');
+    console.log('Loaded theme from localStorage:', savedTheme); // Debug
+    if (savedTheme) {
+        changeTheme(savedTheme); // Apply saved theme
+        // Update active class for theme
+        document.querySelectorAll('.themes li').forEach(li => {
+            li.classList.remove('active');
+            const themeLink = li.querySelector('a');
+            if (themeLink.getAttribute('onclick') === `changeTheme('${savedTheme}')`) {
+                li.classList.add('active');
+            }
+        });
+    }
+});
+
+// Color functions (aligned with CSS .color-boxed a)
+function color1() {
+    document.documentElement.style.setProperty('--primary-color', '#28e98c');
+    setActiveColor('color1');
+    localStorage.setItem('selectedColor', 'color1');
+    console.log('Applied color1: #28e98c'); // Debug
+}
+
+function color2() {
+    document.documentElement.style.setProperty('--primary-color', '#e4af12');
+    setActiveColor('color2');
+    localStorage.setItem('selectedColor', 'color2');
+    console.log('Applied color2: #e4af12'); // Debug
+}
+
+function color3() {
+    document.documentElement.style.setProperty('--primary-color', '#fe6f1d');
+    setActiveColor('color3');
+    localStorage.setItem('selectedColor', 'color3');
+    console.log('Applied color3: #fe6f1d'); // Debug
+}
+
+function color4() {
+    document.documentElement.style.setProperty('--primary-color', '#14c5fd');
+    setActiveColor('color4');
+    localStorage.setItem('selectedColor', 'color4');
+    console.log('Applied color4: #14c5fd'); // Debug
+}
+
+function color5() {
+    document.documentElement.style.setProperty('--primary-color', '#c0c0c0');
+    setActiveColor('color5');
+    localStorage.setItem('selectedColor', 'color5');
+    console.log('Applied color5: #c0c0c0'); // Debug
+}
+
+function color6() {
+    document.documentElement.style.setProperty('--primary-color', '#1338f3');
+    setActiveColor('color6');
+    localStorage.setItem('selectedColor', 'color6');
+    console.log('Applied color6: #1338f3'); // Debug
+}
+
+function color7() {
+    document.documentElement.style.setProperty('--primary-color', '#f31313');
+    setActiveColor('color7');
+    localStorage.setItem('selectedColor', 'color7');
+    console.log('Applied color7: #f31313'); // Debug
+}
+
+function color8() {
+    document.documentElement.style.setProperty('--primary-color', '#ff99cc');
+    setActiveColor('color8');
+    localStorage.setItem('selectedColor', 'color8');
+    console.log('Applied color8: #ff99cc'); // Debug
+}
+
+function color9() {
+    document.documentElement.style.setProperty('--primary-color', '#cceb00');
+    setActiveColor('color9');
+    localStorage.setItem('selectedColor', 'color9');
+    console.log('Applied color9: #cceb00'); // Debug
+}
+
+// Helper function to set active color class
+function setActiveColor(colorFunction) {
+    document.querySelectorAll('.color-boxed a').forEach(link => {
+        link.classList.remove('clr-active');
+        if (link.getAttribute('onclick') === `${colorFunction}();`) {
+            link.classList.add('clr-active');
+        }
+    });
+    console.log('Set active color:', colorFunction); // Debug
+}
+
+// Theme function
+function changeTheme(theme) {
+    const video = document.getElementById('background-video');
+    const themes = {
+        'earth-lines-sphere': 'assets/images/video1.mp4',
+        '3d-abstract-ball': 'assets/images/video2.mp4',
+        'water-waves': 'assets/images/video3.mp4',
+        'liquids-wavy': 'assets/images/video4.mp4',
+        'simple-strings': 'assets/images/video5.mp4',
+        'solid-color': null // Static image
+    };
+
+    // Remove active class from all themes
+    document.querySelectorAll('.themes li').forEach(li => li.classList.remove('active'));
+    // Add active class to selected theme
+    const themeLink = document.querySelector(`.themes a[onclick="changeTheme('${theme}')"]`);
+    if (themeLink) {
+        themeLink.parentElement.classList.add('active');
+    }
+
+    if (theme === 'solid-color') {
+        // Switch to static image for Solid Color
+        video.style.display = 'none';
+        document.querySelector('.body-overlay').style.backgroundImage = `url('assets/images/solid-color.jpg')`;
+    } else {
+        // Switch video source for other themes
+        video.style.display = 'block';
+        document.querySelector('.body-overlay').style.backgroundImage = 'none';
+        const source = video.querySelector('source');
+        source.src = themes[theme];
+        video.load(); // Reload video
+        video.play();
+    }
+
+    // Save theme to localStorage
+    localStorage.setItem('selectedTheme', theme);
+    console.log('Applied theme:', theme); // Debug
+}
+    </script>
+
 </body>
 </html>
