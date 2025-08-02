@@ -90,9 +90,12 @@ $(function(){
             stagePadding: 0,
             smartSpeed: 450,
             autoHeight: true,
-            loop: false,
+            loop: true,
             nav: false,
             dots: false,
+            autoplay: true,
+            autoplayTimeout: 5000,
+            autoplayHoverPause: true,
             onInitialized  : counter, //When the plugin has initialized.
             onTranslated : counter //When the translation of the stage has finished.
         });
