@@ -200,6 +200,27 @@ ul {
 .scroll-content {
     /* transform: translate(0) !important; */
 }
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+}
+.navbar .menu {
+    margin: 0;
+    flex: 1;
+    justify-content: center;
+}
+.icon-menu, .setting-toggle {
+    cursor: pointer;
+    font-size: 1.5rem;
+}
 main.drake-main {
     /* inset: 0px;
     width: 100%;
