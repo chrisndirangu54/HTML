@@ -307,6 +307,51 @@ ul {
 .top-navbar-container.wrapped .top-hamburger { display: flex; }
 
 
+/* ────────────────────────────────────── Floating Hamburger Only ────────────────────────────────────── */
+.top-navbar {
+    width: auto;
+    left: 20px;
+    top: 20px;
+    bottom: auto;
+    right: auto;
+    padding: 10px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.85);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.top-navbar-container {
+    justify-content: center;
+    padding: 0;
+}
+
+.top-menu {
+    display: none !important; /* hide full menu */
+}
+
+.top-hamburger {
+    display: flex !important; /* always visible */
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 8px;
+}
+
+.top-hamburger span {
+    background: #ffd700;
+    width: 24px;
+    height: 3px;
+    margin: 3px 0;
+    border-radius: 2px;
+    transition: 0.3s;
+}
+
+/* Optional hover glow for feedback */
+.top-navbar:hover {
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
+    transform: translateY(-1px);
+}
+
 
 
 main.drake-main {
