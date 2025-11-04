@@ -2,71 +2,94 @@
     'use strict';
     var form = $('.contact-form'),
         message = $('.messenger-box-contact__msg'),
-        form_data;
-
-    // const submit = document.getElementById("submit-form");
-    // submit.addEventListener("click", validate);
-    // function validate(e) {
-    //     const message = document.getElementById('required-msg');
-
-    //     const fullName = document.getElementById("full-name");
-    //     const email = document.getElementById("email");
-    //     const subject = document.getElementById("subject");
-    //     let valid = true;
-
-    //     if (!fullName.value || !email.value || !subject.value) {
-    //         message.classList.add('show');
-    //         fullName.classList.add("invalid");
-    //     } else {
-    //         message.classList.remove('show');
-    //     }
-        
-    //     return valid;
-    // }
-
+        alertElement = $('.alert', form); // Reference to the alert div
 
     // Success function
     function done_func(response) {
-        message.fadeIn().removeClass('alert-danger').addClass('alert-success');
-        message.text(response);
-        setTimeout(function () {
-            message.fadeOut();
-        }, 3000);
-        form.find('input:not([type="submit"]), textarea').val('');
+        if (response.status === 'success') {
+            alertElement.fadeIn().removeClass('alert-danger').addClass('alert-success');
+            alertElement.text(response.message || 'Your message was sent successfully.');
+            setTimeout(function () {
+                alertElement.fadeOut();
+            }, 3000);
+            form.find('input:not([type="submit"]), textarea, select').val('');
+            form[0].reset(); // Reset file input as well
+        } else {
+            // Handle validation or other errors from Formcarry
+            fail_func({ responseText: response.message || 'An error occurred. Please try again.' });
+        }
     }
 
-    // fail function
+    // Fail function
     function fail_func(data) {
-        message.fadeIn().removeClass('alert-success').addClass('alert-success');
-        message.text(data.responseText);
+        var errorMsg = 'An unexpected error occurred. Please try again.';
+        if (data.responseJSON && data.responseJSON.message) {
+            errorMsg = data.responseJSON.message;
+        } else if (data.responseText) {
+            errorMsg = data.responseText;
+        }
+        alertElement.fadeIn().removeClass('alert-success').addClass('alert-danger');
+        alertElement.text(errorMsg);
         setTimeout(function () {
-            message.fadeOut();
+            alertElement.fadeOut();
         }, 3000);
     }
     
     form.submit(function (e) {
         e.preventDefault();
 
-        
-        const message = document.getElementById('required-msg');
+        var requiredMsg = document.getElementById('required-msg');
+        var fullName = document.getElementById("full-name");
+        var email = document.getElementById("email");
+        var subject = document.getElementById("subject");
+        var messageText = document.getElementById("message"); // Assuming message is required
 
-        const fullName = document.getElementById("full-name");
-        const email = document.getElementById("email");
-        const subject = document.getElementById("subject");
+        // Reset previous invalid classes
+        fullName.classList.remove("invalid");
+        email.classList.remove("invalid");
+        subject.classList.remove("invalid");
+        messageText.classList.remove("invalid");
 
-        if (!fullName.value || !email.value) {
-            message.classList.add('show');
-            fullName.classList.add("invalid");
-            console.log('false');
-            return false
+        var isValid = true;
+        var invalidFields = [];
+
+        if (!fullName.value.trim()) {
+            invalidFields.push(fullName);
+            isValid = false;
         }
-        message.classList.remove('show');
+        if (!email.value.trim()) {
+            invalidFields.push(email);
+            isValid = false;
+        }
+        if (!subject.value) {
+            invalidFields.push(subject);
+            isValid = false;
+        }
+        if (!messageText.value.trim()) {
+            invalidFields.push(messageText);
+            isValid = false;
+        }
 
-        form_data = $(this).serialize();
+        if (!isValid) {
+            requiredMsg.classList.add('show');
+            invalidFields.forEach(function(field) {
+                field.classList.add("invalid");
+            });
+            return false;
+        }
+        requiredMsg.classList.remove('show');
+
+        // Use FormData to handle file uploads
+        var formData = new FormData(this);
+
         $.ajax({
             type: 'POST',
             url: form.attr('action'),
-            data: form_data
+            data: formData,
+            processData: false,  // Required for FormData
+            contentType: false,  // Required for FormData
+            dataType: 'json',    // Expect JSON response from Formcarry
+            cache: false
         })
         .done(done_func)
         .fail(fail_func);
