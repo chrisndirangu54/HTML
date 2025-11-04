@@ -74,7 +74,6 @@ ul {
     color: #000000;
     display: inline-flex;  /* Consolidated: removed conflicting display: block */
     position: relative;    /* Assuming relative for container flow; adjust if absolute/fixed elsewhere */
-    top: 400px;            /* Moved lower: increased from 200px to 400px (adjust as needed) */
     text-align: center;
     padding: 11px 58px 10px 58px;
     align-items: center;
@@ -85,6 +84,8 @@ ul {
     transition: .3s;
     cursor: pointer;
     border: 2px solid var(--primary-color);
+    margin-top: 40px;  /* Added: Moves the button lower on the page (adjust value as needed, e.g., 20px for subtle, 60px for more space) */
+
 }
 .theme-btn i {
     font-size: 24px;
