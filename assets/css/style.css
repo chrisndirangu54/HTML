@@ -151,20 +151,21 @@ ul {
     font-weight: bold;
 }
 /* -------------------------------------------------
-   1. Root variables – change only these two
+   1. Root variables – adjust only these
    ------------------------------------------------- */
 :root {
-  --nav-height: 60px;   /* ← height of your navbar (mobile & desktop) */
-  --gap-below: 90px;    /* ← distance under the navbar (90 px on all sizes) */
+  --nav-height: 60px;        /* ← your navbar height */
+  --gap-desktop: 90px;       /* ← distance below navbar on DESKTOP */
+  --gap-mobile: 180px;       /* ← distance below navbar on MOBILE */
 }
 
 /* -------------------------------------------------
-   2. Icon‑menu – universal styles
+   2. Icon Menu – base (desktop) styles
    ------------------------------------------------- */
 .icon-menu {
   position: fixed;
-  inset-block-start: calc(var(--nav-height) + var(--gap-below));
-  inset-inline-end: 68px;               /* desktop right offset */
+  inset-block-start: calc(var(--nav-height) + var(--gap-desktop));
+  inset-inline-end: 68px;
   inline-size: 55px;
   block-size: 55px;
   border-radius: 50%;
@@ -179,11 +180,11 @@ ul {
   transition: all .3s ease;
   z-index: 99;
 
-  /* make the element a container for the size‑based tweaks below */
+  /* Enable container queries */
   container-type: inline-size;
 }
 
-/* three hamburger lines */
+/* Hamburger lines */
 .icon-menu span {
   inline-size: 20px;
   block-size: 2px;
@@ -191,27 +192,29 @@ ul {
   transition: background .3s ease;
 }
 
-/* hover */
+/* Hover effect */
 .icon-menu:hover { border-color: var(--primary-color); }
 .icon-menu:hover span { background: var(--primary-color); }
 
 /* -------------------------------------------------
-   3. Size‑based tweaks (no @media)
+   3. Mobile behavior – switch gap & size
    ------------------------------------------------- */
 @container (max-width: 768px) {
   .icon-menu {
+    --gap: var(--gap-mobile);     /* ← use mobile gap */
+    inset-block-start: calc(var(--nav-height) + var(--gap));
+    inset-inline-end: 15px;
     inline-size: 48px;
     block-size: 48px;
-    inset-inline-end: 15px;
   }
   .icon-menu span { inline-size: 18px; }
 }
 
 @container (max-width: 480px) {
   .icon-menu {
+    inset-inline-end: 12px;
     inline-size: 44px;
     block-size: 44px;
-    inset-inline-end: 12px;
   }
   .icon-menu span { inline-size: 16px; }
 }
