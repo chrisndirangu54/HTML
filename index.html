@@ -790,7 +790,40 @@
     <script src="assets/js/main.js"></script>
     <script src="assets/js/ajax-form.js"></script>
     <script src="assets/js/color.js"></script>
+<script>
+/* -------------------------------------------------
+   Detect when the flex row wraps → add .wrapped
+   ------------------------------------------------- */
+const container = document.getElementById('navContainer');
+const menu      = document.getElementById('topMenu');
 
+function checkWrap() {
+    // If the first menu item is lower than the hamburger → we wrapped
+    const hamburger = container.querySelector('.top-hamburger');
+    const firstItem  = menu.querySelector('li');
+    if (!firstItem) return;
+
+    const hamRect = hamburger.getBoundingClientRect();
+    const itemRect = firstItem.getBoundingClientRect();
+
+    if (itemRect.top > hamRect.bottom + 5) {
+        container.classList.add('wrapped');
+    } else {
+        container.classList.remove('wrapped');
+    }
+}
+
+/* Run on load & resize */
+window.addEventListener('load', checkWrap);
+window.addEventListener('resize', checkWrap);
+
+/* -------------------------------------------------
+   Hamburger toggle
+   ------------------------------------------------- */
+function toggleTopMobileMenu() {
+    document.getElementById('topMobileMenu').classList.toggle('show');
+}
+</script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-H4YCVYBN9S">
     </script>
