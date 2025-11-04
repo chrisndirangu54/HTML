@@ -155,18 +155,18 @@ ul {
    ------------------------------------------------- */
 :root {
   --nav-height: 60px;   /* ← height of your navbar (mobile & desktop) */
-  --gap-below: 45px;    /* ← distance under the navbar (90 px on all sizes) */    
+  --gap-below: 90px;    /* ← distance under the navbar (90 px on all sizes) */
 }
 
 /* -------------------------------------------------
-   2. Icon‑menu – base styles (desktop)
+   2. Icon‑menu – universal styles
    ------------------------------------------------- */
 .icon-menu {
-  position: fixed;                     /* stays in viewport */
+  position: fixed;
   inset-block-start: calc(var(--nav-height) + var(--gap-below));
-  inset-inline-end: 68px;              /* right offset */
-  inline-size: var(--menu-size);
-  block-size: var(--menu-size);
+  inset-inline-end: 68px;               /* desktop right offset */
+  inline-size: 55px;
+  block-size: 55px;
   border-radius: 50%;
   display: flex;
   flex-direction: column;
@@ -178,6 +178,9 @@ ul {
   cursor: pointer;
   transition: all .3s ease;
   z-index: 99;
+
+  /* make the element a container for the size‑based tweaks below */
+  container-type: inline-size;
 }
 
 /* three hamburger lines */
@@ -193,12 +196,12 @@ ul {
 .icon-menu:hover span { background: var(--primary-color); }
 
 /* -------------------------------------------------
-   3. Container query – shrink & reposition on small viewports
+   3. Size‑based tweaks (no @media)
    ------------------------------------------------- */
 @container (max-width: 768px) {
   .icon-menu {
-    --menu-size: 48px;                 /* smaller button */
-    inset-block-start: calc(var(--nav-height) + 12px); /* directly under navbar */
+    inline-size: 48px;
+    block-size: 48px;
     inset-inline-end: 15px;
   }
   .icon-menu span { inline-size: 18px; }
@@ -206,16 +209,12 @@ ul {
 
 @container (max-width: 480px) {
   .icon-menu {
-    --menu-size: 44px;
+    inline-size: 44px;
+    block-size: 44px;
     inset-inline-end: 12px;
   }
   .icon-menu span { inline-size: 16px; }
 }
-
-/* -------------------------------------------------
-   4. Make the button a container (one‑liner)
-   ------------------------------------------------- */
-.icon-menu { container-type: inline-size; }
 }#scroll-section {
     /* overflow-x: hidden !important;
     overflow-y: auto !important; /
