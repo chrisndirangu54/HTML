@@ -213,7 +213,12 @@ $(function(){
 
 });
 
-
+document.querySelector('.top-hamburger').addEventListener('click', function() {
+    const mobileMenu = document.querySelector('.top-mobile-menu');
+    const hamburger = this;
+    hamburger.classList.toggle('active');
+    mobileMenu.style.display = mobileMenu.style.display === 'flex' ? 'none' : 'flex';
+});
 
 function scroll_animations() {
     // var allow_on_mobile = !0;
