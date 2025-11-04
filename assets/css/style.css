@@ -72,11 +72,11 @@ ul {
 .theme-btn {
     background: var(--primary-color);
     color: #000000;
-    display: block;
-    top: 200px;
+    display: inline-flex;  /* Consolidated: removed conflicting display: block */
+    position: relative;    /* Assuming relative for container flow; adjust if absolute/fixed elsewhere */
+    top: 400px;            /* Moved lower: increased from 200px to 400px (adjust as needed) */
     text-align: center;
     padding: 11px 58px 10px 58px;
-    display: inline-flex;
     align-items: center;
     border-radius: 30px;
     justify-content: center;
