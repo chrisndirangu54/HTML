@@ -32,13 +32,11 @@
 :root {
     --primary-color: #28e98c;
 }
-*,*::before,*::after {
+,::before,*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-body {
+}body {
     padding-top: 100px; /* Space below the fixed navbar */
     font-family: 'Inter', sans-serif;
     font-size: 16px;
@@ -74,7 +72,6 @@ ul {
 .theme-btn {
     background: var(--primary-color);
     color: #000000;
-    top: 150px;
     display: block;
     text-align: center;
     padding: 11px 58px 10px 58px;
@@ -120,9 +117,7 @@ ul {
     margin-bottom: 1px;
     font-size: 14px;
     margin-right: 10px;
-}
-
-.page-loader {
+}.page-loader {
     position: fixed;
     left: 0;
     top: 0;
@@ -151,19 +146,15 @@ ul {
     background-color: #fff;
     transform-origin: 50%;
     animation: bounceLoader 500ms alternate infinite ease;
-}
-
-.themes li.active a {
+}.themes li.active a {
     color: var(--primary-color);
     font-weight: bold;
 }
 /* Icon Menu */
 .icon-menu {
-
-
     position: absolute;
     right: 68px;
-    top: 150px;
+    top: 100px;
     width: 55px;
     height: 55px;
     border-radius: 50%;
@@ -190,18 +181,15 @@ ul {
 }
 .icon-menu:hover span {
     background: var(--primary-color);
-}
-
-
-#scroll-section {
+}#scroll-section {
     /* overflow-x: hidden !important;
-    overflow-y: auto !important; */
-    /* width: 100%; */
-    /* height: 100%; */
-    /* height: 100vh; */
+    overflow-y: auto !important; /
+    / width: 100%; /
+    / height: 100%; /
+    / height: 100vh; /
 }
 .scroll-content {
-    /* transform: translate(0) !important; */
+    / transform: translate(0) !important; */
 }
 .top-navbar {
     position: fixed;
@@ -286,10 +274,9 @@ ul {
 }
 .top-mobile-menu li:last-child a {
     border-bottom: none;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
+}/* Responsive Design */
+@media
+ (max-width: 768px) {
     .top-menu {
         display: none;
     }
@@ -299,10 +286,19 @@ ul {
     .top-navbar-container {
         padding: 0 15px;
     }
-
-}
-
-@media (max-width: 480px) {
+    .theme-btn {
+        display: none;
+    }
+    .icon-menu {
+        display: flex;
+    }
+}@media
+ (min-width: 769px) {
+    .icon-menu {
+        display: none;
+    }
+}@media
+ (max-width: 480px) {
     .top-navbar {
         padding: 10px 0;
     }
@@ -314,7 +310,18 @@ ul {
     .top-menu li a i {
         font-size: 16px;
     }
+    .icon-menu {
+        right: 20px;
+        width: 50px;
+        height: 50px;
+    }
+    .icon-menu span {
+        width: 18px;
+        height: 2px;
+    }
 }
+
+
 main.drake-main {
     /* inset: 0px;
     width: 100%;
