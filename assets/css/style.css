@@ -154,8 +154,8 @@ ul {
    1. Root variables – change only these two
    ------------------------------------------------- */
 :root {
-  --nav-height: 60px;          /* ← height of your navbar on mobile */
-  --menu-size: 55px;           /* default size (desktop) */
+  --nav-height: 60px;   /* ← height of your navbar (mobile & desktop) */
+  --gap-below: 45px;    /* ← distance under the navbar (90 px on all sizes) */    
 }
 
 /* -------------------------------------------------
@@ -163,7 +163,7 @@ ul {
    ------------------------------------------------- */
 .icon-menu {
   position: fixed;                     /* stays in viewport */
-  inset-block-start: calc(var(--nav-height) + 90px); /* 90px below navbar on large screens */
+  inset-block-start: calc(var(--nav-height) + var(--gap-below));
   inset-inline-end: 68px;              /* right offset */
   inline-size: var(--menu-size);
   block-size: var(--menu-size);
