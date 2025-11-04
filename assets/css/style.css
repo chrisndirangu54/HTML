@@ -150,38 +150,72 @@ ul {
     color: var(--primary-color);
     font-weight: bold;
 }
-/* Icon Menu */
+/* -------------------------------------------------
+   1. Root variables – change only these two
+   ------------------------------------------------- */
+:root {
+  --nav-height: 60px;          /* ← height of your navbar on mobile */
+  --menu-size: 55px;           /* default size (desktop) */
+}
+
+/* -------------------------------------------------
+   2. Icon‑menu – base styles (desktop)
+   ------------------------------------------------- */
 .icon-menu {
-    position: absolute;
-    right: 68px;
-    top: 100px;
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #575757;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    cursor: pointer;
-    transition: .3s;
-    background: #1f1f1f;
-    z-index: 99;
+  position: fixed;                     /* stays in viewport */
+  inset-block-start: calc(var(--nav-height) + 90px); /* 90px below navbar on large screens */
+  inset-inline-end: 68px;              /* right offset */
+  inline-size: var(--menu-size);
+  block-size: var(--menu-size);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 1px solid #575757;
+  background: #1f1f1f;
+  cursor: pointer;
+  transition: all .3s ease;
+  z-index: 99;
 }
+
+/* three hamburger lines */
 .icon-menu span {
-   padding-top: 120px; /* Space below the fixed navbar */
-    width: 20px;
-    display: block;
-    height: 2px;
-    background: #fff;
-    transition: .3s;
+  inline-size: 20px;
+  block-size: 2px;
+  background: #fff;
+  transition: background .3s ease;
 }
-.icon-menu:hover {
-    border-color: var(--primary-color);
+
+/* hover */
+.icon-menu:hover { border-color: var(--primary-color); }
+.icon-menu:hover span { background: var(--primary-color); }
+
+/* -------------------------------------------------
+   3. Container query – shrink & reposition on small viewports
+   ------------------------------------------------- */
+@container (max-width: 768px) {
+  .icon-menu {
+    --menu-size: 48px;                 /* smaller button */
+    inset-block-start: calc(var(--nav-height) + 12px); /* directly under navbar */
+    inset-inline-end: 15px;
+  }
+  .icon-menu span { inline-size: 18px; }
 }
-.icon-menu:hover span {
-    background: var(--primary-color);
+
+@container (max-width: 480px) {
+  .icon-menu {
+    --menu-size: 44px;
+    inset-inline-end: 12px;
+  }
+  .icon-menu span { inline-size: 16px; }
+}
+
+/* -------------------------------------------------
+   4. Make the button a container (one‑liner)
+   ------------------------------------------------- */
+.icon-menu { container-type: inline-size; }
 }#scroll-section {
     /* overflow-x: hidden !important;
     overflow-y: auto !important; /
