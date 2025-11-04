@@ -307,49 +307,112 @@ ul {
 .top-navbar-container.wrapped .top-hamburger { display: flex; }
 
 
-/* ────────────────────────────────────── Floating Hamburger Only ────────────────────────────────────── */
+/* ────────────────────────────────────── Floating Navbar Enhancements ────────────────────────────────────── */
+
+/* Floating container around the icon */
 .top-navbar {
-    width: auto;
-    left: 20px;
+    position: fixed;
     top: 20px;
-    bottom: auto;
-    right: auto;
-    padding: 10px;
-    border-radius: 50%;
+    left: 20px;
+    width: auto;
+    height: auto;
     background: rgba(0, 0, 0, 0.85);
+    border-radius: 50%;
+    padding: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    z-index: 2000;
+    transition: all 0.3s ease;
+}
+.top-navbar:hover {
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
+    transform: translateY(-2px);
 }
 
 .top-navbar-container {
     justify-content: center;
+    align-items: center;
     padding: 0;
 }
 
+/* Hide full horizontal menu */
 .top-menu {
-    display: none !important; /* hide full menu */
+    display: none !important;
 }
 
+/* Replace hamburger with an icon button */
 .top-hamburger {
-    display: flex !important; /* always visible */
+    display: flex !important;
     justify-content: center;
     align-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #1a1a1a, #000);
+    color: #ffd700;
+    font-size: 22px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
     margin: 0;
-    padding: 8px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+.top-hamburger:hover {
+    background: linear-gradient(145deg, #222, #000);
+    transform: rotate(5deg) scale(1.05);
 }
 
+/* Hide old spans and insert new icon via pseudo-element */
 .top-hamburger span {
-    background: #ffd700;
-    width: 24px;
-    height: 3px;
-    margin: 3px 0;
-    border-radius: 2px;
-    transition: 0.3s;
+    display: none;
+}
+.top-hamburger::before {
+    content: "☰"; /* You can replace with any Unicode or Font Awesome icon */
+    font-size: 22px;
+    color: #ffd700;
 }
 
-/* Optional hover glow for feedback */
-.top-navbar:hover {
-    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
-    transform: translateY(-1px);
+/* ────────────────────────────────────── Dropdown Style ────────────────────────────────────── */
+.top-mobile-menu {
+    background: rgba(20, 20, 20, 0.97);
+    border-radius: 12px;
+    backdrop-filter: blur(8px);
+    padding: 15px 0;
+    width: 200px;
+    margin-top: 10px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 215, 0, 0.15);
+    overflow: hidden;
+}
+
+/* Menu items */
+.top-mobile-menu li a {
+    color: #fff;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+.top-mobile-menu li a:hover {
+    background: rgba(255, 215, 0, 0.1);
+    color: #ffd700;
+    transform: translateX(4px);
+}
+
+/* Optional slide-down animation */
+.top-mobile-menu.show {
+    animation: dropdownFade 0.3s ease;
+}
+
+@keyframes dropdownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 
