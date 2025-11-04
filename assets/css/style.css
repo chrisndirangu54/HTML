@@ -39,8 +39,7 @@
 }
 
 body {
-    /* Removed height: 100vh to prevent content clipping and allow natural scrolling */
-    padding-top: 150px; /* Increased to account for both top-navbar (~50px) and header-area (~80px) heights */
+    padding-top: 100px; /* Space below the fixed navbar */
     font-family: 'Inter', sans-serif;
     font-size: 16px;
     scroll-behavior: smooth;
@@ -48,7 +47,7 @@ body {
     background: #1f1f1f;
     line-height: 1.7;
     overflow-x: hidden;
-    /* Removed height: 100vh */
+    height: 100vh;
 }
 .bg-white {
     background: #fff;
@@ -70,7 +69,7 @@ ul {
 .content-width {
     max-width: 770px;
     width: 100%;
-    margin: 0 auto; /* Fixed: Added margin-right: auto for centering */
+    margin-left: auto;
 }
 .theme-btn {
     background: var(--primary-color);
@@ -204,7 +203,118 @@ ul {
 .scroll-content {
     /* transform: translate(0) !important; */
 }
+.top-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    padding: 15px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+.top-navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+.top-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    align-items: center;
+}
+.top-menu li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    padding: 8px 16px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.top-menu li a i {
+    font-size: 18px;
+}
+.top-menu li a:hover {
+    color: #ffd700;
+    transform: translateY(-2px);
+    background: rgba(255, 215, 0, 0.1);
+}
+.top-hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    padding: 5px;
+}
+.top-hamburger span {
+    width: 25px;
+    height: 3px;
+    background: #ffffff;
+    margin: 3px 0;
+    transition: 0.3s;
+    border-radius: 2px;
+}
+.top-mobile-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    flex-direction: column;
+    gap: 0;
+    padding: 20px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+.top-mobile-menu li {
+    width: 100%;
+}
+.top-mobile-menu li a {
+    justify-content: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.top-mobile-menu li:last-child a {
+    border-bottom: none;
+}
 
+/* Responsive Design */
+@media (max-width: 768px) {
+    .top-menu {
+        display: none;
+    }
+    .top-hamburger {
+        display: flex;
+    }
+    .top-navbar-container {
+        padding: 0 15px;
+    }
+
+}
+
+@media (max-width: 480px) {
+    .top-navbar {
+        padding: 10px 0;
+    }
+    .top-menu li a {
+        font-size: 14px;
+        padding: 6px 12px;
+        gap: 6px;
+    }
+    .top-menu li a i {
+        font-size: 16px;
+    }
+}
 main.drake-main {
     /* inset: 0px;
     width: 100%;
@@ -596,14 +706,12 @@ main.drake-main {
     z-index: -2;
 }
 /* 04 - Header */
-/* Fixed: Changed position to fixed and top to 70px to prevent overlap with top-navbar */
 .header-area {
     background: #1f1f1f;
-    position: fixed; /* Changed from sticky to fixed */
-    top: 70px; /* Position below top-navbar (adjust if top-navbar height differs) */
+    position: sticky;
+    top: 0;
     z-index: 100;
     padding: 25px 0;
-    width: 100%; /* Ensure full width */
 }
 .header-area .logo {
     display: block;
@@ -2030,102 +2138,4 @@ body .body-overlay {
 
 .global-color .setting-toggle i {
     animation: rotating 3s infinite linear !important;
-}
-
-/* Additional Responsive Fixes for Layout/UI Issues */
-@media (max-width: 768px) {
-    body {
-        padding-top: 120px; /* Reduced for mobile to account for smaller headers */
-    }
-    
-    .header-area {
-        top: 50px; /* Adjust for smaller top-navbar on mobile */
-        padding: 15px 0; /* Reduce padding */
-    }
-    
-    /* Hide fixed elements that may overlap or clutter on mobile */
-    .left-sidebar,
-    .menu,
-    .icon-menu {
-        display: none !important;
-    }
-    
-    /* Scale down large fonts and paddings */
-    .hero-section .hero-content h1 {
-        font-size: 48px !important;
-        line-height: 1.2 !important;
-    }
-    
-    .section-header h1 {
-        font-size: 32px !important;
-        line-height: 1.2 !important;
-    }
-    
-    .portfolio-items .portfolio-item .portfolio-item-inner {
-        height: 250px !important; /* Prevent cropping on small screens */
-    }
-    
-    .portfolio-item.portfolio-full .portfolio-item-inner {
-        height: 300px !important;
-    }
-    
-    /* Fix global color panel slide on mobile: full screen slide-in */
-    .global-color .inner .global-color-option {
-        max-width: none !important;
-        width: 100% !important;
-        margin-right: -100% !important; /* Slide from right edge */
-        padding: 50px 20px !important; /* Reduce padding */
-    }
-    
-    .global-color.active .inner .global-color-option {
-        margin-right: 0 !important;
-    }
-    
-    .global-color .inner .global-color-option .global-color-option-inner .themes li {
-        margin-right: 20px !important;
-        margin-bottom: 30px !important;
-    }
-    
-    /* Adjust hero facts gap */
-    .hero-section .hero-content .facts {
-        gap: 20px !important;
-    }
-    
-    /* Ensure no horizontal overflow in sections */
-    .about-area,
-    .resume-area,
-    .services-area,
-    .skills-area,
-    .portfolio-area,
-    .testimonial-area,
-    .pricing-area,
-    .contact-area,
-    .blog-content-area,
-    .blog-details-area {
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-}
-
-@media (max-width: 480px) {
-    .hero-section {
-        padding: 40px 0 !important; /* Further reduce padding */
-    }
-    
-    .section-header h1 {
-        font-size: 28px !important;
-    }
-    
-    /* Additional mobile tweaks for blog and other content */
-    .blog-item .blog-item-content h1 {
-        font-size: 24px !important;
-    }
-    
-    .testimonial-item .testimonial-item-inner {
-        padding: 30px 20px !important;
-    }
-    
-    .services-items .service-item {
-        padding: 30px 20px !important;
-    }
 }
