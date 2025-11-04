@@ -75,6 +75,7 @@ ul {
 .theme-btn {
     background: var(--primary-color);
     color: #000000;
+    top: 150px;
     display: block;
     text-align: center;
     padding: 11px 58px 10px 58px;
@@ -163,7 +164,7 @@ ul {
 
     position: absolute;
     right: 68px;
-    top: 100px;
+    top: 150px;
     width: 55px;
     height: 55px;
     border-radius: 50%;
