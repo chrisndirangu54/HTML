@@ -258,6 +258,19 @@ function handleMobileNavbar() {
     }
 }
 
+function handleResize() {
+    const topMenu = document.getElementById('topMenu');
+    const hamburger = document.querySelector('.top-hamburger');
+    if (window.innerWidth <= 600) {
+        topMenu.style.display = 'none';
+        hamburger.style.display = 'flex';
+    } else {
+        topMenu.style.display = 'flex';
+        hamburger.style.display = 'none';
+    }
+}
+window.addEventListener('resize', handleResize);
+handleResize();  // Run on load
 
 function scroll_animations() {
     // var allow_on_mobile = !0;
