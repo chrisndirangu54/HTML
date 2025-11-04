@@ -275,54 +275,38 @@ ul {
 .top-mobile-menu li:last-child a {
     border-bottom: none;
 }
-/* Responsive Design */
+
+/* Mobile responsiveness */
 @media (max-width: 768px) {
-    .top-menu {
-        display: none;
-    }
-    .top-hamburger {
-        display: flex;
-    }
     .top-navbar-container {
-        padding: 0 15px;
+        padding: 0 15px; /* Slightly reduce padding for smaller screens */
     }
-    /* .theme-btn {
-        display: none;
-    } */
-    .icon-menu {
-        display: none;
+    
+    .top-menu {
+        display: none; /* Hide the desktop menu on mobile */
     }
-}
-
-@media (min-width: 769px) {
-    /* .icon-menu {
-        display: none;
-    } */
-    .theme-btn {
-        display: none;
+    
+    .top-hamburger {
+        display: flex; /* Show the hamburger icon on mobile */
+        z-index: 1001; /* Ensure it's clickable and above other elements */
     }
-}
-
-@media (max-width: 480px) {
-    .top-navbar {
-        padding: 10px 0;
+    
+    .top-mobile-menu {
+        /* Remains display: none by default; toggle via JS class (e.g., .active { display: flex; }) */
+        z-index: 1000; /* Match navbar z-index for proper layering */
     }
-    .top-menu li a {
-        font-size: 14px;
-        padding: 6px 12px;
-        gap: 6px;
+    
+    /* Optional: Animation for hamburger lines on click (add .active class via JS) */
+    .top-hamburger.active span:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
     }
-    .top-menu li a i {
-        font-size: 16px;
+    
+    .top-hamburger.active span:nth-child(2) {
+        opacity: 0;
     }
-    .icon-menu {
-        right: 20px;
-        width: 50px;
-        height: 50px;
-    }
-    .icon-menu span {
-        width: 18px;
-        height: 2px;
+    
+    .top-hamburger.active span:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
     }
 }
 
