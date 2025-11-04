@@ -240,19 +240,30 @@ ul {
     background: rgba(255, 215, 0, 0.1);
 }
 .top-hamburger {
-    display: none;
-    flex-direction: column;
+    order: -1; /* Moves hamburger to the left side in flex layout /
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     padding: 5px;
-}
-.top-hamburger span {
-    width: 25px;
-    height: 3px;
-    background: #ffffff;
-    margin: 3px 0;
+    flex-direction: column;
     transition: 0.3s;
-    border-radius: 2px;
 }
+/ Replaced CSS spans with a pseudo-element icon (hamburger menu symbol ☰); assumes no <span> elements in HTML, or remove them /
+.top-hamburger::before {
+    content: '☰'; / Unicode hamburger icon; can replace with '≡' or Font Awesome via <i> if preferred /
+    font-size: clamp(1.25rem, 4vw, 1.5rem);
+    color: #ffffff;
+    font-weight: bold;
+    line-height: 1;
+}
+/ If using Font Awesome <i class="fas fa-bars"></i> in HTML instead, uncomment below and remove ::before /
+/
+.top-hamburger i {
+    font-size: clamp(1.25rem, 4vw, 1.5rem);
+    color: #ffffff;
+}
+*/
 .top-mobile-menu {
     display: none;
     position: absolute;
@@ -292,6 +303,7 @@ ul {
 .top-mobile-menu li:last-child a {
     border-bottom: none;
 }
+
 
 
 main.drake-main {
