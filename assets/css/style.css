@@ -284,6 +284,8 @@ main.drake-main {
 /* 01 - Menu */
 .menu {
     flex-direction: column;
+    padding-top: 120px; /* Space below the fixed navbar */
+
     border: 1px solid #575757;
     border-radius: 30px;
     position: fixed;
@@ -352,7 +354,7 @@ main.drake-main {
 
 /* 02 - Responsive Sidebar Menu */
 .responsive-sidebar-menu {
-    padding-top: 150px; /* Space below the fixed navbar */
+    padding-top: 100px; /* Space below the fixed navbar */
     position: fixed;
     left: 0;
     top: 0;
