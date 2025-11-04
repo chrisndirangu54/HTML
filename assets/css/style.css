@@ -276,39 +276,6 @@ ul {
     border-bottom: none;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-    .top-navbar-container {
-        padding: 0 15px; /* Slightly reduce padding for smaller screens */
-    }
-    
-    .top-menu {
-        display: none; /* Hide the desktop menu on mobile */
-    }
-    
-    .top-hamburger {
-        display: flex; /* Show the hamburger icon on mobile */
-        z-index: 1001; /* Ensure it's clickable and above other elements */
-    }
-    
-    .top-mobile-menu {
-        /* Remains display: none by default; toggle via JS class (e.g., .active { display: flex; }) */
-        z-index: 1000; /* Match navbar z-index for proper layering */
-    }
-    
-    /* Optional: Animation for hamburger lines on click (add .active class via JS) */
-    .top-hamburger.active span:nth-child(1) {
-        transform: rotate(-45deg) translate(-5px, 6px);
-    }
-    
-    .top-hamburger.active span:nth-child(2) {
-        opacity: 0;
-    }
-    
-    .top-hamburger.active span:nth-child(3) {
-        transform: rotate(45deg) translate(-5px, -6px);
-    }
-}
 
 main.drake-main {
     /* inset: 0px;
@@ -2134,3 +2101,37 @@ body .body-overlay {
 .global-color .setting-toggle i {
     animation: rotating 3s infinite linear !important;
 }
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .top-navbar-container {
+        padding: 0 15px; /* Slightly reduce padding for smaller screens */
+    }
+    
+    .top-menu {
+        display: none; /* Hide the desktop menu on mobile */
+    }
+    
+    .top-hamburger {
+        display: flex; /* Show the hamburger icon on mobile */
+        z-index: 1001; /* Ensure it's clickable and above other elements */
+    }
+    
+    .top-mobile-menu {
+        /* Remains display: none by default; toggle via JS class (e.g., .active { display: flex; }) */
+        z-index: 1000; /* Match navbar z-index for proper layering */
+    }
+    
+    /* Optional: Animation for hamburger lines on click (add .active class via JS) */
+    .top-hamburger.active span:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
+    }
+    
+    .top-hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+    
+    .top-hamburger.active span:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
+    }
+}
+
