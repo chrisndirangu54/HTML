@@ -398,6 +398,7 @@ main.drake-main {
 
 /* 02 - Responsive Sidebar Menu */
 .responsive-sidebar-menu {
+    padding-top: 70px; /* Space below the fixed navbar */
     position: fixed;
     left: 0;
     top: 0;
