@@ -151,24 +151,35 @@ ul {
     font-weight: bold;
 }
 /* -------------------------------------------------
-   1. Root variables – only adjust if needed
+   1. Root variables
    ------------------------------------------------- */
 :root {
-  --menu-size-desktop: 55px;
-  --menu-size-mobile: 48px;
-  --menu-size-small: 44px;
-  --gap-bottom: 20px;        /* ← distance from bottom */
+  --gap-bottom: 20px;
 }
 
 /* -------------------------------------------------
-   2. Icon Menu – always floats at bottom
+   2. Container wrapper – enables container queries
+   ------------------------------------------------- */
+.icon-menu-wrapper {
+  position: fixed;
+  inset-inline-end: 0;
+  inset-block-end: 0;
+  container-type: inline-size;
+  width: 100%;
+  height: 0;                     /* invisible, just for layout */
+  pointer-events: none;          /* let clicks pass through */
+  z-index: 999;
+}
+
+/* -------------------------------------------------
+   3. Icon Menu – now inside wrapper
    ------------------------------------------------- */
 .icon-menu {
-  position: fixed;
-  inset-block-end: var(--gap-bottom);     /* 20px from bottom */
-  inset-inline-end: 68px;                 /* desktop right offset */
-  inline-size: var(--menu-size-desktop);
-  block-size: var(--menu-size-desktop);
+  position: absolute;
+  inset-inline-end: 68px;
+  inset-block-end: var(--gap-bottom);
+  inline-size: 55px;
+  block-size: 55px;
   border-radius: 50%;
   display: flex;
   flex-direction: column;
@@ -179,10 +190,7 @@ ul {
   background: #1f1f1f;
   cursor: pointer;
   transition: all .3s ease;
-  z-index: 999;                          /* above everything */
-
-  /* Enable container queries */
-  container-type: inline-size;
+  pointer-events: auto;          /* allow clicks */
 }
 
 /* Hamburger lines */
@@ -198,13 +206,13 @@ ul {
 .icon-menu:hover span { background: var(--primary-color); }
 
 /* -------------------------------------------------
-   3. Mobile: smaller size, closer to edge
+   4. Mobile: shrink & move closer
    ------------------------------------------------- */
 @container (max-width: 768px) {
   .icon-menu {
     inset-inline-end: 15px;
-    inline-size: var(--menu-size-mobile);
-    block-size: var(--menu-size-mobile);
+    inline-size: 48px;
+    block-size: 48px;
   }
   .icon-menu span { inline-size: 18px; }
 }
@@ -212,12 +220,12 @@ ul {
 @container (max-width: 480px) {
   .icon-menu {
     inset-inline-end: 12px;
-    inline-size: var(--menu-size-small);
-    block-size: var(--menu-size-small);
+    inline-size: 44px;
+    block-size: 44px;
   }
   .icon-menu span { inline-size: 16px; }
 }
-}#scroll-section {
+#scroll-section {
     /* overflow-x: hidden !important;
     overflow-y: auto !important; /
     / width: 100%; /
