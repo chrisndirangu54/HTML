@@ -84,7 +84,7 @@ ul {
     transition: .3s;
     cursor: pointer;
     border: 2px solid var(--primary-color);
-    margin-top: 40px;  /* Added: Moves the button lower on the page (adjust value as needed, e.g., 20px for subtle, 60px for more space) */
+    margin-top: 100px;  /* Added: Moves the button lower on the page (adjust value as needed, e.g., 20px for subtle, 60px for more space) */
 
 }
 .theme-btn i {
