@@ -306,6 +306,53 @@ ul {
 .top-navbar-container.wrapped .top-menu { display: none; }
 .top-navbar-container.wrapped .top-hamburger { display: flex; }
 
+/* ────────────────────────────────────── Floating Button Mode ────────────────────────────────────── */
+.top-navbar {
+    position: fixed;
+    bottom: 25px; 
+    right: 25px;
+    width: auto;
+    height: auto;
+    background: rgba(0,0,0,0.85);
+    border-radius: 50%;
+    padding: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    z-index: 2000;
+}
+
+.top-navbar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+
+.top-hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    padding: 8px;
+    margin: 0;
+}
+
+.top-hamburger span {
+    background: #ffd700;
+    width: 24px;
+    height: 3px;
+    margin: 3px 0;
+    border-radius: 2px;
+    transition: 0.3s;
+}
+
+/* Optional: subtle hover glow */
+.top-navbar:hover {
+    box-shadow: 0 6px 20px rgba(255,215,0,0.3);
+}
+
+
+
 main.drake-main {
 
     /* inset: 0px;
