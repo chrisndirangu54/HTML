@@ -154,7 +154,7 @@ ul {
 .icon-menu {
     position: absolute;
     right: 68px;
-    top: 200px;
+    top: 100px;
     width: 55px;
     height: 55px;
     border-radius: 50%;
@@ -352,7 +352,7 @@ main.drake-main {
 
 /* 02 - Responsive Sidebar Menu */
 .responsive-sidebar-menu {
-    padding-top: 100px; /* Space below the fixed navbar */
+    padding-top: 150px; /* Space below the fixed navbar */
     position: fixed;
     left: 0;
     top: 0;
