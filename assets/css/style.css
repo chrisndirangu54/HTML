@@ -151,35 +151,26 @@ ul {
     font-weight: bold;
 }
 /* -------------------------------------------------
-   1. Root variables – adjust only these
-   ------------------------------------------------- */
-:root {
-  --nav-height: 60px;        /* ← your navbar height */
-  --gap-desktop: 45px;       /* ← distance below navbar on DESKTOP */
-  --gap-mobile: 180px;       /* ← distance below navbar on MOBILE */
-}
-
-/* -------------------------------------------------
-   1. Wrapper – enables container queries + fixed position
+   1. Wrapper – fixed at bottom-right, enables container queries
    ------------------------------------------------- */
 .icon-menu-wrapper {
   position: fixed;
   right: 0;
-  bottom: 0;
-  width: 200px;                    /* Enough space to trigger container queries */
-  height: 100px;
+  bottom: 0;                       /* ← Pin to bottom */
+  width: 300px;                    /* Wide enough to trigger container queries */
+  height: 120px;                   /* Tall enough for safe area + menu */
   pointer-events: none;            /* Clicks pass through */
   z-index: 999;
   container-type: inline-size;     /* ← Enables @container */
 }
 
 /* -------------------------------------------------
-   2. Icon Menu – now inside wrapper
+   2. Icon Menu – absolute inside wrapper, always 20px from bottom
    ------------------------------------------------- */
 .icon-menu {
   position: absolute;
   right: 68px;
-  bottom: 20px;                    /* ← Always 20px from bottom */
+  bottom: 20px;                    /* ← 20px from bottom of wrapper */
   width: 55px;
   height: 55px;
   border-radius: 50%;
@@ -192,7 +183,7 @@ ul {
   background: #1f1f1f;
   cursor: pointer;
   transition: all .3s ease;
-  pointer-events: auto;            /* Allow clicks */
+  pointer-events: auto;
   z-index: 999;
 }
 
@@ -209,7 +200,7 @@ ul {
 .icon-menu:hover span { background: var(--primary-color); }
 
 /* -------------------------------------------------
-   3. Mobile: shrink & move closer (via container query)
+   3. Mobile: shrink + move closer to edge
    ------------------------------------------------- */
 @container (max-width: 768px) {
   .icon-menu {
