@@ -30,29 +30,33 @@
 <body class="home1-page">
 
     <!-- Top Navbar -->
-    <header class="top-navbar">
-        <div class="top-navbar-container">
-            <div class="top-hamburger" onclick="toggleTopMobileMenu()">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
-            <ul class="top-menu scroll-nav d-flex justify-content-center" id="topMenu">
-                <li><a class="scroll-to" href="#blogs"><span>Blogs</span> <i class="las la-newspaper"></i></a></li>
-                <li><a class="scroll-to" href="#gallery"><span>Gallery</span> <i class="las la-images"></i></a></li>
-                <li><a class="scroll-to" href="#awards"><span>Awards</span> <i class="las la-trophy"></i></a></li>
-                <li><a class="scroll-to" href="#communities"><span>Communities</span> <i class="las la-users"></i></a></li>
-                <li><a class="scroll-to" href="#web3"><span>Web3</span> <i class="las la-globe"></i></a></li>
-            </ul>
-            <ul class="top-mobile-menu" id="topMobileMenu">
-                <li><a class="scroll-to" href="#blogs"><span>Blogs</span> <i class="las la-newspaper"></i></a></li>
-                <li><a class="scroll-to" href="#gallery"><span>Gallery</span> <i class="las la-images"></i></a></li>
-                <li><a class="scroll-to" href="#awards"><span>Awards</span> <i class="las la-trophy"></i></a></li>
-                <li><a class="scroll-to" href="#communities"><span>Communities</span> <i class="las la-users"></i></a></li>
-                <li><a class="scroll-to" href="#web3"><span>Web3</span> <i class="las la-globe"></i></a></li>
-            </ul>
+<header class="top-navbar">
+    <div class="top-navbar-container" id="navContainer">
+
+        <!-- Hamburger – appears only when .wrapped -->
+        <div class="top-hamburger" onclick="toggleTopMobileMenu()">
+            <span></span><span></span><span></span>
         </div>
-    </header>
+
+        <!-- Desktop menu -->
+        <ul class="top-menu" id="topMenu">
+            <li><a class="scroll-to" href="#blogs"><span>Blogs</span> <i class="las la-newspaper"></i></a></li>
+            <li><a class="scroll-to" href="#gallery"><span>Gallery</span> <i class="las la-images"></i></a></li>
+            <li><a class="scroll-to" href="#awards"><span>Awards</span> <i class="las la-trophy"></i></a></li>
+            <li><a class="scroll-to" href="#communities"><span>Communities</span> <i class="las la-users"></i></a></li>
+            <li><a class="scroll-to" href="#web3"><span>Web3</span> <i class="las la-globe"></i></a></li>
+        </ul>
+
+        <!-- Mobile menu (hidden until hamburger click) -->
+        <ul class="top-mobile-menu" id="topMobileMenu">
+            <li><a class="scroll-to" href="#blogs"><span>Blogs</span> <i class="las la-newspaper"></i></a></li>
+            <li><a class="scroll-to" href="#gallery"><span>Gallery</span> <i class="las la-images"></i></a></li>
+            <li><a class="scroll-to" href="#awards"><span>Awards</span> <i class="las la-trophy"></i></a></li>
+            <li><a class="scroll-to" href="#communities"><span>Communities</span> <i class="las la-users"></i></a></li>
+            <li><a class="scroll-to" href="#web3"><span>Web3</span> <i class="las la-globe"></i></a></li>
+        </ul>
+    </div>
+</header>
     
     <!-- Background Video with ID -->
     <video id="background-video" class="body-overlay" muted autoplay loop>
@@ -791,36 +795,28 @@
     <script src="assets/js/ajax-form.js"></script>
     <script src="assets/js/color.js"></script>
 <script>
-/* -------------------------------------------------
-   Detect when the flex row wraps → add .wrapped
-   ------------------------------------------------- */
+/* ---------- Detect flex-wrap (no media queries) ---------- */
 const container = document.getElementById('navContainer');
-const menu      = document.getElementById('topMenu');
+const hamburger = container.querySelector('.top-hamburger');
+const firstMenuItem = container.querySelector('.top-menu li');
 
-function checkWrap() {
-    // If the first menu item is lower than the hamburger → we wrapped
-    const hamburger = container.querySelector('.top-hamburger');
-    const firstItem  = menu.querySelector('li');
-    if (!firstItem) return;
-
+function checkWrap(){
+    if(!firstMenuItem) return;
     const hamRect = hamburger.getBoundingClientRect();
-    const itemRect = firstItem.getBoundingClientRect();
+    const itemRect = firstMenuItem.getBoundingClientRect();
 
-    if (itemRect.top > hamRect.bottom + 5) {
+    // If the first menu item is below the hamburger → we wrapped
+    if(itemRect.top > hamRect.bottom + 5){
         container.classList.add('wrapped');
-    } else {
+    }else{
         container.classList.remove('wrapped');
     }
 }
-
-/* Run on load & resize */
 window.addEventListener('load', checkWrap);
 window.addEventListener('resize', checkWrap);
 
-/* -------------------------------------------------
-   Hamburger toggle
-   ------------------------------------------------- */
-function toggleTopMobileMenu() {
+/* ---------- Hamburger toggle ---------- */
+function toggleTopMobileMenu(){
     document.getElementById('topMobileMenu').classList.toggle('show');
 }
 </script>
