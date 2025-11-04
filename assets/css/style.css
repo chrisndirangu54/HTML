@@ -292,61 +292,7 @@ ul {
     border-bottom: none;
 }
 
-/* Ultra-Specific Mobile Responsiveness - Locked to Top Navbar Only */
-@media (max-width: 600px) {
-    /* Use ID-based selector for container to avoid any class overlaps */
-    header.top-navbar .top-navbar-container {
-        padding: 0 15px !important;  /* !important only if needed; test without first */
-    }
-    
-    /* Desktop menu hiding - ultra-specific with header and ID */
-    header.top-navbar #topMenu,
-    header.top-navbar ul.top-menu.scroll-nav.d-flex {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-        height: 0 !important;
-        overflow: hidden !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    
-    /* Hamburger - prefixed with header */
-    header.top-navbar .top-hamburger {
-        display: flex !important;
-        margin-left: auto;
-        z-index: 1001;
-        pointer-events: auto;
-    }
-    
-    header.top-navbar .top-hamburger:hover {
-        opacity: 0.8;
-    }
-    
-    header.top-navbar .top-mobile-menu {
-        z-index: 1000;
-    }
-    
-    /* Hamburger animation - prefixed */
-    header.top-navbar .top-hamburger.active span:nth-child(1) {
-        transform: rotate(-45deg) translate(-5px, 6px);
-    }
-    
-    header.top-navbar .top-hamburger.active span:nth-child(2) {
-        opacity: 0;
-    }
-    
-    header.top-navbar .top-hamburger.active span:nth-child(3) {
-        transform: rotate(45deg) translate(-5px, -6px);
-    }
-    
-    /* Mobile menu links - prefixed */
-    header.top-navbar .top-mobile-menu li a .scroll-to {
-        display: flex !important;
-        align-items: center;
-        gap: 8px;
-    }
-}
+
 
 main.drake-main {
     /* inset: 0px;
