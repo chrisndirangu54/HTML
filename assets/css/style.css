@@ -170,6 +170,7 @@ ul {
     z-index: 99;
 }
 .icon-menu span {
+   padding-top: 120px; /* Space below the fixed navbar */
     width: 20px;
     display: block;
     height: 2px;
