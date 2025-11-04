@@ -33,27 +33,30 @@
 <header class="top-navbar">
     <div class="top-navbar-container" id="navContainer">
 
-        <!-- Hamburger – appears only when .wrapped -->
-        <div class="top-hamburger" onclick="toggleTopMobileMenu()">
+        <!-- Hamburger (mobile only) -->
+        <div class="top-hamburger" onclick="toggleMobileMenu()">
             <span></span><span></span><span></span>
         </div>
 
-        <!-- Desktop menu -->
-        <ul class="top-menu" id="topMenu">
-            <li><a class="scroll-to" href="#blogs"><span>Blogs</span> <i class="las la-newspaper"></i></a></li>
-            <li><a class="scroll-to" href="#gallery"><span>Gallery</span> <i class="las la-images"></i></a></li>
-            <li><a class="scroll-to" href="#awards"><span>Awards</span> <i class="las la-trophy"></i></a></li>
-            <li><a class="scroll-to" href="#communities"><span>Communities</span> <i class="las la-users"></i></a></li>
-            <li><a class="scroll-to" href="#web3"><span>Web3</span> <i class="las la-globe"></i></a></li>
+        <!-- Desktop horizontal menu -->
+        <ul class="top-menu">
+            <li><a href="#blogs"><span>Blogs</span> <i class="las la-newspaper"></i></a></li>
+            <li><a href="#gallery"><span>Gallery</span> <i class="las la-images"></i></a></li>
+            <li><a href="#awards"><span>Awards</span> <i class="las la-trophy"></i></a></li>
+            <li><a href="#communities"><span>Communities</span> <i class="las la-users"></i></a></li>
+            <li><a href="#web3"><span>Web3</span> <i class="las la-globe"></i></a></li>
         </ul>
 
-        <!-- Mobile menu (hidden until hamburger click) -->
-        <ul class="top-mobile-menu" id="topMobileMenu">
-            <li><a class="scroll-to" href="#blogs"><span>Blogs</span> <i class="las la-newspaper"></i></a></li>
-            <li><a class="scroll-to" href="#gallery"><span>Gallery</span> <i class="las la-images"></i></a></li>
-            <li><a class="scroll-to" href="#awards"><span>Awards</span> <i class="las la-trophy"></i></a></li>
-            <li><a class="scroll-to" href="#communities"><span>Communities</span> <i class="las la-users"></i></a></li>
-            <li><a class="scroll-to" href="#web3"><span>Web3</span> <i class="las la-globe"></i></a></li>
+        <!-- Invisible sentinel to detect wrap -->
+        <div class="top-wrap-sentinel"></div>
+
+        <!-- Mobile menu (hidden until clicked) -->
+        <ul class="top-mobile-menu" id="mobileMenu">
+            <li><a href="#blogs"><span>Blogs</span> <i class="las la-newspaper"></i></a></li>
+            <li><a href="#gallery"><span>Gallery</span> <i class="las la-images"></i></a></li>
+            <li><a href="#awards"><span>Awards</span> <i class="las la-trophy"></i></a></li>
+            <li><a href="#communities"><span>Communities</span> <i class="las la-users"></i></a></li>
+            <li><a href="#web3"><span>Web3</span> <i class="las la-globe"></i></a></li>
         </ul>
     </div>
 </header>
@@ -795,29 +798,30 @@
     <script src="assets/js/ajax-form.js"></script>
     <script src="assets/js/color.js"></script>
 <script>
-/* ---------- Detect flex-wrap (no media queries) ---------- */
+// Reliable wrap detection using the sentinel
 const container = document.getElementById('navContainer');
-const hamburger = container.querySelector('.top-hamburger');
-const firstMenuItem = container.querySelector('.top-menu li');
+const sentinel = container.querySelector('.top-wrap-sentinel');
 
-function checkWrap(){
-    if(!firstMenuItem) return;
-    const hamRect = hamburger.getBoundingClientRect();
-    const itemRect = firstMenuItem.getBoundingClientRect();
+function checkWrap() {
+    const sentinelRect = sentinel.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
 
-    // If the first menu item is below the hamburger → we wrapped
-    if(itemRect.top > hamRect.bottom + 5){
+    // If sentinel is below the container top → it wrapped to a new line
+    if (sentinelRect.top > containerRect.top + 10) {
         container.classList.add('wrapped');
-    }else{
+    } else {
         container.classList.remove('wrapped');
     }
 }
+
+// Run on load, resize, and orientation change
 window.addEventListener('load', checkWrap);
 window.addEventListener('resize', checkWrap);
+window.addEventListener('orientationchange', checkWrap);
 
-/* ---------- Hamburger toggle ---------- */
-function toggleTopMobileMenu(){
-    document.getElementById('topMobileMenu').classList.toggle('show');
+// Hamburger toggle
+function toggleMobileMenu() {
+    document.getElementById('mobileMenu').classList.toggle('show');
 }
 </script>
     <!-- Google tag (gtag.js) -->
