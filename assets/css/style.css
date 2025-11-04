@@ -72,10 +72,10 @@ ul {
 .theme-btn {
     background: var(--primary-color);
     color: #000000;
-    display: inline-flex;  /* Consolidated: removed conflicting display: block */
-    position: relative;    /* Assuming relative for container flow; adjust if absolute/fixed elsewhere */
+    display: block;
     text-align: center;
     padding: 11px 58px 10px 58px;
+    display: inline-flex;
     align-items: center;
     border-radius: 30px;
     justify-content: center;
@@ -84,8 +84,6 @@ ul {
     transition: .3s;
     cursor: pointer;
     border: 2px solid var(--primary-color);
-    margin-top: 100px;  /* Added: Moves the button lower on the page (adjust value as needed, e.g., 20px for subtle, 60px for more space) */
-
 }
 .theme-btn i {
     font-size: 24px;
