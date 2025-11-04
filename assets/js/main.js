@@ -258,28 +258,6 @@ function handleMobileNavbar() {
     }
 }
 
-// Run on load and resize
-window.addEventListener('load', handleMobileNavbar);
-window.addEventListener('resize', handleMobileNavbar);
-
-// Your existing toggle function (updated to work with JS visibility)
-function toggleTopMobileMenu() {
-    const mobileMenu = document.getElementById('topMobileMenu');
-    const hamburger = document.querySelector('.top-hamburger');
-    
-    if (mobileMenu.style.display === 'flex') {
-        mobileMenu.style.display = 'none';
-        hamburger.classList.remove('active');
-    } else {
-        mobileMenu.style.display = 'flex';
-        hamburger.classList.add('active');
-    }
-}
-
-// Optional: Close on link click
-document.querySelectorAll('.top-mobile-menu a').forEach(link => {
-    link.addEventListener('click', toggleTopMobileMenu);
-});
 
 function scroll_animations() {
     // var allow_on_mobile = !0;
