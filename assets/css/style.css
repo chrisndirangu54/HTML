@@ -73,7 +73,7 @@ ul {
     background: var(--primary-color);
     color: #000000;
     display: block;
-    top: 100px;
+    top: 200px;
     text-align: center;
     padding: 11px 58px 10px 58px;
     display: inline-flex;
@@ -301,7 +301,6 @@ ul {
     }
 }
 main.drake-main {
-   padding-top: 100px; /* Space below the fixed navbar */
 
     /* inset: 0px;
     width: 100%;
@@ -385,7 +384,7 @@ main.drake-main {
 
 /* 02 - Responsive Sidebar Menu */
 .responsive-sidebar-menu {
-    padding-top: 70px; /* Space below the fixed navbar */
+    padding-top: 100px; /* Space below the fixed navbar */
     position: fixed;
     left: 0;
     top: 0;
