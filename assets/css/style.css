@@ -654,7 +654,7 @@ main.drake-main {
 .global-color .inner .global-color-option .close-settings {
     position: absolute;
     
-    right: 20px;
+    right: 80px;
     top: 200px;
     color: var(--primary-color); /* Apply primary color */
 }
