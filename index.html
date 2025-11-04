@@ -38,16 +38,7 @@
         <div class="bounceball"></div>
     </div>
 
-    <!-- Menu Icon -->
-    <span class="icon-menu">
-        <span class="bar"></span>
-        <span class="bar"></span>
-    </span>
-
 <div class="global-color">
-    <span class="setting-toggle">
-        <i class="las la-cog"></i>
-    </span>
     <div class="inner">
         <div class="overlay"></div>
         <div class="global-color-option">
@@ -82,9 +73,37 @@
     </div>
 </div>
 
+    <!-- Navbar with Tabs -->
+    <nav class="navbar">
+        <!-- Menu Icon for Responsive -->
+        <span class="icon-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </span>
 
-    <!-- Rest of the HTML (sidebar, menu, main content) -->
+        <!-- Settings Toggle Button -->
+        <span class="setting-toggle">
+            <i class="las la-cog"></i>
+        </span>
 
+        <!-- Main Menu Tabs -->
+        <ul class="menu scroll-nav d-flex">
+            <li><a class="scroll-to" href="#home"><span>Home</span> <i class="las la-home"></i></a></li>
+            <li><a class="scroll-to" href="#about"><span>About</span> <i class="lar la-user"></i></a></li>
+            <li><a class="scroll-to" href="#resume"><span>Milestones</span> <i class="las la-briefcase"></i></a></li>
+            <li><a class="scroll-to" href="#services"><span>Services</span> <i class="las la-stream"></i></a></li>
+            <li><a class="scroll-to" href="#skills"><span>Technologies</span> <i class="las la-shapes"></i></a></li>
+            <li><a class="scroll-to" href="#portfolio"><span>Projects</span> <i class="las la-grip-vertical"></i></a></li>
+            <li><a class="scroll-to" href="#testimonial"><span>Testimonials</span> <i class="lar la-comment"></i></a></li>
+            <li><a class="scroll-to" href="#contact"><span>Contact</span> <i class="las la-envelope"></i></a></li>
+            <!-- New Tabs -->
+            <li><a class="scroll-to" href="#blogs"><span>Blogs</span> <i class="las la-newspaper"></i></a></li>
+            <li><a class="scroll-to" href="#gallery"><span>Gallery</span> <i class="las la-images"></i></a></li>
+            <li><a class="scroll-to" href="#awards"><span>Awards</span> <i class="las la-trophy"></i></a></li>
+            <li><a class="scroll-to" href="#communities"><span>Communities</span> <i class="las la-users"></i></a></li>
+            <li><a class="scroll-to" href="#web3"><span>Web3</span> <i class="las la-globe"></i></a></li>
+        </ul>
+    </nav>
 
     <!-- Responsive Sidebar Menu -->
     <div class="responsive-sidebar-menu">
@@ -101,6 +120,12 @@
                     <li><a class="scroll-to" href="#portfolio"><i class="las la-grip-vertical"></i> <span>Projects</span></a></li>
                     <li><a class="scroll-to" href="#testimonial"><i class="lar la-comment"></i> <span>Testimonials</span></a></li>
                     <li><a class="scroll-to" href="#contact"><i class="las la-envelope"></i> <span>Contact</span></a></li>
+                    <!-- New Tabs in Responsive Menu -->
+                    <li><a class="scroll-to" href="#blogs"><i class="las la-newspaper"></i> <span>Blogs</span></a></li>
+                    <li><a class="scroll-to" href="#gallery"><i class="las la-images"></i> <span>Gallery</span></a></li>
+                    <li><a class="scroll-to" href="#awards"><i class="las la-trophy"></i> <span>Awards</span></a></li>
+                    <li><a class="scroll-to" href="#communities"><i class="las la-users"></i> <span>Communities</span></a></li>
+                    <li><a class="scroll-to" href="#web3"><i class="las la-globe"></i> <span>Web3</span></a></li>
                 </ul>
             </div>
             <div class="sidebar-social">
@@ -114,19 +139,6 @@
         </div>
     </div>
 
-    <!-- Main Menu -->
-    <ul class="menu scroll-nav d-flex">
-        <li><a class="scroll-to" href="#home"><span>Home</span> <i class="las la-home"></i></a></li>
-        <li><a class="scroll-to" href="#about"><span>About</span> <i class="lar la-user"></i></a></li>
-        <li><a class="scroll-to" href="#resume"><span>Milestones</span> <i class="las la-briefcase"></i></a></li>
-        <li><a class="scroll-to" href="#services"><span>Services</span> <i class="las la-stream"></i></a></li>
-        <li><a class="scroll-to" href="#skills"><span>Technologies</span> <i class="las la-shapes"></i></a></li>
-        <li><a class="scroll-to" href="#portfolio"><span>Projects</span> <i class="las la-grip-vertical"></i></a></li>
-        <li><a class="scroll-to" href="#testimonial"><span>Testimonials</span> <i class="lar la-comment"></i></a></li>
-        <li><a class="scroll-to" href="#contact"><span>Contact</span> <i class="las la-envelope"></i></a></li>
-    </ul>
-
-    
     <!--  left-sidebar -->
     <div class="left-sidebar">
         <div class="sidebar-header d-flex align-items-center justify-content-between">
@@ -144,6 +156,7 @@
         </ul>
         <a href="#contact" class="theme-btn"><i class="las la-envelope"></i> Get a Quote!</a>
     </div>
+
 
     <main class="drake-main">
         <div id="smooth-wrapper">
