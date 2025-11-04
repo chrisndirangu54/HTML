@@ -296,9 +296,7 @@ ul {
     .top-navbar-container {
         padding: 0 15px;
     }
-    body.home1-page {
-        padding-top: 70px; /* Space below the fixed navbar */
-    }
+
 }
 
 @media (max-width: 480px) {
