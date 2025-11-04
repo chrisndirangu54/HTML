@@ -73,6 +73,7 @@ ul {
     background: var(--primary-color);
     color: #000000;
     display: block;
+    top: 100px;
     text-align: center;
     padding: 11px 58px 10px 58px;
     display: inline-flex;
