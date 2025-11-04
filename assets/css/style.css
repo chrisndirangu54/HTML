@@ -151,33 +151,21 @@ ul {
     font-weight: bold;
 }
 /* -------------------------------------------------
-   1. Root variables
+   1. Root variables – adjust only these
    ------------------------------------------------- */
 :root {
-  --gap-bottom: 20px;
+  --nav-height: 60px;        /* ← your navbar height */
+  --gap-desktop: 90px;       /* ← distance below navbar on DESKTOP */
+  --gap-mobile: 180px;       /* ← distance below navbar on MOBILE */
 }
 
 /* -------------------------------------------------
-   2. Container wrapper – enables container queries
-   ------------------------------------------------- */
-.icon-menu-wrapper {
-  position: fixed;
-  inset-inline-end: 0;
-  inset-block-end: 0;
-  container-type: inline-size;
-  width: 100%;
-  height: 0;                     /* invisible, just for layout */
-  pointer-events: none;          /* let clicks pass through */
-  z-index: 999;
-}
-
-/* -------------------------------------------------
-   3. Icon Menu – now inside wrapper
+   2. Icon Menu – base (desktop) styles
    ------------------------------------------------- */
 .icon-menu {
-  position: absolute;
+  position: fixed;
+  inset-block-start: calc(var(--nav-height) + var(--gap-desktop));
   inset-inline-end: 68px;
-  inset-block-end: var(--gap-bottom);
   inline-size: 55px;
   block-size: 55px;
   border-radius: 50%;
@@ -190,7 +178,10 @@ ul {
   background: #1f1f1f;
   cursor: pointer;
   transition: all .3s ease;
-  pointer-events: auto;          /* allow clicks */
+  z-index: 99;
+
+  /* Enable container queries */
+  container-type: inline-size;
 }
 
 /* Hamburger lines */
@@ -201,15 +192,17 @@ ul {
   transition: background .3s ease;
 }
 
-/* Hover */
+/* Hover effect */
 .icon-menu:hover { border-color: var(--primary-color); }
 .icon-menu:hover span { background: var(--primary-color); }
 
 /* -------------------------------------------------
-   4. Mobile: shrink & move closer
+   3. Mobile behavior – switch gap & size
    ------------------------------------------------- */
 @container (max-width: 768px) {
   .icon-menu {
+    --gap: var(--gap-mobile);     /* ← use mobile gap */
+    inset-block-start: calc(var(--nav-height) + var(--gap));
     inset-inline-end: 15px;
     inline-size: 48px;
     block-size: 48px;
