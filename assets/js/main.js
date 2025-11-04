@@ -238,6 +238,48 @@ window.addEventListener('resize', function() {
 document.querySelectorAll('.top-mobile-menu a').forEach(link => {
     link.addEventListener('click', toggleTopMobileMenu);
 });
+function handleMobileNavbar() {
+    const isMobile = window.innerWidth <= 600;
+    const topMenu = document.getElementById('topMenu');
+    const hamburger = document.querySelector('.top-hamburger');
+    const mobileMenu = document.getElementById('topMobileMenu');
+    
+    if (isMobile) {
+        topMenu.style.display = 'none';  // Hide desktop menu
+        hamburger.style.display = 'flex';  // Show hamburger
+        hamburger.style.marginLeft = 'auto';  // Push to right
+        hamburger.style.zIndex = '1001';
+        hamburger.style.pointerEvents = 'auto';
+        mobileMenu.style.display = 'none';  // Ensure closed initially
+    } else {
+        topMenu.style.display = 'flex';  // Show desktop menu
+        hamburger.style.display = 'none';  // Hide hamburger
+        mobileMenu.style.display = 'none';
+    }
+}
+
+// Run on load and resize
+window.addEventListener('load', handleMobileNavbar);
+window.addEventListener('resize', handleMobileNavbar);
+
+// Your existing toggle function (updated to work with JS visibility)
+function toggleTopMobileMenu() {
+    const mobileMenu = document.getElementById('topMobileMenu');
+    const hamburger = document.querySelector('.top-hamburger');
+    
+    if (mobileMenu.style.display === 'flex') {
+        mobileMenu.style.display = 'none';
+        hamburger.classList.remove('active');
+    } else {
+        mobileMenu.style.display = 'flex';
+        hamburger.classList.add('active');
+    }
+}
+
+// Optional: Close on link click
+document.querySelectorAll('.top-mobile-menu a').forEach(link => {
+    link.addEventListener('click', toggleTopMobileMenu);
+});
 
 function scroll_animations() {
     // var allow_on_mobile = !0;
