@@ -263,6 +263,8 @@ ul {
     gap: 0;
     padding: 20px 0;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    list-style: none;
+    margin: 0;
 }
 .top-mobile-menu li {
     width: 100%;
@@ -271,34 +273,58 @@ ul {
     justify-content: center;
     padding: 15px 20px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.top-mobile-menu li a i {
+    font-size: 18px;
+}
+.top-mobile-menu li a:hover {
+    color: #ffd700;
+    background: rgba(255, 215, 0, 0.1);
 }
 .top-mobile-menu li:last-child a {
     border-bottom: none;
 }
 
 /* Enhanced Mobile Responsiveness */
-@media (max-width: 600px) {  /* Lowered from 768px for phones */
+@media (max-width: 600px) {
     .top-navbar-container {
         padding: 0 15px;
     }
     
-    /* Hide desktop menu with high specificity and !important */
-    .top-navbar .top-menu {
+    /* Hide desktop menu targeting ID and classes for higher specificity */
+    #topMenu,
+    .top-navbar .top-menu.scroll-nav.d-flex {
         display: none !important;
-        visibility: hidden !important;  /* Extra layer for stubborn cases */
+        visibility: hidden !important;
         opacity: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
     }
     
     .top-hamburger {
-        display: flex !important;  /* Ensure visibility */
+        display: flex !important;
+        margin-left: auto;  /* Push hamburger to the right since no logo */
         z-index: 1001;
+        pointer-events: auto;  /* Ensure clickable */
+    }
+    
+    .top-hamburger:hover {
+        opacity: 0.8;  /* Optional feedback */
     }
     
     .top-mobile-menu {
         z-index: 1000;
+        /* JS will toggle display: flex; */
     }
     
-    /* Hamburger animation (as before) */
+    /* Hamburger animation (toggle .active class in JS) */
     .top-hamburger.active span:nth-child(1) {
         transform: rotate(-45deg) translate(-5px, 6px);
     }
@@ -310,8 +336,14 @@ ul {
     .top-hamburger.active span:nth-child(3) {
         transform: rotate(45deg) translate(-5px, -6px);
     }
+    
+    /* Ensure mobile menu items inherit styles properly */
+    .top-mobile-menu li a .scroll-to {
+        display: flex !important;
+        align-items: center;
+        gap: 8px;
+    }
 }
-
 main.drake-main {
     /* inset: 0px;
     width: 100%;
