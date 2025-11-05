@@ -1098,30 +1098,49 @@ function applyGradient(gradient, name) {
   localStorage.setItem('selectedColor', name);
   console.log(`🌈 Applied ${name}: ${gradient}`);
 
-  // Apply gradient to text elements using var(--primary-color)
-  const elements = document.querySelectorAll(`
+  // Apply gradient to text elements
+  const textElements = document.querySelectorAll(`
     [style*="var(--primary-color)"],
+    h1,
     span
-
   `);
-
-  elements.forEach(el => {
+  textElements.forEach(el => {
     el.style.background = gradient;
     el.style.webkitBackgroundClip = "text";
     el.style.webkitTextFillColor = "transparent";
   });
 
-  // Apply gradient to borders that depend on var(--primary-color)
+  // Apply gradient to borders
   const borderElements = document.querySelectorAll(`
-    [style*="border"],
-    [class*="border"],
-    [class*="hover-border"]:hover
+    [style*="border-color: var(--primary-color)"],
+    [style*="border: var(--primary-color)"]
   `);
   borderElements.forEach(el => {
     el.style.borderImage = `${gradient} 1`;
     el.style.borderImageSlice = 1;
   });
+
+  // Apply gradient on hover via CSS variable
+  const styleTagId = "gradient-hover-style";
+  let styleTag = document.getElementById(styleTagId);
+  if (!styleTag) {
+    styleTag = document.createElement("style");
+    styleTag.id = styleTagId;
+    document.head.appendChild(styleTag);
+  }
+  styleTag.innerHTML = `
+    button:hover, .btn:hover, .icon-hover:hover, .border-hover:hover {
+      border-image: ${gradient} 1;
+      border-image-slice: 1;
+      color: transparent;
+      background: ${gradient};
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transition: all 0.3s ease;
+    }
+  `;
 }
+
 
 
 
