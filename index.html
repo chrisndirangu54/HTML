@@ -1103,56 +1103,41 @@ function applyGradient(gradient, name) {
   const oldStyle = document.getElementById('dynamic-gradient-style');
   if (oldStyle) oldStyle.remove();
 
-  // Create targeted gradient rules
+  // Create and inject a new <style> tag
   const style = document.createElement('style');
   style.id = 'dynamic-gradient-style';
   style.innerHTML = `
-    /* 🟣 TEXT using --primary-color */
-    [style*="color: var(--primary-color)"],
-    .text-primary,
-    .primary-text,
-    a.text-primary,
-    span.text-primary,
-    strong.text-primary {
-      background: ${gradient};
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      color: transparent !important;
-    }
-
-    /* 🔲 BORDERS using --primary-color */
-    [style*="border-color: var(--primary-color)"],
-    .border-primary,
-    .primary-border {
-      border: 2px solid transparent !important;
-      background: linear-gradient(#fff, #fff) padding-box,
-                  ${gradient} border-box;
-    }
-
-    /* 🔘 BUTTONS and SOLID BACKGROUNDS */
-    .btn-primary, button.btn-primary, .bg-primary,
-    .badge-primary, .tag-primary {
+    /* Buttons & backgrounds */
+    button, .btn, .btn-primary, .theme-btn, [class*="button"], 
+    .bg-primary, .highlight, .badge, .tag {
       background: ${gradient} !important;
       color: #fff !important;
-      border: none !important;
+      border-color: transparent !important;
       background-clip: border-box !important;
       transition: all 0.3s ease-in-out;
     }
 
-    /* ✨ ICONS using primary color */
-    i.text-primary, svg.text-primary, i.use-primary, svg.use-primary {
+    /* Borders */
+    [style*="border-color"], [class*="border"], .bordered, .outline {
+      border: 2px solid transparent !important;
+      background: linear-gradient(#000, #000) padding-box, ${gradient} border-box;
+    }
+
+    /* Texts & icons */
+    [style*="color"], h1, h2, h3, h4, h5, h6, p, a, i, span, strong, svg {
       background: ${gradient};
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      background-clip: text;
       color: transparent !important;
+      background-clip: text;
+      transition: color 0.3s ease-in-out;
     }
 
-    /* 💫 Hover animation for interactive elements */
-    .btn-primary:hover, button.btn-primary:hover {
-      filter: brightness(1.15);
-      transform: scale(1.02);
+    /* Keep body readable */
+    body, .body-overlay, .content, .container, .section {
+      -webkit-text-fill-color: initial;
+      background-clip: border-box;
+      color: inherit !important;
     }
   `;
   document.head.appendChild(style);
