@@ -456,6 +456,11 @@ main.drake-main {
     padding: 24px 0;
     background: #1f1f1f;
     z-index: 20;
+    transition: border-color .3s ease;
+}
+.menu:hover {
+    border-image-source: var(--primary-gradient, var(--primary-color));
+    border-image-slice: 1;
 }
 .menu li .scroll-to,
 .menu li a {
@@ -471,7 +476,16 @@ main.drake-main {
 .menu li a:hover,
 .menu li .scroll-to.active,
 .menu li .scroll-to:hover {
-    color: var(--primary-color); /* Fallback solid for text/icons */
+    color: var(--primary-color); /* Fallback solid for text */
+}
+.menu li a.active i,
+.menu li a:hover i,
+.menu li .scroll-to.active i,
+.menu li .scroll-to:hover i {
+    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background to icons */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 .menu li .scroll-to:hover span,
 .menu li a:hover span {
@@ -482,10 +496,6 @@ main.drake-main {
 .menu li a i {
     font-size: 20px;
     display: block;
-    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
     transition: .3s;
 }
 .menu li .scroll-to span,
@@ -656,21 +666,14 @@ cursor: pointer;
 border-radius: 5px !important;}.global-color .setting-toggle i {animation: rotating 3s infinite linear !important;}.global-color .inner .global-color-option .close-settings {
     position: absolute;right: 60px;
 top: 110px;
-color: var(--primary-color); /* Fallback solid */}.global-color .inner .global-color-option .global-color-option-inner p {
+color: var(--primary-gradient, var(--primary-color))
+; /* Apply primary color */}.global-color .inner .global-color-option .global-color-option-inner p {
     text-transform: uppercase;
     font-size: 13px;
-    color: var(--primary-color); /* Fallback solid */
+    color: var(--primary-gradient, var(--primary-color))
+; /* Apply primary color */
     line-height: 1.2;
     margin-bottom: 25px;
-}
-.global-color .inner .global-color-option .global-color-option-inner .close-settings,
-.global-color .inner .global-color-option .global-color-option-inner p,
-.global-color .inner .global-color-option .global-color-option-inner .themes li a,
-.global-color .inner .global-color-option h2 {
-    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
 }.global-color .inner .global-color-option .global-color-option-inner .themes {
     display: flex;
     flex-wrap: wrap;
@@ -710,10 +713,8 @@ color: var(--primary-color); /* Fallback solid */}.global-color .inner .global-c
     margin-right: -400px;
     transition: .4s;
     padding: 134px;
-    border: 2px solid #565656; /* Default solid */
-}.global-color .inner .global-color-option:hover {
-    border-image-source: var(--primary-gradient, var(--primary-color));
-    border-image-slice: 1;
+    border: 2px solid var(--primary-gradient, var(--primary-color))
+; /* Apply primary color */
 }.global-color .inner .global-color-option h2 {
     color: var(--primary-gradient, var(--primary-color))
 ; /* Apply primary color */
@@ -877,13 +878,8 @@ color: var(--primary-color); /* Fallback solid */}.global-color .inner .global-c
     padding: 8px 0;
 }
 .header-area nav .nav-menu li a:hover {
-    color: var(--primary-color); /* Fallback solid */
-}
-.header-area nav .nav-menu li a:hover i {
-    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-gradient, var(--primary-color))
+;
 }
 .header-area .header-right .show-menu-toggle {
     display: none;
@@ -988,15 +984,10 @@ color: var(--primary-color); /* Fallback solid */}.global-color .inner .global-c
     transition: .3s;
 }
 .left-sidebar .social-profile li a:hover {
-    color: var(--primary-color); /* Fallback solid */
-    border-image-source: var(--primary-gradient, var(--primary-color));
-    border-image-slice: 1;
-}
-.left-sidebar .social-profile li a:hover i {
-    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-gradient, var(--primary-color))
+;
+    border-color: var(--primary-gradient, var(--primary-color))
+;
 }
 .left-sidebar .theme-btn {
     width: 100%;
@@ -1041,10 +1032,6 @@ color: var(--primary-color); /* Fallback solid */}.global-color .inner .global-c
     position: relative;
     overflow: hidden;
     margin-right: 15px;
-}
-.hero-section .hero-content .go-to-project-btn:hover {
-    border-image-source: var(--primary-gradient, var(--primary-color));
-    border-image-slice: 1;
 }
 .hero-section .hero-content .go-to-project-btn img {
     display: block;
@@ -1196,17 +1183,12 @@ body .body-overlay {
     margin-bottom: 0;
 }
 .resume-area .resume-content .resume-timeline .item:hover::before {
-    background: var(--primary-color); /* Fallback solid for circle */
+    background: var(--primary-gradient, var(--primary-color))
+;
 }
 .resume-area .resume-content .resume-timeline .item:hover .date {
-    color: var(--primary-color); /* Fallback solid */
-}
-.resume-area .resume-content .resume-timeline .item:hover .date,
-.resume-area .resume-content .resume-timeline .item h2:hover a {
-    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-gradient, var(--primary-color))
+;
 }
 
 
@@ -1238,17 +1220,12 @@ body .body-overlay {
     transition: .3s;
 }
 .services-items .service-item:hover {
-    border-image-source: var(--primary-gradient, var(--primary-color));
-    border-image-slice: 1;
+    border-color: var(--primary-gradient, var(--primary-color))
+;
 }
 .services-items .service-item:hover h2 a {
-    color: var(--primary-color); /* Fallback solid */
-}
-.services-items .service-item:hover h2 a {
-    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-gradient, var(--primary-color))
+;
 }
 .services-items .service-item p {
     font-size: 14px;
@@ -1272,12 +1249,6 @@ body .body-overlay {
     top: 45px;
     right: 50px;
 }
-.services-items .service-item i {
-    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
 
 
 
@@ -1297,8 +1268,8 @@ body .body-overlay {
     transition: .3s;
 }
 .skills .skill:hover .skill-inner {
-    border-image-source: var(--primary-gradient, var(--primary-color));
-    border-image-slice: 1;
+    border-color: var(--primary-gradient, var(--primary-color))
+;
 }
 .skills .skill .skill-inner img {
     display: block;
@@ -1392,10 +1363,6 @@ body .body-overlay {
     border-radius: 30px;
     padding: 50px 50px 43px 50px;
 }
-.testimonial-item .testimonial-item-inner:hover {
-    border-image-source: var(--primary-gradient, var(--primary-color));
-    border-image-slice: 1;
-}
 .testimonial-item .testimonial-item-inner .author {
     gap: 16px;
     margin-bottom: 45px;
@@ -1455,15 +1422,10 @@ body .body-overlay {
     transition: .3s;
 }
 .testimonial-area .testimonial-slider-wrap .testimonial-footer-nav .testimonial-nav button:hover {
-    border-image-source: var(--primary-gradient, var(--primary-color));
-    border-image-slice: 1;
-    color: var(--primary-color); /* Fallback solid */
-}
-.testimonial-area .testimonial-slider-wrap .testimonial-footer-nav .testimonial-nav button:hover i {
-    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    border-color: var(--primary-gradient, var(--primary-color))
+;
+    color: var(--primary-gradient, var(--primary-color))
+;
 }
 .testimonial-area .testimonial-slider-wrap .testimonial-footer-nav .testimonial-nav #testimonial-slide-count {
     font-size: 13px;
@@ -1516,8 +1478,8 @@ body .body-overlay {
     transition: .3s;
 }
 .pricing-table-items .pricing-table:hover {
-    border-image-source: var(--primary-gradient, var(--primary-color));
-    border-image-slice: 1;
+    border-color: var(--primary-gradient, var(--primary-color))
+;
 }
 .pricing-table-items .pricing-table .pricing-table-header {
     border-bottom: 1px solid #555555;
@@ -1572,13 +1534,8 @@ body .body-overlay {
     margin: 60px 0 0 0;
 }
 .pricing-table-items .info a {
-    color: var(--primary-color); /* Fallback solid */
-}
-.pricing-table-items .info a {
-    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-gradient, var(--primary-color))
+;
     text-decoration: underline;
 }
 
@@ -1856,12 +1813,6 @@ body .body-overlay {
     color: var(--primary-gradient, var(--primary-color))
 ;
 }
-.blog-item .blog-item-content .read-more-btn {
-    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
 
 .blog-sidebar .blog-sidebar-item {
     padding: 40px;
@@ -1913,13 +1864,8 @@ body .body-overlay {
     transition: .3s;
 }
 .blog-sidebar .blog-sidebar-item ul li a:hover {
-    color: var(--primary-color); /* Fallback solid */
-}
-.blog-sidebar .blog-sidebar-item ul li a:hover {
-    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-gradient, var(--primary-color))
+;
 }
 .blog-sidebar .blog-sidebar-item.blog-sidebar-search {
     padding: 0;
@@ -1958,12 +1904,6 @@ body .body-overlay {
     width: 70px;
     font-size: 25px;
     color: #fff;
-}
-.search-form button:hover i {
-    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
 }
 .blog-sidebar .blog-sidebar-item.blog-tags ul {
     display: flex;
@@ -2033,13 +1973,8 @@ body .body-overlay {
     font-size: 25px;
 }
 .blog-item2 .blog-item-content h1 a:hover {
-    color: var(--primary-color); /* Fallback solid */
-}
-.blog-item2 .blog-item-content h1 a:hover {
-    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-gradient, var(--primary-color))
+;
 }
 .blog-item2 .blog-item-content .read-more-btn {
     font-size: 14px;
@@ -2271,12 +2206,6 @@ body .body-overlay {
 .footer-area .footer-widget-item .social-links li a:hover {
     color: #fff;
 }
-.footer-area .footer-widget-item .social-links li a:hover i {
-    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
 .footer-area .footer-widget-item .social-links li a i {
     display: block;
 }
@@ -2291,12 +2220,6 @@ body .body-overlay {
 }
 .footer-area .footer-widget-item.footer-links ul li a:hover {
     color: #fff;
-}
-.footer-area .footer-widget-item.footer-links ul li a:hover {
-    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
 }
 .footer-area .footer-widget-item.footer-contact-widget ul li {
     display: block;
