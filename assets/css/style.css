@@ -2266,11 +2266,13 @@ body .body-overlay {
   border: 2px solid transparent;
   border-image: var(--primary-gradient, var(--primary-color)) 1;
 }
-.gradient-text {
+h1 span {
   background: var(--primary-gradient, var(--primary-color));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  display: inline-block;
 }
+
 .gradient-border-hover:hover {
   border-color: var(--primary-gradient, var(--primary-color)) !important;
 }
