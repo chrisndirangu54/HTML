@@ -1099,17 +1099,16 @@ function applyGradient(gradient, name) {
   localStorage.setItem('selectedColor', name);
   console.log(`🌈 Applied ${name}: ${gradient}`);
 
-  // Remove old gradient styles
+  // Remove any previous gradient styles
   const oldStyle = document.getElementById('dynamic-gradient-style');
   if (oldStyle) oldStyle.remove();
 
-  // Create and inject a new <style> tag
+  // Inject a fresh <style> element
   const style = document.createElement('style');
   style.id = 'dynamic-gradient-style';
   style.innerHTML = `
-    /* Buttons & backgrounds */
-    button, .btn, .btn-primary, .theme-btn, [class*="button"], 
-    .bg-primary, .highlight, .badge, .tag {
+    /* Buttons */
+    button, .btn, .btn-primary, .theme-btn, [class*="button"], .bg-primary, .highlight, .badge, .tag {
       background: ${gradient} !important;
       color: #fff !important;
       border-color: transparent !important;
@@ -1123,8 +1122,8 @@ function applyGradient(gradient, name) {
       background: linear-gradient(#000, #000) padding-box, ${gradient} border-box;
     }
 
-    /* Texts & icons */
-    [style*="color"], h1, h2, h3, h4, h5, h6, p, a, i, span, strong, svg {
+    /* Icons & accent text */
+    i, svg, .accent, .icon-gradient {
       background: ${gradient};
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -1132,6 +1131,14 @@ function applyGradient(gradient, name) {
       background-clip: text;
       transition: color 0.3s ease-in-out;
     }
+
+    /* Reset for normal text & sections */
+    h2, h3, h4, h5, h6, p, a, body, .content, .section, .container {
+      -webkit-text-fill-color: initial !important;
+      color: inherit !important;
+      background: none !important;
+    }
+
 
     /* Keep body readable */
     body, .body-overlay, .content, .container, .section {
