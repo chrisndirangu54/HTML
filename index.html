@@ -1079,21 +1079,23 @@ function color24() { applyGradient('linear-gradient(135deg, #00c6ff, #0072ff)', 
 // Apply Solid Color
 // ───────────────────────────────
 function applyColor(color, name) {
-    document.documentElement.style.setProperty('--primary-color', color);
-    setActiveColor(name);
-    localStorage.setItem('selectedColor', name);
-    console.log(` Applied ${name}: ${color}`);
-    
+  // Remove gradient before applying color
+  document.documentElement.style.removeProperty('--primary-gradient');
 
+  document.documentElement.style.setProperty('--primary-color', color);
+  setActiveColor(name);
+  localStorage.setItem('selectedColor', name);
+  console.log(`🎨 Applied ${name} color: ${color}`);
 }
-// ───────────────────────────────
-// Apply Gradient (Auto text + buttons)
-// ───────────────────────────────
+
 function applyGradient(gradient, name) {
+  // Remove solid color before applying gradient
+  document.documentElement.style.removeProperty('--primary-color');
+
   document.documentElement.style.setProperty('--primary-gradient', gradient);
   setActiveColor(name);
   localStorage.setItem('selectedColor', name);
-  console.log(`🌈 Applied ${name}: ${gradient}`);
+  console.log(`🌈 Applied ${name} gradient: ${gradient}`);
 }
 
     
