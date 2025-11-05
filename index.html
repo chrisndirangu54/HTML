@@ -1099,54 +1099,53 @@ function applyGradient(gradient, name) {
   localStorage.setItem('selectedColor', name);
   console.log(`🌈 Applied ${name}: ${gradient}`);
 
-  // Remove old dynamic style (if exists)
+  // Remove old gradient rules
   const oldStyle = document.getElementById('dynamic-gradient-style');
   if (oldStyle) oldStyle.remove();
 
-  // Create new style element for global gradient effects
+  // Create balanced gradient styling
   const style = document.createElement('style');
   style.id = 'dynamic-gradient-style';
   style.innerHTML = `
-    /* Apply gradient to text */
-    [style*="--primary-color"], 
+    /* 🎨 Text elements explicitly using var(--primary-color) */
     [style*="color: var(--primary-color)"],
-    .use-primary, .text-primary {
+    .text-primary,
+    .use-primary {
       background: ${gradient};
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      color: transparent;
+      color: transparent !important;
     }
 
-    /* Apply gradient to borders */
+    /* 🔲 Borders using primary color */
     [style*="border-color: var(--primary-color)"],
-    [style*="border: var(--primary-color)"],
     .border-primary {
-      border: 2px solid transparent;
+      border: 2px solid transparent !important;
       background: linear-gradient(#fff, #fff) padding-box,
                   ${gradient} border-box;
     }
 
-    /* Apply gradient to buttons or backgrounds */
-    button, 
-    .btn, 
-    .bg-primary {
+    /* 🖲️ Buttons or solid bg elements */
+    .btn-primary, button.btn-primary, .bg-primary {
       background: ${gradient} !important;
       color: #fff !important;
       border: none !important;
+      background-clip: border-box !important;
     }
 
-    /* Handle icons */
-    i, svg {
+    /* 🎯 Icons or elements that explicitly use primary color */
+    i.text-primary, svg.text-primary, i.use-primary, svg.use-primary {
       background: ${gradient};
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      color: transparent;
+      color: transparent !important;
     }
   `;
   document.head.appendChild(style);
 }
+
 
 
 
