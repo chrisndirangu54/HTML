@@ -1098,8 +1098,8 @@ function applyGradient(gradient, name) {
   localStorage.setItem('selectedColor', name);
   console.log(`🌈 Applied ${name}: ${gradient}`);
 
-  // Apply gradient text effect to span elements
-  const textTargets = document.querySelectorAll('span');
+  // Apply gradient text effect to span elements inside h1
+  const textTargets = document.querySelectorAll('h1 span');
   textTargets.forEach(target => {
     target.style.background = gradient;
     target.style.webkitBackgroundClip = 'text';
