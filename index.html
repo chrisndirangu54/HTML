@@ -1141,17 +1141,6 @@ function changeTheme(theme) {
     console.log(` Applied theme: ${theme}`);
 }
 
-/* ───────────────────────────────
-   Animated Gradient Keyframes
-─────────────────────────────── */
-const style = document.createElement('style');
-style.textContent = `
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}`;
-document.head.appendChild(style);
 </script>
 
 
