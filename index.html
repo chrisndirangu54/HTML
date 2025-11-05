@@ -995,66 +995,54 @@ function toggleMobileMenu() {
         ]
     }
     </script>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "TeknTandao Projects",
-        "url": "https://tekntandao.com/projects",
-        "description": "Explore TeknTandao's innovative projects in InsureTech, FoodTech, and productivity solutions for Kenya.",
-        "mainEntityOfPage": {
-            "@type": "WebSite",
-            "@id": "https://tekntandao.com"
-        }
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "TeknTandao Projects",
+    "url": "https://tekntandao.com/projects",
+    "description": "Explore TeknTandao's innovative projects in InsureTech, FoodTech, and productivity solutions for Kenya.",
+    "mainEntityOfPage": {
+        "@type": "WebSite",
+        "@id": "https://tekntandao.com"
     }
-    </script>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "ImageObject",
-        "url": "https://tekntandao.com/assets/images/tekntandao-logo.png",
-        "width": 600,
-        "height": 60
-    }
-    </script>
+}
+</script>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "ImageObject",
+    "url": "https://tekntandao.com/assets/images/tekntandao-logo.png",
+    "width": 600,
+    "height": 60
+}
+</script>
+
 <script>
-// Load saved settings on page load
+/* ───────────────────────────────
+   Load Saved Settings
+─────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
-    // Load saved color
     const savedColor = localStorage.getItem('selectedColor');
-    console.log('Loaded color from localStorage:', savedColor); // Debug
+    const savedTheme = localStorage.getItem('selectedTheme');
+
+    console.log('Loaded color:', savedColor, '| Loaded theme:', savedTheme);
+
+    // Apply saved color
     if (savedColor && typeof window[savedColor] === 'function') {
-        window[savedColor](); // Apply saved color
-        // Update active class for color
-        document.querySelectorAll('.color-boxed a').forEach(link => {
-            link.classList.remove('clr-active');
-            if (link.getAttribute('onclick') === `${savedColor}();`) {
-                link.classList.add('clr-active');
-            }
-        });
-    } else {
-        console.warn('No valid saved color found or function does not exist:', savedColor);
+        window[savedColor]();
     }
 
-    // Load saved theme
-    const savedTheme = localStorage.getItem('selectedTheme');
-    console.log('Loaded theme from localStorage:', savedTheme); // Debug
+    // Apply saved theme
     if (savedTheme) {
-        changeTheme(savedTheme); // Apply saved theme
-        // Update active class for theme
-        document.querySelectorAll('.themes li').forEach(li => {
-            li.classList.remove('active');
-            const themeLink = li.querySelector('a');
-            if (themeLink.getAttribute('onclick') === `changeTheme('${savedTheme}')`) {
-                li.classList.add('active');
-            }
-        });
+        changeTheme(savedTheme);
     }
 });
 
-// ───────────────────────────────
-// Solid Color Options (1–9)
-// ───────────────────────────────
+/* ───────────────────────────────
+   Solid Color Options (1–9)
+─────────────────────────────── */
 function color1() { applyColor('#28e98c', 'color1'); }
 function color2() { applyColor('#e4af12', 'color2'); }
 function color3() { applyColor('#fe6f1d', 'color3'); }
@@ -1065,45 +1053,51 @@ function color7() { applyColor('#f31313', 'color7'); }
 function color8() { applyColor('#ff99cc', 'color8'); }
 function color9() { applyColor('#cceb00', 'color9'); }
 
-// ───────────────────────────────
-// Cyberpunk & Modern Gradient Options (10–24)
-// ───────────────────────────────
-function color10() { applyGradient('linear-gradient(135deg, #00ffcc, #ff00ff)', 'color10'); }  // Cyberpunk Neon
-function color11() { applyGradient('linear-gradient(135deg, #ff6f00, #ffcc00)', 'color11'); }  // Sunset Blaze
-function color12() { applyGradient('linear-gradient(135deg, #00f260, #0575e6)', 'color12'); }  // Electric Aqua
-function color13() { applyGradient('linear-gradient(135deg, #8e2de2, #4a00e0)', 'color13'); }  // Deep Ultraviolet
-function color14() { applyGradient('linear-gradient(135deg, #1f1c2c, #928dab)', 'color14'); }  // Midnight Steel
-function color15() { applyGradient('linear-gradient(135deg, #ff512f, #dd2476)', 'color15'); }  // Digital Heat
-function color16() { applyGradient('linear-gradient(135deg, #12c2e9, #c471ed, #f64f59)', 'color16'); }  // Hologram Pulse
-function color17() { applyGradient('linear-gradient(135deg, #43e97b, #38f9d7)', 'color17'); }  // Techno Mint
-function color18() { applyGradient('linear-gradient(135deg, #fc00ff, #00dbde)', 'color18'); }  // Neon Dream
-function color19() { applyGradient('linear-gradient(135deg, #f7971e, #ffd200)', 'color19'); }  // Modern Gold
-function color20() { applyGradient('linear-gradient(135deg, #1e3c72, #2a5298)', 'color20'); }  // Ocean Matrix
-function color21() { applyGradient('linear-gradient(135deg, #00c9ff, #92fe9d)', 'color21'); }  // Future Sky
-function color22() { applyGradient('linear-gradient(135deg, #ff00cc, #333399)', 'color22'); }  // Vaporwave Core
-function color23() { applyGradient('linear-gradient(135deg, #ff3c00, #ffafbd)', 'color23'); }  // Neon Coral
-function color24() { applyGradient('linear-gradient(135deg, #00c6ff, #0072ff)', 'color24'); }  // Blue Energy
+/* ───────────────────────────────
+   Cyberpunk & Modern Gradients (10–24)
+─────────────────────────────── */
+function color10() { applyGradient('linear-gradient(135deg, #00ffcc, #ff00ff)', 'color10'); } // Cyberpunk Neon
+function color11() { applyGradient('linear-gradient(135deg, #ff6f00, #ffcc00)', 'color11'); } // Sunset Blaze
+function color12() { applyGradient('linear-gradient(135deg, #00f260, #0575e6)', 'color12'); } // Electric Aqua
+function color13() { applyGradient('linear-gradient(135deg, #8e2de2, #4a00e0)', 'color13'); } // Deep Ultraviolet
+function color14() { applyGradient('linear-gradient(135deg, #1f1c2c, #928dab)', 'color14'); } // Midnight Steel
+function color15() { applyGradient('linear-gradient(135deg, #ff512f, #dd2476)', 'color15'); } // Digital Heat
+function color16() { applyGradient('linear-gradient(135deg, #12c2e9, #c471ed, #f64f59)', 'color16'); } // Hologram Pulse
+function color17() { applyGradient('linear-gradient(135deg, #43e97b, #38f9d7)', 'color17'); } // Techno Mint
+function color18() { applyGradient('linear-gradient(135deg, #fc00ff, #00dbde)', 'color18'); } // Neon Dream
+function color19() { applyGradient('linear-gradient(135deg, #f7971e, #ffd200)', 'color19'); } // Modern Gold
+function color20() { applyGradient('linear-gradient(135deg, #1e3c72, #2a5298)', 'color20'); } // Ocean Matrix
+function color21() { applyGradient('linear-gradient(135deg, #00c9ff, #92fe9d)', 'color21'); } // Future Sky
+function color22() { applyGradient('linear-gradient(135deg, #ff00cc, #333399)', 'color22'); } // Vaporwave Core
+function color23() { applyGradient('linear-gradient(135deg, #ff3c00, #ffafbd)', 'color23'); } // Neon Coral
+function color24() { applyGradient('linear-gradient(135deg, #00c6ff, #0072ff)', 'color24'); } // Blue Energy
 
-// ───────────────────────────────
-// Helper Functions
-// ───────────────────────────────
+/* ───────────────────────────────
+   Helper Functions
+─────────────────────────────── */
 function applyColor(color, name) {
     document.documentElement.style.setProperty('--primary-color', color);
     document.documentElement.style.setProperty('--primary-gradient', color);
     setActiveColor(name);
     localStorage.setItem('selectedColor', name);
-    console.log(`Applied ${name}: ${color}`);
+    console.log(`🎨 Applied ${name}: ${color}`);
 }
 
 function applyGradient(gradient, name) {
     document.documentElement.style.setProperty('--primary-color', 'transparent');
     document.documentElement.style.setProperty('--primary-gradient', gradient);
+
+    // Optional: animated gradient (CSS-based)
+    document.body.style.background = gradient;
+    document.body.style.backgroundSize = '200% 200%';
+    document.body.style.animation = 'gradientShift 8s ease infinite';
+
     setActiveColor(name);
     localStorage.setItem('selectedColor', name);
-    console.log(`Applied ${name}: ${gradient}`);
+    console.log(`🌈 Applied ${name}: ${gradient}`);
 }
 
-// Highlight active color
+// Highlight active color button
 function setActiveColor(colorFunction) {
     document.querySelectorAll('.color-boxed a').forEach(link => {
         link.classList.remove('clr-active');
@@ -1111,36 +1105,33 @@ function setActiveColor(colorFunction) {
             link.classList.add('clr-active');
         }
     });
-    console.log('Set active color:', colorFunction); // Debug
 }
 
-// ───────────────────────────────
-// Theme Function
-// ───────────────────────────────
+/* ───────────────────────────────
+   Theme Management
+─────────────────────────────── */
 function changeTheme(theme) {
     const video = document.getElementById('background-video');
+    const overlay = document.querySelector('.body-overlay');
     const themes = {
         'earth-lines-sphere': 'assets/images/video1.mp4',
         '3d-abstract-ball': 'assets/images/video2.mp4',
         'water-waves': 'assets/images/video3.mp4',
         'liquids-wavy': 'assets/images/video4.mp4',
         'simple-strings': 'assets/images/video5.mp4',
-        'solid-color': null // Static image
+        'solid-color': null
     };
 
-    // Remove active class from all themes
     document.querySelectorAll('.themes li').forEach(li => li.classList.remove('active'));
-
-    // Add active class to selected theme
-    const themeLink = document.querySelector(`.themes a[onclick="changeTheme('${theme}')"]`);
-    if (themeLink) themeLink.parentElement.classList.add('active');
+    const activeLi = document.querySelector(`.themes a[onclick="changeTheme('${theme}')"]`);
+    if (activeLi) activeLi.parentElement.classList.add('active');
 
     if (theme === 'solid-color') {
         video.style.display = 'none';
-        document.querySelector('.body-overlay').style.backgroundImage = `url('assets/images/solid-color.jpg')`;
+        overlay.style.backgroundImage = `url('assets/images/solid-color.jpg')`;
     } else {
         video.style.display = 'block';
-        document.querySelector('.body-overlay').style.backgroundImage = 'none';
+        overlay.style.backgroundImage = 'none';
         const source = video.querySelector('source');
         source.src = themes[theme];
         video.load();
@@ -1148,9 +1139,22 @@ function changeTheme(theme) {
     }
 
     localStorage.setItem('selectedTheme', theme);
-    console.log('Applied theme:', theme);
+    console.log(`🧩 Applied theme: ${theme}`);
 }
+
+/* ───────────────────────────────
+   Animated Gradient Keyframes
+─────────────────────────────── */
+const style = document.createElement('style');
+style.textContent = `
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}`;
+document.head.appendChild(style);
 </script>
+
 
         
 
