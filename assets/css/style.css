@@ -2262,10 +2262,7 @@ body .body-overlay {
 }
 
 
-.gradient-border {
-  border: 2px solid transparent;
-  border-image: var(--primary-gradient, var(--primary-color)) 1;
-}
+
 h1 span {
   background: var(--primary-gradient, var(--primary-color));
   -webkit-background-clip: text;
@@ -2277,7 +2274,3 @@ h1 span:hover {
   transition: filter 0.3s ease;
 }
 
-
-.gradient-border-hover:hover {
-  border-color: var(--primary-gradient, var(--primary-color)) !important;
-}
