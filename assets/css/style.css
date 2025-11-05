@@ -2275,19 +2275,3 @@ body .body-overlay {
 .global-color .setting-toggle i {
     animation: rotating 3s infinite linear !important;
 }
-/* Gradient-aware text effect */
-.gradient-text {
-    background: var(--primary-color);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;
-    transition: all 0.3s ease;
-}
-.gradient-border {
-  border: 3px solid transparent;
-  background: linear-gradient(#fff, #fff) padding-box,
-              var(--primary-color) border-box;
-  border-radius: 10px;
-}
-
