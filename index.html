@@ -1098,29 +1098,36 @@ function applyGradient(gradient, name) {
   localStorage.setItem('selectedColor', name);
   console.log(`🌈 Applied ${name}: ${gradient}`);
 
-  // Apply gradient to text elements
-  const textElements = document.querySelectorAll(`
+  // Apply gradient text for h1, span, icons, and elements using var(--primary-color)
+  const textTargets = document.querySelectorAll(`
     [style*="var(--primary-color)"],
     h1,
-    span
+    span,
+    i,
+    .icon-hover
   `);
-  textElements.forEach(el => {
+
+  textTargets.forEach(el => {
     el.style.background = gradient;
     el.style.webkitBackgroundClip = "text";
     el.style.webkitTextFillColor = "transparent";
   });
 
-  // Apply gradient to borders
-  const borderElements = document.querySelectorAll(`
+  // Apply gradient to border elements (buttons, active links, etc.)
+  const borderTargets = document.querySelectorAll(`
+    .theme-btn,
+    .themes li.active a,
     [style*="border-color: var(--primary-color)"],
-    [style*="border: var(--primary-color)"]
+    [style*="border: 2px solid var(--primary-color)"],
+    .border-hover
   `);
-  borderElements.forEach(el => {
+
+  borderTargets.forEach(el => {
     el.style.borderImage = `${gradient} 1`;
     el.style.borderImageSlice = 1;
   });
 
-  // Apply gradient on hover via CSS variable
+  // Hover logic for gradient elements (makes hover vibrant instead of brighter flat color)
   const styleTagId = "gradient-hover-style";
   let styleTag = document.getElementById(styleTagId);
   if (!styleTag) {
@@ -1128,12 +1135,14 @@ function applyGradient(gradient, name) {
     styleTag.id = styleTagId;
     document.head.appendChild(styleTag);
   }
+
   styleTag.innerHTML = `
-    button:hover, .btn:hover, .icon-hover:hover, .border-hover:hover {
+    .theme-btn:hover,
+    .icon-hover:hover,
+    .border-hover:hover {
+      background: none;
       border-image: ${gradient} 1;
       border-image-slice: 1;
-      color: transparent;
-      background: ${gradient};
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       transition: all 0.3s ease;
