@@ -1075,22 +1075,53 @@ function color24() { applyGradient('linear-gradient(135deg, #00c6ff, #0072ff)', 
 /* ───────────────────────────────
    Helper Functions
 ─────────────────────────────── */
+// ───────────────────────────────
+// Apply Solid Color
+// ───────────────────────────────
 function applyColor(color, name) {
     document.documentElement.style.setProperty('--primary-color', color);
-    document.documentElement.style.setProperty('--primary-gradient', color);
     setActiveColor(name);
     localStorage.setItem('selectedColor', name);
     console.log(`🎨 Applied ${name}: ${color}`);
+
+    // Revert text color to normal if it was gradient
+    document.querySelectorAll('.gradient-text').forEach(el => {
+        el.style.background = 'none';
+        el.style.webkitBackgroundClip = 'initial';
+        el.style.webkitTextFillColor = color;
+        el.style.color = color;
+        el.classList.remove('gradient-text');
+    });
 }
 
+
+// ───────────────────────────────
+// Apply Gradient (Auto text + buttons)
+// ───────────────────────────────
 function applyGradient(gradient, name) {
     document.documentElement.style.setProperty('--primary-color', gradient);
-    document.documentElement.style.setProperty('--primary-gradient', gradient);
-    
     setActiveColor(name);
     localStorage.setItem('selectedColor', name);
     console.log(`🌈 Applied ${name}: ${gradient}`);
+
+    // Find all elements using --primary-color and apply gradient text
+    const allElements = document.querySelectorAll('*');
+    allElements.forEach(el => {
+        const style = window.getComputedStyle(el);
+        const textColor = style.getPropertyValue('color');
+        const bg = style.getPropertyValue('background-color');
+
+        // Detect text or borders using primary color
+        if (
+            textColor.includes('var(--primary-color)') ||
+            bg.includes('var(--primary-color)') ||
+            el.classList.contains('use-primary-text')
+        ) {
+            el.classList.add('gradient-text');
+        }
+    });
 }
+
 
 
 // Highlight active color button
