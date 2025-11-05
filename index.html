@@ -1093,64 +1093,38 @@ function applyColor(color, name) {
 // Apply Gradient (Auto text + buttons)
 // ───────────────────────────────
 function applyGradient(gradient, name) {
-  const root = document.documentElement;
+  document.documentElement.style.setProperty('--primary-color', gradient);
   setActiveColor(name);
   localStorage.setItem('selectedColor', name);
   console.log(`🌈 Applied ${name}: ${gradient}`);
 
-  // Remove any old gradient style
-  const oldStyle = document.getElementById('dynamic-gradient-style');
-  if (oldStyle) oldStyle.remove();
+  // Apply gradient to text elements using var(--primary-color)
+  const elements = document.querySelectorAll(`
+    [style*="var(--primary-color)"],
+    h1,
+    span,
+    .icon:hover,
+    [class*="hover"]:hover
+  `);
 
-  // Apply gradient as CSS variable (still for fallback)
-  root.style.setProperty('--primary-color', gradient);
+  elements.forEach(el => {
+    el.style.background = gradient;
+    el.style.webkitBackgroundClip = "text";
+    el.style.webkitTextFillColor = "transparent";
+  });
 
-  // Create new dynamic style
-  const style = document.createElement('style');
-  style.id = 'dynamic-gradient-style';
-  style.innerHTML = `
-    /* 🔹 Apply gradient background where var(--primary-color) is used */
-    *[style*="var(--primary-color)"],
-    *:where([class*="btn"], [class*="button"], [class*="icon"], [class*="border"]) {
-      background: ${gradient} !important;
-      background-clip: border-box !important;
-      border-color: transparent !important;
-      color: #fff !important;
-      transition: all 0.3s ease-in-out;
-    }
-
-    /* 🔹 Gradient text effects for key elements */
-    h1[style*="var(--primary-color)"],
-    span[style*="var(--primary-color)"],
-    i[style*="var(--primary-color)"],
-    svg[style*="var(--primary-color)"],
-    .accent[style*="var(--primary-color)"],
-    .icon-gradient[style*="var(--primary-color)"] {
-      background: ${gradient};
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      color: transparent !important;
-    }
-
-    /* 🔹 Hover effects: brighter or shifted gradient */
-    *[style*="var(--primary-color)"]:hover,
-    *:where([class*="btn"], [class*="button"], [class*="border"], [class*="icon"]):hover {
-      background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(0,0,0,0.1)), ${gradient};
-      background-blend-mode: overlay;
-      color: #fff !important;
-      border-color: transparent !important;
-      transform: translateY(-2px);
-    }
-
-    /* 🔹 Border hover glow */
-    *[style*="var(--primary-color)"]:hover,
-    *:where([class*="border"]):hover {
-      box-shadow: 0 0 8px 2px ${gradient.replace('linear-gradient', '').split(',')[1] || '#fff'};
-    }
-  `;
-  document.head.appendChild(style);
+  // Apply gradient to borders that depend on var(--primary-color)
+  const borderElements = document.querySelectorAll(`
+    [style*="border"],
+    [class*="border"],
+    [class*="hover-border"]:hover
+  `);
+  borderElements.forEach(el => {
+    el.style.borderImage = `${gradient} 1`;
+    el.style.borderImageSlice = 1;
+  });
 }
+
 
 
 // Highlight active color button
