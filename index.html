@@ -1082,7 +1082,7 @@ function applyColor(color, name) {
     document.documentElement.style.setProperty('--primary-color', color);
     setActiveColor(name);
     localStorage.setItem('selectedColor', name);
-    console.log(`🎨 Applied ${name}: ${color}`););
+    console.log(`🎨 Applied ${name}: ${color}`);
     
     const oldStyle = document.getElementById('dynamic-gradient-style');
     if (oldStyle) oldStyle.remove(); // remove gradient rules
