@@ -1031,71 +1031,59 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Color functions (aligned with CSS .color-boxed a)
-function color1() {
-    document.documentElement.style.setProperty('--primary-color', '#28e98c');
-    setActiveColor('color1');
-    localStorage.setItem('selectedColor', 'color1');
-    console.log('Applied color1: #28e98c'); // Debug
+
+// Existing color functions (1–9)
+function color1() { setColor('--primary-color', '#28e98c', 'color1'); }
+function color2() { setColor('--primary-color', '#e4af12', 'color2'); }
+function color3() { setColor('--primary-color', '#fe6f1d', 'color3'); }
+function color4() { setColor('--primary-color', '#14c5fd', 'color4'); }
+function color5() { setColor('--primary-color', '#c0c0c0', 'color5'); }
+function color6() { setColor('--primary-color', '#1338f3', 'color6'); }
+function color7() { setColor('--primary-color', '#f31313', 'color7'); }
+function color8() { setColor('--primary-color', '#ff99cc', 'color8'); }
+function color9() { setColor('--primary-color', '#cceb00', 'color9'); }
+
+/* ───────────────────────────────
+   NEW CYBERPUNK + MODERN COLORS
+──────────────────────────────── */
+function color10() { setColor('--primary-color', 'linear-gradient(135deg, #00ffcc, #ff00ff)', 'color10'); } // Cyberpunk Neon
+function color11() { setColor('--primary-color', 'linear-gradient(135deg, #ff6f00, #ffcc00)', 'color11'); } // Sunset Blaze
+function color12() { setColor('--primary-color', 'linear-gradient(135deg, #00f260, #0575e6)', 'color12'); } // Electric Aqua
+function color13() { setColor('--primary-color', 'linear-gradient(135deg, #8e2de2, #4a00e0)', 'color13'); } // Deep Ultraviolet
+function color14() { setColor('--primary-color', 'linear-gradient(135deg, #1f1c2c, #928dab)', 'color14'); } // Midnight Steel
+function color15() { setColor('--primary-color', 'linear-gradient(135deg, #ff512f, #dd2476)', 'color15'); } // Digital Heat
+function color16() { setColor('--primary-color', 'linear-gradient(135deg, #12c2e9, #c471ed, #f64f59)', 'color16'); } // Hologram Pulse
+function color17() { setColor('--primary-color', 'linear-gradient(135deg, #43e97b, #38f9d7)', 'color17'); } // Techno Mint
+function color18() { setColor('--primary-color', 'linear-gradient(135deg, #fc00ff, #00dbde)', 'color18'); } // Neon Dream
+function color19() { setColor('--primary-color', 'linear-gradient(135deg, #f7971e, #ffd200)', 'color19'); } // Modern Gold
+function color20() { setColor('--primary-color', 'linear-gradient(135deg, #1e3c72, #2a5298)', 'color20'); } // Ocean Matrix
+function color21() { setColor('--primary-color', 'linear-gradient(135deg, #00c9ff, #92fe9d)', 'color21'); } // Future Sky
+function color22() { setColor('--primary-color', 'linear-gradient(135deg, #ff00cc, #333399)', 'color22'); } // Vaporwave Core
+function color23() { setColor('--primary-color', 'linear-gradient(135deg, #ff3c00, #ffafbd)', 'color23'); } // Neon Coral
+function color24() { setColor('--primary-color', 'linear-gradient(135deg, #00c6ff, #0072ff)', 'color24'); } // Blue Energy
+       
+// Centralized setter for maintainability
+function setColor(variable, value, colorName) {
+    const root = document.documentElement;
+    const isGradient = value.includes('linear-gradient');
+    
+    // Apply the color or gradient
+    if (isGradient) {
+        root.style.setProperty(variable, '');
+        root.style.backgroundImage = value; // fallback for elements using the body background
+        document.body.style.setProperty('--primary-gradient', value);
+    } else {
+        root.style.setProperty(variable, value);
+        document.body.style.removeProperty('--primary-gradient');
+    }
+
+    // Update active state and persistence
+    setActiveColor(colorName);
+    localStorage.setItem('selectedColor', colorName);
+    console.log(`Applied ${colorName}: ${value}`);
 }
 
-function color2() {
-    document.documentElement.style.setProperty('--primary-color', '#e4af12');
-    setActiveColor('color2');
-    localStorage.setItem('selectedColor', 'color2');
-    console.log('Applied color2: #e4af12'); // Debug
-}
-
-function color3() {
-    document.documentElement.style.setProperty('--primary-color', '#fe6f1d');
-    setActiveColor('color3');
-    localStorage.setItem('selectedColor', 'color3');
-    console.log('Applied color3: #fe6f1d'); // Debug
-}
-
-function color4() {
-    document.documentElement.style.setProperty('--primary-color', '#14c5fd');
-    setActiveColor('color4');
-    localStorage.setItem('selectedColor', 'color4');
-    console.log('Applied color4: #14c5fd'); // Debug
-}
-
-function color5() {
-    document.documentElement.style.setProperty('--primary-color', '#c0c0c0');
-    setActiveColor('color5');
-    localStorage.setItem('selectedColor', 'color5');
-    console.log('Applied color5: #c0c0c0'); // Debug
-}
-
-function color6() {
-    document.documentElement.style.setProperty('--primary-color', '#1338f3');
-    setActiveColor('color6');
-    localStorage.setItem('selectedColor', 'color6');
-    console.log('Applied color6: #1338f3'); // Debug
-}
-
-function color7() {
-    document.documentElement.style.setProperty('--primary-color', '#f31313');
-    setActiveColor('color7');
-    localStorage.setItem('selectedColor', 'color7');
-    console.log('Applied color7: #f31313'); // Debug
-}
-
-function color8() {
-    document.documentElement.style.setProperty('--primary-color', '#ff99cc');
-    setActiveColor('color8');
-    localStorage.setItem('selectedColor', 'color8');
-    console.log('Applied color8: #ff99cc'); // Debug
-}
-
-function color9() {
-    document.documentElement.style.setProperty('--primary-color', '#cceb00');
-    setActiveColor('color9');
-    localStorage.setItem('selectedColor', 'color9');
-    console.log('Applied color9: #cceb00'); // Debug
-}
-
-// Helper function to set active color class
+// Helper: set active color
 function setActiveColor(colorFunction) {
     document.querySelectorAll('.color-boxed a').forEach(link => {
         link.classList.remove('clr-active');
@@ -1103,10 +1091,10 @@ function setActiveColor(colorFunction) {
             link.classList.add('clr-active');
         }
     });
-    console.log('Set active color:', colorFunction); // Debug
+    console.log('Set active color:', colorFunction);
 }
 
-// Theme function
+// Theme switching function (unchanged)
 function changeTheme(theme) {
     const video = document.getElementById('background-video');
     const themes = {
@@ -1118,33 +1106,26 @@ function changeTheme(theme) {
         'solid-color': null // Static image
     };
 
-    // Remove active class from all themes
     document.querySelectorAll('.themes li').forEach(li => li.classList.remove('active'));
-    // Add active class to selected theme
     const themeLink = document.querySelector(`.themes a[onclick="changeTheme('${theme}')"]`);
-    if (themeLink) {
-        themeLink.parentElement.classList.add('active');
-    }
+    if (themeLink) themeLink.parentElement.classList.add('active');
 
     if (theme === 'solid-color') {
-        // Switch to static image for Solid Color
         video.style.display = 'none';
         document.querySelector('.body-overlay').style.backgroundImage = `url('assets/images/solid-color.jpg')`;
     } else {
-        // Switch video source for other themes
         video.style.display = 'block';
         document.querySelector('.body-overlay').style.backgroundImage = 'none';
         const source = video.querySelector('source');
         source.src = themes[theme];
-        video.load(); // Reload video
+        video.load();
         video.play();
     }
 
-    // Save theme to localStorage
     localStorage.setItem('selectedTheme', theme);
-    console.log('Applied theme:', theme); // Debug
+    console.log('Applied theme:', theme);
 }
-    </script>
+</script>
 
         
 
