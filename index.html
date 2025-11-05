@@ -1082,16 +1082,10 @@ function applyColor(color, name) {
     document.documentElement.style.setProperty('--primary-color', color);
     setActiveColor(name);
     localStorage.setItem('selectedColor', name);
-    console.log(`🎨 Applied ${name}: ${color}`);
-
-    // Revert text color to normal if it was gradient
-    document.querySelectorAll('.gradient-text').forEach(el => {
-        el.style.background = 'none';
-        el.style.webkitBackgroundClip = 'initial';
-        el.style.webkitTextFillColor = color;
-        el.style.color = color;
-        el.classList.remove('gradient-text');
-    });
+    console.log(`🎨 Applied ${name}: ${color}`););
+    
+    const oldStyle = document.getElementById('dynamic-gradient-style');
+    if (oldStyle) oldStyle.remove(); // remove gradient rules
 }
 
 
@@ -1099,27 +1093,59 @@ function applyColor(color, name) {
 // Apply Gradient (Auto text + buttons)
 // ───────────────────────────────
 function applyGradient(gradient, name) {
-    document.documentElement.style.setProperty('--primary-color', gradient);
-    setActiveColor(name);
-    localStorage.setItem('selectedColor', name);
-    console.log(`🌈 Applied ${name}: ${gradient}`);
+  const root = document.documentElement;
+  root.style.setProperty('--primary-color', gradient);
+  setActiveColor(name);
+  localStorage.setItem('selectedColor', name);
+  console.log(`🌈 Applied ${name}: ${gradient}`);
 
-    // Find all elements using --primary-color and apply gradient text
-    const allElements = document.querySelectorAll('*');
-    allElements.forEach(el => {
-        const style = window.getComputedStyle(el);
-        const textColor = style.getPropertyValue('color');
-        const bg = style.getPropertyValue('background-color');
+  // Remove old dynamic style (if exists)
+  const oldStyle = document.getElementById('dynamic-gradient-style');
+  if (oldStyle) oldStyle.remove();
 
-        // Detect text or borders using primary color
-        if (
-            textColor.includes('var(--primary-color)') ||
-            bg.includes('var(--primary-color)') ||
-            el.classList.contains('use-primary-text')
-        ) {
-            el.classList.add('gradient-text');
-        }
-    });
+  // Create new style element for global gradient effects
+  const style = document.createElement('style');
+  style.id = 'dynamic-gradient-style';
+  style.innerHTML = `
+    /* Apply gradient to text */
+    [style*="--primary-color"], 
+    [style*="color: var(--primary-color)"],
+    .use-primary, .text-primary {
+      background: ${gradient};
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* Apply gradient to borders */
+    [style*="border-color: var(--primary-color)"],
+    [style*="border: var(--primary-color)"],
+    .border-primary {
+      border: 2px solid transparent;
+      background: linear-gradient(#fff, #fff) padding-box,
+                  ${gradient} border-box;
+    }
+
+    /* Apply gradient to buttons or backgrounds */
+    button, 
+    .btn, 
+    .bg-primary {
+      background: ${gradient} !important;
+      color: #fff !important;
+      border: none !important;
+    }
+
+    /* Handle icons */
+    i, svg {
+      background: ${gradient};
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+    }
+  `;
+  document.head.appendChild(style);
 }
 
 
