@@ -608,7 +608,6 @@ main.drake-main {
 
 /* 03 - Global Color */
 
-
 .global-color {
     position: fixed;
     left: 0;
@@ -656,13 +655,13 @@ main.drake-main {
     
     right: 60px;
     top: 110px;
-    color: var(--primary-color); /* Apply primary color */
+    color: var(--primary-color, var(--accent-fallback)); /* Apply primary color with fallback */
 }
 
 .global-color .inner .global-color-option .global-color-option-inner p {
     text-transform: uppercase;
     font-size: 13px;
-    color: var(--primary-color); /* Apply primary color */
+    color: var(--primary-color, var(--accent-fallback)); /* Apply primary color with fallback */
     line-height: 1.2;
     margin-bottom: 25px;
 }
@@ -691,7 +690,11 @@ main.drake-main {
     content: '';
     width: 100%;
     height: 1px;
-    background: var(--primary-color); /* Apply primary color */
+    background: transparent; /* Transparent base for gradient support */
+    /* Use border-image for underline (treat as thin border) */
+    border-bottom: 1px solid transparent;
+    border-image-source: var(--primary-color, var(--accent-fallback));
+    border-image-slice: 1;
     position: absolute;
     left: 0;
     top: 50%;
@@ -715,11 +718,21 @@ main.drake-main {
     margin-right: -400px;
     transition: .4s;
     padding: 134px;
-    border: 2px solid var(--primary-color); /* Apply primary color */
+    /* Base transparent border + image source from --primary-color for gradient support */
+    border: 2px solid transparent;
+    border-image-source: var(--primary-color, var(--accent-fallback));
+    border-image-slice: 1;
+    border-image-repeat: stretch;
+    border-image-outset: 0;
 }
 
 .global-color .inner .global-color-option h2 {
-    color: var(--primary-color); /* Apply primary color */
+    color: var(--primary-color, var(--accent-fallback)); /* Apply primary color with fallback */
+    /* Better gradient text with clip (for fancy effect) */
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background: var(--primary-color, var(--accent-fallback));
     font-weight: 200;
     font-size: 34px;
     line-height: 1.2;
@@ -819,7 +832,6 @@ main.drake-main {
     transition: all 0.3s ease;
 }
 
-
 /* Ensure video and overlay are styled correctly */
 .body-overlay {
     position: fixed;
@@ -830,6 +842,8 @@ main.drake-main {
     z-index: -1;
     background-size: cover;
     background-position: center;
+    background: #191919; /* Fallback for solids/no gradient */
+    transition: opacity 0.3s ease, background 0.3s ease; /* Smooth theme switches */
 }
 
 #background-video {
@@ -840,6 +854,25 @@ main.drake-main {
     height: 100%;
     object-fit: cover;
     z-index: -2;
+}
+
+/* Animate overlay when gradient is active */
+.body-overlay.gradient-overlay {
+    animation: gradientShift 15s ease infinite;
+}
+
+/* Fallback for accents when gradient is active (prevents invisible elements) */
+:root {
+    --accent-fallback: #ffffff; /* Bright white; override per gradient if desired */
+}
+
+/* Utility class for any other gradient borders (e.g., add class="gradient-border" to elements) */
+.gradient-border {
+    border: 2px solid transparent !important;
+    border-image-source: var(--primary-color, var(--accent-fallback)) !important;
+    border-image-slice: 1 !important;
+    border-image-repeat: stretch !important;
+    border-image-outset: 0 !important;
 }
 /* 04 - Header */
 .header-area {
