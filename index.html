@@ -1084,18 +1084,12 @@ function applyColor(color, name) {
 }
 
 function applyGradient(gradient, name) {
-    document.documentElement.style.setProperty('--primary-color', 'transparent');
-    document.documentElement.style.setProperty('--primary-gradient', gradient);
-
-    // Optional: animated gradient (CSS-based)
-    document.body.style.background = gradient;
-    document.body.style.backgroundSize = '200% 200%';
-    document.body.style.animation = 'gradientShift 8s ease infinite';
-
+    document.documentElement.style.setProperty('--primary-color', gradient);
     setActiveColor(name);
     localStorage.setItem('selectedColor', name);
     console.log(`🌈 Applied ${name}: ${gradient}`);
 }
+
 
 // Highlight active color button
 function setActiveColor(colorFunction) {
