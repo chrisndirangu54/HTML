@@ -1094,61 +1094,54 @@ function applyColor(color, name) {
 // ───────────────────────────────
 function applyGradient(gradient, name) {
   const root = document.documentElement;
-  root.style.setProperty('--primary-color', gradient);
   setActiveColor(name);
   localStorage.setItem('selectedColor', name);
   console.log(`🌈 Applied ${name}: ${gradient}`);
 
-  // Remove any previous gradient styles
+  // Remove old gradient style
   const oldStyle = document.getElementById('dynamic-gradient-style');
   if (oldStyle) oldStyle.remove();
 
-  // Inject a fresh <style> element
+  // Apply gradient as the new primary color
+  root.style.setProperty('--primary-color', gradient);
+
+  // Add dynamic CSS that only affects elements using var(--primary-color)
   const style = document.createElement('style');
   style.id = 'dynamic-gradient-style';
   style.innerHTML = `
-    /* Buttons */
-    button, .btn, .btn-primary, .theme-btn, [class*="button"], .bg-primary, .highlight, .badge, .tag {
+    /* Apply gradient only where var(--primary-color) is used */
+    * {
+      /* Check each color-related property */
+      color: var(--primary-color);
+      border-color: var(--primary-color);
+      background-color: var(--primary-color);
+    }
+
+    /* Override with gradient only for those using var(--primary-color) */
+    *[style*="var(--primary-color)"],
+    *:where([class*="btn"], [class*="button"], [class*="icon"], [class*="border"]) {
       background: ${gradient} !important;
-      color: #fff !important;
-      border-color: transparent !important;
       background-clip: border-box !important;
+      border-color: transparent !important;
+      color: #fff !important;
       transition: all 0.3s ease-in-out;
     }
 
-    /* Borders */
-    [style*="border-color"], [class*="border"], .bordered, .outline {
-      border: 2px solid transparent !important;
-      background: linear-gradient(#000, #000) padding-box, ${gradient} border-box;
-    }
-
-    /* Icons & accent text */
-    i, svg, .accent, .icon-gradient {
+    /* Gradient text for icons and accent text that use var(--primary-color) */
+    i[style*="var(--primary-color)"],
+    svg[style*="var(--primary-color)"],
+    .accent[style*="var(--primary-color)"],
+    .icon-gradient[style*="var(--primary-color)"] {
       background: ${gradient};
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      color: transparent !important;
       background-clip: text;
-      transition: color 0.3s ease-in-out;
-    }
-
-    /* Reset for normal text & sections */
-    h2, h3, h4, h5, h6, p, a, body, .content, .section, .container {
-      -webkit-text-fill-color: initial !important;
-      color: inherit !important;
-      background: none !important;
-    }
-
-
-    /* Keep body readable */
-    body, .body-overlay, .content, .container, .section {
-      -webkit-text-fill-color: initial;
-      background-clip: border-box;
-      color: inherit !important;
+      color: transparent !important;
     }
   `;
   document.head.appendChild(style);
 }
+
 
 
 // Highlight active color button
