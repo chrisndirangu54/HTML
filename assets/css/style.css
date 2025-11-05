@@ -2284,3 +2284,10 @@ body .body-overlay {
     color: transparent;
     transition: all 0.3s ease;
 }
+.gradient-border {
+  border: 3px solid transparent;
+  background: linear-gradient(#fff, #fff) padding-box,
+              var(--primary-color) border-box;
+  border-radius: 10px;
+}
+
