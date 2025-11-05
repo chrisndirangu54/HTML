@@ -2275,15 +2275,5 @@ body .body-overlay {
 .global-color .setting-toggle i {
     animation: rotating 3s infinite linear !important;
 }
-/* Gradient-ready text */
-h1, span, .gradient-text {
-  background: var(--primary-color);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
 
-/* Hover states */
-button:hover, .btn:hover, .icon-hover:hover, .border-hover:hover {
-  border-image: var(--primary-color) 1;
-  border-image-slice: 1;
-}
+
