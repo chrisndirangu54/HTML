@@ -1038,6 +1038,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (savedTheme) {
         changeTheme(savedTheme);
     }
+
+    // NEW: Apply overlay if a gradient was saved (after theme load)
+    if (isGradient()) {
+        updateGradientOverlay();
+    }
 });
 
 /* ───────────────────────────────
@@ -1075,32 +1080,62 @@ function color24() { applyGradient('linear-gradient(135deg, #00c6ff, #0072ff)', 
 /* ───────────────────────────────
    Helper Functions
 ─────────────────────────────── */
+// NEW: Detect if current --primary-color is a gradient
+function isGradient() {
+    const primary = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
+    return primary.includes('linear-gradient');
+}
+
+// NEW: Update overlay with gradient (semi-transparent, animated)
+function updateGradientOverlay() {
+    const overlay = document.querySelector('.body-overlay');
+    if (!overlay) return;
+    
+    const primary = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
+    overlay.style.background = `${primary}, var(--fallback-bg, #191919)`; // Layer over fallback/video
+    overlay.style.backgroundSize = '400% 400%';
+    overlay.style.opacity = '0.4'; // Adjust 0.2-0.6 for blend strength
+    overlay.style.mixBlendMode = 'overlay'; // Blends with video for cool effect
+    overlay.classList.add('gradient-overlay'); // Trigger animation
+    console.log('🌈 Overlay applied');
+}
+
+// NEW: Simple reflow to force border repaint
+function reflow() {
+    document.documentElement.offsetHeight; // Triggers layout
+}
+
 // ───────────────────────────────
-// Apply Solid Color
+// Apply Solid Color (accents only)
 // ───────────────────────────────
 function applyColor(color, name) {
     document.documentElement.style.setProperty('--primary-color', color);
+    // NEW: Clear gradient overlay for solids
+    const overlay = document.querySelector('.body-overlay');
+    if (overlay) {
+        overlay.style.background = 'none';
+        overlay.style.opacity = '1';
+        overlay.style.mixBlendMode = 'normal';
+        overlay.classList.remove('gradient-overlay');
+    }
     setActiveColor(name);
     localStorage.setItem('selectedColor', name);
+    reflow(); // NEW: Ensure border updates
     console.log(`🎨 Applied ${name}: ${color}`);
-    
-
 }
 
-
 // ───────────────────────────────
-// Apply Gradient (Auto text + buttons)
+// Apply Gradient (accents + overlay)
 // ───────────────────────────────
 function applyGradient(gradient, name) {
-  document.documentElement.style.setProperty('--primary-color', gradient);
-  setActiveColor(name);
-  localStorage.setItem('selectedColor', name);
-  console.log(`🌈 Applied ${name}: ${gradient}`);
-
+    document.documentElement.style.setProperty('--primary-color', gradient);
+    setActiveColor(name);
+    localStorage.setItem('selectedColor', name);
+    // NEW: Always apply overlay for gradients, regardless of theme
+    updateGradientOverlay();
+    reflow(); // NEW: Ensure border updates
+    console.log(`🌈 Applied ${name}: ${gradient}`);
 }
-
-
-
 
 // Highlight active color button
 function setActiveColor(colorFunction) {
@@ -1113,7 +1148,7 @@ function setActiveColor(colorFunction) {
 }
 
 /* ───────────────────────────────
-   Theme Management
+   Theme Management (Updated for Gradient Overlays)
 ─────────────────────────────── */
 function changeTheme(theme) {
     const video = document.getElementById('background-video');
@@ -1133,7 +1168,13 @@ function changeTheme(theme) {
 
     if (theme === 'solid-color') {
         video.style.display = 'none';
-        overlay.style.backgroundImage = `url('assets/images/solid-color.jpg')`;
+        // For solid theme: Use gradient/solid as full background if gradient active, else default
+        if (isGradient()) {
+            updateGradientOverlay(); // Re-apply if needed
+        } else {
+            overlay.style.backgroundImage = `url('assets/images/solid-color.jpg')`;
+            overlay.style.background = 'none'; // Clear any gradient
+        }
     } else {
         video.style.display = 'block';
         overlay.style.backgroundImage = 'none';
@@ -1141,6 +1182,10 @@ function changeTheme(theme) {
         source.src = themes[theme];
         video.load();
         video.play();
+        // NEW: Re-apply gradient overlay on video themes if active
+        if (isGradient()) {
+            updateGradientOverlay();
+        }
     }
 
     localStorage.setItem('selectedTheme', theme);
@@ -1159,8 +1204,6 @@ style.textContent = `
 }`;
 document.head.appendChild(style);
 </script>
-
-
         
 
 </body>
