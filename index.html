@@ -1098,16 +1098,15 @@ function applyGradient(gradient, name) {
   localStorage.setItem('selectedColor', name);
   console.log(`🌈 Applied ${name}: ${gradient}`);
 
-  // Apply gradient text for h1, span, icons, and elements using var(--primary-color)
-  const textTargets = document.querySelectorAll(`
-    [style*="var(--primary-color)"],
-    
-    span,
-    
-    .icon-hover
-  `);
-
-
+  // Apply gradient text effect to span elements
+  const textTargets = document.querySelectorAll('span');
+  textTargets.forEach(target => {
+    target.style.background = gradient;
+    target.style.webkitBackgroundClip = 'text';
+    target.style.backgroundClip = 'text';
+    target.style.webkitTextFillColor = 'transparent';
+    target.style.color = 'transparent'; // Fallback for text fill
+  });
 }
 
 
