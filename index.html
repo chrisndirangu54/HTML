@@ -1099,18 +1099,21 @@ function applyGradient(gradient, name) {
   localStorage.setItem('selectedColor', name);
   console.log(`🌈 Applied ${name}: ${gradient}`);
 
-  // Remove old gradient rules
+  // Remove old gradient styles
   const oldStyle = document.getElementById('dynamic-gradient-style');
   if (oldStyle) oldStyle.remove();
 
-  // Create balanced gradient styling
+  // Create targeted gradient rules
   const style = document.createElement('style');
   style.id = 'dynamic-gradient-style';
   style.innerHTML = `
-    /* 🎨 Text elements explicitly using var(--primary-color) */
+    /* 🟣 TEXT using --primary-color */
     [style*="color: var(--primary-color)"],
     .text-primary,
-    .use-primary {
+    .primary-text,
+    a.text-primary,
+    span.text-primary,
+    strong.text-primary {
       background: ${gradient};
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -1118,23 +1121,26 @@ function applyGradient(gradient, name) {
       color: transparent !important;
     }
 
-    /* 🔲 Borders using primary color */
+    /* 🔲 BORDERS using --primary-color */
     [style*="border-color: var(--primary-color)"],
-    .border-primary {
+    .border-primary,
+    .primary-border {
       border: 2px solid transparent !important;
       background: linear-gradient(#fff, #fff) padding-box,
                   ${gradient} border-box;
     }
 
-    /* 🖲️ Buttons or solid bg elements */
-    .btn-primary, button.btn-primary, .bg-primary {
+    /* 🔘 BUTTONS and SOLID BACKGROUNDS */
+    .btn-primary, button.btn-primary, .bg-primary,
+    .badge-primary, .tag-primary {
       background: ${gradient} !important;
       color: #fff !important;
       border: none !important;
       background-clip: border-box !important;
+      transition: all 0.3s ease-in-out;
     }
 
-    /* 🎯 Icons or elements that explicitly use primary color */
+    /* ✨ ICONS using primary color */
     i.text-primary, svg.text-primary, i.use-primary, svg.use-primary {
       background: ${gradient};
       -webkit-background-clip: text;
@@ -1142,11 +1148,15 @@ function applyGradient(gradient, name) {
       background-clip: text;
       color: transparent !important;
     }
+
+    /* 💫 Hover animation for interactive elements */
+    .btn-primary:hover, button.btn-primary:hover {
+      filter: brightness(1.15);
+      transform: scale(1.02);
+    }
   `;
   document.head.appendChild(style);
 }
-
-
 
 
 // Highlight active color button
