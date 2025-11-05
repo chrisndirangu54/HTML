@@ -793,6 +793,33 @@ main.drake-main {
 .global-color .global-color-option .color-boxed a:nth-child(8) { background: #ff99cc; }
 .global-color .global-color-option .color-boxed a:nth-child(9) { background: #cceb00; }
 
+/* ───────────────────────────────
+   CYBERPUNK + MODERN COLOR THEMES (ADDED)
+──────────────────────────────── */
+.global-color .global-color-option .color-boxed a:nth-child(10) { background: linear-gradient(135deg, #00ffcc, #ff00ff); }  /* Cyberpunk Neon */
+.global-color .global-color-option .color-boxed a:nth-child(11) { background: linear-gradient(135deg, #ff6f00, #ffcc00); }  /* Sunset Blaze */
+.global-color .global-color-option .color-boxed a:nth-child(12) { background: linear-gradient(135deg, #00f260, #0575e6); }  /* Electric Aqua */
+.global-color .global-color-option .color-boxed a:nth-child(13) { background: linear-gradient(135deg, #8e2de2, #4a00e0); }  /* Deep Ultraviolet */
+.global-color .global-color-option .color-boxed a:nth-child(14) { background: linear-gradient(135deg, #1f1c2c, #928dab); }  /* Midnight Steel */
+.global-color .global-color-option .color-boxed a:nth-child(15) { background: linear-gradient(135deg, #ff512f, #dd2476); }  /* Digital Heat */
+.global-color .global-color-option .color-boxed a:nth-child(16) { background: linear-gradient(135deg, #12c2e9, #c471ed, #f64f59); }  /* Hologram Pulse */
+.global-color .global-color-option .color-boxed a:nth-child(17) { background: linear-gradient(135deg, #43e97b, #38f9d7); }  /* Techno Mint */
+.global-color .global-color-option .color-boxed a:nth-child(18) { background: linear-gradient(135deg, #fc00ff, #00dbde); }  /* Neon Dream */
+.global-color .global-color-option .color-boxed a:nth-child(19) { background: linear-gradient(135deg, #f7971e, #ffd200); }  /* Modern Gold */
+.global-color .global-color-option .color-boxed a:nth-child(20) { background: linear-gradient(135deg, #1e3c72, #2a5298); }  /* Ocean Matrix */
+.global-color .global-color-option .color-boxed a:nth-child(21) { background: linear-gradient(135deg, #00c9ff, #92fe9d); }  /* Future Sky */
+.global-color .global-color-option .color-boxed a:nth-child(22) { background: linear-gradient(135deg, #ff00cc, #333399); }  /* Vaporwave Core */
+.global-color .global-color-option .color-boxed a:nth-child(23) { background: linear-gradient(135deg, #ff3c00, #ffafbd); }  /* Neon Coral */
+.global-color .global-color-option .color-boxed a:nth-child(24) { background: linear-gradient(135deg, #00c6ff, #0072ff); }  /* Blue Energy */
+
+/* Optional glow hover effect */
+.global-color .global-color-option .color-boxed a:hover {
+    box-shadow: 0 0 15px rgba(255,255,255,0.6), 0 0 25px currentColor;
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+
 /* Ensure video and overlay are styled correctly */
 .body-overlay {
     position: fixed;
