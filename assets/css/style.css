@@ -1064,6 +1064,9 @@ color: var(--primary-color); /* Fallback solid */}.global-color .inner .global-c
 
 .drake-main .left-sidebar {
     display: none;
+    padding-top: 100px; /* Space below the fixed navbar */
+
+
 }
 
 .left-sidebar > img.me {
