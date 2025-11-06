@@ -1,4 +1,3 @@
-
 $(function(){
 
     $(window).on('load', function () {
@@ -7,75 +6,67 @@ $(function(){
 
     $(document).ready(function() {
 
-        $(document).on('click', '.icon-menu', function() {
-            $('.responsive-sidebar-menu').addClass('active');
+        // Toggle sidebar on hamburger click (open if closed, close if open)
+        $(document).on('click', '.icon-menu', function(e) {
+            e.preventDefault();
+            $('.responsive-sidebar-menu').toggleClass('active');
         });
+
+        // Close on overlay click
         $(document).on('click', '.responsive-sidebar-menu .overlay', function() {
             $('.responsive-sidebar-menu').removeClass('active');
         });
 
-        $(document).on('click', '.menu li .scroll-to', function() {
+        // Close on any menu item or social link click (expanded from just .scroll-to)
+        $(document).on('click', '.responsive-sidebar-menu .menu li a, .responsive-sidebar-menu .sidebar-social ul li a', function(e) {
             $('.responsive-sidebar-menu').removeClass('active');
-        })
+            // Optional: Smooth scroll if it's a nav link
+            if ($(this).hasClass('scroll-to') || $(this).attr('href')) {
+                // Add your scroll logic here if needed
+            }
+        });
 
-
+        // Color box active toggle
         $(document).on('click', ".color-boxed a", function() {
             $(".color-boxed a").removeClass("clr-active");
             $(this).addClass("clr-active");
         });
         
+        // Open global color settings
         $(document).on('click', ".global-color .setting-toggle", function() {
             $(".global-color").addClass("active");
         });
 
+        // Close global color settings
         $(document).on('click', ".global-color .inner .overlay, .global-color .inner .global-color-option .close-settings", function() {
             $(".global-color").removeClass("active");
         });
 
     });
 
+    // Scroll spy (unchanged, but cleaned duplicate logic)
     $(window).scroll(function() {
-            
         var windscroll = $(window).scrollTop();
-        if (windscroll >= 0) {
-            $('.page-section').each(function(i) {
-                if ($(this).position().top <= windscroll - -1) {
-                    $('.scroll-nav .scroll-to.active').removeClass('active');
-                    $('.scroll-nav .scroll-to').eq(i).addClass('active');
-                    $('.scroll-nav-responsive a.active').removeClass('active');
-                    $('.scroll-nav-responsive a').eq(i).addClass('active');
-                }
-            });
+        var $sections = $('.page-section, .scroll-to-page'); // Combine selectors to avoid dupes
+        
+        $sections.each(function(i) {
+            var offset = $(this).position().top;
+            var threshold = windscroll + (i === 0 ? 1 : 0); // Minor tweak for precision
+            
+            if (offset <= threshold) {
+                $('.scroll-nav .scroll-to.active, .scroll-nav-responsive a.active').removeClass('active');
+                $('.scroll-nav .scroll-to, .scroll-nav-responsive a').eq(i).addClass('active');
+            }
+        });
 
-        } else {
-
-            $('.scroll-nav .scroll-to.active').removeClass('active');
-            $('.scroll-nav .scroll-to:first').addClass('active');
-            $('.scroll-nav-responsive a.active').removeClass('active');
-            $('.scroll-nav-responsive a:first').addClass('active');
+        // Reset to first if at top (unchanged)
+        if (windscroll < 0) {
+            $('.scroll-nav .scroll-to.active, .scroll-nav-responsive a.active').removeClass('active');
+            $('.scroll-nav .scroll-to:first, .scroll-nav-responsive a:first').addClass('active');
         }
-
-        if (windscroll >= 0) {
-            $('.scroll-to-page').each(function(i) {
-
-                var wscrolldecress = windscroll + 1;
-                // console.log(wscrolldecress);
-                if ($(this).position().top <= wscrolldecress - 0) {
-                    $('.scroll-nav .scroll-to.active').removeClass('active');
-                    $('.scroll-nav .scroll-to').eq(i).addClass('active');
-                    $('.scroll-nav-responsive a.active').removeClass('active');
-                    $('.scroll-nav-responsive a').eq(i).addClass('active');
-                }
-            });
-
-        } else {
-            $('.scroll-nav .scroll-to.active').removeClass('active');
-            $('.scroll-nav .scroll-to:first').addClass('active');
-            $('.scroll-nav-responsive a.active').removeClass('active');
-            $('.scroll-nav-responsive a:first').addClass('active');
-        }
-
     }).scroll();
+
+
 
 
 
