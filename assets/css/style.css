@@ -1300,13 +1300,15 @@ body .body-overlay {
     border-radius: 50%;
     left: -6px;
     top: 7px;
-    transition: .3s;
+    transition: background .3s ease; /* Keep for circle color swap (no clip) */
 }
 
 .resume-area .resume-content .resume-timeline .item .date {
     display: block;
     margin-bottom: 28px;
-    transition: .3s;
+    /* Updated: Transition only transform (avoids clip repaint flicker) */
+    transition: transform .3s ease;
+    will-change: transform;
 }
 
 .resume-area .resume-content .resume-timeline .item h2 {
@@ -1319,6 +1321,9 @@ body .body-overlay {
 .resume-area .resume-content .resume-timeline .item h2 a {
     color: #fff;
     display: block;
+    /* Updated: Transition only transform for title link */
+    transition: transform .3s ease;
+    will-change: transform;
 }
 
 .resume-area .resume-content .resume-timeline .item p {
@@ -1337,16 +1342,24 @@ body .body-overlay {
 }
 
 .resume-area .resume-content .resume-timeline .item:hover .date {
-    /* Remove: color: var(--primary-color); – let clip handle it (avoids solid conflict) */
+    /* Clip snaps instantly (no transition) */
+    background: var(--primary-gradient, var(--primary-color)); /* Already correct: chains for text clip */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent; /* Explicit: Reinforces clip, no direct color override */
+    /* Visual feedback: Gentle scale (no flicker) */
+    transform: scale(1.02);
 }
 
-.resume-area .resume-content .resume-timeline .item:hover .date,
 .resume-area .resume-content .resume-timeline .item h2:hover a {
     background: var(--primary-gradient, var(--primary-color)); /* Already correct: chains for text clip */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent; /* Explicit: Reinforces clip, no direct color override */
+    /* Scale title slightly for pop */
+    transform: scale(1.01);
 }
 
 
