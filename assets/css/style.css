@@ -455,12 +455,16 @@ main.drake-main {
     padding: 24px 0;
     background: #1f1f1f;
     z-index: 20;
-    transition: border-color .3s ease;
+    transition: border-color .3s ease, border-image-source .3s ease; /* Smooth both border types */
 }
+
 .menu:hover {
-    border-image-source: var(--primary-gradient, var(--primary-color));
+    /* Key fix: Solid color border when no gradient; gradient image when set */
+    border-color: var(--primary-color);
+    border-image-source: var(--primary-gradient);
     border-image-slice: 1;
 }
+
 .menu li .scroll-to,
 .menu li a {
     display: block;
@@ -471,32 +475,43 @@ main.drake-main {
     color: #999999;
     cursor: pointer;
 }
+
 .menu li a.active,
 .menu li a:hover,
 .menu li .scroll-to.active,
 .menu li .scroll-to:hover {
-    color: var(--primary-color); /* Fallback solid for text */
+    /* Updated: Clip for consistent gradient/solid rendering (replaces direct color) */
+    background: var(--primary-gradient, var(--primary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent; /* Reinforces clip; prevents solid override */
 }
+
 .menu li a.active i,
 .menu li a:hover i,
 .menu li .scroll-to.active i,
 .menu li .scroll-to:hover i {
-    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background to icons */
+    background: var(--primary-gradient, var(--primary-color)); /* Already correct: chains for icon clip */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    color: transparent; /* Explicit: Reinforces clip, no direct color override */
 }
+
 .menu li .scroll-to:hover span,
 .menu li a:hover span {
     opacity: 1;
     visibility: visible;
 }
+
 .menu li .scroll-to i,
 .menu li a i {
     font-size: 20px;
     display: block;
     transition: .3s;
 }
+
 .menu li .scroll-to span,
 .menu li a span {
     position: absolute;
@@ -511,6 +526,7 @@ main.drake-main {
     visibility: hidden;
     opacity: 0;
 }
+
 .menu li .scroll-to span::before,
 .menu li a span::before {
     content: '';
@@ -538,10 +554,12 @@ main.drake-main {
     visibility: hidden;
     transition: .2s;
 }
+
 .responsive-sidebar-menu.active {
     opacity: 1;
     visibility: visible;
 }
+
 .global-color .inner .overlay,
 .responsive-sidebar-menu .overlay {
     position: absolute;
@@ -553,6 +571,7 @@ main.drake-main {
     background: #565656;
     opacity: 0.5;
 }
+
 .responsive-sidebar-menu .sidebar-menu-inner {
     max-width: 345px;
     width: 100%;
@@ -564,16 +583,20 @@ main.drake-main {
     margin-right: -250px;
     transition: .3s;
 }
+
 .responsive-sidebar-menu.active .sidebar-menu-inner {
     margin-right: 0;
 }
+
 .responsive-sidebar-menu .sidebar-menu-inner .menu-wrap {
     width: 46%;
     margin: auto;
 }
+
 .responsive-sidebar-menu .sidebar-menu-inner .menu-wrap p {
     font-size: 18px;
 }
+
 .responsive-sidebar-menu .sidebar-menu-inner .menu-wrap .menu {
     position: relative;
     right: auto;
@@ -585,17 +608,21 @@ main.drake-main {
     border: none;
     margin-bottom: 30px;
 }
+
 .responsive-sidebar-menu .sidebar-menu-inner .menu-wrap .menu li a {
     display: flex;
     align-items: center;
     gap: 10px;
 }
+
 .responsive-sidebar-menu .sidebar-menu-inner .menu-wrap .menu li a:hover span {
     color: #fff;
 }
+
 .responsive-sidebar-menu .sidebar-menu-inner .menu-wrap .menu li a i {
     margin-bottom: 2px;
 }
+
 .responsive-sidebar-menu .sidebar-menu-inner .menu-wrap .menu li a span {
     position: relative;
     right: 0;
@@ -607,33 +634,46 @@ main.drake-main {
     padding: 0;
     border-radius: 0;
 }
+
 .responsive-sidebar-menu .sidebar-menu-inner .menu-wrap .menu li a span::before {
     display: none
 }
+
 .responsive-sidebar-menu .sidebar-menu-inner .menu-wrap .menu li a.active span {
     color: #fff;
 }
+
 .responsive-sidebar-menu .sidebar-menu-inner .global-color-option,
 .responsive-sidebar-menu .sidebar-menu-inner .sidebar-social {
     width: 46%;
     margin: auto;
 }
+
 .responsive-sidebar-menu .sidebar-menu-inner .sidebar-social ul {
     gap: 15px;
 }
+
 .responsive-sidebar-menu .sidebar-menu-inner .sidebar-social ul li a {
     color: #999999;
     transition: .3s;
     font-size: 16px;
 }
+
 .responsive-sidebar-menu .sidebar-menu-inner .sidebar-social ul li a:hover {
-    color: var(--primary-color); /* Fallback solid */
-}
-.responsive-sidebar-menu .sidebar-menu-inner .sidebar-social ul li a:hover i {
-    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background */
+    /* Updated: Clip for consistent gradient/solid rendering (replaces direct color) */
+    background: var(--primary-gradient, var(--primary-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    color: transparent; /* Reinforces clip; prevents solid override */
+}
+
+.responsive-sidebar-menu .sidebar-menu-inner .sidebar-social ul li a:hover i {
+    background: var(--primary-gradient, var(--primary-color)); /* Already correct: chains for icon clip */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent; /* Explicit: Reinforces clip, no direct color override */
 }
 
 
@@ -968,17 +1008,21 @@ color: var(--primary-color); /* Fallback solid */}.global-color .inner .global-c
     padding: 50px;
     z-index: 10;
 }
+
 .drake-main .left-sidebar {
     display: none;
 }
+
 .left-sidebar > img.me {
     border-radius: 30px;
     display: block;
     margin-bottom: 56px;
 }
+
 .left-sidebar .sidebar-header {
     margin-bottom: 65px;
 }
+
 .left-sidebar .sidebar-header .designation {
     max-width: 110px;
     text-align: right;
@@ -986,24 +1030,29 @@ color: var(--primary-color); /* Fallback solid */}.global-color .inner .global-c
     font-size: 14px;
     font-weight: 400;
 }
+
 .left-sidebar h2 {
     font-size: 24px;
     color: #fff;
     text-align: center;
     font-weight: 300;
 }
+
 .left-sidebar .address {
     margin-bottom: 30px;
 }
+
 .left-sidebar .copyright {
     font-size: 14px;
     text-align: center;
     margin-bottom: 45px;
 }
+
 .left-sidebar .social-profile {
     gap: 8px;
     margin-bottom: 118px;
 }
+
 .left-sidebar .social-profile li a {
     display: block;
     width: 50px;
@@ -1016,17 +1065,28 @@ color: var(--primary-color); /* Fallback solid */}.global-color .inner .global-c
     font-size: 20px;
     transition: .3s;
 }
+
 .left-sidebar .social-profile li a:hover {
-    color: var(--primary-color); /* Fallback solid */
-    border-image-source: var(--primary-gradient, var(--primary-color));
+    /* Key fix: Solid color border when no gradient; gradient image when set */
+    border-color: var(--primary-color);
+    border-image-source: var(--primary-gradient);
     border-image-slice: 1;
-}
-.left-sidebar .social-profile li a:hover i {
-    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background */
+    /* Updated: Clip for consistent gradient/solid rendering (replaces direct color) */
+    background: var(--primary-gradient, var(--primary-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    color: transparent; /* Reinforces clip; prevents solid override */
 }
+
+.left-sidebar .social-profile li a:hover i {
+    background: var(--primary-gradient, var(--primary-color)); /* Already correct: chains for icon clip */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent; /* Explicit: Reinforces clip, no direct color override */
+}
+
 .left-sidebar .theme-btn {
     width: 100%;
 }
@@ -1169,17 +1229,21 @@ body .body-overlay {
     padding-top: 90px;
     padding-bottom: 90px;
 }
+
 .resume-area .resume-content .resume-timeline .item {
     position: relative;
     padding-left: 74px;
     padding-bottom: 68px;
 }
+
 .resume-area .resume-content .resume-timeline .item:last-child {
     padding-bottom: 0;
 }
+
 .resume-area .resume-content .resume-timeline .item:last-child::after {
     height: calc(100% - 10px);
 }
+
 .resume-area .resume-content .resume-timeline .item::after {
     content: '';
     background: #333333;
@@ -1190,6 +1254,7 @@ body .body-overlay {
     top: 10px;
     z-index: -1;
 }
+
 .resume-area .resume-content .resume-timeline .item::before {
     content: '';
     position: absolute;
@@ -1201,43 +1266,52 @@ body .body-overlay {
     top: 7px;
     transition: .3s;
 }
+
 .resume-area .resume-content .resume-timeline .item .date {
     display: block;
     margin-bottom: 28px;
     transition: .3s;
 }
+
 .resume-area .resume-content .resume-timeline .item h2 {
     font-size: 24px;
     font-weight: 300;
     margin-bottom: 5px;
     color: #fff;
 }
+
 .resume-area .resume-content .resume-timeline .item h2 a {
     color: #fff;
     display: block;
 }
+
 .resume-area .resume-content .resume-timeline .item p {
     font-size: 13px;
     color: #999999;
     margin-bottom: 18px;
 }
+
 .resume-area .resume-content .resume-timeline .item p:last-child {
     margin-bottom: 0;
 }
+
 .resume-area .resume-content .resume-timeline .item:hover::before {
-    background: var(--primary-color); /* Fallback solid for circle */
+    /* Updated: Use chain for circle – solid for solids, gradient if active (small element handles it) */
+    background: var(--primary-gradient, var(--primary-color));
 }
+
 .resume-area .resume-content .resume-timeline .item:hover .date {
-    color: var(--primary-color); /* Fallback solid */
+    /* Remove: color: var(--primary-color); – let clip handle it (avoids solid conflict) */
 }
+
 .resume-area .resume-content .resume-timeline .item:hover .date,
 .resume-area .resume-content .resume-timeline .item h2:hover a {
-    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background */
+    background: var(--primary-gradient, var(--primary-color)); /* Already correct: chains for text clip */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    color: transparent; /* Explicit: Reinforces clip, no direct color override */
 }
-
 
 
 /* 12 - Services */
@@ -1375,28 +1449,37 @@ body .body-overlay {
     padding-top: 90px;
     padding-bottom: 90px;
 }
+
 .portfolio-items .portfolio-item {
     margin-bottom: 62px;
 }
+
 .portfolio-items > div:last-child .portfolio-item {
     margin-bottom: 0;
 }
+
 .portfolio-items .portfolio-item .portfolio-item-inner {
     height: 370px;
     overflow: hidden;
     border-radius: 30px;
     position: relative;
     margin-bottom: 30px;
+    /* Optional: Add subtle border for theme integration */
+    border: 1px solid #565656;
+    transition: border-color .3s ease, border-image-source .3s ease;
 }
+
 .portfolio-items .portfolio-item.portfolio-full .portfolio-item-inner {
     height: 410px;
 }
+
 .portfolio-items .portfolio-item .portfolio-item-inner img {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
+
 .portfolio-items .portfolio-item .portfolio-item-inner .portfolio-categories {
     position: absolute;
     display: flex;
@@ -1406,6 +1489,7 @@ body .body-overlay {
     bottom: 20px;
     left: 20px;
 }
+
 .portfolio-items .portfolio-item .portfolio-item-inner .portfolio-categories li a {
     display: block;
     font-size: 14px;
@@ -1415,26 +1499,38 @@ body .body-overlay {
     border-radius: 19px;
     transition: .3s;
 }
-.portfolio-items .portfolio-item:hover .portfolio-item-inner .portfolio-categories li a {
-    background: #1f1f1f;
-    color: #fff;
+
+.portfolio-items .portfolio-item:hover .portfolio-item-inner {
+    /* Key addition: Theme border on hover – solid for colors, gradient for themes */
+    border-color: var(--primary-color);
+    border-image-source: var(--primary-gradient);
+    border-image-slice: 1;
 }
+
+.portfolio-items .portfolio-item:hover .portfolio-item-inner .portfolio-categories li a {
+    /* Updated: Theme background on hover tag – uses primary for dynamic color */
+    background: var(--primary-gradient, var(--primary-color));
+    /* Text color: Invert for contrast (white on dark primary, black if light – adjust if needed) */
+    color: #fff; /* Assumes primary is dark; add media queries for light primaries if using bright solids */
+}
+
 .portfolio-items .portfolio-item h2 {
     font-size: 24px;
     font-weight: 300;
     margin: 0;
 }
+
 .portfolio-items .portfolio-item h2 a {
     color: #fff;
     display: inline-block;
     border-bottom: 1px solid transparent;
     transition: .3s;
 }
+
 .portfolio-items .portfolio-item:hover h2 a {
-    border-color: #ffffff;
+    /* Updated: Theme underline on hover – solid color or gradient fallback */
+    border-color: var(--primary-gradient, var(--primary-color));
 }
-
-
 
 
 /* 15 - Testimonial */
@@ -1589,18 +1685,24 @@ body .body-overlay {
     justify-content: space-between;
     transition: .3s;
 }
+
 .pricing-table-items .pricing-table:hover {
-    border-image-source: var(--primary-gradient, var(--primary-color));
+    /* Key fix: Solid color border when no gradient; gradient image when set */
+    border-color: var(--primary-color);
+    border-image-source: var(--primary-gradient);
     border-image-slice: 1;
 }
+
 .pricing-table-items .pricing-table .pricing-table-header {
     border-bottom: 1px solid #555555;
     padding-bottom: 20px;
     margin-bottom: 34px;
 }
+
 .pricing-table-items .pricing-table .pricing-table-header .top {
     margin-bottom: 30px;
 }
+
 .pricing-table-items .pricing-table .pricing-table-header h4 {
     font-size: 18px;
     text-transform: uppercase;
@@ -1608,26 +1710,35 @@ body .body-overlay {
     color: #fff;
     margin: 0;
 }
+
 .pricing-table-items .pricing-table .pricing-table-header .top p {
     font-size: 13px;
     line-height: 20px;
     color: #999999;
     margin: 0;
 }
+
 .pricing-table-items .pricing-table .pricing-table-header h1 {
     font-size: 48px;
-    color: var(--primary-gradient, var(--primary-color))
-;
     font-weight: 300;
     margin: 0;
+    /* Updated: Clip for consistent gradient/solid rendering (replaces direct color) */
+    background: var(--primary-gradient, var(--primary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent; /* Reinforces clip; prevents solid override */
 }
+
 .pricing-table-items .pricing-table .pricing-table-header h1 span {
     font-size: 24px;
     color: #999999;
 }
+
 .pricing-table-items .pricing-table ul {
     margin-bottom: 80px;
 }
+
 .pricing-table-items .pricing-table ul li {
     font-size: 14px;
     color: #fff;
@@ -1639,24 +1750,23 @@ body .body-overlay {
 .pricing-table-items .pricing-table ul li:last-child {
     margin-bottom: 0;
 }
+
 .pricing-table-items .info {
     font-size: 14px;
     color: #fff;
     line-height: 24px;
     margin: 60px 0 0 0;
 }
+
 .pricing-table-items .info a {
-    color: var(--primary-color); /* Fallback solid */
-}
-.pricing-table-items .info a {
-    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background */
+    /* Remove: color: var(--primary-color); – let clip handle it (avoids solid conflict) */
+    background: var(--primary-gradient, var(--primary-color)); /* Already correct: chains for link clip */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    color: transparent; /* Explicit: Reinforces clip, no direct color override */
     text-decoration: underline;
 }
-
-
 
 /* 18 - Contact */
 .contact-area {
@@ -1716,8 +1826,15 @@ body .body-overlay {
 }
 .contact-area .contact-content .contact-form .input-group select {
     display: block;
-    margin-left: -5px !important;
     font-weight: 300;
+    appearance: none; /* Remove default browser styling for better consistency */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e"); /* Custom dropdown arrow */
+    background-repeat: no-repeat;
+    background-position: right 5px center;
+    background-size: 16px;
+    padding-right: 25px; /* Space for custom arrow */
 }
 .contact-area .contact-content .contact-form .input-group select:focus,
 .contact-area .contact-content .contact-form .input-group textarea:focus,
