@@ -471,9 +471,12 @@ main.drake-main {
     position: relative;
     /* padding: 10px 10px; */
     width: 55px;
-    transition: .3s;
+    /* Updated: Transition only transform (avoids clip repaint flicker) */
+    transition: transform .3s ease;
     color: #999999;
     cursor: pointer;
+    /* Optional: Hardware accel for smoother hovers */
+    will-change: transform;
 }
 
 .menu li a.active,
@@ -486,6 +489,8 @@ main.drake-main {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent; /* Reinforces clip; prevents solid override */
+    /* Visual feedback: Gentle scale (no flicker) */
+    transform: scale(1.05);
 }
 
 .menu li a.active i,
@@ -497,6 +502,8 @@ main.drake-main {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent; /* Explicit: Reinforces clip, no direct color override */
+    /* Scale icons slightly more for pop */
+    transform: scale(1.1);
 }
 
 .menu li .scroll-to:hover span,
@@ -509,13 +516,15 @@ main.drake-main {
 .menu li a i {
     font-size: 20px;
     display: block;
-    transition: .3s;
+    /* Updated: Transition only transform (avoids icon clip flicker) */
+    transition: transform .2s ease; /* Slightly faster for icons */
+    will-change: transform;
 }
 
 .menu li .scroll-to span,
 .menu li a span {
     position: absolute;
-    transition: .3s;
+    transition: .3s; /* Keep for tooltip fade (no clip issue) */
     font-size: 12px;
     background: #404042;
     right: 100%;
@@ -613,6 +622,9 @@ main.drake-main {
     display: flex;
     align-items: center;
     gap: 10px;
+    /* Updated: Transition only transform for sidebar links (if adding clip here later) */
+    transition: transform .3s ease;
+    will-change: transform;
 }
 
 .responsive-sidebar-menu .sidebar-menu-inner .menu-wrap .menu li a:hover span {
@@ -621,6 +633,9 @@ main.drake-main {
 
 .responsive-sidebar-menu .sidebar-menu-inner .menu-wrap .menu li a i {
     margin-bottom: 2px;
+    /* Updated: Icon transition */
+    transition: transform .2s ease;
+    will-change: transform;
 }
 
 .responsive-sidebar-menu .sidebar-menu-inner .menu-wrap .menu li a span {
@@ -655,7 +670,9 @@ main.drake-main {
 
 .responsive-sidebar-menu .sidebar-menu-inner .sidebar-social ul li a {
     color: #999999;
-    transition: .3s;
+    /* Updated: Transition only transform (avoids clip flicker on hover) */
+    transition: transform .3s ease;
+    will-change: transform;
     font-size: 16px;
 }
 
@@ -666,6 +683,8 @@ main.drake-main {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent; /* Reinforces clip; prevents solid override */
+    /* Visual feedback: Gentle scale */
+    transform: scale(1.05);
 }
 
 .responsive-sidebar-menu .sidebar-menu-inner .sidebar-social ul li a:hover i {
@@ -674,8 +693,9 @@ main.drake-main {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent; /* Explicit: Reinforces clip, no direct color override */
+    /* Scale icons more for emphasis */
+    transform: scale(1.1);
 }
-
 
 /* 03 - Global Color */
 .global-color {
