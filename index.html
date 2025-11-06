@@ -1075,24 +1075,26 @@ function color24() { applyGradient('linear-gradient(135deg, #00c6ff, #0072ff)', 
 /* ───────────────────────────────
    Helper Functions
 ─────────────────────────────── */
+
 // ───────────────────────────────
-// Apply Solid Color
+// Apply Solid Color (Updated with !important)
 // ───────────────────────────────
 function applyColor(color, name) {
   // Remove gradient before applying color
   document.documentElement.style.removeProperty('--primary-gradient');
 
-  document.documentElement.style.setProperty('--primary-color', color);
+  document.documentElement.style.setProperty('--primary-color', color, 'important'); // Force override
   setActiveColor(name);
   localStorage.setItem('selectedColor', name);
   console.log(`🎨 Applied ${name} color: ${color}`);
 }
 
+// Apply Gradient (Also add for consistency, though not strictly needed)
 function applyGradient(gradient, name) {
   // Remove solid color before applying gradient
   document.documentElement.style.removeProperty('--primary-color');
 
-  document.documentElement.style.setProperty('--primary-gradient', gradient);
+  document.documentElement.style.setProperty('--primary-gradient', gradient, 'important'); // Force override
   setActiveColor(name);
   localStorage.setItem('selectedColor', name);
   console.log(`🌈 Applied ${name} gradient: ${gradient}`);
