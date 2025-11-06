@@ -31,7 +31,7 @@
 */
 :root {
   --primary-color: #28e98c; /* fallback solid color */
-  --primary-gradient: linear-gradient(135deg, #28e98c, #00bcd4);
+  --primary-gradient: none;
 }
 ,::before,*::after {
     margin: 0;
