@@ -1048,7 +1048,7 @@ color: var(--primary-color); /* Fallback solid */}.global-color .inner .global-c
 
 /* 06 - Left Sidebar */
 .left-sidebar {
-    padding-top: 100px; /* Space below the fixed navbar */
+    padding-top: 500px; /* Space below the fixed navbar */
 
     max-width: 485px;
     width: 100%;
