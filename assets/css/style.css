@@ -550,7 +550,7 @@ main.drake-main {
     z-index: -1;
 }
 
-/* 02 - Responsive Sidebar Menu */
+/* 02 - Responsive Sidebar Menu (Text Flicker Fix) */
 .responsive-sidebar-menu {
     padding-top: 100px; /* Space below the fixed navbar */
     position: fixed;
@@ -622,20 +622,17 @@ main.drake-main {
     display: flex;
     align-items: center;
     gap: 10px;
-    /* Updated: Transition only transform for sidebar links (if adding clip here later) */
-    transition: transform .3s ease;
-    will-change: transform;
+    /* Updated: No transition on color/clip to prevent flicker; use transform if needed */
+    transition: none;
 }
 
 .responsive-sidebar-menu .sidebar-menu-inner .menu-wrap .menu li a:hover span {
-    color: #fff;
+    color: #fff; /* Static white on hover – no var to avoid clip snap */
 }
 
 .responsive-sidebar-menu .sidebar-menu-inner .menu-wrap .menu li a i {
     margin-bottom: 2px;
-    /* Updated: Icon transition */
-    transition: transform .2s ease;
-    will-change: transform;
+    transition: none; /* Snap icons */
 }
 
 .responsive-sidebar-menu .sidebar-menu-inner .menu-wrap .menu li a span {
@@ -655,7 +652,7 @@ main.drake-main {
 }
 
 .responsive-sidebar-menu .sidebar-menu-inner .menu-wrap .menu li a.active span {
-    color: #fff;
+    color: #fff; /* Static white on active – reliable visibility */
 }
 
 .responsive-sidebar-menu .sidebar-menu-inner .global-color-option,
@@ -670,32 +667,30 @@ main.drake-main {
 
 .responsive-sidebar-menu .sidebar-menu-inner .sidebar-social ul li a {
     color: #999999;
-    /* Updated: Transition only transform (avoids clip flicker on hover) */
-    transition: transform .3s ease;
-    will-change: transform;
+    /* Updated: No transition on clip to prevent flicker */
+    transition: none;
     font-size: 16px;
 }
 
 .responsive-sidebar-menu .sidebar-menu-inner .sidebar-social ul li a:hover {
-    /* Updated: Clip for consistent gradient/solid rendering (replaces direct color) */
+    /* Updated: Clip with no transition – snaps to solid/gradient instantly */
     background: var(--primary-gradient, var(--primary-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    color: transparent; /* Reinforces clip; prevents solid override */
-    /* Visual feedback: Gentle scale */
-    transform: scale(1.05);
+    color: transparent; /* Reinforces clip */
 }
 
 .responsive-sidebar-menu .sidebar-menu-inner .sidebar-social ul li a:hover i {
-    background: var(--primary-gradient, var(--primary-color)); /* Already correct: chains for icon clip */
+    background: var(--primary-gradient, var(--primary-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    color: transparent; /* Explicit: Reinforces clip, no direct color override */
-    /* Scale icons more for emphasis */
-    transform: scale(1.1);
+    color: transparent;
+    /* Optional: Quick scale if desired (no flicker) */
+    transform: scale(1.05);
 }
+
 
 /* 03 - Global Color */
 .global-color {
