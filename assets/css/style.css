@@ -644,7 +644,8 @@ main.drake-main {
     left: 0;
     top: 50px;
     z-index: 100;
-}.global-color .inner {
+}
+.global-color .inner {
     position: fixed;
     left: 0;
     top: 0;
@@ -654,10 +655,12 @@ main.drake-main {
     opacity: 0;
     visibility: hidden;
     transition: .2s;
-}.global-color.active .inner {
+}
+.global-color.active .inner {
     opacity: 1;
     visibility: visible;
-}.global-color .setting-toggle {
+}
+.global-color .setting-toggle {
     width: 40px;
     height: 40px;
     display: flex;
@@ -683,21 +686,25 @@ color: var(--primary-color); /* Fallback solid */}.global-color .inner .global-c
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-}.global-color .inner .global-color-option .global-color-option-inner .themes {
+}
+.global-color .inner .global-color-option .global-color-option-inner .themes {
     display: flex;
     flex-wrap: wrap;
     padding-top: 30px;
-}.global-color .inner .global-color-option .global-color-option-inner .themes li {
+}
+.global-color .inner .global-color-option .global-color-option-inner .themes li {
     margin-right: 80px;
     margin-bottom: 55px;
-}.global-color .inner .global-color-option .global-color-option-inner .themes li a {
+}
+.global-color .inner .global-color-option .global-color-option-inner .themes li a {
     font-size: 14px;
     color: #fff;
     font-weight: 500;
     display: block;
     line-height: 1.2;
     position: relative;
-}.global-color .inner .global-color-option .global-color-option-inner .themes li a::before {
+}
+.global-color .inner .global-color-option .global-color-option-inner .themes li a::before {
     content: '';
     width: 100%;
     height: 1px;
@@ -708,10 +715,12 @@ color: var(--primary-color); /* Fallback solid */}.global-color .inner .global-c
     top: 50%;
     opacity: 0;
     transition: .3s;
-}.global-color .inner .global-color-option .global-color-option-inner .themes li a:hover::before,
+}
+.global-color .inner .global-color-option .global-color-option-inner .themes li a:hover::before,
 .global-color .inner .global-color-option .global-color-option-inner .themes li.active a::before {
     opacity: 1;
-}.global-color .inner .global-color-option {
+}
+.global-color .inner .global-color-option {
     max-width: 1043px;
     width: 100%;
     margin-left: auto;
@@ -723,19 +732,23 @@ color: var(--primary-color); /* Fallback solid */}.global-color .inner .global-c
     transition: .4s;
     padding: 134px;
     border: 2px solid #565656; /* Default solid */
-}.global-color .inner .global-color-option:hover {
+}
+.global-color .inner .global-color-option:hover {
     border-image-source: var(--primary-gradient, var(--primary-color));
     border-image-slice: 1;
-}.global-color .inner .global-color-option h2 {
+}
+.global-color .inner .global-color-option h2 {
     color: var(--primary-gradient, var(--primary-color))
 ; /* Apply primary color */
     font-weight: 200;
     font-size: 34px;
     line-height: 1.2;
     margin-bottom: 80px;
-}.global-color.active .inner .global-color-option {
+}
+.global-color.active .inner .global-color-option {
     margin-right: 0;
-}.global-color .global-color-option .color-boxed {
+}
+.global-color .global-color-option .color-boxed {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -748,7 +761,8 @@ color: var(--primary-color); /* Fallback solid */}.global-color .inner .global-c
     height: 30px;
     border-radius: 50%;
     position: relative;
-}.global-color .global-color-option .color-boxed a::before {
+}
+.global-color .global-color-option .color-boxed a::before {
     content: '';
     border: 1px solid #fff;
     position: absolute;
@@ -760,7 +774,8 @@ color: var(--primary-color); /* Fallback solid */}.global-color .inner .global-c
     transform: translate(-50%, -50%);
     opacity: 0;
     transition: .3s;
-}.global-color .global-color-option .color-boxed a::after {
+}
+.global-color .global-color-option .color-boxed a::after {
     content: '';
     position: absolute;
     border: none;
@@ -772,7 +787,8 @@ color: var(--primary-color); /* Fallback solid */}.global-color .inner .global-c
     background: #fff;
     border-radius: 50%;
     opacity: 0;
-}.global-color .global-color-option .color-boxed a.clr-active::after,
+}
+.global-color .global-color-option .color-boxed a.clr-active::after,
 .global-color .global-color-option .color-boxed a:hover::after,
 .global-color .global-color-option .color-boxed a:hover::before,
 .global-color .global-color-option .color-boxed a.clr-active::before {
@@ -808,7 +824,8 @@ color: var(--primary-color); /* Fallback solid */}.global-color .inner .global-c
     box-shadow: 0 0 15px rgba(255,255,255,0.6), 0 0 25px currentColor;
     transform: scale(1.05);
     transition: all 0.3s ease;
-}/* Ensure video and overlay are styled correctly */
+}
+/* Ensure video and overlay are styled correctly */
 .body-overlay {
     position: fixed;
     top: 0;
@@ -816,9 +833,11 @@ color: var(--primary-color); /* Fallback solid */}.global-color .inner .global-c
     width: 100%;
     height: 100%;
     z-index: -1;
+    background: var(--primary-gradient, var(--primary-color)); /* Key fix: chains gradient > dynamic solid > fallback */
     background-size: cover;
     background-position: center;
-}#background-video {
+}
+#background-video {
     position: fixed;
     top: 0;
     left: 0;
