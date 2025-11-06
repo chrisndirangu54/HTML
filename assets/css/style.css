@@ -644,8 +644,7 @@ main.drake-main {
     left: 0;
     top: 50px;
     z-index: 100;
-}
-.global-color .inner {
+}.global-color .inner {
     position: fixed;
     left: 0;
     top: 0;
@@ -655,30 +654,21 @@ main.drake-main {
     opacity: 0;
     visibility: hidden;
     transition: .2s;
-}
-.global-color.active .inner {
+}.global-color.active .inner {
     opacity: 1;
     visibility: visible;
-}
-.global-color .setting-toggle {
+}.global-color .setting-toggle {
     width: 40px;
     height: 40px;
     display: flex;
-    margin-top: 40px;  /* Added: Moves the button lower on the page (adjust value as needed, e.g., 20px for subtle, 60px for more space) */
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    cursor: pointer;
-    border-radius: 5px !important;
-}
-.global-color .setting-toggle i {animation: rotating 3s infinite linear !important;}
-.global-color .inner .global-color-option .close-settings {
-    position: absolute;
-    right: 60px;
-    top: 110px;
-    color: var(--primary-color); /* Fallback solid */
-}
-.global-color .inner .global-color-option .global-color-option-inner p {
+    margin-top: 40px;  /* Added: Moves the button lower on the page (adjust value as needed, e.g., 20px for subtle, 60px for more space) */align-items: center;
+justify-content: center;
+font-size: 20px;
+cursor: pointer;
+border-radius: 5px !important;}.global-color .setting-toggle i {animation: rotating 3s infinite linear !important;}.global-color .inner .global-color-option .close-settings {
+    position: absolute;right: 60px;
+top: 110px;
+color: var(--primary-color); /* Fallback solid */}.global-color .inner .global-color-option .global-color-option-inner p {
     text-transform: uppercase;
     font-size: 13px;
     color: var(--primary-color); /* Fallback solid */
@@ -693,25 +683,21 @@ main.drake-main {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-}
-.global-color .inner .global-color-option .global-color-option-inner .themes {
+}.global-color .inner .global-color-option .global-color-option-inner .themes {
     display: flex;
     flex-wrap: wrap;
     padding-top: 30px;
-}
-.global-color .inner .global-color-option .global-color-option-inner .themes li {
+}.global-color .inner .global-color-option .global-color-option-inner .themes li {
     margin-right: 80px;
     margin-bottom: 55px;
-}
-.global-color .inner .global-color-option .global-color-option-inner .themes li a {
+}.global-color .inner .global-color-option .global-color-option-inner .themes li a {
     font-size: 14px;
     color: #fff;
     font-weight: 500;
     display: block;
     line-height: 1.2;
     position: relative;
-}
-.global-color .inner .global-color-option .global-color-option-inner .themes li a::before {
+}.global-color .inner .global-color-option .global-color-option-inner .themes li a::before {
     content: '';
     width: 100%;
     height: 1px;
@@ -722,12 +708,10 @@ main.drake-main {
     top: 50%;
     opacity: 0;
     transition: .3s;
-}
-.global-color .inner .global-color-option .global-color-option-inner .themes li a:hover::before,
+}.global-color .inner .global-color-option .global-color-option-inner .themes li a:hover::before,
 .global-color .inner .global-color-option .global-color-option-inner .themes li.active a::before {
     opacity: 1;
-}
-.global-color .inner .global-color-option {
+}.global-color .inner .global-color-option {
     max-width: 1043px;
     width: 100%;
     margin-left: auto;
@@ -739,38 +723,32 @@ main.drake-main {
     transition: .4s;
     padding: 134px;
     border: 2px solid #565656; /* Default solid */
-}
-.global-color .inner .global-color-option:hover {
+}.global-color .inner .global-color-option:hover {
     border-image-source: var(--primary-gradient, var(--primary-color));
     border-image-slice: 1;
-}
-.global-color .inner .global-color-option h2 {
+}.global-color .inner .global-color-option h2 {
     color: var(--primary-gradient, var(--primary-color))
 ; /* Apply primary color */
     font-weight: 200;
     font-size: 34px;
     line-height: 1.2;
     margin-bottom: 80px;
-}
-.global-color.active .inner .global-color-option {
+}.global-color.active .inner .global-color-option {
     margin-right: 0;
-}
-.global-color .global-color-option .color-boxed {
+}.global-color .global-color-option .color-boxed {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 26px;
     margin-bottom: 105px;
     padding-top: 30px;
-}
-.global-color .global-color-option .color-boxed a {
+}.global-color .global-color-option .color-boxed a {
     display: block;
     width: 30px;
     height: 30px;
     border-radius: 50%;
     position: relative;
-}
-.global-color .global-color-option .color-boxed a::before {
+}.global-color .global-color-option .color-boxed a::before {
     content: '';
     border: 1px solid #fff;
     position: absolute;
@@ -782,8 +760,7 @@ main.drake-main {
     transform: translate(-50%, -50%);
     opacity: 0;
     transition: .3s;
-}
-.global-color .global-color-option .color-boxed a::after {
+}.global-color .global-color-option .color-boxed a::after {
     content: '';
     position: absolute;
     border: none;
@@ -795,14 +772,12 @@ main.drake-main {
     background: #fff;
     border-radius: 50%;
     opacity: 0;
-}
-.global-color .global-color-option .color-boxed a.clr-active::after,
+}.global-color .global-color-option .color-boxed a.clr-active::after,
 .global-color .global-color-option .color-boxed a:hover::after,
 .global-color .global-color-option .color-boxed a:hover::before,
 .global-color .global-color-option .color-boxed a.clr-active::before {
     opacity: 1;
-}
-/* Define background colors for each color option */
+}/* Define background colors for each color option */
 .global-color .global-color-option .color-boxed a:nth-child(1) { background: #28e98c; }
 .global-color .global-color-option .color-boxed a:nth-child(2) { background: #e4af12; }
 .global-color .global-color-option .color-boxed a:nth-child(3) { background: #fe6f1d; }
@@ -811,8 +786,7 @@ main.drake-main {
 .global-color .global-color-option .color-boxed a:nth-child(6) { background: #1338f3; }
 .global-color .global-color-option .color-boxed a:nth-child(7) { background: #f31313; }
 .global-color .global-color-option .color-boxed a:nth-child(8) { background: #ff99cc; }
-.global-color .global-color-option .color-boxed a:nth-child(9) { background: #cceb00; }
-/* ───────────────────────────────
+.global-color .global-color-option .color-boxed a:nth-child(9) { background: #cceb00; }/* ───────────────────────────────
    CYBERPUNK + MODERN COLOR THEMES (ADDED)
 ──────────────────────────────── */
 .global-color .global-color-option .color-boxed a:nth-child(10) { background: linear-gradient(135deg, #00ffcc, #ff00ff); }  /* Cyberpunk Neon */
@@ -829,14 +803,12 @@ main.drake-main {
 .global-color .global-color-option .color-boxed a:nth-child(21) { background: linear-gradient(135deg, #00c9ff, #92fe9d); }  /* Future Sky */
 .global-color .global-color-option .color-boxed a:nth-child(22) { background: linear-gradient(135deg, #ff00cc, #333399); }  /* Vaporwave Core */
 .global-color .global-color-option .color-boxed a:nth-child(23) { background: linear-gradient(135deg, #ff3c00, #ffafbd); }  /* Neon Coral */
-.global-color .global-color-option .color-boxed a:nth-child(24) { background: linear-gradient(135deg, #00c6ff, #0072ff); }  /* Blue Energy */
-/* Optional glow hover effect */
+.global-color .global-color-option .color-boxed a:nth-child(24) { background: linear-gradient(135deg, #00c6ff, #0072ff); }  /* Blue Energy *//* Optional glow hover effect */
 .global-color .global-color-option .color-boxed a:hover {
     box-shadow: 0 0 15px rgba(255,255,255,0.6), 0 0 25px currentColor;
     transform: scale(1.05);
     transition: all 0.3s ease;
-}
-/* Ensure video and overlay are styled correctly */
+}/* Ensure video and overlay are styled correctly */
 .body-overlay {
     position: fixed;
     top: 0;
@@ -846,8 +818,7 @@ main.drake-main {
     z-index: -1;
     background-size: cover;
     background-position: center;
-}
-#background-video {
+}#background-video {
     position: fixed;
     top: 0;
     left: 0;
@@ -856,37 +827,6 @@ main.drake-main {
     object-fit: cover;
     z-index: -2;
 }
-
-/* Dynamic CSS variable updates for solid colors based on active state */
-:root:has(.global-color .global-color-option .color-boxed a:nth-child(1).clr-active) {
-    --primary-color: #28e98c;
-}
-:root:has(.global-color .global-color-option .color-boxed a:nth-child(2).clr-active) {
-    --primary-color: #e4af12;
-}
-:root:has(.global-color .global-color-option .color-boxed a:nth-child(3).clr-active) {
-    --primary-color: #fe6f1d;
-}
-:root:has(.global-color .global-color-option .color-boxed a:nth-child(4).clr-active) {
-    --primary-color: #14c5fd;
-}
-:root:has(.global-color .global-color-option .color-boxed a:nth-child(5).clr-active) {
-    --primary-color: #c0c0c0;
-}
-:root:has(.global-color .global-color-option .color-boxed a:nth-child(6).clr-active) {
-    --primary-color: #1338f3;
-}
-:root:has(.global-color .global-color-option .color-boxed a:nth-child(7).clr-active) {
-    --primary-color: #f31313;
-}
-:root:has(.global-color .global-color-option .color-boxed a:nth-child(8).clr-active) {
-    --primary-color: #ff99cc;
-}
-:root:has(.global-color .global-color-option .color-boxed a:nth-child(9).clr-active) {
-    --primary-color: #cceb00;
-}
-
-
 
 /* 04 - Header */
 .header-area {
