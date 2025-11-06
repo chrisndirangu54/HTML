@@ -1241,10 +1241,12 @@ body .body-overlay {
 
 
 /* 12 - Services */
+
 .services-area {
     padding-top: 90px;
     padding-bottom: 90px;
 }
+
 .services-items .service-item {
     border: 1px solid #565656;
     border-radius: 20px;
@@ -1253,61 +1255,70 @@ body .body-overlay {
     padding: 44px 48px 41px 48px;
     margin-bottom: 10px;
 }
+
 .services-items .service-item:last-child {
     margin-bottom: 0;
 }
+
 .services-items .service-item h2 {
     font-size: 24px;
     font-weight: 300;
     margin-bottom: 8px;
     color: #fff;
 }
+
 .services-items .service-item h2 a {
     color: #fff;
     transition: .3s;
 }
+
 .services-items .service-item:hover {
-    border-image-source: var(--primary-gradient, var(--primary-color));
+    /* Key fix: Gradient border when set; solid color fallback when not */
+    border-color: var(--primary-color);
+    border-image-source: var(--primary-gradient);
     border-image-slice: 1;
 }
+
 .services-items .service-item:hover h2 a {
-    color: var(--primary-color); /* Fallback solid */
-}
-.services-items .service-item:hover h2 a {
-    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background */
+    background: var(--primary-gradient, var(--primary-color)); /* Already correct: chains for text clip */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    /* Remove: color: var(--primary-color); – let clip handle it (avoids solid conflict) */
 }
+
 .services-items .service-item p {
     font-size: 14px;
     color: #999999;
     margin-bottom: 30px;
 }
+
 .services-items .service-item .projects {
     font-size: 12px;
     color: #fff;
     text-transform: uppercase;
     display: inline-block;
 }
+
 .services-items .service-item:hover .projects {
     text-decoration: underline;
 }
+
 .services-items .service-item i {
     position: absolute;
     font-size: 30px;
-    color: var(--primary-gradient, var(--primary-color))
-;
+    /* Remove: color: var(--primary-gradient, var(--primary-color)); – let clip handle it */
     top: 45px;
     right: 50px;
 }
+
 .services-items .service-item i {
-    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background */
+    background: var(--primary-gradient, var(--primary-color)); /* Already correct: chains for icon clip */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    color: transparent; /* Explicit: Reinforces clip, no direct color override */
 }
-
 
 
 /* 13 - Skills */
@@ -1315,9 +1326,11 @@ body .body-overlay {
     padding-top: 90px;
     padding-bottom: 40px;
 }
+
 .skills .skill {
     margin-bottom: 50px;
 }
+
 .skills .skill .skill-inner {
     border: 2px solid #565656;
     border-radius: 85px;
@@ -1325,27 +1338,36 @@ body .body-overlay {
     margin-bottom: 20px;
     transition: .3s;
 }
+
 .skills .skill:hover .skill-inner {
-    border-image-source: var(--primary-gradient, var(--primary-color));
+    /* Key fix: Solid color border when no gradient; gradient image when set */
+    border-color: var(--primary-color);
+    border-image-source: var(--primary-gradient);
     border-image-slice: 1;
 }
+
 .skills .skill .skill-inner img {
     display: block;
     margin: auto auto 29px auto;
 }
+
 .skills .skill .skill-inner h1 {
     font-size: 30px;
-    color: var(--primary-gradient, var(--primary-color))
-;
     font-weight: 300;
     margin: 0;
+    /* Updated: Clip for consistent gradient/solid rendering (replaces direct color) */
+    background: var(--primary-gradient, var(--primary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent; /* Reinforces clip; prevents solid override */
 }
+
 .skills .skill p {
     font-size: 14px;
     color: #fff;
     margin: 0;
 }
-
 
 
 /* 14 - Portfolio */
@@ -1421,36 +1443,49 @@ body .body-overlay {
     border-radius: 30px;
     padding: 50px 50px 43px 50px;
 }
+
 .testimonial-item .testimonial-item-inner:hover {
-    border-image-source: var(--primary-gradient, var(--primary-color));
+    /* Key fix: Solid color border when no gradient; gradient image when set */
+    border-color: var(--primary-color);
+    border-image-source: var(--primary-gradient);
     border-image-slice: 1;
 }
+
 .testimonial-item .testimonial-item-inner .author {
     gap: 16px;
     margin-bottom: 45px;
 }
+
 .testimonial-item .testimonial-item-inner .author img {
     width: 45px;
     height: 45px;
     border-radius: 50%;
     object-fit: cover;
 }
+
 .testimonial-item .testimonial-item-inner .author h3 {
     font-size: 18px;
     font-weight: 300;
     color: #fff;
     margin-bottom: 6px;
 }
+
 .testimonial-item .testimonial-item-inner .author p {
     color: #999999;
     font-size: 13px;
     margin: 0;
     line-height: 1.3;
 }
+
 .testimonial-item .testimonial-item-inner .author p span {
-    color: var(--primary-gradient, var(--primary-color))
-;
+    /* Updated: Use clip for consistent gradient/solid rendering (matches theme accents) */
+    background: var(--primary-gradient, var(--primary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent; /* Reinforces clip; prevents solid fade */
 }
+
 .testimonial-item .testimonial-item-inner > p {
     font-size: 24px;
     color: #fff;
@@ -1458,6 +1493,7 @@ body .body-overlay {
     line-height: 36px;
     margin-bottom: 27px;
 }
+
 .testimonial-item .testimonial-item-inner .project-btn {
     font-size: 12px;
     color: #fff;
@@ -1468,9 +1504,11 @@ body .body-overlay {
 .testimonial-area .testimonial-slider-wrap .testimonial-footer-nav {
     margin-top: 50px;
 }
+
 .testimonial-area .testimonial-slider-wrap .testimonial-footer-nav .testimonial-nav {
     gap: 15px;
 }
+
 .testimonial-area .testimonial-slider-wrap .testimonial-footer-nav .testimonial-nav button {
     width: 45px;
     height: 45px;
@@ -1483,22 +1521,29 @@ body .body-overlay {
     color: #fff;
     transition: .3s;
 }
+
 .testimonial-area .testimonial-slider-wrap .testimonial-footer-nav .testimonial-nav button:hover {
-    border-image-source: var(--primary-gradient, var(--primary-color));
+    /* Key fix: Solid color border when no gradient; gradient image when set */
+    border-color: var(--primary-color);
+    border-image-source: var(--primary-gradient);
     border-image-slice: 1;
-    color: var(--primary-color); /* Fallback solid */
+    /* Remove: color: var(--primary-color); – let icon clip handle accent */
 }
+
 .testimonial-area .testimonial-slider-wrap .testimonial-footer-nav .testimonial-nav button:hover i {
-    background: var(--primary-gradient, var(--primary-color)); /* Apply gradient background */
+    background: var(--primary-gradient, var(--primary-color)); /* Already correct: chains for icon clip */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    color: transparent; /* Explicit: Reinforces clip, no direct color override */
 }
+
 .testimonial-area .testimonial-slider-wrap .testimonial-footer-nav .testimonial-nav #testimonial-slide-count {
     font-size: 13px;
     color: #666666;
     font-weight: 300;
 }
+
 .testimonial-area .testimonial-slider-wrap .testimonial-footer-nav .testimonial-nav #testimonial-slide-count .left {
     color: #fff;
 }
