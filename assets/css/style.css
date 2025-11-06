@@ -2389,6 +2389,14 @@ body .body-overlay {
     animation: rotating 3s infinite linear !important;
 }
 
+/* For h1 without any span inside: Apply clip directly to the h1 */
+h1:not(:has(span)) {
+  background: var(--primary-gradient, var(--primary-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block; /* Ensures inline flow if needed */
+}
 
 
 h1 span {
