@@ -1083,7 +1083,6 @@ function applyColor(color, name) {
   document.documentElement.style.removeProperty('--primary-gradient');
 
   document.documentElement.style.setProperty('--primary-color', color);
-  document.documentElement.style.setProperty('--primary-gradient', color);
   setActiveColor(name);
   localStorage.setItem('selectedColor', name);
   console.log(`🎨 Applied ${name} color: ${color}`);
@@ -1146,6 +1145,7 @@ function changeTheme(theme) {
 }
 
 </script>
+
         
 
 </body>
