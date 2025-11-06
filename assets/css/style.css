@@ -1051,7 +1051,7 @@ color: var(--primary-color); /* Fallback solid */}.global-color .inner .global-c
     padding-top: 500px; /* Space below the fixed navbar */
 
     max-width: 485px;
-    width: 100%;
+    width: 90%;
     border-radius: 30px;
     border: 1px solid #565656;
     position: fixed;
