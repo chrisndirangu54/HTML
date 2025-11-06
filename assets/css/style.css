@@ -550,7 +550,7 @@ main.drake-main {
     z-index: -1;
 }
 
-/* 02 - Responsive Sidebar Menu (Text Flicker Fix) */
+/* 02 - Responsive Sidebar Menu */
 .responsive-sidebar-menu {
     padding-top: 100px; /* Space below the fixed navbar */
     position: fixed;
@@ -622,17 +622,28 @@ main.drake-main {
     display: flex;
     align-items: center;
     gap: 10px;
-    /* Updated: No transition on color/clip to prevent flicker; use transform if needed */
-    transition: none;
+    transition: transform .3s ease; /* Scale only, no color/clip transition to avoid flicker */
+    will-change: transform;
+}
+
+.responsive-sidebar-menu .sidebar-menu-inner .menu-wrap .menu li a:hover {
+    transform: scale(1.02); /* Subtle feedback */
 }
 
 .responsive-sidebar-menu .sidebar-menu-inner .menu-wrap .menu li a:hover span {
-    color: #fff; /* Static white on hover – no var to avoid clip snap */
+    color: #fff !important; /* Force visible white on hover – overrides any clip */
 }
 
 .responsive-sidebar-menu .sidebar-menu-inner .menu-wrap .menu li a i {
     margin-bottom: 2px;
-    transition: none; /* Snap icons */
+    transition: transform .2s ease;
+    will-change: transform;
+}
+
+.responsive-sidebar-menu .sidebar-menu-inner .menu-wrap .menu li a:hover i {
+    transform: scale(1.05); /* Icon pop without clip flicker */
+    /* No clip here – keep default color for sidebar icons */
+    color: #999999; /* Or var if desired, but static to avoid issues */
 }
 
 .responsive-sidebar-menu .sidebar-menu-inner .menu-wrap .menu li a span {
@@ -645,6 +656,12 @@ main.drake-main {
     margin: 0;
     padding: 0;
     border-radius: 0;
+    /* Ensure no clip inheritance – direct color */
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+    background-clip: initial !important;
+    color: inherit;
 }
 
 .responsive-sidebar-menu .sidebar-menu-inner .menu-wrap .menu li a span::before {
@@ -652,7 +669,12 @@ main.drake-main {
 }
 
 .responsive-sidebar-menu .sidebar-menu-inner .menu-wrap .menu li a.active span {
-    color: #fff; /* Static white on active – reliable visibility */
+    color: #fff !important; /* Force visible white on active – no clip */
+    /* Reinforce no clip for active state */
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+    background-clip: initial !important;
 }
 
 .responsive-sidebar-menu .sidebar-menu-inner .global-color-option,
@@ -667,18 +689,19 @@ main.drake-main {
 
 .responsive-sidebar-menu .sidebar-menu-inner .sidebar-social ul li a {
     color: #999999;
-    /* Updated: No transition on clip to prevent flicker */
-    transition: none;
+    transition: transform .3s ease; /* Scale only */
+    will-change: transform;
     font-size: 16px;
 }
 
 .responsive-sidebar-menu .sidebar-menu-inner .sidebar-social ul li a:hover {
-    /* Updated: Clip with no transition – snaps to solid/gradient instantly */
+    /* Keep clip for socials (icons/links fine), but add scale */
     background: var(--primary-gradient, var(--primary-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    color: transparent; /* Reinforces clip */
+    color: transparent;
+    transform: scale(1.05);
 }
 
 .responsive-sidebar-menu .sidebar-menu-inner .sidebar-social ul li a:hover i {
@@ -687,10 +710,8 @@ main.drake-main {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent;
-    /* Optional: Quick scale if desired (no flicker) */
-    transform: scale(1.05);
+    transform: scale(1.1);
 }
-
 
 /* 03 - Global Color */
 .global-color {
