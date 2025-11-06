@@ -477,6 +477,8 @@ main.drake-main {
     cursor: pointer;
     /* Optional: Hardware accel for smoother hovers */
     will-change: transform;
+    /* Added: Fast text rendering for clip stability */
+    text-rendering: optimizeSpeed;
 }
 
 .menu li a.active,
@@ -489,8 +491,11 @@ main.drake-main {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent; /* Reinforces clip; prevents solid override */
-    /* Visual feedback: Gentle scale (no flicker) */
-    transform: scale(1.05);
+    /* Visual feedback: Subtler scale (less movement, no flicker) */
+    transform: scale(1.03);
+    /* Added: Stroke order for crisp icons/text edges on solids */
+    paint-order: stroke fill;
+    -webkit-text-stroke-width: 0; /* Ensures no unwanted stroke */
 }
 
 .menu li a.active i,
@@ -502,8 +507,12 @@ main.drake-main {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent; /* Explicit: Reinforces clip, no direct color override */
-    /* Scale icons slightly more for pop */
-    transform: scale(1.1);
+    /* Scale icons subtly for pop */
+    transform: scale(1.06);
+    /* Added: Icon-specific rendering for no bar artifacts */
+    text-rendering: optimizeSpeed;
+    paint-order: stroke fill;
+    -webkit-text-stroke-width: 0;
 }
 
 .menu li .scroll-to:hover span,
@@ -519,6 +528,8 @@ main.drake-main {
     /* Updated: Transition only transform (avoids icon clip flicker) */
     transition: transform .2s ease; /* Slightly faster for icons */
     will-change: transform;
+    /* Added: Icon rendering opts */
+    text-rendering: optimizeSpeed;
 }
 
 .menu li .scroll-to span,
@@ -534,6 +545,7 @@ main.drake-main {
     border-radius: 5px;
     visibility: hidden;
     opacity: 0;
+    /* Tooltip: No clip/render tweaks needed (static) */
 }
 
 .menu li .scroll-to span::before,
