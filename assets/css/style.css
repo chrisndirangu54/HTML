@@ -32,11 +32,12 @@
 :root {
   --primary-color: #28e98c; /* fallback solid color */
 }
-,::before,*::after {
+::before,*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}body {
+}
+body {
     padding-top: 100px; /* Space below the fixed navbar */
     font-family: 'Inter', sans-serif;
     font-size: 16px;
@@ -480,7 +481,10 @@ main.drake-main {
     /* Added: Fast text rendering for clip stability */
     text-rendering: optimizeSpeed;
 }
-
+.menu.active {
+    opacity: 1;
+    visibility: visible;
+}
 .menu li a.active,
 .menu li a:hover,
 .menu li .scroll-to.active,
@@ -501,6 +505,7 @@ main.drake-main {
 .menu li a.active i,
 .menu li a:hover i,
 .menu li .scroll-to.active i,
+
 .menu li .scroll-to:hover i {
     background: var(--primary-gradient, var(--primary-color)); /* Already correct: chains for icon clip */
     -webkit-background-clip: text;
