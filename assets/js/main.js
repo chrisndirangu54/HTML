@@ -44,27 +44,7 @@ $(function(){
 
     });
 
-    // Scroll spy (unchanged, but cleaned duplicate logic)
-    $(window).scroll(function() {
-        var windscroll = $(window).scrollTop();
-        var $sections = $('.page-section, .scroll-to-page'); // Combine selectors to avoid dupes
-        
-        $sections.each(function(i) {
-            var offset = $(this).position().top;
-            var threshold = windscroll + (i === 0 ? 1 : 0); // Minor tweak for precision
-            
-            if (offset <= threshold) {
-                $('.scroll-nav .scroll-to.active, .scroll-nav-responsive a.active').removeClass('active');
-                $('.scroll-nav .scroll-to, .scroll-nav-responsive a').eq(i).addClass('active');
-            }
-        });
-
-        // Reset to first if at top (unchanged)
-        if (windscroll < 0) {
-            $('.scroll-nav .scroll-to.active, .scroll-nav-responsive a.active').removeClass('active');
-            $('.scroll-nav .scroll-to:first, .scroll-nav-responsive a:first').addClass('active');
-        }
-    }).scroll();
+    // Removed scroll spy to avoid conflicts with fixed menu's vanilla JS activation (IntersectionObserver handles it more efficiently)
 
 
 
@@ -72,7 +52,7 @@ $(function(){
 
 
 
-
+    // Testimonial Slider
 
     if ($('.testimonial-slider').length) {
         var testimonial = $('.testimonial-slider').owlCarousel({
