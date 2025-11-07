@@ -439,158 +439,145 @@ main.drake-main {
     overflow: hidden;
 }
 
-/* 01 - Menu (Rewritten: Flicker-Free with Isolated Tooltips & Transform-Only Transitions) */
+
+/* 01 - Menu */
 .menu {
-    display: flex;
     flex-direction: column;
-    padding-top: 170px; /* Space below fixed navbar */
+    padding-top: 170px; /* Space below the fixed navbar */
+
     border: 1px solid #575757;
     border-radius: 30px;
     position: fixed;
     right: 68px;
     top: 322px;
+    /* width: 55px; */
     text-align: center;
     gap: 20px;
     padding: 24px 0;
     background: #1f1f1f;
     z-index: 20;
-    transition: border-color .3s ease, border-image-source .3s ease;
-    list-style: none; /* Assuming <ul> */
-    margin: 0;
-    padding-left: 0; /* Reset ul padding */
+    transition: border-color .3s ease, border-image-source .3s ease; /* Smooth both border types */
 }
 
 .menu:hover {
+    /* Key fix: Solid color border when no gradient; gradient image when set */
     border-color: var(--primary-color);
     border-image-source: var(--primary-gradient);
     border-image-slice: 1;
-}
-
-.menu li {
-    position: relative;
-    list-style: none;
 }
 
 .menu li .scroll-to,
 .menu li a {
     display: block;
     position: relative;
+    /* padding: 10px 10px; */
     width: 55px;
+    /* Updated: Transition only transform (avoids clip repaint flicker) */
+    transition: transform .3s ease;
     color: #999999;
     cursor: pointer;
-    text-decoration: none;
-    /* Transform-only transition (no color/clip to avoid flicker) */
-    transition: transform .3s ease;
-    /* Hardware accel */
+    /* Optional: Hardware accel for smoother hovers */
     will-change: transform;
-    /* Fast rendering */
+    /* Added: Fast text rendering for clip stability */
     text-rendering: optimizeSpeed;
-    backface-visibility: hidden; /* Reduce flicker on transforms */
+}
+.menu.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Combined hover/active states: Use gradient clip for interactive feedback (including active for consistency) */
+.menu li a.active,
+.menu li a:hover,
+.menu li .scroll-to.active,
+.menu li .scroll-to:hover {
+    /* Updated: Clip for consistent gradient/solid rendering (replaces direct color) */
+    background: var(--primary-gradient, var(--primary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent; /* Reinforces clip; prevents solid override */
+    /* Visual feedback: Subtler scale (less movement, no flicker) */
+    transform: scale(1.03);
+    /* Added: Stroke order for crisp icons/text edges on solids */
+    paint-order: stroke fill;
+    -webkit-text-stroke-width: 0; /* Ensures no unwanted stroke */
+}
+
+.menu li a.active i,
+.menu li a:hover i,
+.menu li .scroll-to.active i,
+.menu li .scroll-to:hover i {
+    background: var(--primary-gradient, var(--primary-color)); /* Already correct: chains for icon clip */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent; /* Explicit: Reinforces clip, no direct color override */
+    /* Scale icons subtly for pop – base for both */
+    transform: scale(1.06);
+    /* Added: Icon-specific rendering for no bar artifacts */
+    text-rendering: optimizeSpeed;
+    paint-order: stroke fill;
+    -webkit-text-stroke-width: 0;
+}
+
+/* Active-specific: Increase icon size further for emphasis */
+.menu li a.active i,
+.menu li .scroll-to.active i {
+    transform: scale(1.1);
+}
+
+/* Show tooltips on hover (as before) and persistently on active (sidebar-like visibility) */
+.menu li .scroll-to:hover span,
+.menu li a:hover span,
+.menu li .scroll-to.active span,
+.menu li a.active span {
+    opacity: 1;
+    visibility: visible;
 }
 
 .menu li .scroll-to i,
 .menu li a i {
     font-size: 20px;
     display: block;
-    /* Icon-specific transform transition (fast, no clip flicker) */
-    transition: transform .2s ease;
+    /* Updated: Transition only transform (avoids icon clip flicker) */
+    transition: transform .2s ease; /* Slightly faster for icons */
     will-change: transform;
+    /* Added: Icon rendering opts */
     text-rendering: optimizeSpeed;
-    backface-visibility: hidden;
 }
 
-/* Base gradient clip for icons/text (applied directly, no transition) */
-.menu li a i,
-.menu li .scroll-to i {
-    background: var(--primary-gradient, var(--primary-color));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;
-    /* No transition on clip/fill to prevent repaint flicker */
-}
-
-/* Hover/Active: Apply to parent <a> and child <i> separately for stability */
-.menu li a:hover,
-.menu li .scroll-to:hover,
-.menu li a.active,
-.menu li .scroll-to.active {
-    /* Subtle scale feedback (transform only) */
-    transform: scale(1.02);
-    /* Layer for hardware accel */
-    transform: translateZ(0);
-}
-
-.menu li a:hover i,
-.menu li .scroll-to:hover i,
-.menu li a.active i,
-.menu li .scroll-to.active i {
-    /* Gradient clip (static, no transition) + scale pop */
-    transform: scale(1.05);
-    /* Active-specific: Slightly larger for emphasis */
-}
-
-.menu li a.active i,
-.menu li .scroll-to.active i {
-    transform: scale(1.08);
-}
-
-/* Tooltips: Isolated layer to prevent parent clip/color inheritance */
 .menu li .scroll-to span,
 .menu li a span {
     position: absolute;
-    left: -120px; /* Position left of menu (adjust for text length) */
-    top: 50%;
-    transform: translateY(-50%);
+    transition: .3s; /* Keep for tooltip fade (no clip issue) */
     font-size: 12px;
     background: #404042;
-    color: #fff; /* Direct color, no inheritance */
+    right: 100%;
+    color: #fff;
+    display: block;
     padding: 3px 8px;
     border-radius: 5px;
-    white-space: nowrap; /* Prevent wrap/expansion */
     visibility: hidden;
     opacity: 0;
-    z-index: 21;
-    /* Isolation to block parent styles */
-    isolation: isolate;
-    /* Opacity-only transition (no color/position flicker) */
-    transition: opacity .3s ease, visibility .3s ease;
-    /* Reset any clip from parent */
-    background-clip: border-box !important;
-    -webkit-background-clip: border-box !important;
-    -webkit-text-fill-color: #fff !important;
-    color: #fff !important;
-    text-fill-color: #fff !important;
+    /* Tooltip: No clip/render tweaks needed (static) */
 }
 
 .menu li .scroll-to span::before,
 .menu li a span::before {
     content: '';
-    position: absolute;
-    right: -5px;
-    top: 50%;
-    transform: translateY(-50%) rotate(45deg);
     width: 10px;
     height: 10px;
     background: #404042;
+    position: absolute;
+    right: -3px;
+    top: 50%;
+    transform: rotate(54deg) skew(-8deg, -39deg);
+    margin-top: -5px;
     z-index: -1;
 }
 
-/* Show tooltips: Hover fade + persistent on active (opacity only) */
-.menu li .scroll-to:hover span,
-.menu li a:hover span,
-.menu li .scroll-to.active span,
-.menu li a.active span {
-    visibility: visible;
-    opacity: 1;
-}
-
-.menu.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* 02 - Responsive Sidebar Menu (Unchanged - paste your existing here) */
+/* 02 - Responsive Sidebar Menu */
 .responsive-sidebar-menu {
     padding-top: 100px; /* Space below the fixed navbar */
     position: fixed;
