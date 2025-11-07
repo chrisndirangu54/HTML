@@ -40,42 +40,59 @@ $(function(){
             $(".global-color").removeClass("active");
         });
 
-        // Reverted: Old index-based scroll spy for both fixed and responsive menus
-        // Assumes sections (.page-section, .scroll-to-page) are in menu order
+        // Reverted/Refined: Old index-based scroll spy for both fixed and responsive menus
+        // Ensures fixed menu (.scroll-nav .scroll-to) works by using exact selectors and triggering initial scroll
         $(window).scroll(function() {
             var windscroll = $(window).scrollTop();
-            var $sections = $('.page-section, .scroll-to-page'); // Combine selectors to avoid dupes
+            var $sections = $('.page-section, .scroll-to-page'); // Your section selectors
             
             $sections.each(function(i) {
-                var offset = $(this).position().top;
-                var threshold = windscroll + (i === 0 ? 1 : 0); // Minor tweak for precision
+                var offset = $(this).position().top - 100; // Slight offset for fixed navbar accuracy
+                var threshold = windscroll + ($(window).height() / 2); // Center-visible threshold for better activation
                 
                 if (offset <= threshold) {
-                    $('.scroll-nav .scroll-to.active, .scroll-nav-responsive a.active').removeClass('active');
-                    $('.scroll-nav .scroll-to, .scroll-nav-responsive a').eq(i).addClass('active');
+                    // Remove active from all in both menus
+                    $('.scroll-nav .scroll-to.active').removeClass('active');
+                    $('.scroll-nav-responsive a.active').removeClass('active');
+                    // Add to matching index (assumes same order/count)
+                    $('.scroll-nav .scroll-to').eq(i).addClass('active');
+                    $('.scroll-nav-responsive a').eq(i).addClass('active');
                 }
             });
 
             // Reset to first if at top
-            if (windscroll < 0) {
-                $('.scroll-nav .scroll-to.active, .scroll-nav-responsive a.active').removeClass('active');
-                $('.scroll-nav .scroll-to:first, .scroll-nav-responsive a:first').addClass('active');
+            if (windscroll === 0) {
+                $('.scroll-nav .scroll-to.active').removeClass('active');
+                $('.scroll-nav-responsive a.active').removeClass('active');
+                $('.scroll-nav .scroll-to:first').addClass('active');
+                $('.scroll-nav-responsive a:first').addClass('active');
             }
-        }).scroll();
+        }).scroll(); // Initial trigger
 
-        // Smooth scrolling on fixed menu item clicks (add similar for responsive if needed)
+        // Smooth scrolling for fixed menu clicks
         $('.scroll-nav .scroll-to').on('click', function(e) {
             e.preventDefault();
             var targetId = $(this).attr('href').substring(1);
             var $target = $('#' + targetId);
             if ($target.length) {
                 $('html, body').animate({
-                    scrollTop: $target.offset().top
-                }, 800); // Adjust speed as needed
+                    scrollTop: $target.offset().top - 100 // Offset for navbar
+                }, 800);
+            }
+        });
+
+        // Smooth scrolling for responsive menu clicks (if it has same structure)
+        $('.scroll-nav-responsive a[href^="#"]').on('click', function(e) {
+            e.preventDefault();
+            var targetId = $(this).attr('href').substring(1);
+            var $target = $('#' + targetId);
+            if ($target.length) {
+                $('html, body').animate({
+                    scrollTop: $target.offset().top - 100
+                }, 800);
             }
         });
     });
-
 
     // Testimonial Slider
 
