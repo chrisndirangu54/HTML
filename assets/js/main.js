@@ -40,22 +40,31 @@ $(function(){
             $(".global-color").removeClass("active");
         });
 
-        // Scroll-based menu activation and smooth scrolling (fixed menu only - using efficient IntersectionObserver)
-        // Targets: .scroll-nav .scroll-to (matches your HTML: <ul class="menu scroll-nav"> <a class="scroll-to">)
-        const menuItems = document.querySelectorAll('.scroll-nav .scroll-to[href^="#"]');
+        // Scroll-based menu activation for BOTH fixed and responsive (using efficient IntersectionObserver)
+        // Fixed: .scroll-nav .scroll-to (your HTML)
+        // Responsive: .scroll-nav-responsive a (from old JS; adjust if different, e.g., '.responsive-sidebar-menu .menu li a')
+        const fixedMenuItems = document.querySelectorAll('.scroll-nav .scroll-to[href^="#"]');
+        const responsiveMenuItems = document.querySelectorAll('.scroll-nav-responsive a[href^="#"], .responsive-sidebar-menu .menu li a[href^="#"]'); // Dual selector for safety
+        const allMenuItems = [...fixedMenuItems, ...responsiveMenuItems]; // Combined for shared logic
         const sections = new Map(); // Map href to section elements
-        let currentActive = null;
+        let currentActiveFixed = null;
+        let currentActiveResponsive = null;
 
-        // Collect section elements based on menu hrefs
-        menuItems.forEach(item => {
+        // Collect section elements based on menu hrefs (uses ID from href for precision)
+        allMenuItems.forEach(item => {
             const targetId = item.getAttribute('href')?.substring(1) || item.getAttribute('data-target');
             if (targetId) {
-                const section = document.getElementById(targetId);
-                if (section) {
+                const section = document.getElementById(targetId) || document.querySelector(`.page-section#${targetId}, .scroll-to-page#${targetId}`); // Fallback to class+id
+                if (section && !sections.has(targetId)) {
                     sections.set(targetId, section);
                 }
             }
         });
+
+        // Fallback index map if no href (for legacy ordered sections)
+        const orderedSections = Array.from(sections.values());
+        const fixedByIndex = Array.from(fixedMenuItems).map((item, i) => ({ item, index: i }));
+        const responsiveByIndex = Array.from(responsiveMenuItems).map((item, i) => ({ item, index: i }));
 
         // IntersectionObserver for detecting visible sections
         const observer = new IntersectionObserver(
@@ -63,26 +72,47 @@ $(function(){
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const targetId = entry.target.id;
-                        const menuItem = [...menuItems].find(item => {
-                            return (item.getAttribute('href')?.substring(1) === targetId) ||
-                                   (item.getAttribute('data-target') === targetId);
-                        });
+                        // Match by ID first (preferred)
+                        const fixedItem = [...fixedMenuItems].find(item => item.getAttribute('href')?.substring(1) === targetId);
+                        const responsiveItem = [...responsiveMenuItems].find(item => item.getAttribute('href')?.substring(1) === targetId);
 
-                        if (menuItem && menuItem !== currentActive) {
-                            // Remove active from previous
-                            if (currentActive) {
-                                currentActive.classList.remove('active');
+                        // Activate fixed
+                        if (fixedItem && fixedItem !== currentActiveFixed) {
+                            if (currentActiveFixed) currentActiveFixed.classList.remove('active');
+                            fixedItem.classList.add('active');
+                            currentActiveFixed = fixedItem;
+                        }
+                        // Activate responsive (only if sidebar is open? Optional: remove .responsive-sidebar-menu.active check if always active)
+                        if (responsiveItem && responsiveItem !== currentActiveResponsive && $('.responsive-sidebar-menu').hasClass('active')) {
+                            if (currentActiveResponsive) currentActiveResponsive.classList.remove('active');
+                            responsiveItem.classList.add('active');
+                            currentActiveResponsive = responsiveItem;
+                        }
+
+                        // Fallback: If no ID match, use index (old behavior)
+                        if (!fixedItem && orderedSections.length) {
+                            const sectionIndex = orderedSections.findIndex(s => s.id === targetId);
+                            if (sectionIndex !== -1) {
+                                const fixedByIdx = fixedByIndex[sectionIndex];
+                                if (fixedByIdx && fixedByIdx.item !== currentActiveFixed) {
+                                    if (currentActiveFixed) currentActiveFixed.classList.remove('active');
+                                    fixedByIdx.item.classList.add('active');
+                                    currentActiveFixed = fixedByIdx.item;
+                                }
+                                const respByIdx = responsiveByIndex[sectionIndex];
+                                if (respByIdx && respByIdx.item !== currentActiveResponsive && $('.responsive-sidebar-menu').hasClass('active')) {
+                                    if (currentActiveResponsive) currentActiveResponsive.classList.remove('active');
+                                    respByIdx.item.classList.add('active');
+                                    currentActiveResponsive = respByIdx.item;
+                                }
                             }
-                            // Add active to current
-                            menuItem.classList.add('active');
-                            currentActive = menuItem;
                         }
                     }
                 });
             },
             {
-                threshold: 0.5, // Activate when 50% of section is visible
-                rootMargin: '-20% 0px -80% 0px' // Offset for better activation (top/bottom bias, accounts for fixed navbar)
+                threshold: 0.5, // Activate when 50% visible
+                rootMargin: '-20% 0px -80% 0px' // Bias for fixed navbar/scroll feel
             }
         );
 
@@ -91,13 +121,13 @@ $(function(){
             observer.observe(section);
         });
 
-        // Smooth scrolling on menu item clicks (prevents default jump, uses native smooth scroll)
-        menuItems.forEach(item => {
+        // Smooth scrolling on ALL menu item clicks
+        allMenuItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 const targetId = item.getAttribute('href')?.substring(1) || item.getAttribute('data-target');
                 if (targetId) {
                     e.preventDefault();
-                    const targetSection = document.getElementById(targetId);
+                    const targetSection = document.getElementById(targetId) || document.querySelector(`.page-section#${targetId}, .scroll-to-page#${targetId}`);
                     if (targetSection) {
                         targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }
@@ -105,27 +135,29 @@ $(function(){
             });
         });
 
-        // Initial active state on load (checks visible section, adds active class)
+        // Initial active state on load (for both menus)
         setTimeout(() => {
-            const firstVisible = [...sections.values()].find(section => {
+            const firstVisible = orderedSections.find(section => {
                 const rect = section.getBoundingClientRect();
                 return rect.top < window.innerHeight * 0.5 && rect.bottom > window.innerHeight * 0.5;
             });
             if (firstVisible) {
                 const targetId = firstVisible.id;
-                const initialItem = [...menuItems].find(item => {
-                    return (item.getAttribute('href')?.substring(1) === targetId) ||
-                           (item.getAttribute('data-target') === targetId);
-                });
-                if (initialItem) {
-                    initialItem.classList.add('active');
-                    currentActive = initialItem;
+                // Fixed initial
+                const initialFixed = [...fixedMenuItems].find(item => item.getAttribute('href')?.substring(1) === targetId);
+                if (initialFixed) {
+                    initialFixed.classList.add('active');
+                    currentActiveFixed = initialFixed;
+                }
+                // Responsive initial (if open)
+                const initialResponsive = [...responsiveMenuItems].find(item => item.getAttribute('href')?.substring(1) === targetId);
+                if (initialResponsive && $('.responsive-sidebar-menu').hasClass('active')) {
+                    initialResponsive.classList.add('active');
+                    currentActiveResponsive = initialResponsive;
                 }
             }
-        }, 100); // Small delay for layout/rendering
+        }, 100); // Delay for layout
     });
-
-
 
 
 
