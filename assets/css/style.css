@@ -439,8 +439,7 @@ main.drake-main {
     overflow: hidden;
 }
 
-
-/* 01 - Menu */
+/* 01 - Menu (With Minimal Tooltip Fix: !important Overrides to Prevent Flicker/Blank from Parent Clip Inheritance) */
 .menu {
     flex-direction: column;
     padding-top: 170px; /* Space below the fixed navbar */
@@ -532,8 +531,15 @@ main.drake-main {
 .menu li a:hover span,
 .menu li .scroll-to.active span,
 .menu li a.active span {
-    opacity: 1;
-    visibility: visible;
+    opacity: 1 !important;
+    visibility: visible !important;
+    /* Force overrides to prevent parent clip/transparent inheritance causing flicker/blank */
+    color: #fff !important;
+    background: #404042 !important;
+    background-clip: initial !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: #fff !important;
+    text-fill-color: #fff !important;
 }
 
 .menu li .scroll-to i,
@@ -577,7 +583,7 @@ main.drake-main {
     z-index: -1;
 }
 
-/* 02 - Responsive Sidebar Menu */
+/* 02 - Responsive Sidebar Menu (Unchanged) */
 .responsive-sidebar-menu {
     padding-top: 100px; /* Space below the fixed navbar */
     position: fixed;
