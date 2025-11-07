@@ -40,125 +40,41 @@ $(function(){
             $(".global-color").removeClass("active");
         });
 
-        // Scroll-based menu activation for BOTH fixed and responsive (using efficient IntersectionObserver)
-        // Fixed: .scroll-nav .scroll-to (your HTML)
-        // Responsive: .scroll-nav-responsive a (from old JS; adjust if different, e.g., '.responsive-sidebar-menu .menu li a')
-        const fixedMenuItems = document.querySelectorAll('.scroll-nav .scroll-to[href^="#"]');
-        const responsiveMenuItems = document.querySelectorAll('.scroll-nav-responsive a[href^="#"], .responsive-sidebar-menu .menu li a[href^="#"]'); // Dual selector for safety
-        const allMenuItems = [...fixedMenuItems, ...responsiveMenuItems]; // Combined for shared logic
-        const sections = new Map(); // Map href to section elements
-        let currentActiveFixed = null;
-        let currentActiveResponsive = null;
-
-        // Collect section elements based on menu hrefs (uses ID from href for precision)
-        allMenuItems.forEach(item => {
-            const targetId = item.getAttribute('href')?.substring(1) || item.getAttribute('data-target');
-            if (targetId) {
-                const section = document.getElementById(targetId) || document.querySelector(`.page-section#${targetId}, .scroll-to-page#${targetId}`); // Fallback to class+id
-                if (section && !sections.has(targetId)) {
-                    sections.set(targetId, section);
-                }
-            }
-        });
-
-        // Fallback index map if no href (for legacy ordered sections)
-        const orderedSections = Array.from(sections.values());
-        const fixedByIndex = Array.from(fixedMenuItems).map((item, i) => ({ item, index: i }));
-        const responsiveByIndex = Array.from(responsiveMenuItems).map((item, i) => ({ item, index: i }));
-
-        // IntersectionObserver for detecting visible sections
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const targetId = entry.target.id;
-                        // Match by ID first (preferred)
-                        const fixedItem = [...fixedMenuItems].find(item => item.getAttribute('href')?.substring(1) === targetId);
-                        const responsiveItem = [...responsiveMenuItems].find(item => item.getAttribute('href')?.substring(1) === targetId);
-
-                        // Activate fixed
-                        if (fixedItem && fixedItem !== currentActiveFixed) {
-                            if (currentActiveFixed) currentActiveFixed.classList.remove('active');
-                            fixedItem.classList.add('active');
-                            currentActiveFixed = fixedItem;
-                        }
-                        // Activate responsive (only if sidebar is open? Optional: remove .responsive-sidebar-menu.active check if always active)
-                        if (responsiveItem && responsiveItem !== currentActiveResponsive && $('.responsive-sidebar-menu').hasClass('active')) {
-                            if (currentActiveResponsive) currentActiveResponsive.classList.remove('active');
-                            responsiveItem.classList.add('active');
-                            currentActiveResponsive = responsiveItem;
-                        }
-
-                        // Fallback: If no ID match, use index (old behavior)
-                        if (!fixedItem && orderedSections.length) {
-                            const sectionIndex = orderedSections.findIndex(s => s.id === targetId);
-                            if (sectionIndex !== -1) {
-                                const fixedByIdx = fixedByIndex[sectionIndex];
-                                if (fixedByIdx && fixedByIdx.item !== currentActiveFixed) {
-                                    if (currentActiveFixed) currentActiveFixed.classList.remove('active');
-                                    fixedByIdx.item.classList.add('active');
-                                    currentActiveFixed = fixedByIdx.item;
-                                }
-                                const respByIdx = responsiveByIndex[sectionIndex];
-                                if (respByIdx && respByIdx.item !== currentActiveResponsive && $('.responsive-sidebar-menu').hasClass('active')) {
-                                    if (currentActiveResponsive) currentActiveResponsive.classList.remove('active');
-                                    respByIdx.item.classList.add('active');
-                                    currentActiveResponsive = respByIdx.item;
-                                }
-                            }
-                        }
-                    }
-                });
-            },
-            {
-                threshold: 0.5, // Activate when 50% visible
-                rootMargin: '-20% 0px -80% 0px' // Bias for fixed navbar/scroll feel
-            }
-        );
-
-        // Observe sections
-        sections.forEach((section) => {
-            observer.observe(section);
-        });
-
-        // Smooth scrolling on ALL menu item clicks
-        allMenuItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                const targetId = item.getAttribute('href')?.substring(1) || item.getAttribute('data-target');
-                if (targetId) {
-                    e.preventDefault();
-                    const targetSection = document.getElementById(targetId) || document.querySelector(`.page-section#${targetId}, .scroll-to-page#${targetId}`);
-                    if (targetSection) {
-                        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
+        // Reverted: Old index-based scroll spy for both fixed and responsive menus
+        // Assumes sections (.page-section, .scroll-to-page) are in menu order
+        $(window).scroll(function() {
+            var windscroll = $(window).scrollTop();
+            var $sections = $('.page-section, .scroll-to-page'); // Combine selectors to avoid dupes
+            
+            $sections.each(function(i) {
+                var offset = $(this).position().top;
+                var threshold = windscroll + (i === 0 ? 1 : 0); // Minor tweak for precision
+                
+                if (offset <= threshold) {
+                    $('.scroll-nav .scroll-to.active, .scroll-nav-responsive a.active').removeClass('active');
+                    $('.scroll-nav .scroll-to, .scroll-nav-responsive a').eq(i).addClass('active');
                 }
             });
-        });
 
-        // Initial active state on load (for both menus)
-        setTimeout(() => {
-            const firstVisible = orderedSections.find(section => {
-                const rect = section.getBoundingClientRect();
-                return rect.top < window.innerHeight * 0.5 && rect.bottom > window.innerHeight * 0.5;
-            });
-            if (firstVisible) {
-                const targetId = firstVisible.id;
-                // Fixed initial
-                const initialFixed = [...fixedMenuItems].find(item => item.getAttribute('href')?.substring(1) === targetId);
-                if (initialFixed) {
-                    initialFixed.classList.add('active');
-                    currentActiveFixed = initialFixed;
-                }
-                // Responsive initial (if open)
-                const initialResponsive = [...responsiveMenuItems].find(item => item.getAttribute('href')?.substring(1) === targetId);
-                if (initialResponsive && $('.responsive-sidebar-menu').hasClass('active')) {
-                    initialResponsive.classList.add('active');
-                    currentActiveResponsive = initialResponsive;
-                }
+            // Reset to first if at top
+            if (windscroll < 0) {
+                $('.scroll-nav .scroll-to.active, .scroll-nav-responsive a.active').removeClass('active');
+                $('.scroll-nav .scroll-to:first, .scroll-nav-responsive a:first').addClass('active');
             }
-        }, 100); // Delay for layout
+        }).scroll();
+
+        // Smooth scrolling on fixed menu item clicks (add similar for responsive if needed)
+        $('.scroll-nav .scroll-to').on('click', function(e) {
+            e.preventDefault();
+            var targetId = $(this).attr('href').substring(1);
+            var $target = $('#' + targetId);
+            if ($target.length) {
+                $('html, body').animate({
+                    scrollTop: $target.offset().top
+                }, 800); // Adjust speed as needed
+            }
+        });
     });
-
 
 
     // Testimonial Slider
