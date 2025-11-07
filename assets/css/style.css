@@ -432,7 +432,7 @@ main.drake-main {
     /* inset: 0px;
     width: 100%;
     height: 100vh;
-    position: fixed; */
+    position: fixed; */ 
     /* overflow: hidden; */
 }
 .page-section {
@@ -625,7 +625,7 @@ main.drake-main {
 
 .responsive-sidebar-menu .sidebar-menu-inner .menu-wrap .menu {
     position: relative;
-    right: auto;
+    right: auto;  
     left: 0;
     top: 0;
     transform: translateY(0);
