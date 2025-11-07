@@ -1,11 +1,9 @@
 $(function(){
-
     $(window).on('load', function () {
         $('.page-loader').delay('500').fadeOut(1000);
     });
 
     $(document).ready(function() {
-
         // Toggle sidebar on hamburger click (open if closed, close if open)
         $(document).on('click', '.icon-menu', function(e) {
             e.preventDefault();
@@ -42,96 +40,90 @@ $(function(){
             $(".global-color").removeClass("active");
         });
 
-    });
+        // Scroll-based menu activation and smooth scrolling (fixed menu only - using efficient IntersectionObserver)
+        // Targets: .scroll-nav .scroll-to (matches your HTML: <ul class="menu scroll-nav"> <a class="scroll-to">)
+        const menuItems = document.querySelectorAll('.scroll-nav .scroll-to[href^="#"]');
+        const sections = new Map(); // Map href to section elements
+        let currentActive = null;
 
-});
-
-// Vanilla JS for fixed menu scroll activation (combined here to avoid conflicts)
-document.addEventListener('DOMContentLoaded', function() {
-    const menuItems = document.querySelectorAll('.menu li .scroll-to, .menu li a[href^="#"]');
-    const sections = new Map(); // Map href to section elements
-    let currentActive = null;
-
-    // Collect section elements based on menu hrefs
-    menuItems.forEach(item => {
-        const targetId = item.getAttribute('href')?.substring(1) || item.getAttribute('data-target');
-        if (targetId) {
-            const section = document.getElementById(targetId);
-            if (section) {
-                sections.set(targetId, section);
+        // Collect section elements based on menu hrefs
+        menuItems.forEach(item => {
+            const targetId = item.getAttribute('href')?.substring(1) || item.getAttribute('data-target');
+            if (targetId) {
+                const section = document.getElementById(targetId);
+                if (section) {
+                    sections.set(targetId, section);
+                }
             }
-        }
-    });
+        });
 
-    // IntersectionObserver for detecting visible sections
-    const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const targetId = entry.target.id;
-                    const menuItem = [...menuItems].find(item => {
-                        return (item.getAttribute('href')?.substring(1) === targetId) ||
-                               (item.getAttribute('data-target') === targetId);
-                    });
+        // IntersectionObserver for detecting visible sections
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const targetId = entry.target.id;
+                        const menuItem = [...menuItems].find(item => {
+                            return (item.getAttribute('href')?.substring(1) === targetId) ||
+                                   (item.getAttribute('data-target') === targetId);
+                        });
 
-                    if (menuItem && menuItem !== currentActive) {
-                        // Remove active from previous
-                        if (currentActive) {
-                            currentActive.classList.remove('active');
+                        if (menuItem && menuItem !== currentActive) {
+                            // Remove active from previous
+                            if (currentActive) {
+                                currentActive.classList.remove('active');
+                            }
+                            // Add active to current
+                            menuItem.classList.add('active');
+                            currentActive = menuItem;
                         }
-                        // Add active to current
-                        menuItem.classList.add('active');
-                        currentActive = menuItem;
+                    }
+                });
+            },
+            {
+                threshold: 0.5, // Activate when 50% of section is visible
+                rootMargin: '-20% 0px -80% 0px' // Offset for better activation (top/bottom bias, accounts for fixed navbar)
+            }
+        );
+
+        // Observe sections
+        sections.forEach((section) => {
+            observer.observe(section);
+        });
+
+        // Smooth scrolling on menu item clicks (prevents default jump, uses native smooth scroll)
+        menuItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                const targetId = item.getAttribute('href')?.substring(1) || item.getAttribute('data-target');
+                if (targetId) {
+                    e.preventDefault();
+                    const targetSection = document.getElementById(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }
                 }
             });
-        },
-        {
-            threshold: 0.5, // Activate when 50% of section is visible
-            rootMargin: '-20% 0px -80% 0px' // Offset for better activation (top/bottom bias)
-        }
-    );
+        });
 
-    // Observe sections
-    sections.forEach((section) => {
-        observer.observe(section);
-    });
-
-    // Smooth scrolling on menu item clicks
-    menuItems.forEach(item => {
-        item.addEventListener('click', (e) => {
-            const targetId = item.getAttribute('href')?.substring(1) || item.getAttribute('data-target');
-            if (targetId) {
-                e.preventDefault();
-                const targetSection = document.getElementById(targetId);
-                if (targetSection) {
-                    targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Initial active state on load (checks visible section, adds active class)
+        setTimeout(() => {
+            const firstVisible = [...sections.values()].find(section => {
+                const rect = section.getBoundingClientRect();
+                return rect.top < window.innerHeight * 0.5 && rect.bottom > window.innerHeight * 0.5;
+            });
+            if (firstVisible) {
+                const targetId = firstVisible.id;
+                const initialItem = [...menuItems].find(item => {
+                    return (item.getAttribute('href')?.substring(1) === targetId) ||
+                           (item.getAttribute('data-target') === targetId);
+                });
+                if (initialItem) {
+                    initialItem.classList.add('active');
+                    currentActive = initialItem;
                 }
             }
-        });
+        }, 100); // Small delay for layout/rendering
     });
-
-    // Initial active state on load
-    setTimeout(() => {
-        const firstVisible = [...sections.values()].find(section => {
-            const rect = section.getBoundingClientRect();
-            return rect.top < window.innerHeight * 0.5 && rect.bottom > window.innerHeight * 0.5;
-        });
-        if (firstVisible) {
-            const targetId = firstVisible.id;
-            const initialItem = [...menuItems].find(item => {
-                return (item.getAttribute('href')?.substring(1) === targetId) ||
-                       (item.getAttribute('data-target') === targetId);
-            });
-            if (initialItem) {
-                initialItem.classList.add('active');
-                currentActive = initialItem;
-            }
-        }
-    }, 100); // Small delay for layout
-
-
-
 
 
 
