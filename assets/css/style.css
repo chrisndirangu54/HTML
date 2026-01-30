@@ -95,9 +95,17 @@ ul {
     margin-bottom: 3px;
 }
 .theme-btn:hover {
-    background: none;
-    color: var(--primary-gradient, var(--primary-color))
-;
+    
+  background: var(--primary-gradient, var(--primary-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+  display: inline-block;
+    border: 2px solid var(--primary-color);
+    border-image-source: var(--primary-gradient);
+    border-image-slice: 1;
+
 }
 .custom-container {
     max-width: 1130px;
@@ -155,9 +163,11 @@ ul {
 ;
     font-weight: bold;
 }
-/* -------------------------------------------------
+/*-------------------------------------------------
    1. Wrapper – fixed at bottom-right, enables container queries
    ------------------------------------------------- */
+
+
 .icon-menu-wrapper {
   position: fixed;
   right: 0;
@@ -169,9 +179,10 @@ ul {
   container-type: inline-size;     /* ← Enables @container */
 }
 
-/* -------------------------------------------------
+/*-------------------------------------------------
    2. Icon Menu – absolute inside wrapper, always 20px from bottom
    ------------------------------------------------- */
+   
 .icon-menu {
   position: absolute;
   right: 68px;
@@ -361,7 +372,7 @@ ul {
 /* Desktop/large screens: move to RIGHT side */
 @media (min-width: 1025px) {
     .top-navbar {
-        right: 30px;          /* ← key change: position from right */
+        right: 10px;          /* ← key change: position from right */
         left: auto;           /* override any previous left */
     }
     
@@ -417,12 +428,12 @@ ul {
 .top-mobile-menu {
     position: absolute;
     top: 100%;
-    margin-top: 12px;
+    margin-top: 8px;
     width: 220px;                  /* adjustable */
     background: rgba(20, 20, 20, 0.97);
     border-radius: 12px;
     backdrop-filter: blur(8px);
-    padding: 15px 0;
+    padding: 8px 0;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
     border: 1px solid rgba(255, 215, 0, 0.15);
     overflow: hidden;
@@ -498,7 +509,7 @@ ul {
 /* Menu items */
 .top-mobile-menu li a {
     color: #fff;
-    padding: 12px 20px;
+    padding: 6px 20px;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -549,7 +560,7 @@ main.drake-main {
     border: 1px solid #575757;
     border-radius: 30px;
     position: fixed;
-    right: 68px;
+    right: 10px;
     top: 322px;
     /* width: 55px; */
     text-align: center;
@@ -722,7 +733,7 @@ main.drake-main {
     background: #191919;
     height: 100%;
     overflow-x: hidden;
-    padding-top: 50px;
+    padding-top: 30px;
     margin-right: -250px;
     transition: .3s;
 }
@@ -1326,7 +1337,12 @@ color: var(--primary-color); /* Fallback solid */}.global-color .inner .global-c
 }
 .hero-section .hero-content .go-to-project-btn i {
     position: absolute;
-    color: #fff;
+  background: var(--primary-gradient, var(--primary-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+  display: inline-block;
     font-size: 40px;
     display: block;
 }
@@ -1517,6 +1533,14 @@ body .body-overlay {
 .services-area {
     padding-top: 90px;
     padding-bottom: 90px;
+
+
+
+}
+.services-items {
+    flex-wrap: wrap;
+    justify-content: center;
+
 }
 
 .services-items .service-item {
@@ -1526,6 +1550,9 @@ body .body-overlay {
     position: relative;
     padding: 44px 48px 41px 48px;
     margin-bottom: 10px;
+
+    
+
 }
 
 .services-items .service-item:last-child {
@@ -1551,7 +1578,7 @@ body .body-overlay {
     border-image-slice: 1;
 }
 
-.services-items .service-item:hover h2 a {
+.services-items .service-item:hover h2 {
     background: var(--primary-gradient, var(--primary-color)); /* Already correct: chains for text clip */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -1728,6 +1755,13 @@ body .body-overlay {
 .portfolio-items .portfolio-item:hover h2 a {
     /* Updated: Theme underline on hover – solid color or gradient fallback */
     border-color: var(--primary-gradient, var(--primary-color));
+      background: var(--primary-gradient, var(--primary-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+  display: inline-block;
+
 }
 
 
@@ -2032,6 +2066,9 @@ body .body-overlay {
     background-repeat: no-repeat;
     background-position: right 5px center;
     background-size: 16px;
+    color: #7d7b7b;
+    font-weight: bold;
+
     padding-right: 25px; /* Space for custom arrow */
 }
 .contact-area .contact-content .contact-form .input-group select:focus,
@@ -2763,6 +2800,8 @@ h1 span {
   background: var(--primary-gradient, var(--primary-color));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+    background-clip: text;
+
   display: inline-block;
 }
 h1 span:hover {
