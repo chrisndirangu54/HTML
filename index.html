@@ -860,6 +860,87 @@ window.addEventListener('orientationchange', checkWrap);
 function toggleMobileMenu() {
     document.getElementById('mobileMenu').classList.toggle('show');
 }
+
+let lastScrollTop = 0;
+const navbar = document.querySelector('.top-mobile-menu');
+const delta = 5;
+const navbarHeight = navbar?.offsetHeight || 60;
+
+let isNavbarVisible = false;
+let scrollOccurred = false;
+
+// Force hide at start
+if (navbar) {
+    navbar.style.transform = 'translateY(-100%)';
+    navbar.style.opacity = '0';
+    navbar.style.pointerEvents = 'none';
+}
+
+// ── Scroll: hide on ANY scroll (up or down) ──
+window.addEventListener('scroll', () => {
+    const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (Math.abs(lastScrollTop - currentScrollTop) <= delta) return;
+
+    if (isNavbarVisible) {
+        hideNavbar();
+    }
+
+    scrollOccurred = true;
+    lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
+});
+
+// ── Click outside navbar → show it (but don't toggle menu) ──
+document.addEventListener('click', (e) => {
+    if (!navbar) return;
+
+    // Click inside navbar → do nothing here (hamburger will handle itself)
+    if (navbar.contains(e.target)) {
+        return;
+    }
+
+    // Clicked outside → reveal navbar (but don't auto-open menu)
+    if (!isNavbarVisible) {
+        showNavbar();
+    }
+});
+
+// ── Hamburger click – always ensure navbar is visible, then toggle menu ──
+const hamburger = document.querySelector('.hamburger'); // ← adjust selector if needed
+
+if (hamburger) {
+    hamburger.addEventListener('click', (e) => {
+        e.stopPropagation(); // prevent document click from interfering
+
+        // Most important fix: if navbar is hidden → show it first
+        if (!isNavbarVisible) {
+            showNavbar();
+        }
+
+        // Then toggle the actual menu
+        document.getElementById('mobileMenu')?.classList.toggle('show');
+    });
+}
+
+function showNavbar() {
+    if (!navbar) return;
+    navbar.style.transform = 'translateY(0)';
+    navbar.style.opacity = '1';
+    navbar.style.pointerEvents = 'auto';
+    isNavbarVisible = true;
+}
+
+function hideNavbar() {
+    if (!navbar) return;
+    navbar.style.transform = 'translateY(-100%)';
+    navbar.style.opacity = '0';
+    navbar.style.pointerEvents = 'none';
+    isNavbarVisible = false;
+
+    // Optional: also close menu when hiding navbar
+    document.getElementById('mobileMenu')?.classList.remove('show');
+}
+</script>
 </script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-H4YCVYBN9S">

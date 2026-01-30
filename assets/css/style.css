@@ -417,10 +417,8 @@ ul {
 .top-mobile-menu {
     position: absolute;
     top: 100%;
-    right: 0;                      /* ← align dropdown to right edge of icon */
-    left: auto;                    /* important for right-aligned parent */
-    width: 220px;                  /* slightly wider for better readability */
     margin-top: 12px;
+    width: 220px;                  /* adjustable */
     background: rgba(20, 20, 20, 0.97);
     border-radius: 12px;
     backdrop-filter: blur(8px);
@@ -429,6 +427,72 @@ ul {
     border: 1px solid rgba(255, 215, 0, 0.15);
     overflow: hidden;
     display: none;
+    transition: all 0.4s ease-in-out;  /* ← add this for smooth slide + fade */
+    transform: translateY(0);          /* initial visible state */
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+/* Default (mobile/small screens): align to LEFT of icon */
+@media (max-width: 1024px) {
+    .top-mobile-menu {
+        left: 0;
+        right: auto;
+    }
+    
+    /* Optional upward-pointing arrow on the LEFT side */
+    .top-mobile-menu::before {
+        content: '';
+        position: absolute;
+        top: -8px;
+        left: 20px;                /* arrow closer to left edge */
+        right: auto;
+        width: 0;
+        height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 8px solid rgba(20, 20, 20, 0.97);
+    }
+}
+
+/* Desktop/large screens: align to RIGHT of icon */
+@media (min-width: 1025px) {
+    .top-mobile-menu {
+        right: 0;
+        left: auto;
+    }
+    
+    /* Optional upward-pointing arrow on the RIGHT side */
+    .top-mobile-menu::before {
+        content: '';
+        position: absolute;
+        top: -8px;
+        right: 20px;               /* arrow closer to right edge */
+        left: auto;
+        width: 0;
+        height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 8px solid rgba(20, 20, 20, 0.97);
+    }
+}
+
+/* Show when .show class is added */
+.top-mobile-menu.show {
+    display: flex;
+    animation: dropdownFade 0.3s ease;
+}
+
+@keyframes dropdownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Menu items */
