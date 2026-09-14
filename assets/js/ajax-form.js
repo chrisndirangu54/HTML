@@ -96,3 +96,22 @@
     });
     
 })(jQuery);
+
+// Top portfolio menu destinations that live on dedicated pages.
+document.addEventListener('DOMContentLoaded', function () {
+    const routes = {
+        '#blogs': 'blog.html',
+        '#gallery': 'gallery.html',
+        '#awards': 'awards.html',
+        '#Shop': 'shop.html',
+        '#podcasts': 'podcasts.html',
+        '#training': 'training.html',
+        '#events': 'events.html'
+    };
+    Object.entries(routes).forEach(([hash, destination]) => {
+        document.querySelectorAll(`a[href="${hash}"]`).forEach(link => {
+            link.setAttribute('href', destination);
+            link.classList.remove('scroll-to');
+        });
+    });
+});
