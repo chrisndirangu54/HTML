@@ -17,8 +17,15 @@
 
   function loadScript(src) {
     return new Promise((resolve, reject) => {
-      const existing = [...document.scripts].find(s => s.src === new URL(src, location.href).href);
-      if (existing) { if (existing.dataset.loaded === 'true' || src.includes('three')) return resolve(); existing.addEventListener('load', resolve, {once:true}); return; }
+      const absolute = new URL(src, location.href).href;
+      const existing = [...document.scripts].find(s => s.src === absolute);
+      if (existing) {
+        if (src.includes('three') && window.THREE) return resolve();
+        if (existing.dataset.loaded === 'true') return resolve();
+        existing.addEventListener('load', resolve, {once:true});
+        existing.addEventListener('error', reject, {once:true});
+        return;
+      }
       const script = document.createElement('script');
       script.src = src; script.async = true;
       script.onload = () => { script.dataset.loaded = 'true'; resolve(); };
@@ -152,11 +159,20 @@
     const clock = new THREE.Clock();
     const eyes = root.querySelectorAll('.tt-orb-eye');
 
-    const pointer = e => { mx=(e.clientX/innerWidth)*2-1; my=(e.clientY/innerHeight)*2-1; root.style.setProperty('--orb-mouse-x',mx); root.style.setProperty('--orb-mouse-y',my); eyes.forEach(el=>{el.style.setProperty('--eye-x',(mx*4).toFixed(2));el.style.setProperty('--eye-y',(my*2.7).toFixed(2));}); };
+    const pointer = e => {
+      mx=(e.clientX/innerWidth)*2-1; my=(e.clientY/innerHeight)*2-1;
+      root.style.setProperty('--orb-mouse-x-px',`${(mx*10).toFixed(1)}px`);
+      root.style.setProperty('--orb-mouse-y-px',`${(my*8).toFixed(1)}px`);
+      eyes.forEach(el=>{
+        el.style.setProperty('--eye-x-px',`${(mx*4).toFixed(1)}px`);
+        el.style.setProperty('--eye-y-px',`${(my*2.7).toFixed(1)}px`);
+      });
+    };
     window.addEventListener('pointermove',pointer,{passive:true});
 
     const resize = () => { const r=canvas.getBoundingClientRect(); if(!r.width||!r.height)return; renderer.setSize(r.width,r.height,false); camera.aspect=r.width/r.height; camera.updateProjectionMatrix(); };
-    new ResizeObserver(resize).observe(stage); resize();
+    if ('ResizeObserver' in window) new ResizeObserver(resize).observe(stage); else window.addEventListener('resize',resize,{passive:true});
+    resize();
 
     const hero = document.querySelector(HOME_SELECTOR);
     const updateScroll = () => {
