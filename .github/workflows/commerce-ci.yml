@@ -17,13 +17,17 @@ jobs:
         run: |
           node --check functions/index.js
           node --check assets/js/shop.js
+          node --check assets/js/auth-client.js
+          node --check assets/js/login.js
+          node --check assets/js/account.js
+          node --check assets/js/dashboard.js
           node --check assets/js/blog.js
           node --check assets/js/ajax-form.js
       - name: Validate catalogue JSON
         run: node -e "const fs=require('fs'); const p=JSON.parse(fs.readFileSync('data/products.seed.json')); if(!Array.isArray(p)||p.length<5) process.exit(1);"
       - name: Validate required web pages
         run: |
-          for f in shop.html blog.html gallery.html events.html training.html podcasts.html awards.html assets/css/commerce.css assets/js/site-config.js; do test -s "$f" || exit 1; done
+          for f in shop.html login.html account.html admin.html attendant.html delivery.html blog.html gallery.html events.html training.html podcasts.html awards.html assets/css/commerce.css assets/js/site-config.js firestore.rules firebase.json; do test -s "$f" || exit 1; done
       - name: Install Functions dependencies
         working-directory: functions
         run: npm install --ignore-scripts --no-audit --no-fund
