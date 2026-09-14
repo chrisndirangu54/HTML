@@ -18,11 +18,21 @@ for (let offset = 0; offset < products.length; offset += 400) {
     }
 
     // Market-reference catalogue data is intentionally separate from real
-    // TeknTandao inventory. Re-running this script must never overwrite a
-    // merchant's live stock or accidentally activate a product for checkout.
-    const {id, stock: referenceStock, active: suggestedActive, ...catalogue} = product;
+    // TeknTandao inventory. Re-running this script must never overwrite the
+    // merchant's live price, stock or active state.
+    const {
+      id,
+      priceKes: marketReferencePriceKes,
+      compareAtKes: marketReferenceCompareAtKes,
+      stock: referenceStock,
+      active: suggestedActive,
+      ...catalogue
+    } = product;
+
     batch.set(db.collection('products').doc(id), {
       ...catalogue,
+      marketReferencePriceKes,
+      marketReferenceCompareAtKes,
       catalogueSuggestedActive: suggestedActive !== false,
       referenceStock,
       seededFrom: 'data/products.json',
@@ -33,5 +43,6 @@ for (let offset = 0; offset < products.length; offset += 400) {
   await batch.commit();
 }
 
-console.log(`Seeded ${products.length} catalogue records without changing live stock/active state.`);
-console.log('Set each Firestore product active=true and a real integer stock quantity only after verifying TeknTandao inventory.');
+console.log(`Seeded ${products.length} market-reference catalogue records.`);
+console.log('Live Firestore fields priceKes, stock and active were not changed.');
+console.log('Set priceKes, stock and active=true only after verifying TeknTandao selling price and physical inventory.');
