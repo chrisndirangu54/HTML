@@ -1,0 +1,19 @@
+{
+  "name": "tekntandao-html-commerce",
+  "private": true,
+  "type": "module",
+  "engines": {"node": ">=22"},
+  "scripts": {
+    "check": "node --check assets/js/commerce.js && node --check assets/js/commerce-config.js && node --check functions/index.js",
+    "test": "node --test tests/commerce.test.mjs",
+    "seed:products": "node scripts/seed-products.mjs",
+    "emulators": "firebase emulators:start --project demo-tekntandao",
+    "deploy": "firebase deploy"
+  },
+  "dependencies": {
+    "firebase-admin": "^14.4.0"
+  },
+  "devDependencies": {
+    "firebase-tools": "^15.30.0"
+  }
+}

@@ -1,0 +1,23 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /products/{productId} {
+      allow get, list: if resource.data.active == true;
+      allow write: if false;
+    }
+
+    // Orders, checkout rate limits and payment state are server-owned. Public
+    // clients access safe order status through Cloud Functions using a random
+    // status token, never via direct Firestore reads.
+    match /orders/{orderId} {
+      allow read, write: if false;
+    }
+    match /commerceRateLimits/{bucket} {
+      allow read, write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

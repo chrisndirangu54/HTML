@@ -96,3 +96,36 @@
     });
     
 })(jQuery);
+
+// Load the Firebase ICT store and content integrations without rewriting the
+// legacy single-page template. This script already ships on every page load.
+(function () {
+    if (document.querySelector('script[data-tt-commerce]')) return;
+
+    var stylesheet = document.createElement('link');
+    stylesheet.rel = 'stylesheet';
+    stylesheet.href = 'assets/css/commerce.css';
+    stylesheet.dataset.ttCommerce = '1';
+    document.head.appendChild(stylesheet);
+
+    // The initial JSON contains market-reference catalogue data, not verified
+    // TeknTandao warehouse quantities. Do not claim a public quantity even when
+    // a reference row has a placeholder stock value; checkout revalidates the
+    // real Firestore stock server-side.
+    var inventoryStyle = document.createElement('style');
+    inventoryStyle.textContent = '.tt-stock{font-size:0}.tt-stock::after{content:"Confirm stock";font-size:12px}';
+    inventoryStyle.dataset.ttCommerce = '1';
+    document.head.appendChild(inventoryStyle);
+
+    var configScript = document.createElement('script');
+    configScript.src = 'assets/js/commerce-config.js';
+    configScript.dataset.ttCommerce = '1';
+    configScript.onload = function () {
+        var moduleScript = document.createElement('script');
+        moduleScript.type = 'module';
+        moduleScript.src = 'assets/js/commerce.js';
+        moduleScript.dataset.ttCommerce = '1';
+        document.body.appendChild(moduleScript);
+    };
+    document.body.appendChild(configScript);
+})();
