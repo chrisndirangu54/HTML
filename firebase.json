@@ -1,0 +1,45 @@
+{
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "commerce",
+      "ignore": ["node_modules", ".git", "firebase-debug.log", "firebase-debug.*.log"]
+    }
+  ],
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      ".firebaserc*",
+      "**/.*",
+      "**/node_modules/**",
+      "functions/**",
+      "scripts/**",
+      "tests/**",
+      "docs/**",
+      "package.json",
+      "package-lock.json",
+      "firestore.rules",
+      "firestore.indexes.json"
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(js|css|json)",
+        "headers": [
+          {"key": "Cache-Control", "value": "public,max-age=300,must-revalidate"}
+        ]
+      }
+    ]
+  },
+  "emulators": {
+    "firestore": {"port": 8080},
+    "functions": {"port": 5001},
+    "hosting": {"port": 5000},
+    "ui": {"enabled": true, "port": 4000},
+    "singleProjectMode": true
+  }
+}
