@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact | Icon Element</title>
+
+  <!-- Premium fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --dark: #111111;
+      --text: #f8f8f8;
+      --gold: #c9a96e;
+      --gold-dark: #b5893c;
+      --border: rgba(201, 169, 110, 0.20);
+      --gray: #1a1a1a;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.7;
+    }
+
+    h1, h2 { font-family: 'Playfair Display', serif; font-weight: 900; letter-spacing: -0.025em; }
+
+    .contact-section {
+      min-height: 100vh;
+      padding: clamp(8rem, 15vh, 14rem) 5vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--dark);
+    }
+
+    .contact-container {
+      max-width: 1100px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .section-title {
+      font-size: clamp(3.5rem, 8vw, 6.5rem);
+      background: linear-gradient(90deg, var(--gold), #e8c88a, var(--gold-dark));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-subtitle {
+      font-size: clamp(1.3rem, 3vw, 1.9rem);
+      opacity: 0.88;
+      max-width: 720px;
+      margin: 0 auto 4rem;
+    }
+
+    .contact-email {
+      font-size: 1.6rem;
+      color: var(--gold);
+      margin-bottom: 3rem;
+      opacity: 0.95;
+    }
+
+    form {
+      max-width: 780px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .form-row { grid-template-columns: 1fr; gap: 2rem; }
+    }
+
+    .input-group {
+      position: relative;
+    }
+
+    label {
+      display: block;
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.8rem;
+      color: rgba(248,248,248,0.9);
+    }
+
+    label sup {
+      color: var(--gold);
+      font-size: 0.9rem;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 1.1rem 1.4rem;
+      background: var(--gray);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 1.05rem;
+      transition: all 0.3s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,169,110,0.15);
+    }
+
+    textarea {
+      min-height: 160px;
+      resize: vertical;
+    }
+
+    .file-upload {
+      margin: 2rem 0;
+    }
+
+    .file-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 1rem 1.8rem;
+      background: var(--gray);
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .file-label:hover {
+      border-color: var(--gold);
+      background: rgba(201,169,110,0.05);
+    }
+
+    .submit-btn {
+      width: 100%;
+      max-width: 320px;
+      margin: 3rem auto 0;
+      display: block;
+      padding: 1.3rem;
+      background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+      color: #000;
+      font-size: 1.3rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 12px 48px rgba(201,169,110,0.25);
+      transition: all 0.4s ease;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 72px rgba(201,169,110,0.4);
+    }
+
+    .success-msg {
+      display: none;
+      margin-top: 2rem;
+      padding: 1.2rem;
+      background: rgba(201,169,110,0.12);
+      border: 1px solid rgba(201,169,110,0.3);
+      border-radius: 10px;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .required-note {
+      font-size: 0.95rem;
+      opacity: 0.7;
+      margin: 1rem 0 3rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <section class="contact-section">
+    <div class="contact-container">
+      <h1 class="section-title scroll-animation">Let’s Build Authentic Impact Together</h1>
+      <p class="section-subtitle scroll-animation">
+        We’re ready to listen, understand your goals, and explore how Icon Element can support your organization in Los Angeles’ complex cultural landscape.
+      </p>
+
+      <a href="mailto:info@iconelement.com" class="contact-email scroll-animation">info@iconelement.com</a>
+
+      <p class="required-note scroll-animation">* Required fields</p>
+
+      <!-- Replace action with your real form endpoint (Formcarry, Formspree, Getform, etc.) -->
+      <form class="contact-form" method="POST" action="https://formcarry.com/s/YOUR_FORM_ID" enctype="multipart/form-data">
+        <input type="hidden" name="_gotcha" style="display:none" />
+
+        <div class="alert success-msg" role="alert">
+          Thank you. Your message has been received — we’ll respond within 1–2 business days.
+        </div>
+
+        <div class="form-row">
+          <div class="input-group">
+            <label for="name">Full Name <sup>*</sup></label>
+            <input type="text" name="name" id="name" placeholder="Your full name" required>
+          </div>
+
+          <div class="input-group">
+            <label for="email">Email Address <sup>*</sup></label>
+            <input type="email" name="email" id="email" placeholder="your@organization.com" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="input-group">
+            <label for="phone">Phone Number <span>(optional)</span></label>
+            <input type="tel" name="phone" id="phone" placeholder="+1 (XXX) XXX-XXXX">
+          </div>
+
+          <div class="input-group">
+            <label for="service">Service Interest <sup>*</sup></label>
+            <select name="service" id="service" required>
+              <option value="">Select the area you're exploring</option>
+              <option value="internal-services">Internal Services</option>
+              <option value="community-facing">Community-Facing Services</option>
+              <option value="retainer">Retainer / Ongoing Advisory</option>
+              <option value="la-readiness-index">LA Readiness Index Report</option>
+              <option value="other">Other / General Inquiry</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-group" style="margin-bottom: 2.5rem;">
+          <label for="message">Your Message <sup>*</sup></label>
+          <textarea name="message" id="message" placeholder="Tell us about your goals, challenges, or vision…" required rows="6"></textarea>
+        </div>
+
+        <div class="file-upload scroll-animation">
+          <label class="file-label" for="attachment">
+            <i style="font-size:1.4rem;">📎</i> Add Attachment (optional)
+            <input type="file" name="attachment" id="attachment" style="display:none;">
+          </label>
+        </div>
+
+        <button type="submit" class="submit-btn scroll-animation">Submit Inquiry</button>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.utils.toArray(".scroll-animation").forEach(el => {
+      gsap.from(el, {
+        scrollTrigger: {
+          trigger: el,
+          start: "top 85%",
+          toggleActions: "play none none reverse"
+        },
+        opacity: 0,
+        y: 40,
+        duration: 1.2,
+        ease: "power3.out"
+      });
+    });
+
+    // Basic form success handling (client-side only – real handling happens on server)
+    document.querySelector('form').addEventListener('submit', function(e) {
+      // You can add AJAX submission here later if desired
+      setTimeout(() => {
+        document.querySelector('.success-msg').style.display = 'block';
+      }, 800);
+    });
+  </script>
+</body>
+</html>
