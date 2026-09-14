@@ -61,6 +61,16 @@ test('payment providers are verified server-side', () => {
   assert.match(functions, /transaction\/verify/);
   assert.match(functions, /mpesa\/stkpushquery\/v1\/query/);
   assert.match(functions, /callbackAmount !== Number\(order\.totalKes\)/);
+  assert.match(functions, /MPESA_CALLBACK_TOKEN/);
+});
+
+test('payment event processing is bounded and reconciled', () => {
+  assert.match(functions, /const current = await snapshot\.ref\.get\(\)/);
+  assert.match(functions, /attempts > 12/);
+  assert.match(functions, /retry: true/);
+  assert.match(functions, /reconcilePendingCommerceOrders/);
+  assert.match(functions, /schedule: 'every 10 minutes'/);
+  assert.match(functions, /verified\?\.ResultCode == null/);
 });
 
 test('Firestore exposes only active products to clients', () => {
