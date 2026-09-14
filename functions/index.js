@@ -141,8 +141,6 @@ async function consumeCheckoutRateLimit(request) {
 }
 
 async function createOrder({provider, cart, customer}) {
-  // Paystack references allow alphanumerics, hyphen, dot and equals. Keep the
-  // order id provider-safe instead of exposing an underscore reference.
   const orderId = `tt-${randomUUID()}`;
   const statusToken = randomBytes(32).toString('hex');
   await db.collection('orders').doc(orderId).create({
@@ -373,14 +371,12 @@ async function verifyAndSettleMpesaOrder(orderDoc, callback = null) {
     accessToken,
     checkoutRequestId,
   });
-  const resultCode = Number(verified?.ResultCode);
+  if (verified?.ResultCode == null || verified?.ResultCode === '') {
+    await orderDoc.ref.set({providerStatus: cleanString(verified?.ResponseDescription || verified?.ResultDesc, 240) || 'pending', updatedAt: timestamp()}, {merge: true});
+    return {status: 'processing'};
+  }
+  const resultCode = Number(verified.ResultCode);
   if (resultCode !== 0) {
-    // Daraja can return non-final/pending responses while the customer is still
-    // interacting with the STK prompt. Keep such orders reconcilable.
-    if ([1, 1032, 1037, 2001].includes(resultCode)) {
-      await orderDoc.ref.set({providerStatus: cleanString(verified?.ResultDesc, 240) || 'pending', updatedAt: timestamp()}, {merge: true});
-      return {status: 'processing'};
-    }
     await orderDoc.ref.set({status: 'failed', mpesaResultCode: resultCode, mpesaResultDescription: cleanString(verified?.ResultDesc, 240), updatedAt: timestamp()}, {merge: true});
     return {status: 'failed'};
   }
@@ -519,10 +515,12 @@ export const processCommercePaymentEvent = onDocumentCreated({
 }, async event => {
   const snapshot = event.data;
   if (!snapshot?.exists) return;
-  const data = snapshot.data();
+  const current = await snapshot.ref.get();
+  const data = current.data() || snapshot.data();
+  if (data.state === 'processed' || data.state === 'manual_review') return;
   const attempts = Number(data.attempts || 0) + 1;
   if (attempts > 12) {
-    await snapshot.ref.set({state: 'manual_review', updatedAt: timestamp()}, {merge: true});
+    await snapshot.ref.set({attempts, state: 'manual_review', updatedAt: timestamp()}, {merge: true});
     return;
   }
   await snapshot.ref.set({attempts, state: 'processing', updatedAt: timestamp()}, {merge: true});
@@ -588,5 +586,4 @@ export const getOrderStatus = onCall({region}, async request => {
   };
 });
 
-// Pure helpers exported for local/unit validation; this is not a deployed HTTP API.
 export const __commerce = Object.freeze({normalizeKenyanPhone, validateItems, nairobiTimestamp, sha256});
