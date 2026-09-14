@@ -16,9 +16,15 @@ for (let offset = 0; offset < products.length; offset += 400) {
     if (!product.id || !Number.isSafeInteger(product.priceKes) || product.priceKes < 1) {
       throw new Error(`Invalid product ${product.id || '<missing id>'}`);
     }
-    const {id, ...data} = product;
+
+    // Market-reference catalogue data is intentionally separate from real
+    // TeknTandao inventory. Re-running this script must never overwrite a
+    // merchant's live stock or accidentally activate a product for checkout.
+    const {id, stock: referenceStock, active: suggestedActive, ...catalogue} = product;
     batch.set(db.collection('products').doc(id), {
-      ...data,
+      ...catalogue,
+      catalogueSuggestedActive: suggestedActive !== false,
+      referenceStock,
       seededFrom: 'data/products.json',
       seededAt: FieldValue.serverTimestamp(),
       updatedAt: FieldValue.serverTimestamp(),
@@ -27,4 +33,5 @@ for (let offset = 0; offset < products.length; offset += 400) {
   await batch.commit();
 }
 
-console.log(`Seeded ${products.length} TeknTandao products.`);
+console.log(`Seeded ${products.length} catalogue records without changing live stock/active state.`);
+console.log('Set each Firestore product active=true and a real integer stock quantity only after verifying TeknTandao inventory.');
