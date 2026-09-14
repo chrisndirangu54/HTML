@@ -1,0 +1,29 @@
+name: Commerce CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install root dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Install Firebase Functions dependencies
+        run: npm --prefix functions install --ignore-scripts --no-audit --no-fund
+      - name: Syntax checks
+        run: npm run check
+      - name: Commerce tests
+        run: npm test
+      - name: Validate Firebase JSON configuration
+        run: node -e "JSON.parse(require('fs').readFileSync('firebase.json')); JSON.parse(require('fs').readFileSync('firestore.indexes.json')); console.log('Firebase JSON valid')"
