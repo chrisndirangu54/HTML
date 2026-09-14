@@ -108,6 +108,15 @@
     stylesheet.dataset.ttCommerce = '1';
     document.head.appendChild(stylesheet);
 
+    // The initial JSON contains market-reference catalogue data, not verified
+    // TeknTandao warehouse quantities. Do not claim a public quantity even when
+    // a reference row has a placeholder stock value; checkout revalidates the
+    // real Firestore stock server-side.
+    var inventoryStyle = document.createElement('style');
+    inventoryStyle.textContent = '.tt-stock{font-size:0}.tt-stock::after{content:"Confirm stock";font-size:12px}';
+    inventoryStyle.dataset.ttCommerce = '1';
+    document.head.appendChild(inventoryStyle);
+
     var configScript = document.createElement('script');
     configScript.src = 'assets/js/commerce-config.js';
     configScript.dataset.ttCommerce = '1';
