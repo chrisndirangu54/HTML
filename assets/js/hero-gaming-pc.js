@@ -44,11 +44,21 @@
     }));
     const base64 = parts.join('').replace(/\s+/g, '');
     const raw = atob(base64);
-    const bytes = new Uint8Array(raw.length);
+    let bytes = new Uint8Array(raw.length);
     for (let i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
     if (String.fromCharCode(bytes[0], bytes[1], bytes[2], bytes[3]) !== 'glTF') throw new Error('Invalid GLB signature');
     const declaredLength = new DataView(bytes.buffer).getUint32(8, true);
-    if (declaredLength !== bytes.byteLength) throw new Error(`GLB length mismatch: ${declaredLength} != ${bytes.byteLength}`);
+    if (declaredLength !== bytes.byteLength) {
+      const missing = declaredLength - bytes.byteLength;
+      if (missing > 0 && missing <= 4096) {
+        const repaired = new Uint8Array(declaredLength);
+        repaired.set(bytes);
+        bytes = repaired;
+        console.warn(`Gaming PC GLB repaired by padding ${missing} trailing bytes.`);
+      } else {
+        throw new Error(`GLB length mismatch: ${declaredLength} != ${bytes.byteLength}`);
+      }
+    }
     return bytes.buffer;
   }
 
@@ -187,7 +197,6 @@
 
       model.rotation.y = -0.48 + p * Math.PI * 1.7 + smoothX * 0.1;
       model.rotation.x = -0.04 - smoothY * 0.05 + (reduced ? 0 : Math.sin(t * 0.75) * 0.015);
-      model.position.y += reduced ? 0 : Math.sin(t * 1.25) * 0.0009;
       sceneState.cyan.intensity = 16 + Math.sin(t * 2.1) * 3;
       sceneState.purple.intensity = 12 + Math.cos(t * 1.7) * 2;
       sceneState.renderer.render(sceneState.scene, sceneState.camera);
