@@ -9,6 +9,7 @@
     return new Promise((resolve, reject) => {
       const existing = [...document.scripts].find(s => s.src === new URL(src, location.href).href);
       if (existing) {
+        if (window.lottie) return resolve();
         existing.addEventListener('load', resolve, { once: true });
         existing.addEventListener('error', reject, { once: true });
         return;
@@ -37,11 +38,12 @@
     const existing = document.getElementById('tt-ai-robo-lottie');
     if (existing) return Promise.resolve(existing);
     return new Promise((resolve, reject) => {
+      let observer;
       const timeout = setTimeout(() => {
-        observer.disconnect();
+        if (observer) observer.disconnect();
         reject(new Error('AI robo holder was not mounted'));
       }, 10000);
-      const observer = new MutationObserver(() => {
+      observer = new MutationObserver(() => {
         const holder = document.getElementById('tt-ai-robo-lottie');
         if (!holder) return;
         clearTimeout(timeout);
