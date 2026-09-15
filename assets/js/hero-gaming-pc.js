@@ -148,10 +148,7 @@
 
     const model = root.querySelector('#tt-gaming-pc-model');
     try {
-      const [modelUrl] = await Promise.all([buildModelUrl(), loadModelViewer().then(() => null)]).then(async values => {
-        const url = values[0] || await buildModelUrl();
-        return [url];
-      });
+      const [modelUrl] = await Promise.all([buildModelUrl(), loadModelViewer()]);
       model.src = modelUrl;
       model.addEventListener('load', () => root.classList.add('is-loaded'), { once: true });
       model.addEventListener('error', () => root.classList.add('has-error'), { once: true });
