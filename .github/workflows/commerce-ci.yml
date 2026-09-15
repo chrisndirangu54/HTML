@@ -27,9 +27,9 @@ jobs:
           node --check assets/js/hero-gaming-pc.js
       - name: Validate catalogue JSON
         run: node -e "const fs=require('fs'); const p=JSON.parse(fs.readFileSync('data/products.seed.json')); if(!Array.isArray(p)||p.length<5) process.exit(1);"
-      - name: Validate uploaded gaming PC GLB
+      - name: Validate uploaded gaming PC GLB repair
         run: |
-          node -e "const fs=require('fs'); const s=[0,1,2,3,4,5].map(i=>fs.readFileSync('assets/models/gaming-pc-user.'+i+'.b64','utf8')).join('').replace(/\\s+/g,''); const b=Buffer.from(s,'base64'); if(b.subarray(0,4).toString()!=='glTF') throw new Error('bad GLB signature'); const declared=b.readUInt32LE(8); if(declared!==b.length) throw new Error('GLB length mismatch '+declared+' != '+b.length); if(b.length<1000000) throw new Error('GLB unexpectedly small'); console.log('GLB bytes',b.length);"
+          node -e "const fs=require('fs'); const s=[0,1,2,3,4,5].map(i=>fs.readFileSync('assets/models/gaming-pc-user.'+i+'.b64','utf8')).join('').replace(/\\s+/g,''); const raw=Buffer.from(s,'base64'); if(raw.subarray(0,4).toString()!=='glTF') throw new Error('bad GLB signature'); if(raw.readUInt32LE(4)!==2) throw new Error('unsupported GLB version'); const declared=raw.readUInt32LE(8); const missing=declared-raw.length; if(missing<0||missing>4096) throw new Error('unsafe GLB length mismatch '+declared+' != '+raw.length); const b=Buffer.alloc(declared); raw.copy(b); if(b.length!==declared) throw new Error('repair failed'); const jsonLen=b.readUInt32LE(12); if(b.subarray(16,20).toString()!=='JSON') throw new Error('missing JSON chunk'); const binHeader=20+jsonLen; if(binHeader+8>declared) throw new Error('missing BIN header'); const binLen=b.readUInt32LE(binHeader); if(b.subarray(binHeader+4,binHeader+8).toString()!=='BIN\u0000') throw new Error('missing BIN chunk'); if(binHeader+8+binLen!==declared) throw new Error('BIN length mismatch'); console.log('GLB repaired bytes',b.length,'padded',missing);"
       - name: Validate uploaded AI robo Lottie
         run: |
           node -e "const fs=require('fs'),zlib=require('zlib'); const s=[0,1].map(i=>fs.readFileSync('assets/lottie/ai-robo.'+i+'.gz.b64','utf8')).join('').replace(/\\s+/g,''); const j=JSON.parse(zlib.gunzipSync(Buffer.from(s,'base64')).toString('utf8')); if(j.w!==700||j.h!==700||!Array.isArray(j.layers)||!j.layers.length) throw new Error('invalid Lottie payload'); console.log('Lottie',j.w+'x'+j.h,'layers',j.layers.length);"
@@ -41,6 +41,7 @@ jobs:
           grep -q "GLTFLoader" assets/js/hero-gaming-pc.js
           grep -q "DecompressionStream" assets/js/hero-gaming-pc.js
           grep -q "tt-ai-robo-lottie" assets/js/hero-gaming-pc.js
+          grep -q "repaired by padding" assets/js/hero-gaming-pc.js
       - name: Install Functions dependencies
         working-directory: functions
         run: npm install --ignore-scripts --no-audit --no-fund
