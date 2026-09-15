@@ -24,21 +24,3 @@ function color7() {
 function color8() {
     document.documentElement.style.setProperty('--primary_color', '#ff99cc');
 }
-
-// Lazy-load the interactive homepage orb without changing the large legacy index.html bundle.
-(function loadTeknTandaoOrb() {
-    if (document.getElementById('tt-orb-loader')) return;
-    const start = function () {
-        if (!document.querySelector('#home') || document.getElementById('tt-orb-loader')) return;
-        const script = document.createElement('script');
-        script.id = 'tt-orb-loader';
-        script.src = 'assets/js/orb-hero.js';
-        script.defer = true;
-        document.body.appendChild(script);
-    };
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', start, {once: true});
-    } else {
-        start();
-    }
-})();
