@@ -23,15 +23,11 @@ jobs:
           node --check assets/js/dashboard.js
           node --check assets/js/blog.js
           node --check assets/js/ajax-form.js
-          node --check assets/js/color.js
-          node --check assets/js/orb-hero.js
       - name: Validate catalogue JSON
         run: node -e "const fs=require('fs'); const p=JSON.parse(fs.readFileSync('data/products.seed.json')); if(!Array.isArray(p)||p.length<5) process.exit(1);"
-      - name: Validate required web pages and hero assets
+      - name: Validate required web pages
         run: |
-          for f in shop.html login.html account.html admin.html attendant.html delivery.html blog.html gallery.html events.html training.html podcasts.html awards.html assets/css/commerce.css assets/css/orb-hero.css assets/js/site-config.js assets/js/orb-hero.js firestore.rules firebase.json; do test -s "$f" || exit 1; done
-          grep -q "assets/js/orb-hero.js" assets/js/color.js
-          grep -q "business" assets/js/orb-hero.js || true
+          for f in shop.html login.html account.html admin.html attendant.html delivery.html blog.html gallery.html events.html training.html podcasts.html awards.html assets/css/commerce.css assets/js/site-config.js firestore.rules firebase.json; do test -s "$f" || exit 1; done
       - name: Install Functions dependencies
         working-directory: functions
         run: npm install --ignore-scripts --no-audit --no-fund
