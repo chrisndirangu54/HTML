@@ -31,22 +31,19 @@ jobs:
       - name: Validate uploaded gaming PC GLB repair
         run: |
           node -e "const fs=require('fs'); const s=[0,1,2,3,4,5].map(i=>fs.readFileSync('assets/models/gaming-pc-user.'+i+'.b64','utf8')).join('').replace(/\\s+/g,''); const raw=Buffer.from(s,'base64'); if(raw.subarray(0,4).toString()!=='glTF') throw new Error('bad GLB signature'); if(raw.readUInt32LE(4)!==2) throw new Error('unsupported GLB version'); const declared=raw.readUInt32LE(8); const missing=declared-raw.length; if(missing<0||missing>4096) throw new Error('unsafe GLB length mismatch '+declared+' != '+raw.length); const b=Buffer.alloc(declared); raw.copy(b); if(b.length!==declared) throw new Error('repair failed'); const jsonLen=b.readUInt32LE(12); if(b.subarray(16,20).toString()!=='JSON') throw new Error('missing JSON chunk'); const binHeader=20+jsonLen; if(binHeader+8>declared) throw new Error('missing BIN header'); const binLen=b.readUInt32LE(binHeader); if(b.subarray(binHeader+4,binHeader+8).toString()!=='BIN\u0000') throw new Error('missing BIN chunk'); if(binHeader+8+binLen!==declared) throw new Error('BIN length mismatch'); console.log('GLB repaired bytes',b.length,'padded',missing);"
-      - name: Validate uploaded AI robo Lottie core
+      - name: Validate local AI robo Lottie assets
         run: |
-          node -e "const fs=require('fs'),zlib=require('zlib'); const s=[0,1,2,3,4,5].map(i=>fs.readFileSync('assets/lottie/ai-robo-core.'+i+'.gz.b64','utf8')).join('').replace(/\\s+/g,''); const j=JSON.parse(zlib.gunzipSync(Buffer.from(s,'base64')).toString('utf8')); if(j.w!==700||j.h!==700||!Array.isArray(j.layers)||j.layers.length!==3) throw new Error('invalid Lottie core payload'); console.log('Lottie',j.w+'x'+j.h,'layers',j.layers.map(x=>x.nm).join(','));"
+          node -e "const fs=require('fs'),zlib=require('zlib'); const lite=JSON.parse(fs.readFileSync('assets/lottie/ai-robo-lite.json','utf8')); if(lite.w!==700||lite.h!==700||!Array.isArray(lite.layers)||lite.layers.length<3) throw new Error('invalid lite Lottie'); const packed=fs.readFileSync('assets/lottie/ai-robo-core.gz.b64','utf8').replace(/\\s+/g,''); const core=JSON.parse(zlib.gunzipSync(Buffer.from(packed,'base64')).toString('utf8')); if(core.w!==700||core.h!==700||!Array.isArray(core.layers)||core.layers.length<3) throw new Error('invalid compressed Lottie'); console.log('Lottie assets valid',core.nm,core.layers.length);"
       - name: Validate required web pages and hero assets
         run: |
-          for f in shop.html login.html account.html admin.html attendant.html delivery.html blog.html gallery.html events.html training.html podcasts.html awards.html assets/css/commerce.css assets/css/hero-gaming-pc.css assets/js/site-config.js assets/js/hero-gaming-pc.js assets/js/hero-lottie-fallback.js firestore.rules firebase.json; do test -s "$f" || exit 1; done
-          for i in 0 1 2 3 4 5; do
-            test -s "assets/models/gaming-pc-user.$i.b64" || exit 1
-            test -s "assets/lottie/ai-robo-core.$i.gz.b64" || exit 1
-          done
+          for f in shop.html login.html account.html admin.html attendant.html delivery.html blog.html gallery.html events.html training.html podcasts.html awards.html assets/css/commerce.css assets/css/hero-gaming-pc.css assets/js/site-config.js assets/js/hero-gaming-pc.js assets/js/hero-lottie-fallback.js assets/lottie/ai-robo-lite.json assets/lottie/ai-robo-core.gz.b64 firestore.rules firebase.json; do test -s "$f" || exit 1; done
+          for i in 0 1 2 3 4 5; do test -s "assets/models/gaming-pc-user.$i.b64" || exit 1; done
           grep -q "hero-gaming-pc.js" assets/js/color.js
           grep -q "hero-lottie-fallback.js" assets/js/color.js
           grep -q "GLTFLoader" assets/js/hero-gaming-pc.js
-          grep -q "DecompressionStream" assets/js/hero-lottie-fallback.js
+          grep -q "ai-robo-core.gz.b64" assets/js/hero-gaming-pc.js
           grep -q "tt-ai-robo-lottie" assets/js/hero-lottie-fallback.js
-          grep -q "ai-robo-core" assets/js/hero-lottie-fallback.js
+          grep -q "ai-robo-lite.json" assets/js/hero-lottie-fallback.js
       - name: Install Functions dependencies
         working-directory: functions
         run: npm install --ignore-scripts --no-audit --no-fund
