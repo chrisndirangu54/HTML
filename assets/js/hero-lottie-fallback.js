@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const CHUNKS = Array.from({ length: 6 }, (_, i) => `assets/lottie/ai-robo-core.${i}.gz.b64`);
+  const LOTTIE_JSON = 'assets/lottie/ai-robo-lite.json';
   const LOTTIE_URL = 'https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js';
 
   function loadScript(src) {
@@ -24,20 +24,11 @@
   }
 
   async function getAnimationData() {
-    const parts = await Promise.all(CHUNKS.map(async path => {
-      const response = await fetch(path, { cache: 'force-cache' });
-      if (!response.ok) throw new Error(`Lottie chunk failed: ${path}`);
-      return response.text();
-    }));
-    const base64 = parts.join('').replace(/\s+/g, '');
-    const raw = atob(base64);
-    const compressed = new Uint8Array(raw.length);
-    for (let i = 0; i < raw.length; i++) compressed[i] = raw.charCodeAt(i);
-    if (!('DecompressionStream' in window)) throw new Error('gzip decompression unsupported');
-    const stream = new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'));
-    const data = JSON.parse(await new Response(stream).text());
-    if (data.w !== 700 || data.h !== 700 || !Array.isArray(data.layers) || data.layers.length !== 3) {
-      throw new Error('Invalid AI robo Lottie payload');
+    const response = await fetch(LOTTIE_JSON, { cache: 'force-cache' });
+    if (!response.ok) throw new Error(`Lottie JSON failed: ${response.status}`);
+    const data = await response.json();
+    if (data.w !== 700 || data.h !== 700 || !Array.isArray(data.layers) || data.layers.length < 3) {
+      throw new Error('Invalid AI robo Lottie JSON');
     }
     return data;
   }
@@ -77,7 +68,11 @@
       if (button) {
         button.classList.remove('has-error');
         button.classList.add('is-loaded');
-        button.addEventListener('click', () => animation.goToAndPlay(0, true));
+        button.addEventListener('click', () => {
+          animation.goToAndPlay(0, true);
+          animation.setSpeed(1.25);
+          setTimeout(() => animation.setSpeed(1), 700);
+        });
       }
     } catch (error) {
       console.error('AI robo fallback failed:', error);
