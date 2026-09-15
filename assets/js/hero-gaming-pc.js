@@ -4,7 +4,7 @@
   const HOME = '#home';
   const CSS_URL = 'assets/css/hero-gaming-pc.css';
   const MODEL_CHUNKS = Array.from({ length: 6 }, (_, i) => `assets/models/gaming-pc-user.${i}.b64`);
-  const LOTTIE_CHUNKS = ['assets/lottie/ai-robo.0.gz.b64', 'assets/lottie/ai-robo.1.gz.b64'];
+  const LOTTIE_CHUNKS = ['assets/lottie/ai-robo-core.gz.b64'];
   const THREE_URL = 'https://esm.sh/three@0.160.0';
   const GLTF_LOADER_URL = 'https://esm.sh/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
   const LOTTIE_URL = 'https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js';
@@ -77,7 +77,9 @@
     const stream = new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'));
     const text = await new Response(stream).text();
     const data = JSON.parse(text);
-    if (!data || !Array.isArray(data.layers)) throw new Error('Invalid Lottie JSON');
+    if (!data || data.w !== 700 || data.h !== 700 || !Array.isArray(data.layers) || !data.layers.length) {
+      throw new Error('Invalid Lottie JSON');
+    }
     return data;
   }
 
@@ -124,6 +126,7 @@
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(34, 1, 0.01, 100);
     camera.position.set(4.8, 2.8, 6.8);
+    camera.lookAt(0, 0, 0);
 
     scene.add(new THREE.HemisphereLight(0xeaffff, 0x050b12, 2.2));
     const key = new THREE.DirectionalLight(0xffffff, 2.8);
