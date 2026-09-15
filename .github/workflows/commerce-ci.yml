@@ -29,14 +29,18 @@ jobs:
         run: node -e "const fs=require('fs'); const p=JSON.parse(fs.readFileSync('data/products.seed.json')); if(!Array.isArray(p)||p.length<5) process.exit(1);"
       - name: Validate uploaded gaming PC GLB
         run: |
-          node -e "const fs=require('fs'); const s=[0,1,2,3,4,5].map(i=>fs.readFileSync('assets/models/gaming-pc-user.'+i+'.b64','utf8')).join('').replace(/\\s+/g,''); const b=Buffer.from(s,'base64'); if(b.subarray(0,4).toString()!=='glTF') throw new Error('bad GLB signature'); if(b.length<10000) throw new Error('GLB unexpectedly small'); console.log('GLB bytes',b.length);"
-      - name: Validate required web pages and gaming PC hero
+          node -e "const fs=require('fs'); const s=[0,1,2,3,4,5].map(i=>fs.readFileSync('assets/models/gaming-pc-user.'+i+'.b64','utf8')).join('').replace(/\\s+/g,''); const b=Buffer.from(s,'base64'); if(b.subarray(0,4).toString()!=='glTF') throw new Error('bad GLB signature'); const declared=b.readUInt32LE(8); if(declared!==b.length) throw new Error('GLB length mismatch '+declared+' != '+b.length); if(b.length<1000000) throw new Error('GLB unexpectedly small'); console.log('GLB bytes',b.length);"
+      - name: Validate uploaded AI robo Lottie
         run: |
-          for f in shop.html login.html account.html admin.html attendant.html delivery.html blog.html gallery.html events.html training.html podcasts.html awards.html assets/css/commerce.css assets/css/hero-gaming-pc.css assets/js/site-config.js assets/js/hero-gaming-pc.js firestore.rules firebase.json; do test -s "$f" || exit 1; done
+          node -e "const fs=require('fs'),zlib=require('zlib'); const s=[0,1].map(i=>fs.readFileSync('assets/lottie/ai-robo.'+i+'.gz.b64','utf8')).join('').replace(/\\s+/g,''); const j=JSON.parse(zlib.gunzipSync(Buffer.from(s,'base64')).toString('utf8')); if(j.w!==700||j.h!==700||!Array.isArray(j.layers)||!j.layers.length) throw new Error('invalid Lottie payload'); console.log('Lottie',j.w+'x'+j.h,'layers',j.layers.length);"
+      - name: Validate required web pages and hero assets
+        run: |
+          for f in shop.html login.html account.html admin.html attendant.html delivery.html blog.html gallery.html events.html training.html podcasts.html awards.html assets/css/commerce.css assets/css/hero-gaming-pc.css assets/js/site-config.js assets/js/hero-gaming-pc.js assets/lottie/ai-robo.0.gz.b64 assets/lottie/ai-robo.1.gz.b64 firestore.rules firebase.json; do test -s "$f" || exit 1; done
           for i in 0 1 2 3 4 5; do test -s "assets/models/gaming-pc-user.$i.b64" || exit 1; done
           grep -q "hero-gaming-pc.js" assets/js/color.js
-          grep -q "gaming-pc-user" assets/js/hero-gaming-pc.js
-          grep -q "afterend" assets/js/hero-gaming-pc.js
+          grep -q "GLTFLoader" assets/js/hero-gaming-pc.js
+          grep -q "DecompressionStream" assets/js/hero-gaming-pc.js
+          grep -q "tt-ai-robo-lottie" assets/js/hero-gaming-pc.js
       - name: Install Functions dependencies
         working-directory: functions
         run: npm install --ignore-scripts --no-audit --no-fund
