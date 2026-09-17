@@ -1,7 +1,8 @@
 (() => {
   'use strict';
 
-  const LOTTIE_JSON = 'assets/lottie/ai-robo-lite.json';
+  const LOTTIE_JSON = 'assets/lottie/ai-robo.json';
+  const LOTTIE_LITE = 'assets/lottie/ai-robo-lite.json';
   const LOTTIE_URL = 'https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js';
 
   function loadScript(src) {
@@ -25,13 +26,22 @@
   }
 
   async function getAnimationData() {
-    const response = await fetch(LOTTIE_JSON, { cache: 'force-cache' });
-    if (!response.ok) throw new Error(`Lottie JSON failed: ${response.status}`);
-    const data = await response.json();
-    if (data.w !== 700 || data.h !== 700 || !Array.isArray(data.layers) || data.layers.length < 3) {
-      throw new Error('Invalid AI robo Lottie JSON');
+    const sources = [LOTTIE_JSON, LOTTIE_LITE];
+    let lastError;
+    for (const path of sources) {
+      try {
+        const response = await fetch(path, { cache: 'force-cache' });
+        if (!response.ok) throw new Error(`Lottie JSON failed: ${response.status}`);
+        const data = await response.json();
+        if (data.w !== 700 || data.h !== 700 || !Array.isArray(data.layers) || data.layers.length < 3) {
+          throw new Error('Invalid AI robo Lottie JSON');
+        }
+        return data;
+      } catch (error) {
+        lastError = error;
+      }
     }
-    return data;
+    throw lastError || new Error('No AI robo Lottie source available');
   }
 
   function waitForHolder() {

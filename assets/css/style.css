@@ -550,6 +550,10 @@ main.drake-main {
 .page-section {
     overflow: hidden;
 }
+.tt-footer-robot.page-section,
+.tt-footer-robot {
+    overflow: visible !important;
+}
 
 /* 01 - Menu (With Minimal Tooltip Fix: !important Overrides to Prevent Flicker/Blank from Parent Clip Inheritance) */
 .menu {
@@ -1038,7 +1042,16 @@ color: var(--primary-color); /* Fallback solid */}.global-color .inner .global-c
 .global-color .global-color-option .color-boxed a:nth-child(21) { background: linear-gradient(135deg, #00c9ff, #92fe9d); }  /* Future Sky */
 .global-color .global-color-option .color-boxed a:nth-child(22) { background: linear-gradient(135deg, #ff00cc, #333399); }  /* Vaporwave Core */
 .global-color .global-color-option .color-boxed a:nth-child(23) { background: linear-gradient(135deg, #ff3c00, #ffafbd); }  /* Neon Coral */
-.global-color .global-color-option .color-boxed a:nth-child(24) { background: linear-gradient(135deg, #00c6ff, #0072ff); }  /* Blue Energy *//* Optional glow hover effect */
+.global-color .global-color-option .color-boxed a:nth-child(24) { background: linear-gradient(135deg, #00c6ff, #0072ff); }  /* Blue Energy */
+.global-color .global-color-option .color-boxed a.tt-color-auto {
+    background: conic-gradient(from 90deg, #28e98c, #14c5fd, #8e2de2, #ff00cc, #fe6f1d, #28e98c);
+}
+.footer-area .custom-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 36px;
+}
+/* Optional glow hover effect */
 .global-color .global-color-option .color-boxed a:hover {
     box-shadow: 0 0 15px rgba(255,255,255,0.6), 0 0 25px currentColor;
     transform: scale(1.05);
@@ -2653,7 +2666,7 @@ body .body-overlay {
 .footer-area {
     background: #1f1f1f;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     z-index: 1;
     padding-top: 100px;
     padding-bottom: 100px;

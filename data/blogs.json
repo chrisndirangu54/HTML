@@ -1,0 +1,62 @@
+[
+  {
+    "slug": "kenya-data-protection-act-sme-checklist",
+    "title": "Kenya Data Protection Act: a practical checklist for SMEs",
+    "excerpt": "What Nairobi businesses must actually do to stay on the right side of the ODPC — without a 200-page policy binder.",
+    "category": "Compliance",
+    "publishedAt": "2026-09-08T08:00:00.000Z",
+    "cover": "assets/cybersecurity/cyber-security-concept-digital-art.jpg",
+    "source": "seed",
+    "body": [
+      "Kenya’s Data Protection Act is no longer a poster on the wall. The Office of the Data Protection Commissioner has opened investigations, issued notices and fined organisations that collect customer data without a lawful basis or a way for people to object.",
+      "TeknTandao’s view is simple: treat the Act as an engineering problem. Map the data you hold, name a responsible person, lock down access, and write the few policies you will actually follow.",
+      "Start with four artefacts: a processing register, a privacy notice in plain English, a breach playbook that can be run at 2 a.m., and vendor contracts that mention subprocessors. If you take M-Pesa numbers, ID copies or health data, those sit in a higher risk tier and need extra controls.",
+      "We help Kenyan SMEs put this into the same stack they already use — Firebase, AWS, and on-prem networks — so compliance is a property of the system, not a PDF in a drawer."
+    ]
+  },
+  {
+    "slug": "ransomware-east-africa-2026",
+    "title": "Ransomware in East Africa: what changed this year",
+    "excerpt": "Operators still go after backups first. The difference in 2026 is how quickly they pivot from a single exposed remote desktop to the whole domain.",
+    "category": "Threats",
+    "publishedAt": "2026-09-10T08:00:00.000Z",
+    "cover": "assets/cybersecurity/cyber-security-concept-digital-art (2).jpg",
+    "source": "seed",
+    "body": [
+      "Ransomware crews targeting East African hospitals, logistics firms and county systems no longer bother with noisy spray-and-pray. They buy valid credentials, sit still for days, then encrypt after they have copied finance shares and disabled volume-shadow copies.",
+      "The smartest defence is boring: patch internet-facing services, require phishing-resistant MFA on admin paths, keep an offline backup that has been restored in the last 90 days, and segment the finance VLAN from guest Wi-Fi.",
+      "TeknTandao’s SOC playbook assumes the first alert is already late. We hunt for unusual RDP, new scheduled tasks and backup-agent uninstalls, then isolate the host before the encryptor runs.",
+      "If you have never restored from backup, you do not have a backup. Book a restore drill. It is cheaper than a negotiation."
+    ]
+  },
+  {
+    "slug": "zero-trust-kenyan-fintech",
+    "title": "Zero Trust for Kenyan fintech — without boiling the ocean",
+    "excerpt": "You do not need a Silicon Valley identity mesh on day one. You need to stop implicit trust between the office LAN and the payment API.",
+    "category": "Architecture",
+    "publishedAt": "2026-09-12T08:00:00.000Z",
+    "cover": "assets/cybersecurity/cybersecurity-concept-collage-design.jpg",
+    "source": "seed",
+    "body": [
+      "Zero Trust is often sold as a product. For a Nairobi fintech it is a sequence: verify every session, give each workload the least privilege it needs, and assume the office network is hostile.",
+      "A practical first slice: put the core payment API behind identity-aware access, kill shared SSH keys, and issue short-lived certificates. Staff laptops get device posture checks before they can reach staging.",
+      "Do not wait for a full NAC rollout. Removing standing admin on production databases cuts more risk than a new logo on the SOC wall.",
+      "TeknTandao designs this path around the stack you already run — AWS, GCP or a hybrid with on-prem core banking — and measures success in reduced standing privilege, not slideware."
+    ]
+  },
+  {
+    "slug": "ai-soc-for-smes",
+    "title": "An AI-assisted SOC that a 40-person company can actually staff",
+    "excerpt": "Most SMEs cannot hire a night shift of analysts. They can still get 15-minute response if the noisy work is automated.",
+    "category": "Platform",
+    "publishedAt": "2026-09-14T08:00:00.000Z",
+    "cover": "assets/cybersecurity/cyber-security-concept-digital-art (3).jpg",
+    "source": "seed",
+    "body": [
+      "TeknTandao’s cybersecurity platform uses models to triage alerts, summarise incident timelines and draft containment steps. Humans still decide. The model never resets a production firewall on its own.",
+      "That split matters. Full autopilot looks impressive in a demo and catastrophic on a Friday payment run. We keep a human in the loop for any change that can take a service down.",
+      "What the model is good at: collapsing 400 EDR pings into three stories, spotting a new phishing kit that reuses last month’s infrastructure, and writing the first customer notice in English and Kiswahili.",
+      "If your current ‘SOC’ is a WhatsApp group and a firewall GUI, this is the upgrade path: collect logs, let the model rank them, and keep a named engineer on call."
+    ]
+  }
+]

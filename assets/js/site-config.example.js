@@ -11,3 +11,6 @@ window.TEKNTANDAO_CONFIG = {
   strapiBaseUrl: "https://cms.example.com",
   whatsappNumber: "254702258870"
 };
+// XAI_API_KEY stays on the server (Firebase secret). Never put it in this file.
+// Set it with: firebase functions:secrets:set XAI_API_KEY
+// Then deploy publishTrendingBlog / runTrendingBlog / listBlogs.

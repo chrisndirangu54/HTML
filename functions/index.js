@@ -3,6 +3,7 @@ import {initializeApp} from 'firebase-admin/app';
 import {getAuth} from 'firebase-admin/auth';
 import {FieldValue,getFirestore} from 'firebase-admin/firestore';
 import {onRequest} from 'firebase-functions/v2/https';
+import {onSchedule} from 'firebase-functions/v2/scheduler';
 import {defineSecret,defineString} from 'firebase-functions/params';
 
 initializeApp();
@@ -14,6 +15,7 @@ const mpesaPasskey=defineSecret('MPESA_PASSKEY');
 const mpesaShortcode=defineSecret('MPESA_SHORTCODE');
 const mpesaCallbackUrl=defineSecret('MPESA_CALLBACK_URL');
 const paystackKey=defineSecret('PAYSTACK_SECRET_KEY');
+const xaiKey=defineSecret('XAI_API_KEY');
 const adminEmails=defineString('ADMIN_EMAILS',{default:''});
 const allowed=new Set(['https://www.tekntandao.com','https://tekntandao.com','http://localhost:5500','http://127.0.0.1:5500']);
 const staffRoles=new Set(['admin','attendant','delivery']);
@@ -173,3 +175,75 @@ export const createPaystackCheckout=onRequest({region:'europe-west1',secrets:[pa
 }));
 
 export const paystackWebhook=onRequest({region:'europe-west1',secrets:[paystackKey]},async(req,res)=>{try{const signature=req.headers['x-paystack-signature'];const expected=createHmac('sha512',paystackKey.value()).update(req.rawBody).digest('hex');if(signature!==expected)return res.status(401).send('Invalid signature');const event=req.body;if(event.event==='charge.success'){const reference=String(event.data?.reference||'');const ref=db.collection('orders').doc(reference);const snap=await ref.get();if(snap.exists){const order=snap.data();const paidKsh=Math.round(Number(event.data.amount||0)/100);if(paidKsh===order.totalKsh)await ref.update({status:'paid',paystackResult:{reference,channel:event.data.channel||null,paidAt:event.data.paid_at||null},statusHistory:FieldValue.arrayUnion({status:'paid',by:'paystack',at:new Date().toISOString()}),updatedAt:FieldValue.serverTimestamp()})}}res.status(200).send('ok')}catch(e){res.status(500).send('error')}});
+
+function slugify(value){
+  return String(value||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,80);
+}
+function extractModelText(payload){
+  if(typeof payload?.output_text==='string'&&payload.output_text.trim())return payload.output_text;
+  const chunks=[];
+  for(const item of payload?.output||[]){
+    for(const part of item.content||[]){
+      if(typeof part.text==='string')chunks.push(part.text);
+      else if(typeof part.output_text==='string')chunks.push(part.output_text);
+    }
+  }
+  return chunks.join('\n').trim();
+}
+function parseBlogJson(text){
+  const match=String(text||'').match(/\{[\s\S]*\}/);
+  if(!match)throw new Error('Model did not return JSON');
+  const row=JSON.parse(match[0]);
+  const title=cleanText(row.title,160);
+  const slug=slugify(row.slug||title);
+  const excerpt=cleanText(row.excerpt,320);
+  const category=cleanText(row.category,40)||'Insight';
+  const body=Array.isArray(row.body)?row.body.map(p=>cleanText(p,1200)).filter(Boolean):String(row.body||'').split(/\n{2,}/).map(p=>cleanText(p,1200)).filter(Boolean);
+  if(!title||!slug||body.length<2)throw new Error('Incomplete blog payload');
+  return{title,slug,excerpt,category,body,cover:cleanText(row.cover,400)};
+}
+async function generateTrendingBlog(){
+  const existing=await db.collection('blogs').orderBy('publishedAt','desc').limit(40).get();
+  const titles=existing.docs.map(d=>d.data().title).filter(Boolean);
+  const prompt=`You are TeknTandao's Nairobi editorial desk. Search the live web for the most important, currently trending cybersecurity or African-tech topics (ransomware, Kenya DPA/ODPC, M-Pesa fraud, cloud exposure, AI-assisted attacks, NIS2/GDPR knock-on effects, critical CVEs). Pick ONE topic that is not already covered by these titles: ${titles.join(' | ')||'(none yet)'}. Write an original briefing for Kenyan SMEs and public-sector IT leads. Return ONLY JSON with keys: title, slug, excerpt, category, cover (optional URL), body (array of 4 to 6 short paragraphs). No markdown fences.`;
+  const response=await fetch('https://api.x.ai/v1/responses',{
+    method:'POST',
+    headers:{Authorization:`Bearer ${xaiKey.value()}`,'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model:'grok-4.6',
+      tools:[{type:'web_search'}],
+      input:[
+        {role:'system',content:'Write factual, concise English. Prefer Kenya and East Africa context. Do not invent incident statistics.'},
+        {role:'user',content:prompt}
+      ]
+    })
+  });
+  const payload=await response.json();
+  if(!response.ok)throw new Error(payload.error?.message||'SpaceXAI request failed');
+  const post=parseBlogJson(extractModelText(payload));
+  const ref=db.collection('blogs').doc(post.slug);
+  const prior=await ref.get();
+  if(prior.exists)throw new Error('Slug already published');
+  const row={...post,published:true,source:'spacexai',publishedAt:new Date().toISOString(),createdAt:FieldValue.serverTimestamp()};
+  await ref.set(row);
+  return{slug:post.slug,title:post.title};
+}
+
+export const listBlogs=onRequest({region:'europe-west1'},async(req,res)=>respond(req,res,async()=>{
+  assertMethod(req,'GET');
+  const snap=await db.collection('blogs').where('published','==',true).limit(40).get();
+  const blogs=snap.docs.map(d=>{const row=d.data();return{slug:d.id,title:row.title,excerpt:row.excerpt,category:row.category,cover:row.cover||'',publishedAt:row.publishedAt||null,body:row.body||[],source:row.source||'live'}});
+  blogs.sort((a,b)=>String(b.publishedAt||'').localeCompare(String(a.publishedAt||'')));
+  return{blogs};
+}));
+
+export const runTrendingBlog=onRequest({region:'europe-west1',secrets:[xaiKey]},async(req,res)=>respond(req,res,async()=>{
+  assertMethod(req,'POST');
+  await identity(req,['admin']);
+  return generateTrendingBlog();
+}));
+
+export const publishTrendingBlog=onSchedule({region:'europe-west1',schedule:'every 24 hours',timeZone:'Africa/Nairobi',secrets:[xaiKey]},async()=>{
+  await generateTrendingBlog();
+});
+
