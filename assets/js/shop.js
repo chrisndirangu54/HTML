@@ -22,7 +22,7 @@ async function loadProducts(){
 function filtered(){const q=($('#search')?.value||'').toLowerCase();const c=$('#category')?.value||'All';return products.filter(p=>(c==='All'||p.category===c)&&(`${p.name} ${p.description} ${p.category}`.toLowerCase().includes(q)))}
 function render(){
   const selected=$('#category')?.value||'All';const cats=['All',...new Set(products.map(p=>p.category))];$('#category').innerHTML=cats.map(c=>`<option ${c===selected?'selected':''}>${c}</option>`).join('');
-  $('#products').innerHTML=filtered().map(p=>`<article class="product-card"><img src="${p.image}" alt="${p.name}" loading="lazy"><div class="product-body"><span class="badge">${p.category}</span><h3>${p.name}</h3><p>${p.description||''}</p><div class="price">${money(p.priceKsh)}</div><a class="market-ref" href="${p.referenceUrl||'#'}" target="_blank" rel="noopener">Market reference: ${p.marketReference||'Kenya retail'}</a><small>${p.imageCredit||''}</small><button class="btn btn-primary" data-add="${p.id}">Add to cart</button></div></article>`).join('');
+  $('#products').innerHTML=filtered().map(p=>`<article class="product-card"><img src="${p.image}" alt="${p.name}" loading="lazy"><div class="product-body"><span class="badge">${p.category}</span><h3>${p.name}</h3><p>${p.description||''}</p><div class="price">${money(p.priceKsh)}</div><button class="btn btn-primary" data-add="${p.id}">Add to cart</button></div></article>`).join('');
   document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>add(b.dataset.add));renderCart();
 }
 function add(id){cart[id]=(cart[id]||0)+1;persist()}
