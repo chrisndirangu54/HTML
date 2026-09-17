@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="assets/css/lightbox.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/site-pages.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body class="home1-page">
@@ -44,7 +45,7 @@
             <li><a href="#gallery"><span>Gallery</span> <i class="las la-images"></i></a></li>
             <li><a href="#awards"><span>Awards</span> <i class="las la-trophy"></i></a></li>
             <li><a href="https://chat.whatsapp.com/LwqKsFRyua3Kinc9SRgZnj" target="_blank"><span>Communities</span> <i class="las la-users"></i></a></li>
-            <li><a href="#web3"><span>Web3</span> <i class="las la-globe"></i></a></li>
+            <li><a href="cybersecurity.html"><span>Cybersecurity</span> <i class="las la-shield-alt"></i></a></li>
             <li><a href="#Shop"><span>Shop</span> <i class="las la-market"></i></a></li>
             <li><a href="#podcasts"><span>Podcasts</span><i class="las la-stream"></i></a></li>
             <li><a href="#training"><span>Training</span><i class="las la-users"></i></a></li>
@@ -62,7 +63,7 @@
             <li><a href="#gallery"><span>Gallery</span> <i class="las la-images"></i></a></li>
             <li><a href="#awards"><span>Awards</span> <i class="las la-trophy"></i></a></li>
             <li><a href="https://chat.whatsapp.com/LwqKsFRyua3Kinc9SRgZnj" target="_blank"><span>Communities</span> <i class="las la-users"></i></a></li>
-            <li><a href="#web3"><span>Web3</span> <i class="las la-globe"></i></a></li>
+            <li><a href="cybersecurity.html"><span>Cybersecurity</span> <i class="las la-shield-alt"></i></a></li>
             <li><a href="#Shop"><span>Shop</span> <i class="las la-shopping-cart"></i></a></li>
             <li><a href="#podcasts"><span>Podcasts</span><i class="las la-stream"></i></a></li>
             <li><a href="#training"><span>Training</span><i class="las la-users"></i></a></li>
@@ -132,6 +133,7 @@
                     <a href="#" onclick="color22();" title="Vaporwave Core"></a>
                     <a href="#" onclick="color23();" title="Neon Coral"></a>
                     <a href="#" onclick="color24();" title="Blue Energy"></a>
+                    <a href="#" onclick="colorAuto();" title="Auto cycle colours" class="tt-color-auto"></a>
                 </div>
 
                 <p>THEMES</p>
@@ -258,9 +260,8 @@
                             <p class="scroll-animation" data-animation="fade_from_bottom">
                                 From Nairobi, TeknTandao crafts modern, intelligent, responsive, data-driven apps like TeknTandao CRM and TeknTandao PoS, partnering with organizations like American Corner Mtaani to drive Kenyan businesses into the future through Tech podcasts and Youth Trainings.
                             </p>
-                            <a href="#portfolio" class="go-to-project-btn scroll-to scroll-animation" data-animation="rotate_up">
-                                <img src="assets/images/round-text.png" alt="Rounded Text">
-                                <i class="las la-arrow-down"></i>
+                            <a href="#portfolio" class="theme-btn scroll-to scroll-animation" data-animation="fade_from_bottom">
+                                <i class="las la-arrow-down"></i> See projects
                             </a>
                             <div class="facts d-flex">
                                 <div class="left scroll-animation" data-animation="fade_from_left">
@@ -843,6 +844,38 @@
                         </div>
                     </div>
                 </section>
+                <footer class="footer-area">
+                    <div class="custom-container">
+                        <div class="footer-widget-item">
+                            <h3>TeknTandao</h3>
+                            <p>Intelligent, data-driven software from Nairobi, Kenya. Apps, training, and ICT that help businesses leapfrog.</p>
+                            <ul class="social-links">
+                                <li><a href="https://www.facebook.com/share/1GBT3wovGv/"><i class="lab la-facebook"></i></a></li>
+                                <li><a href="https://www.instagram.com/tekntandao/"><i class="lab la-instagram"></i></a></li>
+                                <li><a href="https://www.tiktok.com/@tekntandao"><i class="fab fa-tiktok"></i></a></li>
+                                <li><a href="https://wa.me/254702258870"><i class="lab la-whatsapp"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-widget-item footer-links">
+                            <h3>Explore</h3>
+                            <ul>
+                                <li><a href="#home">Home</a></li>
+                                <li><a href="shop.html">Shop</a></li>
+                                <li><a href="blog.html">Blogs</a></li>
+                                <li><a href="gallery.html">Gallery</a></li>
+                                <li><a href="#contact">Contact</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-widget-item footer-contact-widget">
+                            <h3>Contact</h3>
+                            <ul>
+                                <li><span class="title">Email</span><span class="sub-title">info@tekntandao.com</span></li>
+                                <li><span class="title">Phone</span><span class="sub-title">+254 702 258 870</span></li>
+                                <li><span class="title">Location</span><span class="sub-title">Nairobi, Kenya</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </footer>
             </div>
         </div>
     </main>
@@ -1141,92 +1174,9 @@ function hideNavbar() {
    Load Saved Settings
 ─────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
-    const savedColor = localStorage.getItem('selectedColor');
     const savedTheme = localStorage.getItem('selectedTheme');
-
-    console.log('Loaded color:', savedColor, '| Loaded theme:', savedTheme);
-
-    // Apply saved color
-    if (savedColor && typeof window[savedColor] === 'function') {
-        window[savedColor]();
-    }
-
-    // Apply saved theme
-    if (savedTheme) {
-        changeTheme(savedTheme);
-    }
+    if (savedTheme) changeTheme(savedTheme);
 });
-
-/* ───────────────────────────────
-   Solid Color Options (1–9)
-─────────────────────────────── */
-function color1() { applyColor('#28e98c', 'color1'); }
-function color2() { applyColor('#e4af12', 'color2'); }
-function color3() { applyColor('#fe6f1d', 'color3'); }
-function color4() { applyColor('#14c5fd', 'color4'); }
-function color5() { applyColor('#c0c0c0', 'color5'); }
-function color6() { applyColor('#1338f3', 'color6'); }
-function color7() { applyColor('#f31313', 'color7'); }
-function color8() { applyColor('#ff99cc', 'color8'); }
-function color9() { applyColor('#cceb00', 'color9'); }
-
-/* ───────────────────────────────
-   Cyberpunk & Modern Gradients (10–24)
-─────────────────────────────── */
-function color10() { applyGradient('linear-gradient(135deg, #00ffcc, #ff00ff)', 'color10'); } // Cyberpunk Neon
-function color11() { applyGradient('linear-gradient(135deg, #ff6f00, #ffcc00)', 'color11'); } // Sunset Blaze
-function color12() { applyGradient('linear-gradient(135deg, #00f260, #0575e6)', 'color12'); } // Electric Aqua
-function color13() { applyGradient('linear-gradient(135deg, #8e2de2, #4a00e0)', 'color13'); } // Deep Ultraviolet
-function color14() { applyGradient('linear-gradient(135deg, #1f1c2c, #928dab)', 'color14'); } // Midnight Steel
-function color15() { applyGradient('linear-gradient(135deg, #ff512f, #dd2476)', 'color15'); } // Digital Heat
-function color16() { applyGradient('linear-gradient(135deg, #12c2e9, #c471ed, #f64f59)', 'color16'); } // Hologram Pulse
-function color17() { applyGradient('linear-gradient(135deg, #43e97b, #38f9d7)', 'color17'); } // Techno Mint
-function color18() { applyGradient('linear-gradient(135deg, #fc00ff, #00dbde)', 'color18'); } // Neon Dream
-function color19() { applyGradient('linear-gradient(135deg, #f7971e, #ffd200)', 'color19'); } // Modern Gold
-function color20() { applyGradient('linear-gradient(135deg, #1e3c72, #2a5298)', 'color20'); } // Ocean Matrix
-function color21() { applyGradient('linear-gradient(135deg, #00c9ff, #92fe9d)', 'color21'); } // Future Sky
-function color22() { applyGradient('linear-gradient(135deg, #ff00cc, #333399)', 'color22'); } // Vaporwave Core
-function color23() { applyGradient('linear-gradient(135deg, #ff3c00, #ffafbd)', 'color23'); } // Neon Coral
-function color24() { applyGradient('linear-gradient(135deg, #00c6ff, #0072ff)', 'color24'); } // Blue Energy
-
-/* ───────────────────────────────
-   Helper Functions
-─────────────────────────────── */
-
-// ───────────────────────────────
-// Apply Solid Color (Updated with !important)
-// ───────────────────────────────
-function applyColor(color, name) {
-  // Remove gradient before applying color
-  document.documentElement.style.removeProperty('--primary-gradient');
-
-  document.documentElement.style.setProperty('--primary-color', color, 'important'); // Force override
-  setActiveColor(name);
-  localStorage.setItem('selectedColor', name);
-  console.log(`🎨 Applied ${name} color: ${color}`);
-}
-
-// Apply Gradient (Also add for consistency, though not strictly needed)
-function applyGradient(gradient, name) {
-  // Remove solid color before applying gradient
-  document.documentElement.style.removeProperty('--primary-color');
-
-  document.documentElement.style.setProperty('--primary-gradient', gradient, 'important'); // Force override
-  setActiveColor(name);
-  localStorage.setItem('selectedColor', name);
-  console.log(`🌈 Applied ${name} gradient: ${gradient}`);
-}
-
-    
-// Highlight active color button
-function setActiveColor(colorFunction) {
-    document.querySelectorAll('.color-boxed a').forEach(link => {
-        link.classList.remove('clr-active');
-        if (link.getAttribute('onclick') === `${colorFunction}();`) {
-            link.classList.add('clr-active');
-        }
-    });
-}
 
 /* ───────────────────────────────
    Theme Management
