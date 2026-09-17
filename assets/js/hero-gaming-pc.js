@@ -166,7 +166,7 @@
 
   function wireMotion(root, model, sceneState, home, THREE) {
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let mouseX = 0, mouseY = 0, smoothX = 0, smoothY = 0, scrollProgress = 0, visible = true;
+    let mouseX = 0, mouseY = 0, smoothX = 0, smoothY = 0, scrollProgress = 0, smoothScrollProgress = 0, visible = true;
 
     const updateScroll = () => {
       const r = home.getBoundingClientRect();
@@ -181,6 +181,7 @@
     window.addEventListener('pointermove', updatePointer, { passive: true });
     document.addEventListener('visibilitychange', () => { visible = !document.hidden; });
     updateScroll();
+    smoothScrollProgress = scrollProgress;
 
     const clock = new THREE.Clock();
     sceneState.renderer.setAnimationLoop(() => {
@@ -188,7 +189,9 @@
       const t = clock.getElapsedTime();
       smoothX += (mouseX - smoothX) * 0.05;
       smoothY += (mouseY - smoothY) * 0.05;
-      const p = reduced ? 0.5 : scrollProgress;
+      smoothScrollProgress += (scrollProgress - smoothScrollProgress) * 0.035;
+      const p = reduced ? 0.5 : smoothScrollProgress;
+      const compactViewport = innerWidth <= 900;
       const travel = reduced ? 0 : (p - 0.5) * 70;
       const bounce = reduced ? 0 : Math.sin(p * Math.PI * 6) * 18 + Math.sin(t * 1.8) * 7;
       const pointerX = reduced ? 0 : smoothX * 16;
@@ -198,7 +201,9 @@
       root.style.setProperty('--pc-pointer-x', `${pointerX.toFixed(2)}px`);
       root.style.setProperty('--pc-pointer-y', `${pointerY.toFixed(2)}px`);
 
-      model.rotation.y = -0.48 + p * Math.PI * 1.7 + smoothX * 0.1;
+      model.rotation.y = compactViewport
+        ? -0.48 + (p - 0.5) * 0.7 + smoothX * 0.06
+        : -0.48 + p * Math.PI * 1.7 + smoothX * 0.1;
       model.rotation.x = -0.04 - smoothY * 0.05 + (reduced ? 0 : Math.sin(t * 0.75) * 0.015);
       sceneState.cyan.intensity = 16 + Math.sin(t * 2.1) * 3;
       sceneState.purple.intensity = 12 + Math.cos(t * 1.7) * 2;
