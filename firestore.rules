@@ -8,6 +8,10 @@ service cloud.firestore {
     match /orders/{orderId} {
       allow read, write: if false;
     }
+    match /blogs/{blogId} {
+      allow read: if resource.data.published == true;
+      allow write: if false;
+    }
     match /{document=**} {
       allow read, write: if false;
     }
