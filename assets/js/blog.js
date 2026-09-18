@@ -1,4 +1,55 @@
-const cfg=window.TEKNTANDAO_CONFIG||{};const root=document.querySelector('#blog-grid');
-function articleCard(a){const p=a.attributes||a;const image=p.cover?.data?.attributes?.url||p.cover?.url||'';const base=(cfg.strapiBaseUrl||'').replace(/\/$/,'');const img=image?(image.startsWith('http')?image:`${base}${image}`):'';const slug=p.slug||a.id;return `<article class="blog-card">${img?`<img src="${img}" alt="${p.title||'TeknTandao article'}" loading="lazy">`:''}<div><span class="badge">${new Date(p.publishedAt||Date.now()).toLocaleDateString()}</span><h2>${p.title||'Untitled'}</h2><p>${p.excerpt||p.description||''}</p><a class="btn btn-primary" href="${base}/api/articles?filters[slug][$eq]=${encodeURIComponent(slug)}" target="_blank" rel="noopener">Read article</a></div></article>`}
-async function load(){if(!cfg.strapiBaseUrl){root.innerHTML='<div class="content-card"><h2>Strapi is ready to connect</h2><p>Set <code>strapiBaseUrl</code> in <code>assets/js/site-config.js</code>. The page expects a public <strong>articles</strong> content type with title, slug, excerpt, cover and publishedAt fields.</p></div>';return;}try{const base=cfg.strapiBaseUrl.replace(/\/$/,'');const r=await fetch(`${base}/api/articles?populate=*&sort=publishedAt:desc&pagination[pageSize]=12`);if(!r.ok)throw new Error('Could not load Strapi articles');const j=await r.json();root.innerHTML=(j.data||[]).map(articleCard).join('')||'<p>No published articles yet.</p>';}catch(e){root.innerHTML=`<div class="status">${e.message}. Confirm the Strapi articles endpoint is public and CORS allows www.tekntandao.com.</div>`;}}
-load();
+(() => {
+  const cfg = window.TEKNTANDAO_CONFIG || {};
+  const root = document.querySelector('#blog-grid');
+  if (!root) return;
+
+  const escape = value => String(value || '').replace(/[&<>"']/g, ch => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[ch]));
+
+  function card(post) {
+    const date = post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-KE', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+    const img = post.cover ? `<img src="${escape(post.cover)}" alt="${escape(post.title)}" loading="lazy">` : '';
+    return `<article class="blog-card">${img}<div><span class="badge">${escape(post.category || 'Insight')} · ${escape(date)}</span><h2>${escape(post.title)}</h2><p>${escape(post.excerpt)}</p><a class="btn btn-primary" href="blog-post.html?slug=${encodeURIComponent(post.slug)}">Read article</a></div></article>`;
+  }
+
+  async function loadSeed() {
+    const response = await fetch('data/blogs.json', { cache: 'no-store' });
+    if (!response.ok) return [];
+    const rows = await response.json();
+    return Array.isArray(rows) ? rows : [];
+  }
+
+  async function loadLive() {
+    const base = (cfg.functionsBaseUrl || '').replace(/\/$/, '');
+    if (!base) return [];
+    try {
+      const response = await fetch(`${base}/listBlogs`);
+      if (!response.ok) return [];
+      const payload = await response.json();
+      return Array.isArray(payload.blogs) ? payload.blogs : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function merge(seed, live) {
+    const map = new Map();
+    [...seed, ...live].forEach(post => {
+      if (post && post.slug) map.set(post.slug, post);
+    });
+    return [...map.values()].sort((a, b) => String(b.publishedAt || '').localeCompare(String(a.publishedAt || '')));
+  }
+
+  async function start() {
+    try {
+      const [seed, live] = await Promise.all([loadSeed(), loadLive()]);
+      const posts = merge(seed, live);
+      root.innerHTML = posts.length ? posts.map(card).join('') : '<p>No published articles yet.</p>';
+    } catch (error) {
+      root.innerHTML = `<div class="status">${escape(error.message)}</div>`;
+    }
+  }
+
+  start();
+})();
