@@ -125,6 +125,15 @@
 }
 
 @media (max-width: 767px) {
+    .services-items {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .services-items .service-item {
+        width: 100%;
+    }
+
     .icon-menu {
         right: 30px;
         top: 30px;
