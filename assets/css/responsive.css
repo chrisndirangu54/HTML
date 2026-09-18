@@ -125,6 +125,15 @@
 }
 
 @media (max-width: 767px) {
+    .services-items {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .services-items .service-item {
+        width: 100%;
+    }
+
     .icon-menu {
         right: 30px;
         top: 30px;
@@ -337,5 +346,32 @@
     .comments-area .comments .comments-list .comment-item .comment-body .comment-content h4 .date {
         margin-left: 26px;
         margin-top: 10px;
+    }
+}
+
+/* Keep the complete homepage canvas within the device viewport. */
+@media (max-width: 767px) {
+    html,
+    body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .drake-main,
+    #smooth-wrapper,
+    #smooth-content,
+    .page-section,
+    .custom-container,
+    .content-width {
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .drake-main,
+    #smooth-wrapper,
+    #smooth-content {
+        overflow-x: hidden;
     }
 }
