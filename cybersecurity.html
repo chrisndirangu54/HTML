@@ -587,7 +587,7 @@ nav.solid{
 }
 
 /* ─── SERVICES ─── */
-.services{background:var(--black);padding:130px 80px;}
+.services{background:var(--black);padding:130px 80px;overflow:hidden;}
 .services-header{
   display:grid;grid-template-columns:1fr 1fr;
   gap:40px;align-items:flex-end;margin-bottom:70px;
@@ -959,7 +959,7 @@ footer{
   .about {
     padding: 70px 24px;
   }
-  .about-grid {
+  .about {
     grid-template-columns: 1fr;
     gap: 36px;
   }
@@ -1026,6 +1026,80 @@ footer{
     padding: 14px 18px;
   }
 }
+/* Keep content in flow on tablets and phones, including short landscape screens. */
+section[id]{scroll-margin-top:88px;}
+.cta-input{min-width:0;}
+@media (min-width:993px) and (max-width:1200px){
+  nav,nav.solid{padding-left:40px;padding-right:40px;}
+  .nav-links{gap:24px;}
+  .hero{padding-left:40px;padding-right:40px;}
+  .hero-content{max-width:calc(100% - 260px);}
+  .hero-h1{font-size:clamp(58px,7vw,84px);}
+  .hero-panel{right:40px;}
+  .about,.services,.why,.cta{padding-left:40px;padding-right:40px;}
+  .about,.why-inner{gap:40px;}
+  footer{padding-left:40px;padding-right:40px;gap:24px;}
+}
+@media (max-width:992px){
+  .reveal[data-dir="left"],.reveal[data-dir="right"]{transform:translateY(40px);}
+  .reveal.go[data-dir="left"],.reveal.go[data-dir="right"]{transform:translateY(0);}
+  .mb-strip{margin-top:76px;line-height:1.7;}
+  #main-nav{background:rgba(2,6,8,.96);gap:12px;max-height:100dvh;overflow-y:auto;}
+  .nav-toggle-btn{min-height:44px;}
+  .nav-links{gap:0;}
+  .nav-links a{display:flex;align-items:center;min-height:44px;font-size:11px;}
+  .hero{height:auto;min-height:calc(100svh - 76px);padding-top:64px;gap:40px;}
+  .hero-content{width:100%;}
+  .hero-panel{position:relative;inset:auto;transform:none;width:100%;min-width:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;padding:24px;}
+  .panel-metric{margin:0;}
+  .panel-divider,.hero-scroll{display:none;}
+  .panel-status{grid-column:1 / -1;}
+  .stats-bar{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .sbar-cell{padding:32px 20px;}
+  .sbar-cell:nth-child(2n){border-right:0;}
+  .sbar-cell:nth-child(-n+2){border-bottom:1px solid var(--border);}
+  .about-img-wrap{height:clamp(320px,65vw,520px);}
+  .about > *,.services-header > *,.why-inner > *{min-width:0;}
+  .svc-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .svc-body{padding-bottom:80px;}
+  .about-certs{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .why{padding:70px 24px;}
+  .why-inner{grid-template-columns:minmax(0,1fr);gap:48px;}
+  .why-main-img{aspect-ratio:4/3;}
+  .why-card{left:16px;right:16px;bottom:20px;padding:20px;}
+  .footer-copy,.footer-badge{line-height:1.8;}
+}
+@media (max-width:576px){
+  #main-nav{padding:12px 16px;}
+  .nav-logo{font-size:23px;letter-spacing:.06em;}
+  .nav-toggle-btn{padding:8px 10px;}
+  .mb-strip{margin-top:69px;padding-inline:16px;}
+  .hero{padding:48px 20px;min-height:0;}
+  .hero-eyebrow{letter-spacing:.2em;gap:10px;line-height:1.7;}
+  .hero-eyebrow::before{width:24px;flex-shrink:0;}
+  .hero-h1{font-size:clamp(36px,10vw,58px);}
+  .hero-btns{margin-top:28px;}
+  .btn-primary,.btn-ghost{display:block;min-height:48px;line-height:1.7;}
+  .hero-panel{padding:20px 16px;gap:18px 12px;}
+  .panel-num{font-size:40px;}
+  .panel-label{letter-spacing:.1em;line-height:1.7;}
+  .sbar-cell{padding:28px 12px;}
+  .sbar-num{font-size:44px;}
+  .sbar-label{letter-spacing:.12em;line-height:1.7;}
+  .about,.services,.why,.cta{padding:56px 20px;}
+  .svc-grid{grid-template-columns:minmax(0,1fr);}
+  .svc-body{padding:24px 20px 80px;}
+  .s-title{font-size:clamp(30px,8vw,42px);}
+  .cert-cell{padding:20px 12px;}
+  .cert-label{letter-spacing:.1em;line-height:1.7;}
+  .why-feat{grid-template-columns:48px minmax(0,1fr);gap:14px;padding:24px 0;}
+  .feat-icon-wrap{width:44px;height:44px;font-size:20px;}
+  .why-main-img{aspect-ratio:3/4;}
+  .why-card-sub{line-height:1.7;}
+  .cta-title{font-size:clamp(32px,9vw,48px);}
+  .cta-input{width:100%;}
+  .cta-btn{min-height:48px;white-space:normal;line-height:1.7;}
+}
 </style>
 </head>
 <body>
@@ -1043,7 +1117,7 @@ footer{
 <!-- NAV -->
 <nav id="main-nav">
   <a href="index.html" class="nav-logo">TEKN<span class="dot">.</span>TANDAO</a>
-  <button class="nav-toggle-btn" id="cyber-nav-toggle" aria-label="Toggle navigation menu">Menu ☰</button>
+  <button class="nav-toggle-btn" id="cyber-nav-toggle" type="button" aria-label="Toggle navigation menu" aria-controls="cyber-nav-links" aria-expanded="false">Menu ☰</button>
   <ul class="nav-links" id="cyber-nav-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="#about">About</a></li>
@@ -1606,15 +1680,26 @@ document.querySelector('.cta-btn')?.addEventListener('click',()=>{
 const cyberNavToggle = document.getElementById('cyber-nav-toggle');
 const cyberNavLinks = document.getElementById('cyber-nav-links');
 if (cyberNavToggle && cyberNavLinks) {
+  const closeCyberMenu = () => {
+    cyberNavLinks.classList.remove('is-open');
+    cyberNavToggle.setAttribute('aria-expanded', 'false');
+  };
   cyberNavToggle.addEventListener('click', () => {
     cyberNavLinks.classList.toggle('is-open');
     cyberNavToggle.setAttribute('aria-expanded', cyberNavLinks.classList.contains('is-open'));
   });
   cyberNavLinks.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
-      cyberNavLinks.classList.remove('is-open');
+      closeCyberMenu();
     });
   });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && cyberNavLinks.classList.contains('is-open')) {
+      closeCyberMenu();
+      cyberNavToggle.focus();
+    }
+  });
+  window.matchMedia('(max-width: 992px)').addEventListener('change', closeCyberMenu);
 }
 </script>
 </body>
