@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WiFi Installation and ISP Desk | TeknTandao</title>
+<meta name="description" content="TeknTandao designs and installs premises WiFi for homes, shops, schools, and offices in Kenya. Upstream internet is supplied through licensed carriers.">
+<link rel="icon" type="image/png" href="assets/images/tekntandao-favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root { --ink:#e7f6ff; --muted:#9db4c4; --line:rgba(80,190,255,.28); --blue:#39b6ff; }
+* { box-sizing: border-box; }
+body { margin: 0; background:#041018; color: var(--ink); font-family: Manrope, sans-serif; }
+a { color: var(--blue); }
+.wrap { width: min(1100px, calc(100% - 32px)); margin: 0 auto; }
+nav { position: sticky; top: 0; z-index: 20; display: flex; justify-content: space-between; gap: 16px; align-items: center; padding: 16px 4vw; background: rgba(4,16,24,.86); backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); }
+nav a { color: var(--ink); text-decoration: none; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+.brand { font-family: Syne, sans-serif; font-weight: 800; letter-spacing: 0; text-transform: none; font-size: 18px; }
+.links { display: flex; gap: 18px; flex-wrap: wrap; }
+h1, h2, h3 { font-family: Syne, sans-serif; line-height: 1.05; margin: 0 0 12px; }
+h1 { font-size: clamp(40px, 6vw, 76px); max-width: 12ch; }
+.kicker { letter-spacing: .2em; text-transform: uppercase; color: var(--blue); font-size: 12px; font-weight: 700; }
+.muted { color: var(--muted); }
+.hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 28px; align-items: center; padding: 64px 0 24px; }
+.hero img { width: min(100%, 520px); margin-left: auto; border-radius: 24px; transform: rotate(7deg); box-shadow: 0 28px 50px rgba(0,0,0,.4); }
+.grid, .steps { display: grid; gap: 16px; }
+.grid { grid-template-columns: repeat(3, 1fr); }
+.steps { grid-template-columns: repeat(4, 1fr); }
+.card, .step { border: 1px solid var(--line); border-radius: 18px; padding: 18px; background: rgba(255,255,255,.03); }
+.step strong { display: block; color: var(--blue); margin-bottom: 8px; }
+section { padding: 28px 0 10px; }
+.cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
+.cta a { text-decoration: none; border-radius: 999px; padding: 12px 16px; font-weight: 700; }
+.cta .solid { background: var(--blue); color: #041018; }
+.cta .ghost { border: 1px solid var(--line); color: var(--ink); }
+.banner { margin: 28px 0; padding: 18px 20px; border-radius: 18px; background: rgba(57,182,255,.1); color: var(--muted); }
+footer.footer-area { padding: 28px 4vw 80px; color: var(--muted); border-top: 1px solid var(--line); }
+@media (max-width: 800px) {
+  .hero, .grid, .steps { grid-template-columns: 1fr; }
+  .hero img { transform: rotate(-4deg); margin: 10px auto 0; }
+}
+</style>
+</head>
+<body>
+<div class="global-color" hidden></div>
+<nav>
+  <a class="brand" href="index.html">TeknTandao</a>
+  <div class="links">
+    <a href="index.html">Home</a>
+    <a href="web3.html">Web3</a>
+    <a href="isp.html">ISP</a>
+    <a href="cybersecurity.html">Cybersecurity</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+</nav>
+<header class="wrap hero">
+  <div>
+    <p class="kicker">ISP desk · Nairobi</p>
+    <h1>WiFi that stays up after we leave.</h1>
+    <p class="muted">TeknTandao surveys the building, runs the cable, places the access points, and hands you a network you can actually manage. The internet feed itself comes from a licensed Kenyan carrier. We install the premises side.</p>
+    <div class="cta">
+      <a class="solid" href="index.html#contact">Request a survey</a>
+      <a class="ghost" href="https://wa.me/254702258870">WhatsApp +254 702 258 870</a>
+    </div>
+  </div>
+  <img src="assets/images/services/wifi.jpg" alt="A technician fitting a ceiling WiFi access point in an office">
+</header>
+<main class="wrap">
+  <section>
+    <p class="kicker">What we install</p>
+    <h2>The premises network</h2>
+    <div class="grid">
+      <article class="card"><h3>Homes and rentals</h3><p class="muted">Mesh coverage through brick and concrete, with a guest network that is not your private one.</p></article>
+      <article class="card"><h3>Shops and offices</h3><p class="muted">Ceiling access points, a tidy cabinet, and separate networks for staff, guests, and the till.</p></article>
+      <article class="card"><h3>Schools and halls</h3><p class="muted">Density planning for a room full of phones, plus a schedule for when the network should sleep.</p></article>
+    </div>
+  </section>
+  <section>
+    <p class="kicker">A job, in order</p>
+    <h2>From survey to handover</h2>
+    <div class="steps">
+      <article class="step"><strong>01 · Survey</strong><p class="muted">We walk the site, mark dead zones, and note where cable can actually run.</p></article>
+      <article class="step"><strong>02 · Design</strong><p class="muted">Access-point count, switch ports, and which carrier handoff the rack should expect.</p></article>
+      <article class="step"><strong>03 · Install</strong><p class="muted">Cabling, mounting, power, and names on every port. No mystery leads in the ceiling.</p></article>
+      <article class="step"><strong>04 · Prove it</strong><p class="muted">We test the rooms you named, write down the passwords, and show one person how to restart it.</p></article>
+    </div>
+  </section>
+  <section>
+    <p class="kicker">Also on the desk</p>
+    <h2>After the first day</h2>
+    <div class="grid">
+      <article class="card"><h3>Managed changes</h3><p class="muted">A new floor, a new till, or a camera that needs its own lane. We amend the design instead of stacking routers.</p></article>
+      <article class="card"><h3>Failover</h3><p class="muted">Where the work cannot stop, we can add a second carrier handoff. The second line is still a licensed carrier’s line.</p></article>
+      <article class="card"><h3>Quiet security</h3><p class="muted">Separate guest access, updated admin passwords, and no shared “password123” on the sticker under the router.</p></article>
+    </div>
+    <p class="banner">TeknTandao does not claim a Communications Authority network licence on this page. We design and install the network inside your building. Upstream internet is ordered from a licensed carrier, in your name or ours as the job requires, and that relationship is written into the quote.</p>
+    <div class="cta">
+      <a class="solid" href="mailto:info@tekntandao.com">info@tekntandao.com</a>
+      <a class="ghost" href="web3.html">Kenyan Web3 desk</a>
+    </div>
+  </section>
+</main>
+<footer class="footer-area">
+  <div class="wrap"><p>TeknTandao · WiFi installation · Nairobi · +254 702 258 870</p></div>
+</footer>
+<script src="assets/js/color.js"></script>
+</body>
+</html>

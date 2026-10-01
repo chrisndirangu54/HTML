@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kenyan Web3 Desk | TeknTandao</title>
+<meta name="description" content="A TeknTandao briefing on Kenya’s Web3 space: NFTs, the VASP rules, trading hygiene, and what public chains are actually used for.">
+<link rel="icon" type="image/png" href="assets/images/tekntandao-favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root { --ink:#e9fbff; --muted:#9eb4c6; --line:rgba(120,230,255,.22); --violet:#8b5cff; --cyan:#3de1ff; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background:#070514; color: var(--ink); font-family: Manrope, sans-serif; }
+a { color: var(--cyan); }
+img { max-width: 100%; display: block; }
+.wrap { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+nav { position: sticky; top: 0; z-index: 20; display: flex; justify-content: space-between; gap: 16px; align-items: center; padding: 16px 4vw; background: rgba(7,5,20,.82); backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); }
+nav a { color: var(--ink); text-decoration: none; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+.brand { font-family: Syne, sans-serif; font-weight: 800; letter-spacing: 0; text-transform: none; font-size: 18px; }
+.links { display: flex; gap: 18px; flex-wrap: wrap; }
+.hero { position: relative; padding: 72px 0 36px; overflow: hidden; }
+.hero::before { content: ""; position: absolute; inset: -10% -5% auto; height: 520px; background: radial-gradient(circle at 20% 20%, rgba(139,92,255,.45), transparent 42%), radial-gradient(circle at 80% 0%, rgba(61,225,255,.28), transparent 36%); pointer-events: none; }
+.kicker { letter-spacing: .22em; text-transform: uppercase; color: var(--cyan); font-size: 12px; font-weight: 700; }
+h1, h2, h3 { font-family: Syne, sans-serif; line-height: 1.05; margin: 0 0 12px; }
+h1 { font-size: clamp(42px, 7vw, 84px); max-width: 14ch; }
+.lede { max-width: 62ch; color: var(--muted); font-size: 18px; }
+.hero-grid { position: relative; display: grid; grid-template-columns: 1.1fr .9fr; gap: 28px; align-items: end; }
+.orbit { border: 1px solid var(--line); border-radius: 28px; min-height: 280px; padding: 22px; background: linear-gradient(160deg, rgba(139,92,255,.2), rgba(7,5,20,.2) 40%, rgba(61,225,255,.12)); transform: rotate(-6deg); box-shadow: 0 30px 60px rgba(0,0,0,.35); }
+.orbit strong { display: block; font-family: Syne, sans-serif; font-size: 28px; margin-bottom: 8px; }
+.section { padding: 54px 0; }
+.cards, .chains, .steps { display: grid; gap: 16px; }
+.cards { grid-template-columns: repeat(3, 1fr); }
+.chains { grid-template-columns: repeat(3, 1fr); }
+.card, .step, .chain { border: 1px solid var(--line); border-radius: 20px; padding: 20px; background: rgba(255,255,255,.03); }
+.card h3, .chain h3 { font-size: 22px; }
+.card p, .step p, .chain p, li { color: var(--muted); }
+.steps { grid-template-columns: 1fr 1fr; }
+.step span { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--violet); color: white; font-weight: 800; margin-bottom: 10px; }
+.note { border-left: 3px solid var(--cyan); padding: 8px 0 8px 14px; color: var(--muted); }
+.cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+.cta a { text-decoration: none; border-radius: 999px; padding: 12px 16px; font-weight: 700; }
+.cta .solid { background: var(--cyan); color: #071018; }
+.cta .ghost { border: 1px solid var(--line); color: var(--ink); }
+footer.footer-area { padding: 28px 4vw 80px; color: var(--muted); border-top: 1px solid var(--line); }
+@media (max-width: 800px) {
+  .hero-grid, .cards, .chains, .steps { grid-template-columns: 1fr; }
+  .orbit { transform: none; }
+}
+</style>
+</head>
+<body>
+<div class="global-color" hidden></div>
+<nav>
+  <a class="brand" href="index.html">TeknTandao</a>
+  <div class="links">
+    <a href="index.html">Home</a>
+    <a href="web3.html">Web3</a>
+    <a href="isp.html">ISP</a>
+    <a href="cybersecurity.html">Cybersecurity</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+</nav>
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="kicker">Nairobi · Web3 desk</p>
+      <h1>Kenya’s chain conversation, without the fog.</h1>
+      <p class="lede">NFTs, wallets, stablecoins, and trading only make sense next to the rules Kenya actually gazetted. This desk is a briefing from TeknTandao, not an exchange and not a promise of profit.</p>
+      <div class="cta">
+        <a class="solid" href="#guide">Read the trading guide</a>
+        <a class="ghost" href="index.html#contact">Talk to the studio</a>
+      </div>
+    </div>
+    <aside class="orbit">
+      <strong>4 Nov 2026</strong>
+      <p>Existing virtual-asset operators were given until 4 November 2026 to come into line with the Virtual Asset Service Providers Act, which commenced on 4 November 2025.</p>
+    </aside>
+  </div>
+</header>
+<main>
+  <section class="section">
+    <div class="wrap">
+      <p class="kicker">The rules on the ground</p>
+      <h2>What changed, and who supervises it</h2>
+      <div class="cards">
+        <article class="card">
+          <h3>The Act</h3>
+          <p>The Virtual Asset Service Providers Act, No. 20 of 2025, commenced on 4 November 2025. It is the statute for people offering virtual-asset services in or from Kenya.</p>
+        </article>
+        <article class="card">
+          <h3>The Regulations</h3>
+          <p>Legal Notice 134 of 2026, the Virtual Asset Service Providers Regulations, was gazetted on 22 July 2026. It is the licensing detail under that Act.</p>
+        </article>
+        <article class="card">
+          <h3>Two regulators</h3>
+          <p>The Central Bank of Kenya supervises wallets, payment processors, and stablecoin issuers. The Capital Markets Authority supervises exchanges, brokers, advisers, managers, initial coin offerings, tokenisation, and token-issuance platforms.</p>
+        </article>
+      </div>
+      <p class="note">NFTs that are not used for payment, investment, or another financial purpose sit outside the Act’s virtual-asset definition. A collectible can still be marketed like an investment. Read the actual use, not the label.</p>
+    </div>
+  </section>
+  <section class="section" id="nfts">
+    <div class="wrap">
+      <p class="kicker">NFTs</p>
+      <h2>Collectibles, access, and the financial line</h2>
+      <div class="cards">
+        <article class="card">
+          <h3>Art and access</h3>
+          <p>Kenyan artists and studios use NFTs as editions, tickets, and membership passes. That is a publishing and community tool. It is not, by itself, a market.</p>
+        </article>
+        <article class="card">
+          <h3>The financial test</h3>
+          <p>If a token is sold as a way to earn, to share revenue, or to stand in for an asset people trade, treat it as something the capital-markets side of the VASP regime may cover.</p>
+        </article>
+        <article class="card">
+          <h3>Custody</h3>
+          <p>A marketplace can disappear. A wallet phrase that leaks is gone. Keep the phrase offline, and never type it into a chat, including this site’s assistant.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+  <section class="section" id="guide">
+    <div class="wrap">
+      <p class="kicker">Trading guide</p>
+      <h2>How to study a trade before you place one</h2>
+      <p class="lede">This is hygiene, not a signal. TeknTandao does not manage money and does not tell you what to buy.</p>
+      <div class="steps">
+        <article class="step"><span>1</span><h3>Name the asset</h3><p>Write down the chain, the contract or mint, and what the token does when nobody is promoting it.</p></article>
+        <article class="step"><span>2</span><h3>Separate the money</h3><p>Only use cash you can lose. Rent, payroll, and M-Pesa float do not belong in a trade.</p></article>
+        <article class="step"><span>3</span><h3>Check the venue</h3><p>As licensing opens, prefer a provider that can show the CBK or CMA permission its activity requires. A Telegram admin is not a venue.</p></article>
+        <article class="step"><span>4</span><h3>Write the exit first</h3><p>Decide the reason you would sell, or the reason you would walk away, before the price moves.</p></article>
+        <article class="step"><span>5</span><h3>Keep your own record</h3><p>Save dates, amounts in KES, and fees. Do not assume a foreign app files anything for you in Kenya.</p></article>
+        <article class="step"><span>6</span><h3>Refuse the rush</h3><p>Guaranteed returns, “limited slots”, and anyone asking for a seed phrase are the same scam in a new coat.</p></article>
+      </div>
+    </div>
+  </section>
+  <section class="section" id="topics">
+    <div class="wrap">
+      <p class="kicker">Hottest topics</p>
+      <h2>What builders in Nairobi are actually arguing about</h2>
+      <div class="cards">
+        <article class="card"><h3>The licensing window</h3><p>Operators already in market have a hard date. New products need to know which of the ten regulated activities they resemble before they take a customer’s money.</p></article>
+        <article class="card"><h3>Stablecoin reserves</h3><p>The Regulations put reserve, custody, and redemption rules on stablecoin issuers. A peg is a claim. The reserve is the part you can check.</p></article>
+        <article class="card"><h3>Real-world assets</h3><p>Tokenising land, invoices, or funds is its own licensed activity under the CMA side. A PDF and a token are not a title deed.</p></article>
+        <article class="card"><h3>M-Pesa next door</h3><p>Everyday payments in Kenya still run through M-Pesa. A chain product that cannot explain the on-ramp and the off-ramp is a demo.</p></article>
+        <article class="card"><h3>Scam patterns</h3><p>Fake support desks, copied exchange sites, and “airdrops” that ask you to connect a wallet and approve unlimited spend.</p></article>
+        <article class="card"><h3>What TeknTandao will build</h3><p>Interfaces, data tools, and training around these topics. We do not operate an exchange, a wallet custodian, or a token sale from this page.</p></article>
+      </div>
+    </div>
+  </section>
+  <section class="section" id="chains">
+    <div class="wrap">
+      <p class="kicker">Chains</p>
+      <h2>What the networks are being used for</h2>
+      <p class="lede">These are public roles, not TeknTandao partnerships and not a ranking.</p>
+      <div class="chains">
+        <article class="chain"><h3>Bitcoin and Lightning</h3><p>Bearer savings and small, fast payments. Lightning is the layer people use when the base chain is too slow or too costly for a till.</p></article>
+        <article class="chain"><h3>Ethereum</h3><p>The default home for general smart contracts and for the NFT standards most marketplaces still speak.</p></article>
+        <article class="chain"><h3>Base, Arbitrum, Polygon</h3><p>Ethereum environments with lower fees. Same idea of a contract and a wallet, less cost per click.</p></article>
+        <article class="chain"><h3>Solana</h3><p>High-throughput consumer apps and mints, chosen when an experience has to feel instant.</p></article>
+        <article class="chain"><h3>Celo</h3><p>A mobile-first network that African builders have used for stablecoin transfers and lightweight apps.</p></article>
+        <article class="chain"><h3>Stellar</h3><p>A payments network aimed at corridors: moving value between currencies with a short path.</p></article>
+      </div>
+      <div class="cta">
+        <a class="solid" href="isp.html">See WiFi installation</a>
+        <a class="ghost" href="mailto:info@tekntandao.com">info@tekntandao.com</a>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="footer-area">
+  <div class="wrap">
+    <p>TeknTandao, Nairobi. This page is education. It is not investment advice, not a solicitation, and not a statement that any provider is licensed. Check the Central Bank of Kenya and the Capital Markets Authority before you trust a venue.</p>
+  </div>
+</footer>
+<script src="assets/js/color.js"></script>
+</body>
+</html>

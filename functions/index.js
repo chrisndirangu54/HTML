@@ -17,7 +17,7 @@ const mpesaCallbackUrl=defineSecret('MPESA_CALLBACK_URL');
 const paystackKey=defineSecret('PAYSTACK_SECRET_KEY');
 const xaiKey=defineSecret('XAI_API_KEY');
 const adminEmails=defineString('ADMIN_EMAILS',{default:''});
-const allowed=new Set(['https://www.tekntandao.com','https://tekntandao.com','http://localhost:5500','http://127.0.0.1:5500']);
+const allowed=new Set(['https://www.tekntandao.com','https://tekntandao.com','http://localhost:5500','http://127.0.0.1:5500','http://localhost:5000','http://127.0.0.1:5000']);
 const staffRoles=new Set(['admin','attendant','delivery']);
 const orderStatuses=new Set(['pending','payment_init_failed','payment_failed','paid','processing','ready_for_delivery','out_for_delivery','delivered','cancelled']);
 
@@ -254,4 +254,43 @@ export const runTrendingBlog=onRequest({region:'europe-west1',secrets:[xaiKey]},
 export const publishTrendingBlog=onSchedule({region:'europe-west1',schedule:'every 24 hours',timeZone:'Africa/Nairobi',secrets:[xaiKey]},async()=>{
   await generateTrendingBlog();
 });
+
+const SITE_ASSISTANT_PROMPT=`You are the TeknTandao website assistant in Nairobi, Kenya. TeknTandao builds data-driven software: mobile apps, web apps, youth and business training, analytics, IoT and security systems, digital marketing, the Techruptors podcast, design and video, and business automation such as CRM, PoS, HRM, and ERP. It also installs premises WiFi and publishes a Kenyan Web3 desk. Contact: info@tekntandao.com, +254 702 258 870, WhatsApp https://wa.me/254702258870. Useful pages: web3.html, isp.html, cybersecurity.html.
+
+Answer in short plain sentences. Do not invent prices, licences, client names, or statistics. For crypto, NFTs, and trading, explain publicly known Kenya rules and risks. You are not a licensed investment adviser, broker, or lawyer, and you must not promise returns. The Virtual Asset Service Providers Act, No. 20 of 2025 commenced on 4 November 2025. The Virtual Asset Service Providers Regulations, 2026 (Legal Notice 134 of 2026) were gazetted on 22 July 2026. The Central Bank of Kenya supervises virtual-asset wallets, payment processors, and stablecoin issuers. The Capital Markets Authority supervises exchanges, brokers, advisers, managers, initial coin offerings, tokenisation, and token-issuance platforms. Existing operators had until 4 November 2026 to come into compliance. NFTs that are not used for payment, investment, or other financial purposes sit outside the Act's virtual-asset definition. TeknTandao installs the premises network and does not claim a Communications Authority network licence; upstream internet comes from licensed carriers. If you do not know, say so and point to email or WhatsApp.`;
+
+function chatMessages(body){
+  const raw=Array.isArray(body?.messages)?body.messages:[];
+  const messages=[];
+  for(const row of raw.slice(-8)){
+    const role=row?.role==='assistant'?'assistant':row?.role==='user'?'user':'';
+    const content=cleanText(row?.content,800);
+    if(!role||!content)continue;
+    messages.push({role,content});
+  }
+  if(!messages.length||messages[messages.length-1].role!=='user')throw new Error('Send a message to start');
+  return messages;
+}
+
+async function answerSiteChat(messages){
+  const response=await fetch('https://api.x.ai/v1/responses',{
+    method:'POST',
+    headers:{Authorization:`Bearer ${xaiKey.value()}`,'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model:'grok-4.7',
+      input:[{role:'system',content:SITE_ASSISTANT_PROMPT},...messages]
+    })
+  });
+  const payload=await response.json();
+  if(!response.ok)throw new Error(payload.error?.message||'Assistant unavailable');
+  const text=extractModelText(payload);
+  if(!text)throw new Error('Assistant returned an empty reply');
+  return cleanText(text,1800);
+}
+
+export const siteAssistant=onRequest({region:'europe-west1',secrets:[xaiKey]},async(req,res)=>respond(req,res,async()=>{
+  assertMethod(req,'POST');
+  const reply=await answerSiteChat(chatMessages(req.body));
+  return{reply};
+}));
 

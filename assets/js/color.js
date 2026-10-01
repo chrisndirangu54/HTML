@@ -195,6 +195,9 @@
             <h3>Explore</h3>
             <ul>
               <li><a href="index.html">Home</a></li>
+              <li><a href="web3.html">Web3</a></li>
+              <li><a href="isp.html">ISP</a></li>
+              <li><a href="cybersecurity.html">Cybersecurity</a></li>
               <li><a href="shop.html">Shop</a></li>
               <li><a href="blog.html">Blogs</a></li>
               <li><a href="gallery.html">Gallery</a></li>
@@ -231,13 +234,105 @@
 
   function mountOrb() {
     if (document.getElementById('tt-scroll-orb')) return document.getElementById('tt-scroll-orb');
-    const orb = document.createElement('div');
+    const orb = document.createElement('button');
+    orb.type = 'button';
     orb.id = 'tt-scroll-orb';
     orb.className = 'tt-scroll-orb';
-    orb.setAttribute('aria-hidden', 'true');
+    orb.setAttribute('aria-label', 'Open the TeknTandao assistant');
+    orb.setAttribute('aria-expanded', 'false');
+    orb.setAttribute('aria-controls', 'tt-chat');
     orb.innerHTML = '<span class="tt-scroll-orb__lottie" id="tt-ai-robo-lottie"></span>';
     document.body.appendChild(orb);
     return orb;
+  }
+
+  function assistantEndpoint() {
+    const cfg = window.TEKNTANDAO_CONFIG || {};
+    const base = String(cfg.functionsBaseUrl || '').replace(/\/$/, '');
+    return base ? `${base}/siteAssistant` : '/api/siteAssistant';
+  }
+
+  function mountChat() {
+    if (document.getElementById('tt-chat')) return document.getElementById('tt-chat');
+    const chat = document.createElement('div');
+    chat.id = 'tt-chat';
+    chat.className = 'tt-chat';
+    chat.hidden = true;
+    chat.innerHTML = `
+      <div class="tt-chat__panel" role="dialog" aria-modal="false" aria-labelledby="tt-chat-title">
+        <div class="tt-chat__bar">
+          <strong id="tt-chat-title">TeknTandao assistant</strong>
+          <button type="button" data-chat-close>Close</button>
+        </div>
+        <div class="tt-chat__log"></div>
+        <form class="tt-chat__form">
+          <textarea maxlength="800" rows="2" placeholder="Ask about our work, WiFi, or Kenyan Web3" required></textarea>
+          <button type="submit">Send</button>
+        </form>
+        <p class="tt-chat__note">General information only. Not financial, legal, or licensing advice.</p>
+      </div>`;
+    document.body.appendChild(chat);
+    return chat;
+  }
+
+  function wireChat(orb, chat) {
+    const log = chat.querySelector('.tt-chat__log');
+    const form = chat.querySelector('form');
+    const input = chat.querySelector('textarea');
+    const send = form.querySelector('button');
+    const messages = [];
+    const setOpen = (open) => {
+      chat.hidden = !open;
+      orb.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (open) window.setTimeout(() => input.focus(), 30);
+    };
+    const addBubble = (role, text) => {
+      const item = document.createElement('p');
+      item.className = `tt-chat__bubble tt-chat__bubble--${role}`;
+      item.textContent = text;
+      log.appendChild(item);
+      log.scrollTop = log.scrollHeight;
+      return item;
+    };
+    addBubble('assistant', 'Ask about TeknTandao, WiFi installation, or the Kenyan Web3 desk.');
+    orb.addEventListener('click', () => setOpen(chat.hidden));
+    chat.querySelector('[data-chat-close]').addEventListener('click', () => setOpen(false));
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !chat.hidden) setOpen(false);
+    });
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        form.requestSubmit();
+      }
+    });
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const text = input.value.trim();
+      if (!text || send.disabled) return;
+      input.value = '';
+      addBubble('user', text);
+      messages.push({ role: 'user', content: text });
+      const pending = addBubble('assistant', 'Thinking…');
+      send.disabled = true;
+      try {
+        const res = await fetch(assistantEndpoint(), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: messages.slice(-8) })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.reply) throw new Error(data.error || 'offline');
+        pending.textContent = data.reply;
+        messages.push({ role: 'assistant', content: data.reply });
+      } catch (error) {
+        messages.pop();
+        pending.textContent = 'The assistant is not reachable from this page yet. Email info@tekntandao.com or WhatsApp +254 702 258 870.';
+      } finally {
+        send.disabled = false;
+        log.scrollTop = log.scrollHeight;
+      }
+    });
   }
 
   async function startOrb(orb) {
@@ -303,7 +398,6 @@
       script.defer = true;
       document.body.appendChild(script);
     };
-    if (document.querySelector('#home')) add('tt-gaming-pc-loader', 'assets/js/hero-gaming-pc.js');
     if (document.body.classList.contains('home1-page')) add('tt-footer-robot-loader', 'assets/js/footer-robot.js');
   }
 
@@ -362,7 +456,9 @@
       setAuto();
     }
     const orb = mountOrb();
+    const chat = mountChat();
     wireOrb(orb);
+    wireChat(orb, chat);
     startOrb(orb);
     loadPageScripts();
   }

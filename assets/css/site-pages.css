@@ -198,8 +198,264 @@ body:not(.home1-page) .footer-area .sub-title {
   color: #ccc;
 }
 
+button.tt-scroll-orb {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.tt-scroll-orb:focus-visible {
+  outline: 2px solid #7eeeff;
+  outline-offset: 4px;
+  border-radius: 50%;
+}
+
+.tt-tally.is-done {
+  animation: ttTallyPop 0.45s ease;
+}
+
+@keyframes ttTallyPop {
+  40% { transform: scale(1.06); }
+}
+
+.tt-hero-parallax {
+  position: relative;
+  height: clamp(460px, 78vw, 700px);
+  margin: 42px 0 8px;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.tt-hero-parallax__slot {
+  position: absolute;
+  will-change: transform;
+}
+
+.tt-hero-parallax__slot--left,
+.tt-hero-parallax__slot--right {
+  width: min(48%, 360px);
+  aspect-ratio: 1;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.48);
+  z-index: 1;
+}
+
+.tt-hero-parallax__slot--left {
+  left: 0;
+  top: 7%;
+  transform: translate3d(-112%, 0, 0);
+}
+
+.tt-hero-parallax__slot--right {
+  right: 0;
+  top: 16%;
+  transform: translate3d(112%, 0, 0);
+}
+
+.tt-hero-parallax__slot--front {
+  left: 50%;
+  bottom: 0;
+  width: min(64%, 460px);
+  z-index: 3;
+  transform: translate3d(-50%, 118%, 0);
+  filter: drop-shadow(0 24px 28px rgba(0, 0, 0, 0.55));
+}
+
+.tt-hero-parallax.is-in .tt-hero-parallax__slot--left,
+.tt-hero-parallax.is-in .tt-hero-parallax__slot--right {
+  transform: none;
+  transition: transform 1.05s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tt-hero-parallax.is-in .tt-hero-parallax__slot--right {
+  transition-delay: 0.08s;
+}
+
+.tt-hero-parallax.is-in .tt-hero-parallax__slot--front {
+  transform: translate3d(-50%, 0, 0);
+  transition: transform 1.15s cubic-bezier(0.16, 1, 0.3, 1) 0.16s;
+}
+
+.tt-hero-parallax__slot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tt-hero-parallax__slot--front img {
+  height: auto;
+  object-fit: contain;
+}
+
+.service-item {
+  overflow: visible;
+}
+
+.service-tilt {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  width: 132px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 14px;
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  transform: rotate(10deg) translate(10px, -6px) scale(0.92);
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.3s ease;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.service-item:hover .service-tilt,
+.service-item:focus-within .service-tilt {
+  opacity: 1;
+  transform: rotate(-12deg) translate(-4px, 2px) scale(1);
+}
+
+.tt-chat {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 70;
+  width: min(380px, calc(100vw - 24px));
+}
+
+.tt-chat__panel {
+  display: flex;
+  flex-direction: column;
+  max-height: min(70vh, 560px);
+  border: 1px solid rgba(126, 238, 255, 0.28);
+  border-radius: 18px;
+  background: rgba(6, 12, 20, 0.94);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(16px);
+  overflow: hidden;
+}
+
+.tt-chat__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(126, 238, 255, 0.16);
+  color: #e8fbff;
+  font: 700 13px/1.2 Inter, system-ui, sans-serif;
+}
+
+.tt-chat__bar button,
+.tt-chat__form button {
+  border: 0;
+  border-radius: 999px;
+  background: #14c5fd;
+  color: #041018;
+  font: 700 12px/1 Inter, system-ui, sans-serif;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.tt-chat__log {
+  flex: 1;
+  overflow: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tt-chat__bubble {
+  margin: 0;
+  max-width: 92%;
+  padding: 10px 12px;
+  border-radius: 14px;
+  color: #e7f7ff;
+  font: 400 14px/1.45 Inter, system-ui, sans-serif;
+  white-space: pre-wrap;
+}
+
+.tt-chat__bubble--assistant {
+  align-self: flex-start;
+  background: rgba(20, 197, 253, 0.12);
+}
+
+.tt-chat__bubble--user {
+  align-self: flex-end;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.tt-chat__form {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid rgba(126, 238, 255, 0.16);
+}
+
+.tt-chat__form textarea {
+  flex: 1;
+  resize: none;
+  min-height: 44px;
+  max-height: 120px;
+  border-radius: 12px;
+  border: 1px solid rgba(126, 238, 255, 0.24);
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  padding: 10px;
+  font: 400 14px/1.4 Inter, system-ui, sans-serif;
+}
+
+.tt-chat__note {
+  margin: 0;
+  padding: 0 12px 12px;
+  color: #8fb4c2;
+  font: 400 11px/1.4 Inter, system-ui, sans-serif;
+}
+
+@media (max-width: 720px) {
+  .tt-hero-parallax {
+    height: 520px;
+  }
+
+  .tt-hero-parallax__slot--left,
+  .tt-hero-parallax__slot--right {
+    width: 46%;
+  }
+
+  .tt-hero-parallax__slot--front {
+    width: 78%;
+  }
+
+  .service-tilt {
+    width: 108px;
+    height: 78px;
+    right: 12px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tt-scroll-orb {
     transform: translate3d(72vw, 18vh, 0) !important;
+  }
+
+  .tt-hero-parallax__slot,
+  .tt-hero-parallax.is-in .tt-hero-parallax__slot--front {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .tt-hero-parallax__slot--front {
+    left: 18%;
+    width: min(70%, 420px);
+  }
+
+  .tt-tally.is-done,
+  .service-tilt {
+    animation: none;
+    transition: none;
   }
 }

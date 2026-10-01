@@ -15,6 +15,16 @@
       "**/.*",
       "**/node_modules/**",
       "functions/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/api/siteAssistant",
+        "function": {
+          "functionId": "siteAssistant",
+          "region": "europe-west1",
+          "codebase": "commerce"
+        }
+      }
     ]
   }
 }

@@ -137,21 +137,104 @@
     return pivot;
   }
 
+  const REEL_SRC = 'assets/images/tekntandao-gaming-reel.mp4';
+  const REEL_CREDIT = '#';
+
   function pinProgress(root) {
     const rect = root.getBoundingClientRect();
     const total = Math.max(root.offsetHeight - innerHeight, 1);
     return Math.max(0, Math.min(1, -rect.top / total));
   }
 
+  function revealReel(root, sceneState) {
+    const stage = root.querySelector('.tt-gaming-pc__stage');
+    const badge = root.querySelector('.tt-gaming-pc__badge');
+    if (badge) badge.textContent = 'Gaming reel';
+    root.classList.add('is-revealed');
+
+    if (stage && !stage.querySelector('.tt-gaming-pc__video')) {
+      const video = document.createElement('video');
+      video.className = 'tt-gaming-pc__video';
+      video.muted = true;
+      video.defaultMuted = true;
+      video.autoplay = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.volume = 0.18;
+      video.setAttribute('playsinline', '');
+      video.setAttribute('webkit-playsinline', '');
+      video.preload = 'auto';
+      video.src = REEL_SRC;
+      video.setAttribute('aria-label', 'TeknTandao gaming setup reel');
+
+      const muteButton = document.createElement('button');
+      muteButton.type = 'button';
+      muteButton.className = 'tt-gaming-pc__mute';
+      muteButton.setAttribute('aria-label', video.muted ? 'Unmute reel' : 'Mute reel');
+      muteButton.title = video.muted ? 'Unmute reel' : 'Mute reel';
+      muteButton.textContent = video.muted ? '🔇' : '🔊';
+      muteButton.addEventListener('click', () => {
+        video.muted = !video.muted;
+        muteButton.textContent = video.muted ? '🔇' : '🔊';
+        muteButton.title = video.muted ? 'Unmute reel' : 'Mute reel';
+        muteButton.setAttribute('aria-label', video.muted ? 'Unmute reel' : 'Mute reel');
+      });
+
+      const credit = document.createElement('a');
+      credit.className = 'tt-gaming-pc__credit';
+      credit.href = REEL_CREDIT;
+      credit.target = '_blank';
+      credit.rel = 'noopener noreferrer';
+      credit.textContent = 'TeknTandao';
+      stage.appendChild(video);
+      stage.appendChild(muteButton);
+      stage.appendChild(credit);
+
+      const isStageVisible = () => {
+        const rect = stage.getBoundingClientRect();
+        return rect.bottom > 0 && rect.top < innerHeight && rect.right > 0 && rect.left < innerWidth;
+      };
+      const updatePlayback = isVisible => {
+        if (isVisible && root.classList.contains('is-revealed')) video.play().catch(() => {});
+        else video.pause();
+      };
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(entries => {
+          updatePlayback(entries.some(entry => entry.isIntersecting) && isStageVisible());
+        }, { threshold: 0.01 });
+        observer.observe(stage);
+        updatePlayback(isStageVisible());
+      } else {
+        updatePlayback(isStageVisible());
+      }
+    } else if (stage) {
+      const video = stage.querySelector('.tt-gaming-pc__video');
+      const muteButton = stage.querySelector('.tt-gaming-pc__mute');
+      if (video) {
+        video.volume = 0.18;
+        const rect = stage.getBoundingClientRect();
+        const isVisible = rect.bottom > 0 && rect.top < innerHeight && rect.right > 0 && rect.left < innerWidth;
+        if (isVisible) video.play().catch(() => {});
+        else video.pause();
+      }
+      if (muteButton) {
+        muteButton.textContent = video && video.muted ? '🔇' : '🔊';
+        muteButton.title = video && video.muted ? 'Unmute reel' : 'Mute reel';
+        muteButton.setAttribute('aria-label', video && video.muted ? 'Unmute reel' : 'Mute reel');
+      }
+    }
+  }
+
   function wireMotion(root, pivot, mixer, sceneState, THREE) {
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const badgeSpin = root.querySelector('[data-pc-spin]');
+    const badge = root.querySelector('.tt-gaming-pc__badge');
     const YAW_START = Math.PI / 2;
     const YAW_TRAVEL = Math.PI;
+    const revealThreshold = 0.9;
+    const reverseThreshold = 0.7;
     let mouseX = 0;
     let smoothX = 0;
     let visible = true;
-
     window.addEventListener('pointermove', event => {
       mouseX = (event.clientX / Math.max(innerWidth, 1)) * 2 - 1;
     }, { passive: true });
@@ -162,15 +245,32 @@
       if (!visible) return;
       const dt = clock.getDelta();
       const t = clock.elapsedTime;
-      if (mixer) mixer.update(dt);
-      smoothX += (mouseX - smoothX) * 0.08;
-      const spin = reduced ? 0 : pinProgress(root);
+      if (mixer && !reduced) mixer.update(dt);
+      if (!reduced) smoothX += (mouseX - smoothX) * 0.08;
+      const spin = pinProgress(root);
+      let reelRevealed = root.classList.contains('is-revealed');
+      if (reelRevealed && spin < reverseThreshold) {
+        root.classList.remove('is-revealed');
+        reelRevealed = false;
+        const reelVideo = root.querySelector('.tt-gaming-pc__video');
+        if (reelVideo) {
+          reelVideo.pause();
+          reelVideo.currentTime = 0;
+        }
+      }
+      if (!reelRevealed && spin >= revealThreshold) {
+        pivot.rotation.set(0, YAW_START + YAW_TRAVEL + (reduced ? 0 : smoothX * 0.12), 0);
+        sceneState.renderer.render(sceneState.scene, sceneState.camera);
+        revealReel(root, sceneState);
+        return;
+      }
+
       const pinning = spin > 0 && spin < 1;
       root.classList.toggle('is-pinning', pinning);
 
-      pivot.rotation.set(0, YAW_START + spin * YAW_TRAVEL + (reduced ? 0 : smoothX * 0.12), 0);
+      pivot.rotation.set(0, reduced ? YAW_START : YAW_START + spin * YAW_TRAVEL + smoothX * 0.12, 0);
       pivot.position.y = reduced ? 0 : Math.sin(t * 1.1) * 0.03;
-      if (badgeSpin) badgeSpin.textContent = `${Math.round(spin * 100)}%`;
+      if (!reelRevealed && badge) badge.textContent = `Scroll to rotate ${Math.round(spin * 100)}%`;
 
       sceneState.cyan.intensity = 8.5 + Math.sin(t * 2.1) * 1.8;
       sceneState.purple.intensity = 6.5 + Math.cos(t * 1.7) * 1.4;
@@ -211,6 +311,7 @@
     } catch (error) {
       console.error('Gaming setup GLB load failed:', error);
       root.classList.add('has-error');
+      revealReel(root, null);
     }
   }
 
@@ -226,14 +327,7 @@
   function lazyStart() {
     const home = document.querySelector(HOME);
     if (!home) return;
-    if (!('IntersectionObserver' in window)) return start();
-    const observer = new IntersectionObserver(entries => {
-      if (entries.some(entry => entry.isIntersecting)) {
-        observer.disconnect();
-        start();
-      }
-    }, { rootMargin: '350px' });
-    observer.observe(home);
+    start();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', lazyStart, { once: true });
