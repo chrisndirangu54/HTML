@@ -7,9 +7,10 @@
     position: relative;
     box-sizing: border-box;
     width: 100%;
-    max-width: 100%;
+    max-width: 1130px;
     height: 180vh;
-    margin: 22px 0 30px;
+    margin: 22px auto 30px;
+    padding: 0 15px;
     overflow: visible;
     z-index: 4;
     pointer-events: none;
@@ -31,15 +32,16 @@
 
 .tt-gaming-pc__stage {
     position: absolute;
-    left: 50%;
+    left: auto;
+    right: 0;
     top: 50%;
-    width: min(36vw, 380px);
+    width: min(100%, 770px);
     height: min(42vw, 470px);
-    max-width: calc(100% - 120px);
+    max-width: 100%;
     max-height: 470px;
     border-radius: 18px;
     overflow: visible;
-    transform: translate3d(-50%, -50%, 0);
+    transform: translate3d(0, -50%, 0);
     transition: filter .2s ease;
     filter: drop-shadow(0 28px 45px rgba(0, 0, 0, .42));
     will-change: transform;
@@ -92,11 +94,6 @@
 
 .tt-gaming-pc.is-revealed .tt-gaming-pc__video { opacity: 1; }
 .tt-gaming-pc.is-revealed .tt-gaming-pc__canvas { opacity: 1; pointer-events: auto; }
-.tt-gaming-pc.is-revealed .tt-gaming-pc__stage {
-    width: min(36vw, 380px);
-    height: min(42vw, 470px);
-}
-
 .tt-gaming-pc__credit,
 .tt-gaming-pc__mute {
     position: absolute;
@@ -138,15 +135,19 @@
 @media (max-width: 900px) {
     .tt-gaming-pc { height: 160vh; margin-top: 18px; overflow: visible; }
     .tt-gaming-pc__sticky,
-    .tt-gaming-pc__track { top: 64px; height: min(62vh, 540px); overflow: visible; }
-    .tt-gaming-pc__stage { width: min(70vw, 330px); height: min(82vw, 390px); transform: translate3d(calc(-50% + var(--pc-pointer-x)), calc(-50% + var(--pc-bounce-y) + var(--pc-pointer-y)), 0); }
+    .tt-gaming-pc__track { top: calc(50vh - min(31vh, 270px)); height: min(62vh, 540px); overflow: visible; }
+    .tt-gaming-pc__stage { left: 50%; right: auto; width: min(70vw, 330px); height: min(82vw, 390px); transform: translate3d(calc(-50% + var(--pc-pointer-x)), calc(-50% + var(--pc-bounce-y) + var(--pc-pointer-y)), 0); }
     .tt-ai-robo { right: max(12px, env(safe-area-inset-right)); top: max(12px, env(safe-area-inset-top)); width: 130px; }
+}
+
+@media (max-width: 1220px) {
+    .tt-gaming-pc { max-width: 767px; }
 }
 
 @media (max-width: 640px) {
     .tt-gaming-pc { height: 150vh; margin-top: 14px; }
     .tt-gaming-pc__sticky,
-    .tt-gaming-pc__track { height: min(68vh, 460px); }
+    .tt-gaming-pc__track { top: calc(50vh - min(34vh, 230px)); height: min(68vh, 460px); }
     .tt-gaming-pc__stage { width: min(72vw, 290px); height: 320px; }
     .tt-gaming-pc__badge { right: 4%; bottom: 2%; font-size: 9px; }
     .tt-ai-robo { width: min(100px, 28vw); }
@@ -157,6 +158,10 @@
     .tt-gaming-pc__sticky,
     .tt-gaming-pc__track { position: relative; top: auto; height: 440px; }
     .tt-gaming-pc__glow, .tt-ai-robo__glow { animation: none; }
-    .tt-gaming-pc__stage { transform: translate3d(-50%, -50%, 0) !important; }
+    .tt-gaming-pc__stage { transform: translate3d(0, -50%, 0) !important; }
     .tt-ai-robo { transform: none !important; }
+}
+
+@media (max-width: 900px) and (prefers-reduced-motion: reduce) {
+    .tt-gaming-pc__stage { transform: translate3d(-50%, -50%, 0) !important; }
 }

@@ -142,6 +142,12 @@
 
   function pinProgress(root) {
     const rect = root.getBoundingClientRect();
+    if (innerWidth <= 900) {
+      const sticky = root.querySelector('.tt-gaming-pc__sticky');
+      const pinTop = (innerHeight - sticky.offsetHeight) / 2;
+      // Scroll the outer track while the setup stays pinned at the center.
+      return Math.max(0, Math.min(1, (pinTop - rect.top) / Math.max(innerHeight * 0.4, 1)));
+    }
     const total = Math.max(root.offsetHeight - innerHeight, 1);
     return Math.max(0, Math.min(1, -rect.top / total));
   }
@@ -230,7 +236,6 @@
     const badge = root.querySelector('.tt-gaming-pc__badge');
     const YAW_START = Math.PI / 2;
     const YAW_TRAVEL = Math.PI;
-    const revealThreshold = 0.9;
     const reverseThreshold = 0.7;
     let mouseX = 0;
     let smoothX = 0;
@@ -248,6 +253,7 @@
       if (mixer && !reduced) mixer.update(dt);
       if (!reduced) smoothX += (mouseX - smoothX) * 0.08;
       const spin = pinProgress(root);
+      const revealThreshold = innerWidth <= 900 ? 1 : 0.9;
       let reelRevealed = root.classList.contains('is-revealed');
       if (reelRevealed && spin < reverseThreshold) {
         root.classList.remove('is-revealed');
@@ -269,7 +275,7 @@
       root.classList.toggle('is-pinning', pinning);
 
       pivot.rotation.set(0, reduced ? YAW_START : YAW_START + spin * YAW_TRAVEL + smoothX * 0.12, 0);
-      pivot.position.y = reduced ? 0 : Math.sin(t * 1.1) * 0.03;
+      pivot.position.y = reduced || innerWidth <= 900 ? 0 : Math.sin(t * 1.1) * 0.03;
       if (!reelRevealed && badge) badge.textContent = `Scroll to rotate ${Math.round(spin * 100)}%`;
 
       sceneState.cyan.intensity = 8.5 + Math.sin(t * 2.1) * 1.8;

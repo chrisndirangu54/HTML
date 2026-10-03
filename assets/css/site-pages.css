@@ -92,6 +92,31 @@
   background: conic-gradient(from 90deg, #28e98c, #14c5fd, #8e2de2, #ff00cc, #fe6f1d, #28e98c) !important;
 }
 
+.portfolio-implementation-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 10px 14px;
+  border: 1px solid var(--primary-color);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 14px;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.portfolio-implementation-link:hover,
+.portfolio-implementation-link:focus-visible {
+  background: var(--primary-color);
+  color: #101b17;
+}
+
+.workspace-menu-link {
+  border: 1px solid var(--primary-color);
+  border-radius: 4px;
+}
+
 body:not(.home1-page) {
   min-height: 100vh;
   background: #1f1f1f;
