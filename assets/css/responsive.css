@@ -355,7 +355,7 @@
     body {
         width: 100%;
         max-width: 100%;
-        overflow-x: hidden;
+        overflow-x: clip;
     }
 
     .drake-main,
@@ -372,6 +372,8 @@
     .drake-main,
     #smooth-wrapper,
     #smooth-content {
-        overflow-x: hidden;
+        /* Clip sideways overflow without creating a scroll container that
+           prevents the gaming setup from sticking to the viewport. */
+        overflow-x: clip;
     }
 }
