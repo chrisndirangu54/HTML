@@ -303,3 +303,5 @@ export {securityCommerce} from './security-commerce.js';
 export {securityPaystackCheckout,securityPaystackWebhook} from './security-payments.js';
 
 export {securityGithubApp} from './security-github-app.js';
+
+export {securityGithubWebhook} from './security-github-webhook.js';
