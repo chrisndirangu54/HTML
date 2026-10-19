@@ -299,3 +299,5 @@ export const siteAssistant=onRequest({region:'europe-west1',secrets:[xaiKey]},as
 export {securityApi} from './security.js';
 
 export {securityCommerce} from './security-commerce.js';
+
+export {securityPaystackCheckout,securityPaystackWebhook} from './security-payments.js';
