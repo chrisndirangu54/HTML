@@ -18,7 +18,15 @@
     ],
     "rewrites": [
       {
-        "source": "/api/security{,/**}",
+        "source": "/api/security/**",
+        "function": {
+          "functionId": "securityApi",
+          "region": "europe-west1",
+          "codebase": "commerce"
+        }
+      },
+      {
+        "source": "/api/security",
         "function": {
           "functionId": "securityApi",
           "region": "europe-west1",
