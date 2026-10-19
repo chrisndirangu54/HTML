@@ -9,6 +9,8 @@ window.TEKNTANDAO_CONFIG = {
   },
   functionsBaseUrl: "https://europe-west1-YOUR_PROJECT_ID.cloudfunctions.net",
   strapiBaseUrl: "https://cms.example.com",
+  strapiApiVersion: "5", // "4" or "5"; match STRAPI_API_VERSION on the server
+  strapiArticleCollection: "articles",
   whatsappNumber: "254702258870"
 };
 // XAI_API_KEY stays on the server (Firebase secret). Never put it in this file.

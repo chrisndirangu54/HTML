@@ -1,0 +1,18 @@
+.topic-page h1 { font-size: clamp(2rem, 5vw, 3.6rem); line-height: 1.15; margin: 12px 0; }
+.topic-page h2, .topic-page h3 { color: #fff; line-height: 1.35; }
+.topic-page h2 { font-size: 1.5rem; }
+.topic-page h3 { font-size: 1.2rem; margin: 0; }
+.topic-page .content-card .content-card { margin: 0; }
+.topic-page .topic-hero img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 16px; }
+.topic-page .hero-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 24px; align-items: center; }
+.topic-page .orbit { border: 1px solid var(--line); padding: 22px; border-radius: 20px; }
+.topic-page .orbit strong { color: var(--primary-color); font-size: 1.5rem; }
+.topic-page .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.topic-page .note, .topic-page .banner { border-left: 3px solid var(--primary-color); padding: 12px 18px; }
+.topic-page .step span, .topic-page .step strong { color: var(--primary-color); }
+.topic-page .tt-resources { padding: 24px 0; }
+.topic-page .tt-resources .badge { margin-bottom: 12px; }
+.topic-page .blog-card .btn { align-self: flex-start; }
+@media(max-width: 800px) { .topic-page .hero-grid { grid-template-columns: 1fr; } }
+
+.topic-page .btn:not(.btn-primary) { color: #eee; }

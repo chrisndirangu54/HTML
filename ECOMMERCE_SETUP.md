@@ -85,15 +85,46 @@ Order workflow writes include status history and actor UID. Staff assignment and
 
 ## 6. Strapi blogs
 
-Create a Strapi `Article` content type with at least:
+The Blogs, ISP and Web3 article grids and `blog-post.html` all read the existing Strapi Article REST API. Set `strapiBaseUrl`, `strapiApiVersion` (`4` or `5`) and `strapiArticleCollection` (normally `articles`) in `assets/js/site-config.js`. The client supports Strapi 4 attributes and Strapi 5 document IDs. Enable public Article `find`, media population and CORS for the website origin.
 
-- `title`
-- `slug`
-- `excerpt` or `description`
-- `cover` media
-- normal Strapi `publishedAt`
+When a CMS URL is configured, the CMS is authoritative: local seeds are not merged back into its feed. Without a CMS URL, `data/blogs.json` provides the static preview. Existing external cards in that preview now link directly to their publishers.
 
-Enable public `find` access for published Articles, configure Strapi CORS to allow `https://www.tekntandao.com`, then set `strapiBaseUrl` in `assets/js/site-config.js`.
+Extend your existing Article content type with these fields (preserve any existing fields and data):
+
+| Field | Strapi type | Use |
+| --- | --- | --- |
+| title | Text, required | Card and article heading |
+| slug | UID or unique text | Site article route |
+| excerpt | Text | Card summary |
+| category | Text | Label, e.g. ISP or Web3 |
+| body | Rich text (Markdown) or long text | Site article text |
+| cover | Existing media field | Existing images remain supported |
+| coverUrl | Text | Optional HTTP image URL or local assets path |
+| pages | JSON array | Any combination of `blogs`, `isp`, `web3` |
+| postType | Enumeration: `internal`, `external` | Site article or external blog |
+| externalUrl | Text | Required for external blogs |
+| visible | Boolean, default true | Show or hide the article on the website |
+
+Keep Strapi Draft & Publish enabled. Articles without `pages` fall back to ISP/Web3 placement based on their category, or Blogs for other categories. Site articles use `blog-post.html`; external cards open the publisher directly. No external article text is copied into the site.
+
+The site Admin panel has a shared editor for all three pages. Existing Firebase administrator authentication protects two forwarding Functions; article storage and editing stay in Strapi. Configure these server parameters in `functions/.env.<project-id>`:
+
+```
+STRAPI_BASE_URL=https://your-existing-cms.example.com
+STRAPI_API_VERSION=5
+STRAPI_ARTICLE_COLLECTION=articles
+```
+
+Create a Strapi Content API token limited to Article find/create/update, and store it only as a Firebase secret:
+
+```
+firebase functions:secrets:set STRAPI_API_TOKEN
+firebase deploy --only functions:adminListBlogs,functions:adminSaveBlog
+```
+
+Never put this token in `site-config.js`. The client and server must target the same Strapi instance, version and collection. The editor sends POST/PUT to the existing Article API, using `documentId` on Strapi 5 and numeric IDs on Strapi 4. Saving publishes the update; clearing `visible` hides it from the site's listings and article route. This visibility control is not Strapi's native unpublish operation: use the Strapi Content Manager for unpublished drafts or native unpublishing. The public Strapi API can still expose a published article whose website visibility is off.
+
+Use the Admin panel's **Import starter blogs into Strapi** button to copy the initial entries from `data/blogs.json`. The import skips slugs that already exist and reports partial failures, so retrying preserves existing CMS entries. This is an explicit action; visiting the dashboard does not upload seeds. Existing generated Firestore posts are not mixed into the CMS feed.
 
 ## 7. Shop content
 
@@ -118,3 +149,9 @@ The home-page top/mobile menu is routed at runtime to:
 - `awards.html`
 
 Gallery, Events and Training use the Instagram embeds supplied for the site. Podcasts and Awards intentionally display **Coming soon**.
+
+### Local Strapi connection
+
+The website now targets `http://127.0.0.1:1337` (Strapi 5). The running CMS source is `C:/Users/Admin/Music/TechRuptors/cms`. A separate `TeknTandao Article` collection (`/api/articles`) was added there, preserving the existing Community Blog collection. Public read permissions are added during CMS startup; write permissions remain restricted. The collection starts empty: import starter cards using the site admin once the write proxy is configured, or create posts in Strapi's own admin.
+
+For development, use the same URL in `STRAPI_BASE_URL` when running the Functions emulator, and set the website's `functionsBaseUrl` to the emulator URL. For production, use a reachable HTTPS CMS address: deployed Functions cannot access `127.0.0.1` on your computer, and visitors' browsers resolve that address to their own machines.

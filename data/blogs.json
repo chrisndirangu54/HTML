@@ -12,7 +12,11 @@
       "TeknTandao’s view is simple: treat the Act as an engineering problem. Map the data you hold, name a responsible person, lock down access, and write the few policies you will actually follow.",
       "Start with four artefacts: a processing register, a privacy notice in plain English, a breach playbook that can be run at 2 a.m., and vendor contracts that mention subprocessors. If you take M-Pesa numbers, ID copies or health data, those sit in a higher risk tier and need extra controls.",
       "We help Kenyan SMEs put this into the same stack they already use — Firebase, AWS, and on-prem networks — so compliance is a property of the system, not a PDF in a drawer."
-    ]
+    ],
+    "pages": [
+      "blogs"
+    ],
+    "postType": "internal"
   },
   {
     "slug": "ransomware-east-africa-2026",
@@ -27,7 +31,11 @@
       "The smartest defence is boring: patch internet-facing services, require phishing-resistant MFA on admin paths, keep an offline backup that has been restored in the last 90 days, and segment the finance VLAN from guest Wi-Fi.",
       "TeknTandao’s SOC playbook assumes the first alert is already late. We hunt for unusual RDP, new scheduled tasks and backup-agent uninstalls, then isolate the host before the encryptor runs.",
       "If you have never restored from backup, you do not have a backup. Book a restore drill. It is cheaper than a negotiation."
-    ]
+    ],
+    "pages": [
+      "blogs"
+    ],
+    "postType": "internal"
   },
   {
     "slug": "zero-trust-kenyan-fintech",
@@ -42,7 +50,11 @@
       "A practical first slice: put the core payment API behind identity-aware access, kill shared SSH keys, and issue short-lived certificates. Staff laptops get device posture checks before they can reach staging.",
       "Do not wait for a full NAC rollout. Removing standing admin on production databases cuts more risk than a new logo on the SOC wall.",
       "TeknTandao designs this path around the stack you already run — AWS, GCP or a hybrid with on-prem core banking — and measures success in reduced standing privilege, not slideware."
-    ]
+    ],
+    "pages": [
+      "blogs"
+    ],
+    "postType": "internal"
   },
   {
     "slug": "ai-soc-for-smes",
@@ -57,6 +69,94 @@
       "That split matters. Full autopilot looks impressive in a demo and catastrophic on a Friday payment run. We keep a human in the loop for any change that can take a service down.",
       "What the model is good at: collapsing 400 EDR pings into three stories, spotting a new phishing kit that reuses last month’s infrastructure, and writing the first customer notice in English and Kiswahili.",
       "If your current ‘SOC’ is a WhatsApp group and a firewall GUI, this is the upgrade path: collect logs, let the model rank them, and keep a named engineer on call."
-    ]
+    ],
+    "pages": [
+      "blogs"
+    ],
+    "postType": "internal"
+  },
+  {
+    "slug": "network-architecture-dns",
+    "title": "Network architecture",
+    "excerpt": "DNS, routing and secure network connections.",
+    "category": "ISP",
+    "cover": "assets/images/resources/circuits.jpg",
+    "source": "seed",
+    "body": [],
+    "pages": [
+      "isp"
+    ],
+    "postType": "external",
+    "externalUrl": "https://blog.cloudflare.com/"
+  },
+  {
+    "slug": "internet-access-resilience",
+    "title": "Internet access & resilience",
+    "excerpt": "Connectivity, community networks and infrastructure for an open internet.",
+    "category": "ISP",
+    "cover": "assets/images/resources/code.jpg",
+    "source": "seed",
+    "body": [],
+    "pages": [
+      "isp"
+    ],
+    "postType": "external",
+    "externalUrl": "https://www.internetsociety.org/blog/"
+  },
+  {
+    "slug": "understanding-peering",
+    "title": "Understand the wider network",
+    "excerpt": "Peering, Internet exchange points and how networks connect.",
+    "category": "ISP",
+    "cover": "assets/images/resources/mining-rig.jpg",
+    "source": "seed",
+    "body": [],
+    "pages": [
+      "isp"
+    ],
+    "postType": "external",
+    "externalUrl": "https://www.internetsociety.org/our-work/connectivity/"
+  },
+  {
+    "slug": "ethereum-protocol-research",
+    "title": "Protocol research",
+    "excerpt": "Updates and research from the organisation supporting Ethereum.",
+    "category": "Web3",
+    "cover": "assets/images/resources/mining-rig.jpg",
+    "source": "seed",
+    "body": [],
+    "pages": [
+      "web3"
+    ],
+    "postType": "external",
+    "externalUrl": "https://blog.ethereum.org/"
+  },
+  {
+    "slug": "oracles-interoperability",
+    "title": "Oracles & interoperability",
+    "excerpt": "Technical explainers about connecting smart contracts with external data and other chains.",
+    "category": "Web3",
+    "cover": "assets/images/resources/circuits.jpg",
+    "source": "seed",
+    "body": [],
+    "pages": [
+      "web3"
+    ],
+    "postType": "external",
+    "externalUrl": "https://chain.link/blog"
+  },
+  {
+    "slug": "web3-developer-foundations",
+    "title": "Build your foundations",
+    "excerpt": "Developer guides covering accounts, smart contracts and decentralised applications.",
+    "category": "Web3",
+    "cover": "assets/images/resources/code.jpg",
+    "source": "seed",
+    "body": [],
+    "pages": [
+      "web3"
+    ],
+    "postType": "external",
+    "externalUrl": "https://ethereum.org/en/developers/docs/"
   }
 ]

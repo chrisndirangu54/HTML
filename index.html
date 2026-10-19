@@ -717,6 +717,23 @@
                                     <div class="col-md-3 scroll-animation" data-animation="fade_from_right">
                                         <img src="assets/images/client-8.png" alt="Client">
                                     </div>
+                                    <div class="col-md-3 scroll-animation" data-animation="fade_from_bottom">
+                                        <img class="partner-logo-supplied" src="assets/images/partners/startinev.jpg" alt="Startinev" width="447" height="447" loading="lazy">
+                                    </div>
+                                    <div class="col-md-3 scroll-animation" data-animation="fade_from_bottom">
+                                        <img class="partner-logo-supplied" src="assets/images/partners/us-embassy-nairobi-seal.png" alt="United States Embassy Nairobi" width="2492" height="2492" loading="lazy">
+                                    </div>
+                                    <div class="col-md-3 scroll-animation" data-animation="fade_from_bottom">
+                                        <img class="partner-logo-supplied" src="assets/images/partners/us-embassy-kenya.jpg" alt="U.S. Embassy Kenya" width="750" height="510" loading="lazy">
+                                    </div>
+                                    <div class="col-md-3 scroll-animation" data-animation="fade_from_bottom">
+                                        <img class="partner-logo-transparent" src="assets/images/partners/icon-element-transparent.png" alt="Icon Element" width="1945" height="809" loading="lazy">
+                                    </div>
+                                    <div class="col-md-3 scroll-animation" data-animation="fade_from_bottom">
+                                        <img class="partner-logo-transparent" src="assets/images/partners/knls-transparent.png" alt="Kenya National Library Service" width="2172" height="724" loading="lazy">
+                                    </div>
+
+
                                 </div>
                             </div>
                         </div>
@@ -904,6 +921,8 @@
                                 <li><a href="#home">Home</a></li>
                                 <li><a href="shop.html">Shop</a></li>
                                 <li><a href="blog.html">Blogs</a></li>
+                                <li><a href="newsletter.html">Newsletter</a></li>
+                                <li><a href="login.html">Sign in</a></li>
                                 <li><a href="gallery.html">Gallery</a></li>
                                 <li><a href="#contact">Contact</a></li>
                             </ul>
@@ -932,7 +951,9 @@
     <script src="assets/js/lightbox.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/ajax-form.js"></script>
+    <script src="assets/js/scene-policy.js"></script>
     <script src="assets/js/hero-gaming-pc.js"></script>
+    <script id="tt-footer-robot-loader" src="assets/js/footer-robot.js" defer></script>
     <script src="assets/js/color.js"></script>
     <script src="assets/js/home-stage.js"></script>
 <script>
@@ -1217,45 +1238,7 @@ function hideNavbar() {
 /* ───────────────────────────────
    Load Saved Settings
 ─────────────────────────────── */
-document.addEventListener('DOMContentLoaded', () => {
-    const savedTheme = localStorage.getItem('selectedTheme');
-    if (savedTheme) changeTheme(savedTheme);
-});
 
-/* ───────────────────────────────
-   Theme Management
-─────────────────────────────── */
-function changeTheme(theme) {
-    const video = document.getElementById('background-video');
-    const overlay = document.querySelector('.body-overlay');
-    const themes = {
-        'earth-lines-sphere': 'assets/images/video1.mp4',
-        '3d-abstract-ball': 'assets/images/video2.mp4',
-        'water-waves': 'assets/images/video3.mp4',
-        'liquids-wavy': 'assets/images/video4.mp4',
-        'simple-strings': 'assets/images/video5.mp4',
-        'solid-color': null
-    };
-
-    document.querySelectorAll('.themes li').forEach(li => li.classList.remove('active'));
-    const activeLi = document.querySelector(`.themes a[onclick="changeTheme('${theme}')"]`);
-    if (activeLi) activeLi.parentElement.classList.add('active');
-
-    if (theme === 'solid-color') {
-        video.style.display = 'none';
-        overlay.style.backgroundImage = `url('assets/images/solid-color.jpg')`;
-    } else {
-        video.style.display = 'block';
-        overlay.style.backgroundImage = 'none';
-        const source = video.querySelector('source');
-        source.src = themes[theme];
-        video.load();
-        video.play();
-    }
-
-    localStorage.setItem('selectedTheme', theme);
-    console.log(` Applied theme: ${theme}`);
-}
 
 
 </script>

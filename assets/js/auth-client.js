@@ -30,6 +30,11 @@ export async function apiFetch(name,{method='GET',body=null,forceToken=false}={}
   if(!res.ok)throw new Error(data.error||`Request failed (${res.status})`);
   return data;
 }
-export async function getSession(force=false){return apiFetch('getSession',{forceToken:force})}
+export async function getSession(force=false){
+  if(functionsBase)return apiFetch('getSession',{forceToken:force});
+  const user=await requireUser();
+  const {claims}=await user.getIdTokenResult(force);
+  return {uid:user.uid,email:user.email,name:user.displayName,emailVerified:user.emailVerified,role:claims.role||'customer',superAdmin:claims.superAdmin===true};
+}
 export function dashboardForRole(role){if(role==='admin')return'admin.html';if(role==='attendant')return'attendant.html';if(role==='delivery')return'delivery.html';return'account.html'}
 export async function signOutCurrent(){if(auth)await signOut(auth);location.href='shop.html'}

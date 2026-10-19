@@ -14,17 +14,20 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**",
-      "functions/**"
+      "functions/**",
+      "scripts/**",
+      "docs/**",
+      "**/*.log",
+      "**/*.rules",
+      "ECOMMERCE_SETUP.md",
+      "CNAME",
+      "**/.*/**",
+      ".git/**",
+      ".firebase/**",
+      ".github/**"
     ],
-    "rewrites": [
-      {
-        "source": "/api/siteAssistant",
-        "function": {
-          "functionId": "siteAssistant",
-          "region": "europe-west1",
-          "codebase": "commerce"
-        }
-      }
+    "predeploy": [
+      "node scripts/build-rss.cjs"
     ]
   }
 }

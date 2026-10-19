@@ -1,3 +1,4 @@
+import {createStrapiClient} from './strapi-blogs.js';
 import {createHmac} from 'node:crypto';
 import {initializeApp} from 'firebase-admin/app';
 import {getAuth} from 'firebase-admin/auth';
@@ -16,6 +17,10 @@ const mpesaShortcode=defineSecret('MPESA_SHORTCODE');
 const mpesaCallbackUrl=defineSecret('MPESA_CALLBACK_URL');
 const paystackKey=defineSecret('PAYSTACK_SECRET_KEY');
 const xaiKey=defineSecret('XAI_API_KEY');
+const strapiToken=defineSecret('STRAPI_API_TOKEN');
+const strapiBaseUrl=defineString('STRAPI_BASE_URL',{default:''});
+const strapiVersion=defineString('STRAPI_API_VERSION',{default:'5'});
+const strapiCollection=defineString('STRAPI_ARTICLE_COLLECTION',{default:'articles'});
 const adminEmails=defineString('ADMIN_EMAILS',{default:''});
 const allowed=new Set(['https://www.tekntandao.com','https://tekntandao.com','http://localhost:5500','http://127.0.0.1:5500','http://localhost:5000','http://127.0.0.1:5000']);
 const staffRoles=new Set(['admin','attendant','delivery']);
@@ -169,6 +174,16 @@ export const adminSaveContent=onRequest({region:'europe-west1'},async(req,res)=>
   assertMethod(req,'POST');const admin=await identity(req,['admin']);const input=req.body?.item||{};const allowedTypes=new Set(['event','training','award','gallery','podcast','community']);const type=cleanText(input.type,30).toLowerCase();if(!allowedTypes.has(type))throw new Error('Invalid content type');const title=cleanText(input.title,200);if(!title)throw new Error('Content title required');const id=cleanText(input.id,120).toLowerCase().replace(/[^a-z0-9_-]/g,'-');const ref=id?db.collection('siteContent').doc(id):db.collection('siteContent').doc();const row={type,title,description:cleanText(input.description,3000),mediaUrl:cleanText(input.mediaUrl,1000),embedUrl:cleanText(input.embedUrl,1000),externalUrl:cleanText(input.externalUrl,1000),signupUrl:cleanText(input.signupUrl,1000),active:input.active!==false,updatedBy:admin.uid,updatedAt:FieldValue.serverTimestamp()};await ref.set({...row,createdAt:FieldValue.serverTimestamp()},{merge:true});return{contentId:ref.id};
 }));
 
+export const getNewsletterSettings=onRequest({region:'europe-west1'},async(req,res)=>respond(req,res,async()=>{
+  assertMethod(req,'GET');const snap=await db.collection('siteContent').doc('newsletter-config').get();return{signupUrl:snap.exists?snap.data().signupUrl||'':''};
+}));
+export const adminSaveNewsletterSettings=onRequest({region:'europe-west1'},async(req,res)=>respond(req,res,async()=>{
+  assertMethod(req,'POST');const admin=await identity(req,['admin']);const signupUrl=cleanText(req.body?.signupUrl,1000);
+  if(signupUrl){let url;try{url=new URL(signupUrl)}catch{throw new Error('Invalid Mailchimp URL')}
+    if(url.protocol!=='https:'||!/(^|\.)(list-manage\.com|eepurl\.com|mailchi\.mp)$/.test(url.hostname))throw new Error('Use a Mailchimp public HTTPS signup URL');}
+  await db.collection('siteContent').doc('newsletter-config').set({type:'community',title:'Newsletter settings',signupUrl,active:false,updatedBy:admin.uid,updatedAt:FieldValue.serverTimestamp()},{merge:true});return{saved:true};
+}));
+
 async function mpesaToken(){const raw=Buffer.from(`${mpesaKey.value()}:${mpesaSecret.value()}`).toString('base64');const r=await fetch('https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials',{headers:{Authorization:`Basic ${raw}`}});const j=await r.json();if(!r.ok||!j.access_token)throw new Error(j.errorMessage||'M-Pesa authentication failed');return j.access_token}
 function mpesaTimestamp(){const d=new Date();const p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`}
 
@@ -294,3 +309,13 @@ export const siteAssistant=onRequest({region:'europe-west1',secrets:[xaiKey]},as
   return{reply};
 }));
 
+
+// Blog content stays in the existing Strapi Article collection. Firebase only
+// verifies the site administrator before forwarding a CMS request.
+function blogCms(){return createStrapiClient({baseUrl:strapiBaseUrl.value(),token:strapiToken.value(),version:strapiVersion.value(),collection:strapiCollection.value()})}
+export const adminListBlogs=onRequest({region:'europe-west1',secrets:[strapiToken]},async(req,res)=>respond(req,res,async()=>{
+  assertMethod(req,'GET');await identity(req,['admin']);return{articles:await blogCms().list()};
+}));
+export const adminSaveBlog=onRequest({region:'europe-west1',secrets:[strapiToken]},async(req,res)=>respond(req,res,async()=>{
+  assertMethod(req,'POST');await identity(req,['admin']);return blogCms().save(req.body?.article||{});
+}));

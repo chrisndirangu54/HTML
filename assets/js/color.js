@@ -200,6 +200,8 @@
               <li><a href="cybersecurity.html">Cybersecurity</a></li>
               <li><a href="shop.html">Shop</a></li>
               <li><a href="blog.html">Blogs</a></li>
+              <li><a href="newsletter.html">Newsletter</a></li>
+              <li><a href="login.html">Sign in</a></li>
               <li><a href="gallery.html">Gallery</a></li>
               <li><a href="index.html#contact">Contact</a></li>
             </ul>
@@ -443,11 +445,113 @@
   };
   window.TTTheme = { applyPalette, setAuto, setManual, palettes: PALETTES };
 
+  function startVideoThemes() {
+    let video = document.getElementById('background-video');
+    if (!video) return;
+    const names = ['earth-lines-sphere', '3d-abstract-ball', 'water-waves', 'liquids-wavy', 'simple-strings'];
+    const motion = matchMedia('(prefers-reduced-motion: reduce)');
+    let automatic = localStorage.getItem('videoThemeMode') !== 'manual';
+    let index = 0;
+    let pending = null;
+    let transitionId = 0;
+    let solid = false;
+    const cancelPending = () => {
+      transitionId++;
+      if (pending) { pending.pause(); pending.remove(); pending = null; }
+      video.getAnimations().forEach(animation => animation.cancel());
+    };
+    const apply = name => {
+      const next = names.indexOf(name);
+      if (next < 0 && name !== 'solid-color') return;
+      solid = next < 0;
+      video.playsInline = true;
+      if (next >= 0) {
+        index = next;
+        const src = `assets/images/video${index + 1}.mp4`;
+        const source = video.querySelector('source');
+        if (source.getAttribute('src') !== src) {
+          if (!pending || pending.querySelector('source').getAttribute('src') !== src) {
+            cancelPending();
+            const requestId = transitionId;
+            const incoming = video.cloneNode(true);
+            incoming.removeAttribute('id');
+            incoming.muted = true;
+            incoming.playsInline = true;
+            incoming.preload = 'auto';
+            incoming.style.display = 'block';
+            incoming.style.opacity = '0';
+            incoming.style.pointerEvents = 'none';
+            incoming.querySelector('source').src = src;
+            pending = incoming;
+            video.insertAdjacentElement('afterend', incoming);
+            incoming.addEventListener('loadeddata', async () => {
+              if (requestId !== transitionId) return;
+              if (!motion.matches && !document.hidden) await incoming.play().catch(() => {});
+              if (requestId !== transitionId) return;
+              const outgoing = video;
+              const opacity = getComputedStyle(outgoing).opacity;
+              const duration = motion.matches ? 0 : 1400;
+              const fade = incoming.animate([{ opacity: 0 }, { opacity }], { duration, easing: 'ease-in-out', fill: 'forwards' });
+              outgoing.animate([{ opacity }, { opacity: 0 }], { duration, easing: 'ease-in-out', fill: 'forwards' });
+              try { await fade.finished; } catch { return; }
+              if (requestId !== transitionId) return;
+              outgoing.pause();
+              outgoing.remove();
+              incoming.id = 'background-video';
+              incoming.style.removeProperty('opacity');
+              incoming.getAnimations().forEach(animation => animation.cancel());
+              video = incoming;
+              pending = null;
+            }, { once: true });
+            incoming.addEventListener('error', () => { if (requestId === transitionId) cancelPending(); }, { once: true });
+            incoming.load();
+          }
+        } else { cancelPending(); video.style.display = 'block'; }
+        if (motion.matches || document.hidden) video.pause();
+        else video.play().catch(() => {});
+      } else { cancelPending(); video.style.display = 'none'; video.pause(); }
+      document.querySelectorAll('[data-video-theme]').forEach(a => {
+        a.parentElement.classList.toggle('active', a.dataset.videoTheme === (automatic ? 'auto' : name));
+      });
+    };
+    window.changeTheme = name => {
+      automatic = name === 'auto';
+      localStorage.setItem('videoThemeMode', automatic ? 'auto' : 'manual');
+      if (!automatic) localStorage.setItem('selectedTheme', name);
+      apply(automatic ? names[index] : name);
+    };
+    document.querySelectorAll('.themes a').forEach(a => {
+      const match = (a.getAttribute('onclick') || '').match(/changeTheme\('([^']+)'\)/);
+      if (match) { a.dataset.videoTheme = match[1]; a.removeAttribute('onclick'); }
+    });
+    const list = document.querySelector('.themes');
+    if (list) {
+      const item = document.createElement('li');
+      item.innerHTML = '<a href="#" data-video-theme="auto">Auto cycle videos</a>';
+      list.prepend(item);
+      list.addEventListener('click', event => {
+        const a = event.target.closest('[data-video-theme]');
+        if (a) { event.preventDefault(); window.changeTheme(a.dataset.videoTheme); }
+      });
+    }
+    apply(automatic ? names[0] : (localStorage.getItem('selectedTheme') || names[0]));
+    setInterval(() => {
+      if (automatic && !motion.matches && !document.hidden) apply(names[(index + 1) % names.length]);
+    }, 18000);
+    motion.addEventListener('change', () => apply(solid ? 'solid-color' : names[index]));
+    document.addEventListener('visibilitychange', () => {
+      if (pending && document.hidden) pending.pause();
+      else if (pending && !motion.matches) pending.play().catch(() => {});
+      apply(solid ? 'solid-color' : names[index]);
+    });
+  }
+
   function boot() {
     ensureIcons();
     ensureAutoSwatch();
     injectInnerChrome();
     wireSettings();
+    startVideoThemes();
     addStylesheet('assets/css/hero-gaming-pc.css');
     addStylesheet('assets/css/site-pages.css');
     if (mode === 'manual' && PALETTES[localStorage.getItem('selectedColor')]) {

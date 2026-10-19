@@ -44,11 +44,20 @@
   function createScene(root, canvas, THREE) {
     const stage = root.querySelector('.tt-gaming-pc__stage');
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
-    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, innerWidth < 700 ? 1.15 : 1.5));
+    renderer.debug.checkShaderErrors = false;
+    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, innerWidth < 700 ? 1 : 1.25));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
-    if ('useLegacyLights' in renderer) renderer.useLegacyLights = true;
+
+    canvas.addEventListener('webglcontextlost', event => {
+      event.preventDefault();
+      console.warn('Hero 3D setup context lost.');
+    }, false);
+    canvas.addEventListener('webglcontextrestored', () => {
+      console.log('Hero 3D setup context restored.');
+      start3d(root);
+    }, false);
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(36, 1, 0.05, 80);
@@ -88,8 +97,8 @@
     try {
       const { RoomEnvironment } = await import(ROOM_ENV_URL);
       const pmrem = new THREE.PMREMGenerator(renderer);
-      pmrem.compileEquirectangularShader();
-      scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.03).texture;
+      const envScene = new RoomEnvironment();
+      scene.environment = pmrem.fromScene(envScene, 0.04).texture;
       pmrem.dispose();
     } catch (error) {
       console.warn('Gaming setup environment map skipped:', error);
@@ -156,7 +165,6 @@
     const stage = root.querySelector('.tt-gaming-pc__stage');
     const badge = root.querySelector('.tt-gaming-pc__badge');
     if (badge) badge.textContent = 'Gaming reel';
-    root.classList.add('is-revealed');
 
     if (stage && !stage.querySelector('.tt-gaming-pc__video')) {
       const video = document.createElement('video');
@@ -170,6 +178,9 @@
       video.setAttribute('playsinline', '');
       video.setAttribute('webkit-playsinline', '');
       video.preload = 'auto';
+      video.addEventListener('loadeddata', () => {
+        root.classList.add('is-reel-ready');
+      }, { once: true });
       video.src = REEL_SRC;
       video.setAttribute('aria-label', 'TeknTandao gaming setup reel');
 
@@ -232,14 +243,62 @@
   }
 
   function wireMotion(root, pivot, mixer, sceneState, THREE) {
+    const canvas = root.querySelector('#tt-gaming-pc-canvas');
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const badge = root.querySelector('.tt-gaming-pc__badge');
     const YAW_START = Math.PI / 2;
-    const YAW_TRAVEL = Math.PI;
-    const reverseThreshold = 0.7;
+    const rotationEnd = 0.7;
+    let progress = pinProgress(root);
+    // Prepare the reel while the model rotates, retaining the model until a frame is ready.
+    revealReel(root, sceneState);
+    const reel = root.querySelector('.tt-gaming-pc__video');
+    if (reel) reel.pause();
     let mouseX = 0;
     let smoothX = 0;
+    let dragX = 0;
+    let dragY = 0;
+    let isDragging = false;
+    let startPointerX = 0;
+    let startPointerY = 0;
     let visible = true;
+    let inViewport = true;
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(([entry]) => {
+        inViewport = entry.isIntersecting;
+      }, { rootMargin: '120px' });
+      io.observe(root);
+    }
+
+    if (canvas) {
+      canvas.style.cursor = 'grab';
+      canvas.addEventListener('pointerdown', e => {
+        isDragging = true;
+        startPointerX = e.clientX;
+        startPointerY = e.clientY;
+        if (canvas.setPointerCapture) canvas.setPointerCapture(e.pointerId);
+        canvas.style.cursor = 'grabbing';
+      });
+      canvas.addEventListener('pointermove', e => {
+        if (!isDragging) return;
+        const dx = e.clientX - startPointerX;
+        const dy = e.clientY - startPointerY;
+        startPointerX = e.clientX;
+        startPointerY = e.clientY;
+        dragX += dx * 0.009;
+        dragY = Math.max(-0.6, Math.min(0.6, dragY + dy * 0.009));
+      });
+      const stopDrag = e => {
+        if (isDragging) {
+          isDragging = false;
+          if (canvas.releasePointerCapture) canvas.releasePointerCapture(e.pointerId);
+          canvas.style.cursor = 'grab';
+        }
+      };
+      canvas.addEventListener('pointerup', stopDrag);
+      canvas.addEventListener('pointercancel', stopDrag);
+    }
+
     window.addEventListener('pointermove', event => {
       mouseX = (event.clientX / Math.max(innerWidth, 1)) * 2 - 1;
     }, { passive: true });
@@ -247,36 +306,35 @@
 
     const clock = new THREE.Clock();
     sceneState.renderer.setAnimationLoop(() => {
-      if (!visible) return;
-      const dt = clock.getDelta();
+      if (!visible || !inViewport) return;
+      const dt = Math.min(clock.getDelta(), 0.05);
       const t = clock.elapsedTime;
       if (mixer && !reduced) mixer.update(dt);
       if (!reduced) smoothX += (mouseX - smoothX) * 0.08;
-      const spin = pinProgress(root);
-      const revealThreshold = innerWidth <= 900 ? 1 : 0.9;
-      let reelRevealed = root.classList.contains('is-revealed');
-      if (reelRevealed && spin < reverseThreshold) {
-        root.classList.remove('is-revealed');
-        reelRevealed = false;
-        const reelVideo = root.querySelector('.tt-gaming-pc__video');
-        if (reelVideo) {
-          reelVideo.pause();
-          reelVideo.currentTime = 0;
+      const target = pinProgress(root);
+      progress += (target - progress) * (1 - Math.exp(-dt * 10));
+      const spin = reduced ? target : progress;
+      const turn = Math.min(spin / rotationEnd, 1);
+      const morphTarget = root.classList.contains('is-reel-ready') && spin >= rotationEnd;
+      if (root.classList.contains('is-revealed') !== morphTarget) {
+        root.classList.toggle('is-revealed', morphTarget);
+        if (reel) {
+          if (morphTarget) reel.play().catch(() => {});
+          else reel.pause();
         }
-      }
-      if (!reelRevealed && spin >= revealThreshold) {
-        pivot.rotation.set(0, YAW_START + YAW_TRAVEL + (reduced ? 0 : smoothX * 0.12), 0);
-        sceneState.renderer.render(sceneState.scene, sceneState.camera);
-        revealReel(root, sceneState);
-        return;
       }
 
       const pinning = spin > 0 && spin < 1;
       root.classList.toggle('is-pinning', pinning);
 
-      pivot.rotation.set(0, reduced ? YAW_START : YAW_START + spin * YAW_TRAVEL + smoothX * 0.12, 0);
+      const rotY = reduced ? YAW_START : YAW_START + turn * Math.PI + (dragX + smoothX * 0.12) * (1 - turn);
+      const rotX = reduced ? 0 : dragY;
+      pivot.rotation.set(rotX, rotY, 0);
       pivot.position.y = reduced || innerWidth <= 900 ? 0 : Math.sin(t * 1.1) * 0.03;
-      if (!reelRevealed && badge) badge.textContent = `Scroll to rotate ${Math.round(spin * 100)}%`;
+
+      if (badge) {
+        badge.textContent = morphTarget ? 'Gaming reel' : isDragging ? 'Dragging 3D setup' : `Scroll to rotate · ${Math.round(turn * 180)}°`;
+      }
 
       sceneState.cyan.intensity = 8.5 + Math.sin(t * 2.1) * 1.8;
       sceneState.purple.intensity = 6.5 + Math.cos(t * 1.7) * 1.4;
@@ -303,7 +361,15 @@
         new GLTFLoader().load(
           MODEL_URL,
           resolve,
-          event => { if (event.total) setProgress(root, event.loaded / event.total); },
+          event => {
+            if (event.total && event.total > 0) {
+              setProgress(root, event.loaded / event.total);
+            } else if (event.loaded) {
+              const mb = (event.loaded / (1024 * 1024)).toFixed(1);
+              const label = root.querySelector('[data-pc-progress]');
+              if (label) label.textContent = `${mb} MB`;
+            }
+          },
           reject
         );
       });
@@ -317,11 +383,13 @@
     } catch (error) {
       console.error('Gaming setup GLB load failed:', error);
       root.classList.add('has-error');
-      revealReel(root, null);
+      const errEl = root.querySelector('.tt-gaming-pc__error');
+      if (errEl) errEl.textContent = '3D model temporarily unavailable';
     }
   }
 
   async function start() {
+    if (window.TTScenePolicy?.allowed !== true) return;
     const home = document.querySelector(HOME);
     if (!home) return;
     addCss();
@@ -331,9 +399,17 @@
   }
 
   function lazyStart() {
+    if (window.TTScenePolicy?.allowed !== true) return;
     const home = document.querySelector(HOME);
     if (!home) return;
-    start();
+    if (!('IntersectionObserver' in window)) return start();
+    const observer = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        observer.disconnect();
+        start();
+      }
+    }, { rootMargin: '150px' });
+    observer.observe(home);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', lazyStart, { once: true });
