@@ -33,6 +33,9 @@ export const securityGithubApp=onRequest({region:'europe-west1',secrets:[private
   const stateRef=db.collection('securityGithubStates').doc(state);
   const record=await db.runTransaction(async t=>{const d=await t.get(stateRef);if(!d.exists||d.data().uid!==u.uid||d.data().expiresAt<Date.now())deny(403,'Expired or invalid installation state');t.delete(stateRef);return d.data()});
   const installation=await github('/app/installations/'+installationId);
+  // GitHub installation IDs are not secrets. Bind personal installations to the signed-in GitHub Firebase identity.
+  const githubIdentity=(u.firebase?.identities?.['github.com']||[]).map(String);
+  if(installation.account?.type!=='User'||!githubIdentity.includes(String(installation.account?.id)))deny(403,'Connect the matching GitHub account with Firebase sign-in. Organization installations require a separate verified administrator workflow');
   if(installation.suspended_at)deny(403,'GitHub installation suspended');
   const token=await installationToken(installationId);
   const repositories=await github('/installation/repositories?per_page=1',{token});
@@ -44,7 +47,7 @@ export const securityGithubApp=onRequest({region:'europe-west1',secrets:[private
   const installationId=Number(req.query.installationId);
   if(!Number.isSafeInteger(installationId)||installationId<=0)deny(400,'Invalid installation');
   const d=await db.collection('securityGithubConnections').doc(u.uid+'_'+installationId).get();
-  if(!d.exists||d.data().uid!==u.uid)deny(403,'Installation not linked');
+  if(!d.exists||d.data().uid!==u.uid||d.data().status!=='verified')deny(403,'Installation not linked');
   const token=await installationToken(installationId);
   const result=await github('/installation/repositories?per_page=100',{token});
   return res.json({repositories:(result.repositories||[]).map(r=>({id:r.id,fullName:r.full_name,private:r.private,defaultBranch:r.default_branch})),hasMore:result.total_count>100});
