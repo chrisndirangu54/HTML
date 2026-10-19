@@ -20,7 +20,7 @@ export const securityApi=onRequest({region:'europe-west1',timeoutSeconds:30,maxI
   try{
     if(origin&&!origins.has(origin))throw deny(403,'Origin not permitted');
     const user=await principal(req);
-    const path=String(req.path||'/').replace(/\/+$/,'')||'/';
+    const path=(String(req.path||'/').replace(/^\/api\/security(?=\/|$)/,'').replace(/\/+$/,'')||'/');
     if(req.method==='POST'&&path==='/assets'){
       const domain=String(req.body?.domain||'').trim().toLowerCase();
       if(!domainValid(domain))throw deny(400,'Enter a valid public DNS domain; IP and private network targets are not permitted');
