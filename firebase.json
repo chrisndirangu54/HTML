@@ -18,6 +18,22 @@
     ],
     "rewrites": [
       {
+        "source": "/api/security-github",
+        "function": {
+          "functionId": "securityGithubApp",
+          "region": "europe-west1",
+          "codebase": "commerce"
+        }
+      },
+      {
+        "source": "/api/security-github/**",
+        "function": {
+          "functionId": "securityGithubApp",
+          "region": "europe-west1",
+          "codebase": "commerce"
+        }
+      },
+      {
         "source": "/api/securityPaystackWebhook",
         "function": {
           "functionId": "securityPaystackWebhook",
