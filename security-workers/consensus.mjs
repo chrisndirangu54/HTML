@@ -26,7 +26,7 @@ export function compareFindings(raw,{assessmentId,tenantId}={}){
   // Finding-management imports cannot count as independent validation of original observations.
   const observers=[...new Set(rows.filter(r=>!managers.has(r.engine)&&!orchestrators.has(r.engine)).map(r=>r.engine))];
   const severity=rows.reduce((a,b)=>weights[b.severity]>weights[a]?b.severity:a,'unknown');
-  const validated=rows.some(r=>r.validated&&!!r.evidenceRef);
+  const validated=rows.some(r=>!managers.has(r.engine)&&!orchestrators.has(r.engine)&&r.validated&&!!r.evidenceRef);
   const confidence=Math.round(100*Math.max(...rows.map(r=>r.confidence)));
   const status=validated?'evidence-validated':observers.length>=2?'corroborated-unvalidated':'requires-review';
   return {asset:rows[0].asset,ruleId:rows[0].ruleId,location:rows[0].location,title:rows.find(x=>x.title)?.title||rows[0].ruleId,severity,confidence,engines,independentObservers:observers.length,status,evidenceRefs:[...new Set(rows.map(r=>r.evidenceRef).filter(Boolean))],findingCount:rows.length};
