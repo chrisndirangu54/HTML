@@ -1,0 +1,30 @@
+name: Security integration checks
+on:
+  pull_request:
+    paths:
+      - "functions/**"
+      - "security-workers/**"
+      - ".github/workflows/security-integration.yml"
+  push:
+    branches: [master]
+    paths:
+      - "functions/**"
+      - "security-workers/**"
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check JS module syntax
+        run: |
+          node --check functions/security.js
+          node --check functions/security-github-app.js
+          node --check functions/security-github-webhook.js
+          node --check functions/security-payments.js
+          node --check functions/security-commerce.js
+          node --check security-workers/repository-scan.mjs
+      - name: Validate Firebase JSON
+        run: node -e "const f=require('./firebase.json');if(!Array.isArray(f.hosting.rewrites)) process.exit(1)"
