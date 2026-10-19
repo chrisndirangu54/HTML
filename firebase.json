@@ -18,6 +18,14 @@
     ],
     "rewrites": [
       {
+        "source": "/api/security{,/**}",
+        "function": {
+          "functionId": "securityApi",
+          "region": "europe-west1",
+          "codebase": "commerce"
+        }
+      },
+      {
         "source": "/api/siteAssistant",
         "function": {
           "functionId": "siteAssistant",
