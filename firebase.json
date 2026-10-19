@@ -18,6 +18,54 @@
     ],
     "rewrites": [
       {
+        "source": "/api/securityPaystackWebhook",
+        "function": {
+          "functionId": "securityPaystackWebhook",
+          "region": "europe-west1",
+          "codebase": "commerce"
+        }
+      },
+      {
+        "source": "/api/securityPaystackCheckout",
+        "function": {
+          "functionId": "securityPaystackCheckout",
+          "region": "europe-west1",
+          "codebase": "commerce"
+        }
+      },
+      {
+        "source": "/api/security-commerce/**",
+        "function": {
+          "functionId": "securityCommerce",
+          "region": "europe-west1",
+          "codebase": "commerce"
+        }
+      },
+      {
+        "source": "/api/security-commerce",
+        "function": {
+          "functionId": "securityCommerce",
+          "region": "europe-west1",
+          "codebase": "commerce"
+        }
+      },
+      {
+        "source": "/api/security/**",
+        "function": {
+          "functionId": "securityApi",
+          "region": "europe-west1",
+          "codebase": "commerce"
+        }
+      },
+      {
+        "source": "/api/security",
+        "function": {
+          "functionId": "securityApi",
+          "region": "europe-west1",
+          "codebase": "commerce"
+        }
+      },
+      {
         "source": "/api/siteAssistant",
         "function": {
           "functionId": "siteAssistant",
