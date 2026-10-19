@@ -16,3 +16,9 @@
 - GET `/api/security-github/repositories?installationId=...`: lists repositories through a short-lived installation access token. First page (100) only.
 
 This is a **connector authorization milestone**. No repository cloning, secret scanning, paid scan scheduling, or PentAGI deployment is activated. Authorization to read repositories is not authorization to run active security tests.
+
+## Current authentication constraint (October 2026)
+Only **personal** GitHub installations are supported by the completion endpoint. The signed-in Firebase user must possess a `github.com` Firebase identity whose GitHub numeric user ID matches the installation owner. Organization installations are intentionally rejected pending secure organization-admin verification. The GitHub App must also have an `installation` webhook set to `https://tekntandao.web.app/api/securityGithubWebhook` with the `GITHUB_SECURITY_WEBHOOK_SECRET` secret. Any deleted/suspended installation is marked revoked in Firestore.
+
+## No live deployment
+The repository connector, webhook and scanner adapter remain untested in a running environment. A functioning deployment still requires registered GitHub App credentials, configured Firebase Auth with GitHub login, webhook setup, Firebase deployment authority, worker infrastructure, comprehensive tests, and payment reconciliation. Do not treat this PR as a launched service.
