@@ -297,3 +297,5 @@ export const siteAssistant=onRequest({region:'europe-west1',secrets:[xaiKey]},as
 
 // Authenticated cybersecurity assessment API (execution intentionally disabled).
 export {securityApi} from './security.js';
+
+export {securityCommerce} from './security-commerce.js';
