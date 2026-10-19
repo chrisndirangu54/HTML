@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "executionEnabled": false,
+  "engines": [
+    {
+      "id": "pentagi",
+      "role": "autonomous-assessment",
+      "mode": "external-adapter",
+      "enabled": false
+    },
+    {
+      "id": "hexstrike",
+      "role": "tool-orchestration",
+      "mode": "external-adapter",
+      "enabled": false
+    },
+    {
+      "id": "strix",
+      "role": "application-testing",
+      "mode": "external-adapter",
+      "enabled": false
+    },
+    {
+      "id": "shannon",
+      "role": "source-aware-application-testing",
+      "mode": "external-adapter",
+      "enabled": false
+    },
+    {
+      "id": "defectdojo",
+      "role": "finding-management",
+      "mode": "import-export",
+      "enabled": false
+    },
+    {
+      "id": "faraday",
+      "role": "finding-management",
+      "mode": "import-export",
+      "enabled": false
+    },
+    {
+      "id": "securecodebox",
+      "role": "scanner-job-orchestration",
+      "mode": "kubernetes-adapter",
+      "enabled": false
+    }
+  ]
+}
