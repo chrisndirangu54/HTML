@@ -28,5 +28,9 @@ jobs:
           node --check security-workers/repository-scan.mjs
       - name: Test multi-engine finding correlation
         run: node --test security-workers/consensus.test.mjs
+      - name: Test network-safety guards
+        run: node --test functions/security-monitor-probe.test.js
+      - name: Test monitoring alerts and payment verification
+        run: node --test functions/security-monitor-operations.test.js
       - name: Validate Firebase JSON
         run: node -e "const f=require('./firebase.json');if(!Array.isArray(f.hosting.rewrites)) process.exit(1)"
