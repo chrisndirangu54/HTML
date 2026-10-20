@@ -18,6 +18,30 @@
     ],
     "rewrites": [
       {
+        "source": "/api/securityMonitoringStatus",
+        "function": {
+          "functionId": "securityMonitoringStatus",
+          "region": "europe-west1",
+          "codebase": "commerce"
+        }
+      },
+      {
+        "source": "/api/securityMonitoringWebhook",
+        "function": {
+          "functionId": "securityMonitoringWebhook",
+          "region": "europe-west1",
+          "codebase": "commerce"
+        }
+      },
+      {
+        "source": "/api/securityMonitoringCheckout",
+        "function": {
+          "functionId": "securityMonitoringCheckout",
+          "region": "europe-west1",
+          "codebase": "commerce"
+        }
+      },
+      {
         "source": "/api/securityGithubWebhook",
         "function": {
           "functionId": "securityGithubWebhook",
