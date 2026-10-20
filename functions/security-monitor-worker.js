@@ -29,7 +29,7 @@ async function recordAlerts(doc,subscription,observation,date){
   tx.update(ref,{lastObservation:observation,lastCheckAt:FieldValue.serverTimestamp()});
   for(const code of changes){
    const alert=db.collection('securityMonitorAlerts').doc(doc.id+'_'+date+'_'+code);
-   tx.create(alert,{uid:subscription.uid,assetId:subscription.assetId,subscriptionId:doc.id,code,deliveryStatus:'pending_configuration',createdAt:FieldValue.serverTimestamp()});
+   tx.create(alert,{uid:subscription.uid,assetId:subscription.assetId,subscriptionId:doc.id,code,deliveryStatus:'pending',attempts:0,createdAt:FieldValue.serverTimestamp()});
   }
  });
 }
