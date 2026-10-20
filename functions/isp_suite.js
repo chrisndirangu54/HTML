@@ -71,12 +71,27 @@ function moduleFor(value) {
 function recordId(moduleName,record){
  if(moduleName==='subscribers')return record.accountCode;
  if(moduleName==='invoices')return record.invoiceCode.toUpperCase();
+ if(moduleName==='plans')return record.code.toUpperCase();
+ if(moduleName==='payments')return (record.provider+'_'+record.reference).toUpperCase();
  return randomUUID();
 }
 async function createRecord(user,body) {
  cleanBody(body,['action','module','record']);
  const moduleName=moduleFor(body.module);
  const input=normalizeRecord(moduleName,body.record);
+ // Validate record references before writing any draft or accounting review.
+ if(['telemetry','provisioning','firmware'].includes(moduleName)) {
+  const target=await db.collection(ispModules.devices.collection).doc(input.deviceId).get();
+  if(!target.exists)throw err(400,'Referenced device must already exist');
+ }
+ if(['support','payments','invoices','provisioning'].includes(moduleName)) {
+  const code=input.subscriberCode;
+  if(typeof code!=='string'||!/^[A-Za-z0-9_-]{2,64}$/.test(code)||
+     !(await db.collection(ispModules.subscribers.collection).doc(code.toUpperCase()).get()).exists)
+    throw err(400,'Referenced subscriber account must already exist');
+ }
+ if(moduleName==='payments' && !(await db.collection(ispModules.invoices.collection).doc(input.invoiceCode.toUpperCase()).get()).exists)
+   throw err(400,'Referenced invoice must already exist');
  const id=recordId(moduleName,input);
  const spec=ispModules[moduleName];
  // Validated invoice references cannot settle customer accounts without a bank callback.
