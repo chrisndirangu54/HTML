@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="TeknTandao ISP administrator: hybrid fiber and wireless operations, customer planning, monitoring, support, billing drafts, network design and approved change requests.">
+<title>TeknTandao ISP Operations | Admin</title>
+<link rel="icon" href="assets/images/tekntandao-favicon.png"><link rel="stylesheet" href="assets/css/isp-console.css">
+</head><body>
+<div class="shell"><aside class="sidebar">
+<a class="brand" href="index.html">TeknTandao<span>.</span></a><p class="subtitle">Hybrid ISP • Operations Suite</p>
+<div class="nav-label">Operations</div>
+<nav class="sidenav" id="isp-nav" aria-label="ISP operations">
+<button type="button" data-view="overview" aria-current="page">◈ &nbsp; Overview</button>
+<button type="button" data-view="architecture">⌁ &nbsp; Network architecture</button>
+<button type="button" data-view="integrations">◉ &nbsp; Integrations</button>
+<button type="button" data-view="economics">▥ &nbsp; Pilot economics</button>
+<button type="button" data-view="quality">◷ &nbsp; Quality & analytics</button>
+<button type="button" data-view="customer-requests">✉ &nbsp; Service requests</button>
+</nav>
+<div class="nav-label">ISP modules</div><nav class="sidenav" id="isp-modules-nav" aria-label="Manage ISP modules"></nav>
+<div class="side-foot">Connection status is explicit. Pending approvals do not execute commands. <a href="admin.html" style="color:#9bead4">Return to main admin</a>.</div>
+</aside><main class="main">
+<header class="header"><div><span class="eyebrow">Authorized staff access</span><h1 id="page-title">ISP Operations Control</h1><p id="page-subtitle">Centralized fiber and wireless management workspace</p></div>
+<div class="header-actions"><a class="btn" href="isp-architecture.html">View public architecture ↗</a><button class="btn" type="button" id="isp-refresh">Refresh</button><button class="btn primary" type="button" id="new-record" hidden>Add record +</button></div></header>
+<div id="auth-banner" class="banner warning">Sign in with a TeknTandao administrator account to view operational records. No customer data is exposed before authentication.</div>
+<p id="isp-message" class="message" role="status" aria-live="polite"></p>
+<section id="isp-content" hidden>
+<div id="view-overview">
+<div class="banner">No simulated live metrics. These counts reflect saved management records only; connected router telemetry, M-Pesa reconciliation, device provisioning and predictive AI require separate commissioned integrations.</div>
+<div class="grid" id="isp-overview-metrics"></div>
+<section class="panel" style="margin-top:18px"><div class="section-header"><h2>Service operations</h2><span class="status off">Adapters disabled by default</span></div>
+<div class="grid three" id="overview-actions"></div></section>
+<section class="panel"><h2>Equipment and standards</h2><p>Compare low-cost TR-069/OMCI-managed ONTs and CPEs, COMFAST wireless bridges and MikroTik managed routers in <a href="isp-architecture.html">the engineering reference</a>. Procurement checks include SNMP/MIBs, APIs, syslog, VLAN isolation, RADIUS, captive portal, PoE, firmware recovery, port speeds and model revisions.</p></section>
+</div>
+<div id="view-architecture" hidden><section class="panel"><h2>Hybrid ISP technical topology</h2><p>The initial 50-customer concept assumes 32 fiber ONTs via a VSOL GPON OLT and two 1:16 splitters, plus 18 routers in two wireless-fed buildings via COMFAST bridge pairs. These are engineering assumptions, not installed-service counts.</p>
+<div class="diagram-wrap"><img src="assets/isp/architecture.svg" class="diagram" alt="Upstream Internet to MikroTik core, split into VSOL GPON OLT serving 32 fiber homes and two COMFAST wireless bridge links to nine homes each, with separate ISP monitoring and business systems."></div>
+<div class="grid three" style="margin-top:16px"><div class="metric"><small>Subscriber concept</small><strong>50</strong><em>32 fiber / 18 wireless; assumed</em></div><div class="metric"><small>Upstream scenario</small><strong>200 Mbps</strong><em>Illustrative shared capacity</em></div><div class="metric"><small>Network control</small><strong>Separate</strong><em>Internet should survive AI-service outages</em></div></div></section></div>
+<div id="view-integrations" hidden><section class="panel"><h2>Integration commissioning</h2><p>Vendor-neutral integration requirements. No external credentials are requested or stored in the browser. These integrations must be configured by an authorized administrator and verified in a controlled test environment.</p><div class="grid three" id="integration-grid"></div></section></div>
+<div id="view-economics" hidden><section class="panel">
+<h2>Pilot revenue and equipment budget</h2><p>Adjust illustrative values. These are estimates, not quotes or actual customer revenue.</p>
+<div class="form"><label class="field">Customers<input id="calc-customers" type="number" min="1" max="10000" value="50"></label><label class="field">Average monthly plan (KSh)<input id="calc-arpu" type="number" min="0" value="2000"></label>
+<label class="field">Monthly operating expenses (KSh)<input id="calc-opex" type="number" min="0" value="65000"></label><label class="field">Estimated deployment CAPEX (KSh)<input id="calc-capex" type="number" min="0" value="1029687"></label></div>
+<div class="grid" id="economics-results" style="margin-top:20px"></div><p class="pill-note">The CAPEX baseline is the earlier 50-customer planning estimate; software engineering, licensing, wayleaves, unforeseen civil works, taxes and financing may be excluded. Monthly surplus is not net profit.</p></section>
+<section class="panel"><h2>Indicative hardware plan</h2><div class="table-wrap"><table class="table"><thead><tr><th>Network layer</th><th>Candidate equipment</th><th>Pilot qty</th><th>Validation</th></tr></thead><tbody>
+<tr><td>Core routing</td><td>MikroTik RB5009</td><td>1</td><td>Routing, PPPoE, VLAN/RADIUS and capacity</td></tr><tr><td>Fiber OLT</td><td>VSOL 4-port GPON OLT</td><td>1</td><td>GPON power budget and ONT interoperability</td></tr>
+<tr><td>Fiber ONT</td><td>Compatible GPON Wi-Fi ONT</td><td>32</td><td>OMCI, TR-069, firmware and approval</td></tr><tr><td>Wireless backhaul</td><td>COMFAST CF-E313AC V2 pairs</td><td>4</td><td>Line of sight, throughput, VLAN and PoE</td></tr>
+<tr><td>Remote buildings</td><td>Managed switches</td><td>2</td><td>Client isolation, Gigabit and fault logging</td></tr><tr><td>Wireless-fed CPE</td><td>Managed Ethernet WAN router</td><td>18</td><td>ACS provisioning and firmware recovery</td></tr></tbody></table></div></section></div>
+<div id="view-quality" hidden><section class="panel"><h2>Network experience & basic analytics</h2><p>Based exclusively on manually recorded diagnostics. No live SNMP, syslog, RouterOS API or GenieACS collector is connected.</p>
+<div class="grid" id="quality-metrics"></div><h3>Capacity trend</h3><div id="capacity-bars" class="chart" role="img" aria-label="Manual link utilization samples shown as bars"></div>
+<div class="banner warning" id="quality-commentary">Insufficient verified samples to establish network experience.</div><h3>Suspected shared faults</h3><div id="fault-list" class="table-wrap"></div></section></div>
+<div id="view-customer-requests" hidden><section class="panel"><h2>Customer service requests</h2><p>Requests submitted by verified-email users through the public ISP contact portal. These are enquiries, not installed subscriptions.</p><div id="customer-requests-table" class="table-wrap"></div></section></div>
+<div id="view-module" hidden>
+<div class="banner warning" id="module-notice">All records are administration documents; not live network state.</div>
+<section class="panel"><div class="section-header"><div><span class="eyebrow">Management records</span><h2 id="module-title">Module</h2></div><div class="inline"><input id="module-filter" type="search" placeholder="Filter loaded records" aria-label="Filter records" style="padding:10px;border:1px solid var(--line);border-radius:9px;width:190px"><button class="btn soft" id="module-export" type="button">Export CSV</button></div></div>
+<p id="module-description"></p><div id="module-rows" class="table-wrap"></div><p class="pill-note" id="module-limit"></p></section></div>
+</section>
+<div id="permission-hint" class="panel" hidden><h2>Administrator permission required</h2><p>Log in with your authorized TeknTandao administrator account to access this operations console. Customer accounts are not allowed to view any ISP records.</p><a class="btn primary" href="login.html?next=isp-console.html">Sign in</a></div>
+<footer class="footer">TeknTandao • Hybrid ISP operations suite • Network actions, payments and notification delivery are not connected</footer>
+</main></div>
+<dialog id="record-dialog" class="modal"><div class="modal-body"><div class="section-header"><h2 id="record-heading">New record</h2><button class="btn" id="record-close" type="button" aria-label="Close record form">×</button></div>
+<form id="record-form"><div class="form" id="record-fields"></div><div class="actions"><button class="btn" id="record-cancel" type="button">Cancel</button><button class="btn primary" type="submit">Save record</button></div></form></div></dialog>
+<script src="assets/js/site-config.js"></script><script type="module" src="assets/js/isp-console.js"></script>
+</body></html>
