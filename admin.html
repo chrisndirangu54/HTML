@@ -37,6 +37,68 @@
 <button class="btn btn-primary" type="submit">Save newsletter settings</button>
 <p class="status" id="newsletter-settings-status" role="status"></p>
 </form></section>
+<section aria-labelledby="isp-admin-title" class="content-card" hidden="" id="isp-operations">
+<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center">
+<div>
+<span class="badge">Network operations · Admin only</span>
+<h2 id="isp-admin-title">TeknTandao ISP control</h2>
+<p class="muted">Record equipment, plan subscriber accounts, manage faults and coordinate technicians. Live telemetry, network provisioning, AI remediation and ISP billing are not yet connected.</p>
+</div>
+<a class="btn btn-ghost" href="isp-architecture.html">View architecture ↗</a>
+</div>
+<div class="metric-grid" style="margin:16px 0">
+<article class="metric-card"><span>Registered devices</span><strong id="isp-count-devices">0</strong></article>
+<article class="metric-card"><span>Planned subscribers</span><strong id="isp-count-subscribers">0</strong></article>
+<article class="metric-card"><span>Open incidents</span><strong id="isp-count-incidents">0</strong></article>
+<article class="metric-card"><span>Open work orders</span><strong id="isp-count-orders">0</strong></article>
+</div>
+<button class="btn btn-ghost" id="isp-refresh" type="button">Refresh ISP records</button>
+<p aria-live="polite" id="isp-feedback" role="status"></p>
+<details style="margin:18px 0"><summary><strong>Architecture overview</strong> · fiber and wireless delivery</summary>
+<img alt="Conceptual fiber and wireless topology for 50-subscriber pilot, connected to a centralized management platform" loading="lazy" src="assets/isp/architecture.svg" style="width:100%;background:#f6f9fd;border-radius:14px;margin-top:12px"/>
+<p class="muted">Diagram depicts a design, not real-time system state. Optical and COMFAST interoperability require validation.</p>
+</details>
+<h3>Equipment inventory</h3>
+<form class="form-grid" id="isp-device-form">
+<input maxlength="120" name="label" placeholder="Device label" required=""/>
+<input maxlength="120" name="vendor" placeholder="Vendor (e.g. MikroTik)" required=""/>
+<input maxlength="120" name="model" placeholder="Model" required=""/>
+<input maxlength="120" name="site" placeholder="Site / building" required=""/>
+<select aria-label="Network role" name="role" required=""><option value="core">Core</option><option value="fiber">Fiber</option><option value="wireless">Wireless</option><option value="other">Other</option></select>
+<input maxlength="120" name="serial" placeholder="Serial (optional)"/>
+<textarea maxlength="1500" name="notes" placeholder="Installation notes (optional)"></textarea>
+<button class="btn btn-primary" type="submit">Register device</button>
+</form>
+<div id="isp-list-devices"></div>
+<h3>Subscriber planning</h3>
+<form class="form-grid" id="isp-subscriber-form">
+<input maxlength="64" name="accountCode" pattern="[A-Za-z0-9_-]{2,64}" placeholder="Unique subscriber account code" required=""/>
+<input maxlength="120" name="site" placeholder="Site / building" required=""/>
+<select aria-label="Access type" name="accessType" required=""><option value="fiber">Fiber</option><option value="wireless">Wireless</option></select>
+<input aria-label="Plan speed in Mbps" max="10000" min="1" name="planMbps" required="" step="1" type="number" value="20"/>
+<button class="btn btn-primary" type="submit">Plan subscriber</button>
+</form>
+<p class="muted">Planning a subscriber does not activate PPPoE, configure an ONT, or issue an invoice.</p>
+<div id="isp-list-subscribers"></div>
+<h3>Network incidents</h3>
+<form class="form-grid" id="isp-incident-form">
+<input maxlength="120" name="title" placeholder="Incident title" required=""/>
+<input maxlength="120" name="site" placeholder="Affected site" required=""/>
+<select aria-label="Incident severity" name="severity"><option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option><option value="critical">Critical</option></select>
+<textarea maxlength="1500" name="description" placeholder="Observations and symptoms"></textarea>
+<button class="btn btn-primary" type="submit">Report incident</button>
+</form>
+<div id="isp-list-incidents"></div>
+<h3>Technician work orders</h3>
+<form class="form-grid" id="isp-order-form">
+<input maxlength="120" name="title" placeholder="Work order title" required=""/>
+<input maxlength="120" name="site" placeholder="Site / building" required=""/>
+<select aria-label="Work order priority" name="priority"><option value="normal">Normal</option><option value="low">Low</option><option value="urgent">Urgent</option></select>
+<textarea maxlength="1500" name="description" placeholder="Task description"></textarea>
+<button class="btn btn-primary" type="submit">Create work order</button>
+</form>
+<div id="isp-list-workOrders"></div>
+</section>
 <div class="metric-grid" id="dashboard-metrics"></div>
 <section class="content-card">
 <h2>Orders &amp; assignments</h2>
@@ -93,5 +155,5 @@
 <script src="assets/js/nav-responsive.js"></script>
 <script src="assets/js/blog-store.js"></script><script src="assets/js/dashboard.js" type="module"></script>
 <script src="assets/js/admin-blogs.js" type="module"></script>
-<script src="assets/js/admin-newsletter.js" type="module"></script></body>
+<script src="assets/js/admin-newsletter.js" type="module"></script><script type="module" src="assets/js/isp-admin.js"></script></body>
 </html>

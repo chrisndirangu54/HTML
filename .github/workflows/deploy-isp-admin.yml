@@ -1,0 +1,53 @@
+name: Deploy isolated ISP admin Cloud Function
+
+# Explicitly controlled deployment; Cloud Functions APIs and IAM are not
+# yet provisioned for the HTML site's service account. Avoid repeated attempts.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tekntandao-isp-function-deployment
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.repository == 'chrisndirangu54/HTML'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify isolated endpoint and JavaScript syntax
+        run: |
+          node --check functions/index.js
+          node --check functions/isp_html.js
+          node -e "const f=require('./firebase.json'); if(!f.hosting.rewrites.some(x=>x.source==='/api/adminIspOperations'&&x.function?.functionId==='adminIspOperations')) process.exit(1)"
+      - name: Install functions dependencies
+        run: npm --prefix functions install --ignore-scripts --no-audit --no-fund
+      - name: Prepare Firebase deployment credentials
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TEKNTANDAO }}
+        run: |
+          if [ -z "$FIREBASE_SERVICE_ACCOUNT" ]; then
+            echo "::error::Firebase service account secret is not configured"
+            exit 1
+          fi
+          printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/firebase-isp-sa.json"
+          chmod 600 "$RUNNER_TEMP/firebase-isp-sa.json"
+      - name: Deploy ISP administration function only
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/firebase-isp-sa.json
+          CI: 'true'
+        run: |
+          npx --yes firebase-tools@14 deploy \
+            --only functions:commerce:adminIspOperations \
+            --project tekntandao \
+            --non-interactive
+      - name: Clean credentials
+        if: always()
+        run: rm -f "$RUNNER_TEMP/firebase-isp-sa.json"
