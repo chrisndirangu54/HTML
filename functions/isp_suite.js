@@ -10,7 +10,8 @@ const allowOrigins=new Set(['https://www.tekntandao.com','https://tekntandao.com
   'https://tekntandao.web.app','https://tekntandao.firebaseapp.com',
   'http://localhost:5500','http://127.0.0.1:5500',
   'http://localhost:5000','http://127.0.0.1:5000']);
-const db=getFirestore();
+// Resolve Firestore lazily after the shared Firebase entrypoint initializes the app.
+const db={collection:(...args)=>getFirestore().collection(...args)};
 const stamp=()=>FieldValue.serverTimestamp();
 const err=(code,message)=>Object.assign(new Error(message),{status:code});
 const modules=Object.keys(ispModules);
