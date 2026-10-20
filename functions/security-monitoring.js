@@ -4,6 +4,7 @@ import {getAuth} from 'firebase-admin/auth';
 import {getFirestore,FieldValue,Timestamp} from 'firebase-admin/firestore';
 import {defineSecret} from 'firebase-functions/params';
 import {onRequest} from 'firebase-functions/v2/https';
+import {validMonitoringCharge,verifyMonitoringPayment} from './security-payment-verify.js';
 if(!getApps().length)initializeApp();
 const db=getFirestore(),key=defineSecret('PAYSTACK_SECRET_KEY'),price=2500,periodDays=30;
 function fail(status,message){throw Object.assign(new Error(message),{status})}
@@ -21,7 +22,7 @@ export const securityMonitoringCheckout=onRequest({region:'europe-west1',secrets
   const entitlementId=u.uid+'_'+assetId,entRef=db.collection('securityMonitoringSubscriptions').doc(entitlementId),old=await entRef.get();
   if(old.exists&&old.data().status==='active'&&old.data().currentPeriodEnd?.toMillis()>Date.now())fail(409,'Monitoring already paid for current period');
   const ref=db.collection('securityMonitoringPayments').doc();
-  await ref.set({uid:u.uid,assetId,entitlementId,amountKsh:price,status:'pending',createdAt:FieldValue.serverTimestamp(),provider:'paystack',kind:'manual_30_day_renewal'});
+  await ref.set({uid:u.uid,assetId,entitlementId,amountKsh:price,status:'pending',createdAt:FieldValue.serverTimestamp(),provider:'paystack',kind:'manual_30_day_renewal',email:u.email});
   const response=await fetch('https://api.paystack.co/transaction/initialize',{method:'POST',headers:{Authorization:'Bearer '+key.value(),'Content-Type':'application/json'},body:JSON.stringify({email:u.email,amount:price*100,currency:'KES',reference:'MON-'+ref.id,callback_url:'https://tekntandao.web.app/cybersecurity-portal.html?monitoring=return',metadata:{purpose:'security_monitoring',paymentId:ref.id,assetId}})});
   const result=await response.json().catch(()=>({}));
   if(!response.ok||result.status!==true||!result.data?.authorization_url){await ref.update({status:'init_failed'});fail(502,'Checkout could not be initialized')}
@@ -37,10 +38,13 @@ export const securityMonitoringWebhook=onRequest({region:'europe-west1',secrets:
   if(!/^MON-[A-Za-z0-9_-]+$/.test(reference)||req.body.data.currency!=='KES'||Number(req.body.data.amount)!==price*100)return res.status(200).send('ignored');
   const paymentRef=db.collection('securityMonitoringPayments').doc(reference.slice(4)),payment=await paymentRef.get();
   if(!payment.exists||payment.data().provider!=='paystack')return res.status(200).send('ignored');
+  const verified=await verifyMonitoringPayment(reference,key.value());
+  if(!validMonitoringCharge(verified,reference,payment.data().email)||verified.metadata?.paymentId!==paymentRef.id||verified.metadata?.assetId!==payment.data().assetId)return res.status(400).send('Payment verification mismatch');
   const entitlementRef=db.collection('securityMonitoringSubscriptions').doc(payment.data().entitlementId);
   await db.runTransaction(async tx=>{
    const p=await tx.get(paymentRef),e=await tx.get(entitlementRef);
    if(!p.exists||p.data().status==='paid')return;
+   if(p.data().status!=='pending'||p.data().amountKsh!==price||p.data().assetId!==verified.metadata.assetId)throw Error('Payment state mismatch');
    const start=Math.max(Date.now(),e.exists&&e.data().currentPeriodEnd?.toMillis()>Date.now()?e.data().currentPeriodEnd.toMillis():0);
    const end=start+periodDays*86400000;
    tx.update(paymentRef,{status:'paid',paidAt:FieldValue.serverTimestamp(),providerReference:reference});
