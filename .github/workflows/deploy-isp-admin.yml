@@ -1,13 +1,8 @@
 name: Deploy isolated ISP admin Cloud Function
 
+# Explicitly controlled deployment; Cloud Functions APIs and IAM are not
+# yet provisioned for the HTML site's service account. Avoid repeated attempts.
 on:
-  push:
-    branches: [master]
-    paths:
-      - '.github/workflows/deploy-isp-admin.yml'
-      - 'functions/isp_html.js'
-      - 'functions/index.js'
-      - 'firebase.json'
   workflow_dispatch:
 
 permissions:
