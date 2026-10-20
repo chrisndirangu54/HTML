@@ -1,0 +1,42 @@
+name: Monitoring staging gate
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'functions/security-monitor-*.js'
+      - 'functions/security-payment-verify.js'
+      - 'functions/security-monitoring.js'
+      - 'functions/security-alert-delivery.js'
+      - 'assets/js/security-monitor-client.js'
+      - 'security-monitoring.html'
+      - '.github/workflows/monitoring-staging.yml'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate server-side and client modules
+        run: |
+          node --check functions/security-monitor-worker.js
+          node --check functions/security-monitor-probe.js
+          node --check functions/security-monitor-controls.js
+          node --check functions/security-monitoring.js
+          node --check functions/security-alert-delivery.js
+          node --check functions/security-monitor-results.js
+          node --check assets/js/security-monitor-client.js
+      - name: Run unit tests (no live targets)
+        run: |
+          node --test functions/security-monitor-probe.test.js
+          node --test functions/security-monitor-operations.test.js
+      - name: Ensure launch flags remain disabled in repository
+        run: |
+          if grep -R -E 'SECURITY_(MONITORING_CHECKOUT|MONITOR_EXECUTION|EMAIL_DELIVERY)_ENABLED=true' --exclude='*.md' .github functions; then
+            echo 'Found hardcoded production activation'; exit 1
+          fi
+          echo 'No hardcoded launch activation flags'
