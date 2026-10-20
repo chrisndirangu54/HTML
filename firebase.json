@@ -18,6 +18,14 @@
     ],
     "rewrites": [
       {
+        "source": "/api/securityMonitoringResults",
+        "function": {
+          "functionId": "securityMonitoringResults",
+          "region": "europe-west1",
+          "codebase": "commerce"
+        }
+      },
+      {
         "source": "/api/securityMonitoringStatus",
         "function": {
           "functionId": "securityMonitoringStatus",
