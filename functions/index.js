@@ -319,3 +319,14 @@ export const adminListBlogs=onRequest({region:'europe-west1',secrets:[strapiToke
 export const adminSaveBlog=onRequest({region:'europe-west1',secrets:[strapiToken]},async(req,res)=>respond(req,res,async()=>{
   assertMethod(req,'POST');await identity(req,['admin']);return blogCms().save(req.body?.article||{});
 }));
+
+// Authenticated cybersecurity assessment API (execution intentionally disabled).
+export {securityApi} from './security.js';
+
+export {securityCommerce} from './security-commerce.js';
+
+export {securityPaystackCheckout,securityPaystackWebhook} from './security-payments.js';
+
+export {securityGithubApp} from './security-github-app.js';
+
+export {securityGithubWebhook} from './security-github-webhook.js';
