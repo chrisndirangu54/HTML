@@ -1,4 +1,4 @@
-import {getSession,idToken,functionsBase} from './auth-client.js';
+import {waitForUser,idToken,functionsBase} from './auth-client.js';
 
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const escapeHTML=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -237,8 +237,9 @@ function downloadCSV(){
 }
 async function initialize(){
  try{
-  const session=await getSession(true);
-  if(session.role!=='admin')throw new Error('Administrator role required');
+  const session=await waitForUser();
+  if(!session)throw new Error('Sign in required');
+  // The first API call verifies the Firebase ID token and admin role on the server.
   const result=await api('GET',{view:'modules'});
   state.modules=result.modules;state.integrations=result.integrations||[];
   $('#auth-banner').className='banner';
