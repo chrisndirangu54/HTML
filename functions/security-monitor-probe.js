@@ -3,7 +3,7 @@ import {connect} from 'node:tls';
 import {isIP} from 'node:net';
 export function allowedIp(ip){
  if(isIP(ip)===4){const a=ip.split('.').map(Number);return !(a[0]===0||a[0]===10||a[0]===127||a[0]>=224||a[0]===169&&a[1]===254||a[0]===172&&a[1]>=16&&a[1]<=31||a[0]===192&&a[1]===168||a[0]===100&&a[1]>=64&&a[1]<=127||a[0]===192&&a[1]===0||a[0]===198&&[18,19].includes(a[1])||a[0]===192&&a[1]===88||a[0]===198&&a[1]===51||a[0]===203&&a[1]===0&&a[2]===113)}
- if(isIP(ip)===6){const v=ip.toLowerCase();if(v.startsWith('::ffff:'))return false;const first=parseInt(v.split(':')[0]||'0',16);return !(v==='::'||v==='::1'||(first&0xfe00)===0xfc00||(first&0xffc0)===0xfe80||(first&0xff00)===0xff00||(first&0xffc0)===0x2001)}
+ if(isIP(ip)===6){const v=ip.toLowerCase();if(v.startsWith('::ffff:'))return false;const first=parseInt(v.split(':')[0]||'0',16);return first>=0x2000&&first<=0x3fff&&!v.startsWith('2001:db8:')&&!v.startsWith('2001:db8::')}
  return false;
 }
 export async function monitor(domain,token,{dns4=resolve4,dns6=resolve6,txt=resolveTxt,dial=connect}={}){
@@ -24,5 +24,6 @@ export async function monitor(domain,token,{dns4=resolve4,dns6=resolve6,txt=reso
   socket.on('error',fail);
   socket.on('data',chunk=>{buffer+=chunk.toString('latin1');if(buffer.length>16384)return fail(Error('Response too large'));const p=buffer.indexOf('\r\n\r\n');if(p!==-1){settled=true;socket.destroy();const header=buffer.slice(0,p),first=header.split('\r\n')[0],status=Number((first.match(/^HTTP\/1\.[01] (\d{3})/)||[])[1]);resolve({reachable:true,httpStatus:status||null,hasHsts:/^strict-transport-security:/im.test(header),hasCsp:/^content-security-policy:/im.test(header),checkedAt:new Date().toISOString()})}});
   socket.on('end',()=>{if(!settled)fail(Error('Incomplete response'))});
+  socket.on('close',()=>{if(!settled)fail(Error('Connection closed before headers'))});
  });
 }
