@@ -37,6 +37,17 @@ jobs:
           grep -q 'isp-operations' admin.html
           grep -q 'adminIspOperations' firebase.json
           grep -q "export {adminIspOperations}" functions/index.js
+      - name: Validate complete ISP suite
+        run: |
+          for file in isp-console.html isp-customer.html isp-equipment.html assets/css/isp-console.css assets/js/isp-console.js assets/js/isp-customer.js functions/isp_suite.js functions/isp_suite_core.js functions/isp_suite_core.test.js; do test -s "$file"; done
+          node --check functions/isp_suite.js
+          node --check functions/isp_suite_core.js
+          node --check assets/js/isp-console.js
+          node --check assets/js/isp-customer.js
+          node --test functions/isp_suite_core.test.js
+          grep -q 'ispSuiteApi' functions/index.js
+          grep -q 'ispCustomerRequest' firebase.json
+          grep -q 'isp-console.html' admin.html
       - name: Validate catalogue JSON
         run: node -e "const fs=require('fs'); const p=JSON.parse(fs.readFileSync('data/products.seed.json')); if(!Array.isArray(p)||p.length<5) process.exit(1);"
       - name: Validate uploaded gaming PC GLB repair
