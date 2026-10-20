@@ -7,7 +7,7 @@
 | URL path | Audience | Purpose |
 | --- | --- | --- |
 | `/isp.html` | Public | Existing premises Wi-Fi page, hybrid ISP overview and navigation |
-| `/isp-architecture.html` | Public | Hybrid topology and AI-supported operations concept |
+| `/isp-architecture.html` | Public | Forwards to the customer ISP page, or to the signed-in role desk. The architecture diagram is not published. |
 | `/isp-equipment.html` | Public | Lower-cost ONT/CPE evaluation, 10 management requirements, supplier planning costs |
 | `/isp-customer.html` | Signed-in verified-email customers | Consent-based fiber survey, wireless survey, Wi-Fi installation and support enquiries |
 | `/isp-console.html` | Server-authorized admins | Full ISP administrative dashboard, modules, manual diagnostics, planning and records |
@@ -75,6 +75,7 @@ An authorized owner must:
 3. Review functions for security and data-protection compliance.
 4. Deploy only the intended named-codebase targets after approval:
    `firebase deploy --only functions:commerce:adminIspOperations,functions:commerce:ispSuiteApi,functions:commerce:ispCustomerRequest --project tekntandao`
+   `isp_suite.js` must not call Firestore while the module is imported. `initializeApp()` in `functions/index.js` runs after imports, so a top-level `getFirestore()` call prevents the function from loading.
 5. Verify admin authorization, non-admin rejection, rate limits, Firestore collection access, duplicate payment-reference handling, service requests, and audit logging.
 6. Configure the HTML site's valid Firebase web settings and verified sign-in method. Existing `assets/js/site-config.js` may need deployment-specific configuration.
 

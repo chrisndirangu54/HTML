@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ISP staff | TeknTandao</title>
+<link href="assets/images/tekntandao-favicon.png" rel="icon" type="image/png"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css" rel="stylesheet"/>
+<link href="assets/css/commerce.css" rel="stylesheet"/>
+<link href="assets/css/site-pages.css" rel="stylesheet"/>
+</head>
+<body class="content-page" data-isp-desk="staff">
+<nav class="commerce-nav">
+<a class="brand" href="index.html">TeknTandao</a>
+<a href="isp.html">Customer ISP</a>
+<a href="account.html">My account</a>
+<button class="btn btn-ghost" id="sign-out">Sign out</button>
+</nav>
+<main class="commerce-shell">
+<section class="dashboard-head">
+<div>
+<span class="badge">ISP staff</span>
+<h1>Faults and technician work</h1>
+<p class="muted" id="dashboard-session">Checking access…</p>
+</div>
+</section>
+<div id="dashboard-error"></div>
+<section aria-labelledby="isp-staff-title" class="content-card" hidden id="isp-operations">
+<span class="badge">Network operations · Staff</span>
+<h2 id="isp-staff-title">ISP staff desk</h2>
+<p class="muted">Review equipment and planned subscribers, report faults, and run technician work orders. Registering devices, planning subscribers, changing roles, and shop administration stay on the admin desk. This page does not send live router commands.</p>
+<div class="metric-grid" style="margin:16px 0">
+<article class="metric-card"><span>Registered devices</span><strong id="isp-count-devices">0</strong></article>
+<article class="metric-card"><span>Planned subscribers</span><strong id="isp-count-subscribers">0</strong></article>
+<article class="metric-card"><span>Open incidents</span><strong id="isp-count-incidents">0</strong></article>
+<article class="metric-card"><span>Open work orders</span><strong id="isp-count-orders">0</strong></article>
+</div>
+<button class="btn btn-ghost" id="isp-refresh" type="button">Refresh ISP records</button>
+<p aria-live="polite" id="isp-feedback" role="status"></p>
+<h3>Equipment on record</h3>
+<div id="isp-list-devices"></div>
+<h3>Planned subscribers</h3>
+<div id="isp-list-subscribers"></div>
+<h3>Network incidents</h3>
+<form class="form-grid" id="isp-incident-form">
+<input maxlength="120" name="title" placeholder="Incident title" required=""/>
+<input maxlength="120" name="site" placeholder="Affected site" required=""/>
+<select aria-label="Incident severity" name="severity"><option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option><option value="critical">Critical</option></select>
+<textarea maxlength="1500" name="description" placeholder="Observations and symptoms"></textarea>
+<button class="btn btn-primary" type="submit">Report incident</button>
+</form>
+<div id="isp-list-incidents"></div>
+<h3>Technician work orders</h3>
+<form class="form-grid" id="isp-order-form">
+<input maxlength="120" name="title" placeholder="Work order title" required=""/>
+<input maxlength="120" name="site" placeholder="Site / building" required=""/>
+<select aria-label="Work order priority" name="priority"><option value="normal">Normal</option><option value="low">Low</option><option value="urgent">Urgent</option></select>
+<textarea maxlength="1500" name="description" placeholder="Task description"></textarea>
+<button class="btn btn-primary" type="submit">Create work order</button>
+</form>
+<div id="isp-list-workOrders"></div>
+</section>
+</main>
+<script src="assets/js/site-config.js"></script>
+<script src="assets/js/color.js"></script>
+<script src="assets/js/nav-responsive.js"></script>
+<script type="module" src="assets/js/isp-admin.js"></script>
+</body>
+</html>

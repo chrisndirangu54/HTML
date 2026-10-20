@@ -1,6 +1,6 @@
 import {collection,getDocs,query,where} from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
 import {onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
-import {apiFetch,auth,config,db,firebaseReady,getSession,requireUser} from './auth-client.js';
+import {apiFetch,auth,config,dashboardForRole,db,firebaseReady,getSession,requireUser} from './auth-client.js';
 
 const money=n=>new Intl.NumberFormat('en-KE',{style:'currency',currency:'KES',maximumFractionDigits:0}).format(n||0);
 let products=[];let cart=JSON.parse(localStorage.getItem('tekntandao-cart')||'{}');
@@ -38,7 +38,7 @@ async function checkout(method){
 }
 async function authNav(){
   const link=$('#auth-link');if(!link)return;if(!auth){link.textContent='Sign in';link.href='login.html?next=shop.html';return}
-  onAuthStateChanged(auth,async user=>{if(!user){link.textContent='Sign in';link.href='login.html?next=shop.html';return}link.textContent='My account';link.href='account.html';try{const s=await getSession(true);if(s.role!=='customer')link.textContent=`${s.role[0].toUpperCase()+s.role.slice(1)} dashboard`}catch{}})
+  onAuthStateChanged(auth,async user=>{if(!user){link.textContent='Sign in';link.href='login.html?next=shop.html';return}link.textContent='My account';link.href='account.html';try{const s=await getSession(true);if(s.role&&s.role!=='customer'){link.textContent=`${s.role[0].toUpperCase()+s.role.slice(1)} desk`;link.href=dashboardForRole(s.role)}}catch{}})
 }
 $('#search').addEventListener('input',render);$('#category').addEventListener('change',render);$('#cart-button').onclick=()=>$('#cart').toggleAttribute('hidden');$('#close-cart').onclick=()=>$('#cart').setAttribute('hidden','');$('#pay-mpesa').onclick=()=>checkout('mpesa').catch(e=>$('#checkout-status').textContent=e.message);$('#pay-paystack').onclick=()=>checkout('paystack').catch(e=>$('#checkout-status').textContent=e.message);$('#whatsapp').href=`https://wa.me/${config.whatsappNumber||'254702258870'}?text=${encodeURIComponent('Hi TeknTandao, I need help with an ICT product or installation.')}`;
 authNav();loadProducts();

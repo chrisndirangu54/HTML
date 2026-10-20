@@ -23,7 +23,7 @@ const strapiVersion=defineString('STRAPI_API_VERSION',{default:'5'});
 const strapiCollection=defineString('STRAPI_ARTICLE_COLLECTION',{default:'articles'});
 const adminEmails=defineString('ADMIN_EMAILS',{default:''});
 const allowed=new Set(['https://www.tekntandao.com','https://tekntandao.com','http://localhost:5500','http://127.0.0.1:5500','http://localhost:5000','http://127.0.0.1:5000']);
-const staffRoles=new Set(['admin','attendant','delivery']);
+const staffRoles=new Set(['admin','attendant','delivery','staff']);
 const orderStatuses=new Set(['pending','payment_init_failed','payment_failed','paid','processing','ready_for_delivery','out_for_delivery','delivered','cancelled']);
 
 function cors(req,res){
@@ -85,7 +85,7 @@ async function createOrder(req,provider,user){
 }
 function serializeOrder(doc){const row=doc.data();return{...row,id:doc.id,createdAt:cleanTimestamp(row.createdAt),updatedAt:cleanTimestamp(row.updatedAt)}}
 async function setRole(uid,role,actorUid){
-  if(!['admin','attendant','delivery','customer'].includes(role))throw new Error('Invalid role');
+  if(!['admin','attendant','delivery','staff','customer'].includes(role))throw new Error('Invalid role');
   const user=await adminAuth.getUser(uid);
   const claims={...(user.customClaims||{})};
   if(role==='customer')delete claims.role;else claims.role=role;
@@ -111,7 +111,7 @@ export const getMyOrders=onRequest({region:'europe-west1'},async(req,res)=>respo
 }));
 
 export const getStaffOrders=onRequest({region:'europe-west1'},async(req,res)=>respond(req,res,async()=>{
-  assertMethod(req,'GET');const user=await identity(req,['admin','attendant','delivery']);let docs=[];
+  assertMethod(req,'GET');const user=await identity(req,['admin','attendant','delivery']);let docs=[]; // ISP staff are excluded; they use adminIspOperations.
   if(user.role==='delivery'){const q=await db.collection('orders').where('assignedDeliveryUid','==',user.uid).limit(150).get();docs=q.docs}
   else{const q=await db.collection('orders').limit(250).get();docs=q.docs}
   let rows=docs.map(serializeOrder);

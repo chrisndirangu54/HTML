@@ -1,8 +1,8 @@
 import {createUserWithEmailAndPassword,GoogleAuthProvider,sendEmailVerification,sendPasswordResetEmail,signInWithEmailAndPassword,signInWithPopup,updateProfile} from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
-import {auth,firebaseReady,getSession,dashboardForRole} from './auth-client.js';
+import {allowedNext,auth,firebaseReady,getSession,dashboardForRole} from './auth-client.js';
 const $=s=>document.querySelector(s);const status=$('#auth-status');
-function nextUrl(){const raw=new URLSearchParams(location.search).get('next')||'';return /^[a-z0-9_-]+\.html(?:\?.*)?$/i.test(raw)?raw:null}
-async function finish(){const session=await getSession(true).catch(()=>({role:'customer'}));location.href=nextUrl()||dashboardForRole(session.role)}
+function nextUrl(){return new URLSearchParams(location.search).get('next')||''}
+async function finish(){const session=await getSession(true).catch(()=>({role:'customer'}));location.href=allowedNext(session.role,nextUrl())||dashboardForRole(session.role)}
 function show(message){status.textContent=message}
 if(!firebaseReady){show('Firebase web configuration is missing in assets/js/site-config.js.');document.querySelectorAll('button').forEach(b=>b.disabled=true)}
 $('#sign-in').onclick=async()=>{try{show('Signing in…');await signInWithEmailAndPassword(auth,$('#auth-email').value.trim(),$('#auth-password').value);await finish()}catch(e){show(e.message)}};

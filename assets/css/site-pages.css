@@ -568,6 +568,8 @@ button.tt-scroll-orb {
 #blog-admin-status { overflow-wrap: anywhere; }
 
 
+[hidden] { display: none !important; }
+
 .clients-logos img.partner-logo-transparent:hover { opacity: 1; }
 
 .clients-logos img { width: 100%; height: 140px; padding: 10px; object-fit: contain; background: transparent; opacity: .3; transition: opacity .3s; }

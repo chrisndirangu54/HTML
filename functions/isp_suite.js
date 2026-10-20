@@ -14,8 +14,6 @@ const allowOrigins=new Set(['https://www.tekntandao.com','https://tekntandao.com
 const db={collection:(...args)=>getFirestore().collection(...args)};
 const stamp=()=>FieldValue.serverTimestamp();
 const err=(code,message)=>Object.assign(new Error(message),{status:code});
-const modules=Object.keys(ispModules);
-const auditCollection=db.collection('htmlIspAudit');
 async function identify(req,adminOnly=true) {
  const bearer=String(req.headers.authorization||'');
  if(!bearer.startsWith('Bearer '))throw err(401,'Authentication required');
@@ -97,7 +95,7 @@ async function createRecord(user,body) {
  // Validated invoice references cannot settle customer accounts without a bank callback.
  if(moduleName==='payments')input.verified=false;
  if(moduleName==='provisioning'||moduleName==='firmware'||moduleName==='policies')input.executed=false;
- const ref=db.collection(spec.collection).doc(id),audit=auditCollection.doc();
+ const ref=db.collection(spec.collection).doc(id),audit=db.collection('htmlIspAudit').doc();
  const batch=db.batch();
  batch.create(ref,{...input,status:spec.workflow?.initial||'recorded',
   createdBy:user.uid,createdAt:stamp(),updatedAt:stamp()});
@@ -112,7 +110,7 @@ async function transition(user,body){
  const id=String(body.id||'');
  if(!/^[A-Za-z0-9_-]{2,120}$/.test(id))throw err(400,'Invalid record ID');
  const to=String(body.status||'');
- const ref=db.collection(spec.collection).doc(id),audit=auditCollection.doc();
+ const ref=db.collection(spec.collection).doc(id),audit=db.collection('htmlIspAudit').doc();
  await db.runTransaction(async tx=>{
   const snap=await tx.get(ref);
   if(!snap.exists)throw err(404,'Record not found');

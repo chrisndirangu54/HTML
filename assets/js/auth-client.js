@@ -1,6 +1,7 @@
 import {initializeApp,getApps,getApp} from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
 import {getAuth,onAuthStateChanged,signOut} from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
 import {getFirestore} from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
+export {allowedNext, dashboardForRole} from './role-routes.js';
 
 export const config=window.TEKNTANDAO_CONFIG||{};
 export const firebaseReady=Boolean(config.firebase?.projectId&&config.firebase?.apiKey);
@@ -36,5 +37,4 @@ export async function getSession(force=false){
   const {claims}=await user.getIdTokenResult(force);
   return {uid:user.uid,email:user.email,name:user.displayName,emailVerified:user.emailVerified,role:claims.role||'customer',superAdmin:claims.superAdmin===true};
 }
-export function dashboardForRole(role){if(role==='admin')return'admin.html';if(role==='attendant')return'attendant.html';if(role==='delivery')return'delivery.html';return'account.html'}
 export async function signOutCurrent(){if(auth)await signOut(auth);location.href='shop.html'}

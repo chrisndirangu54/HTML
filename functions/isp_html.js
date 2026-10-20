@@ -2,6 +2,7 @@ import {randomUUID} from 'node:crypto';
 import {getAuth} from 'firebase-admin/auth';
 import {getFirestore, FieldValue} from 'firebase-admin/firestore';
 import {onRequest} from 'firebase-functions/v2/https';
+import {ispActionAllowed} from './isp-access.js';
 
 // Standalone HTML-site ISP records. These are NOT shared with the separate
 // Flutter Workspace Firebase project. No network control or payment actions.
@@ -49,7 +50,7 @@ async function authorize(req) {
   let user;
   try { user = await getAuth().verifyIdToken(header.slice(7), true); }
   catch { throw bad('Invalid or expired session', 401); }
-  if (user.role !== 'admin') throw bad('Administrator access required', 403);
+  if (user.role !== 'admin' && user.role !== 'staff') throw bad('ISP staff access required', 403);
   return user;
 }
 const stamp = () => FieldValue.serverTimestamp();
@@ -177,8 +178,12 @@ export const adminIspOperations = onRequest({region: 'europe-west1'}, async (req
     if (!['GET', 'POST'].includes(req.method)) throw bad('Method not allowed', 405);
     const user = await authorize(req);
     const db = getFirestore();
+    const action = req.method === 'GET' ? 'list' : req.body?.action;
+    if (!ispActionAllowed(user.role, action)) {
+      throw bad(user.role === 'staff' ? 'Administrator access required' : 'Unknown ISP action', user.role === 'staff' ? 403 : 400);
+    }
     const result = req.method === 'GET' ? await list(db)
-      : ['registerDevice', 'planSubscriber', 'reportIncident', 'createWorkOrder'].includes(req.body?.action)
+      : ['registerDevice', 'planSubscriber', 'reportIncident', 'createWorkOrder'].includes(action)
         ? await create(db, user, req.body)
         : await update(db, user, req.body);
     res.json(result);

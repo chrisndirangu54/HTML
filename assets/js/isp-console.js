@@ -1,10 +1,10 @@
-import {waitForUser,idToken,functionsBase} from './auth-client.js';
+import {dashboardForRole,functionsBase,getSession,idToken} from './auth-client.js';
 
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const escapeHTML=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const root=functionsBase?functionsBase+'/ispSuiteApi':'/api/ispSuiteApi';
 const state={modules:{},integrations:[],records:{},overview:null,view:'overview',current:null,busy:false};
-const labels={overview:'Operations overview',architecture:'Network architecture',integrations:'Connectors & integrations',
+const labels={overview:'Operations overview',integrations:'Connectors & integrations',
  economics:'Pilot business simulator',quality:'Network health & QoE','customer-requests':'Customer service requests'};
 const nf=x=>new Intl.NumberFormat('en-KE',{maximumFractionDigits:0}).format(x||0);
 const money=x=>'KSh '+nf(x);
@@ -30,7 +30,7 @@ function view(name){
  state.view=name;
  state.current=Object.hasOwn(state.modules,name)?name:null;
  const page=state.current?'module':name;
- for(const x of ['overview','architecture','integrations','economics','quality','customer-requests','module']){
+ for(const x of ['overview','integrations','economics','quality','customer-requests','module']){
   const e=$('#view-'+x);if(e)e.hidden=x!==page;
  }
  $$('#isp-nav button,#isp-modules-nav button').forEach(b=>{
@@ -239,8 +239,11 @@ function downloadCSV(){
 }
 async function initialize(){
  try{
-  const session=await waitForUser();
-  if(!session)throw new Error('Sign in required');
+  const session=await getSession(true);
+  if(session.role!=='admin'){
+   location.replace(session.role==='customer'?'isp.html':dashboardForRole(session.role));
+   return;
+  }
   // The first API call verifies the Firebase ID token and admin role on the server.
   const result=await api('GET',{view:'modules'});
   state.modules=result.modules;state.integrations=result.integrations||[];

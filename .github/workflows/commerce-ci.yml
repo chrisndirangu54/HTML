@@ -31,12 +31,23 @@ jobs:
       - name: Validate ISP HTML integration
         run: |
           test -s isp-architecture.html
-          test -s assets/isp/architecture.svg
+          test -s isp-staff.html
+          test -s isp-console.html
           test -s docs/ISP_HTML.md
-          grep -q 'isp-architecture.html' isp.html
+          test -s assets/js/role-routes.js
+          test -s functions/isp-access.js
+          grep -q 'isp-customer.html' isp.html
           grep -q 'isp-operations' admin.html
+          grep -q 'isp-console.html' admin.html
           grep -q 'adminIspOperations' firebase.json
           grep -q "export {adminIspOperations}" functions/index.js
+          ! grep -q 'architecture.svg' isp.html admin.html isp-console.html isp-architecture.html isp-staff.html
+          node -e 'const fs=require("fs"); if(fs.readFileSync("admin.html","utf8").includes("\\n<div")) process.exit(1)'
+          node --check assets/js/role-routes.js
+          node --check assets/js/isp-public.js
+          node --check assets/js/isp-entry.js
+          node --check assets/js/isp-admin.js
+          node --test functions/isp-access.test.js scripts/tests/role-routes.test.mjs
       - name: Validate complete ISP suite
         run: |
           for file in isp-console.html isp-customer.html isp-equipment.html assets/css/isp-console.css assets/js/isp-console.js assets/js/isp-customer.js functions/isp_suite.js functions/isp_suite_core.js functions/isp_suite_core.test.js; do test -s "$file"; done

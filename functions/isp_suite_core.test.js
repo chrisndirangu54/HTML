@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {ispModules,integrationCatalog,normalizeRecord,transitionAllowed,
@@ -57,4 +58,10 @@ test('support triage and recovery scoring are bounded',()=>{
 test('vendor integrations cannot be represented as connected',()=>{
  assert.ok(integrationCatalog.every(x=>x.status!=='connected'));
  assert.ok(integrationCatalog.some(x=>x.id==='genieacs'));
+});
+test('the suite module does not open Firestore while it is imported',()=>{
+ const source=fs.readFileSync(new URL('./isp_suite.js',import.meta.url),'utf8');
+ const header=source.split('async function identify')[0];
+ assert.equal(header.includes('db.collection('),false);
+ assert.equal(header.includes('getFirestore()'),true);
 });

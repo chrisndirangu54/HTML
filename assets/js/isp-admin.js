@@ -1,4 +1,5 @@
-import {functionsBase, getSession, idToken} from './auth-client.js';
+import {functionsBase, getSession, idToken, signOutCurrent} from './auth-client.js';
+import {dashboardForRole} from './role-routes.js';
 
 const panel = document.querySelector('#isp-operations');
 const $ = selector => panel?.querySelector(selector);
@@ -141,9 +142,32 @@ function wireForms() {
 }
 async function start() {
   if (!panel) return;
+  const mode = document.body.dataset.ispDesk || 'admin';
+  if (mode === 'staff') {
+    const signOut = document.querySelector('#sign-out');
+    if (signOut) signOut.onclick = signOutCurrent;
+  }
   try {
     const session = await getSession(true);
-    if (session.role !== 'admin') return;
+    const sessionLine = document.querySelector('#dashboard-session');
+    if (mode === 'staff' && sessionLine) sessionLine.textContent = `${session.email || ''} · ${session.role}`;
+    const allowed = mode === 'staff'
+      ? session.role === 'staff' || session.role === 'admin'
+      : session.role === 'admin';
+    if (!allowed) {
+      if (mode === 'staff') location.replace(session.role === 'customer' ? 'isp.html' : dashboardForRole(session.role));
+      return;
+    }
+    if (mode === 'staff' && session.role === 'admin') {
+      const nav = document.querySelector('.commerce-nav');
+      const signOut = document.querySelector('#sign-out');
+      if (nav && signOut && !nav.querySelector('a[href="admin.html"]')) {
+        const link = document.createElement('a');
+        link.href = 'admin.html';
+        link.textContent = 'Admin desk';
+        nav.insertBefore(link, signOut);
+      }
+    }
     panel.hidden = false;
     wireForms();
     await reload();
