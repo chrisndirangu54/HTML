@@ -50,7 +50,7 @@ jobs:
           CI: 'true'
         run: |
           npx --yes firebase-tools@14 deploy \
-            --only functions:adminIspOperations \
+            --only functions:commerce:adminIspOperations \
             --project tekntandao \
             --non-interactive
       - name: Clean credentials
