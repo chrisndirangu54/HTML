@@ -12,10 +12,11 @@ export const securityMonitoringCheckout=onRequest({region:'europe-west1',secrets
  res.set('Cache-Control','no-store');
  try{
   if(req.method!=='POST')fail(405,'POST only');
+  if(process.env.SECURITY_MONITORING_CHECKOUT_ENABLED!=='true')fail(503,'Monitoring purchases are not available until continuous monitoring is operational');
   const u=await user(req),assetId=String(req.body?.assetId||'');
   if(!/^[A-Za-z0-9_-]{8,100}$/.test(assetId))fail(400,'Verified asset ID required');
   const asset=await db.collection('securityAssets').doc(assetId).get();
-  if(!asset.exists||asset.data().uid!==u.uid||asset.data().verified!==true)fail(403,'Asset must be owned and verified');
+  if(!asset.exists||asset.data().uid!==u.uid||asset.data().status!=='verified')fail(403,'Asset must be owned and verified');
   if(!u.email)fail(400,'Account email required');
   const entitlementId=u.uid+'_'+assetId,entRef=db.collection('securityMonitoringSubscriptions').doc(entitlementId),old=await entRef.get();
   if(old.exists&&old.data().status==='active'&&old.data().currentPeriodEnd?.toMillis()>Date.now())fail(409,'Monitoring already paid for current period');
