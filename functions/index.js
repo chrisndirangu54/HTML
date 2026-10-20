@@ -313,3 +313,5 @@ export {securityMonitorTick} from './security-monitor-worker.js';
 export {securityMonitoringResults} from './security-monitor-results.js';
 
 export {securityMonitoringControls} from './security-monitor-controls.js';
+
+export {securityAlertDelivery} from './security-alert-delivery.js';
