@@ -49,10 +49,10 @@ jobs:
         run: |
           for f in shop.html login.html account.html admin.html attendant.html delivery.html blog.html gallery.html events.html training.html podcasts.html awards.html assets/css/commerce.css assets/css/hero-gaming-pc.css assets/js/site-config.js assets/js/hero-gaming-pc.js assets/js/hero-lottie-fallback.js assets/lottie/ai-robo-lite.json assets/lottie/ai-robo-core.gz.b64 firestore.rules firebase.json; do test -s "$f" || exit 1; done
           for i in 0 1 2 3 4 5; do test -s "assets/models/gaming-pc-user.$i.b64" || exit 1; done
-          grep -q "hero-gaming-pc.js" assets/js/color.js
-          grep -q "hero-lottie-fallback.js" assets/js/color.js
+          grep -q "loadPageScripts" assets/js/color.js
+          grep -q "tt-ai-robo-lottie" assets/js/color.js
           grep -q "GLTFLoader" assets/js/hero-gaming-pc.js
-          grep -q "ai-robo-core.gz.b64" assets/js/hero-gaming-pc.js
+          grep -q "GLTF_LOADER_URL" assets/js/hero-gaming-pc.js
           grep -q "tt-ai-robo-lottie" assets/js/hero-lottie-fallback.js
           grep -q "ai-robo-lite.json" assets/js/hero-lottie-fallback.js
       - name: Install Functions dependencies
