@@ -1,9 +1,0 @@
-cms/
-functions/
-security-workers/
-docs/
-.github/
-data/*.private.json
-*.md
-.env
-.env.*
