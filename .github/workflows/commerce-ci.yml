@@ -16,6 +16,8 @@ jobs:
       - name: Check JavaScript syntax
         run: |
           node --check functions/index.js
+          node --check functions/isp_html.js
+          node --check assets/js/isp-admin.js
           node --check assets/js/shop.js
           node --check assets/js/auth-client.js
           node --check assets/js/login.js
@@ -26,6 +28,15 @@ jobs:
           node --check assets/js/color.js
           node --check assets/js/hero-gaming-pc.js
           node --check assets/js/hero-lottie-fallback.js
+      - name: Validate ISP HTML integration
+        run: |
+          test -s isp-architecture.html
+          test -s assets/isp/architecture.svg
+          test -s docs/ISP_HTML.md
+          grep -q 'isp-architecture.html' isp.html
+          grep -q 'isp-operations' admin.html
+          grep -q 'adminIspOperations' firebase.json
+          grep -q "export {adminIspOperations}" functions/index.js
       - name: Validate catalogue JSON
         run: node -e "const fs=require('fs'); const p=JSON.parse(fs.readFileSync('data/products.seed.json')); if(!Array.isArray(p)||p.length<5) process.exit(1);"
       - name: Validate uploaded gaming PC GLB repair
