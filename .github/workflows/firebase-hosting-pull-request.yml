@@ -12,7 +12,7 @@ jobs:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       # Static HTML/CSS/JS site: no root package.json or compile step.
       - run: test -s index.html && test -s isp.html && test -s isp-architecture.html
       - uses: FirebaseExtended/action-hosting-deploy@v0
