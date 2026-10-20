@@ -52,3 +52,22 @@ Deploy only after checking that the intended Firebase project, custom domain, se
 - Confirm audit entries are written with each administrative mutation.
 - Confirm the HTML admin and Flutter Workspace use distinct Firebase projects or document the configuration intentionally before linking production records.
 - Confirm the HTML admin page does not display simulated pilot values as live network performance.
+
+## Function deployment is currently blocked (2026-10-20)
+
+GitHub Actions workflow `Deploy isolated ISP admin Cloud Function` reached Firebase project `tekntandao`, but Google Cloud returned:
+
+```
+Error: Permissions denied enabling cloudfunctions.googleapis.com.
+```
+
+The project is missing at least Cloud Functions, Cloud Build and Artifact Registry service APIs, and the existing GitHub Actions service account lacks permission to enable them. **Hosting deployments are successful, but do not deploy the `adminIspOperations` backend. ISP management actions in the HTML admin UI must not be described as live until this function successfully deploys.**
+
+An authorized Google Cloud/Firebase project owner should:
+1. Confirm the correct Firebase project and active billing plan support for second-generation Cloud Functions.
+2. Enable `cloudfunctions.googleapis.com`, `cloudbuild.googleapis.com`, and `artifactregistry.googleapis.com` in the project. Other required services may be requested by the deployment wizard.
+3. Review and grant the deployment principal the minimum appropriate roles for Cloud Functions deployment and service-account impersonation, rather than broad project-owner access. This may include Cloud Functions Developer, Cloud Run build/runtime services, Artifact Registry and Service Account User roles according to the deployment model.
+4. Use the GitHub Actions **Run workflow** control for `Deploy isolated ISP admin Cloud Function` (manual trigger only) after verifying permissions and approvals.
+5. Confirm the backend deploy succeeds, then test a signed-in administrator, non-admin rejection, planned device creation, duplicate account-code rejection and audit history.
+
+Do not paste service-account JSON, router admin credentials, live M-Pesa tokens or other secrets into chat or GitHub issues.
