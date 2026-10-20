@@ -308,5 +308,13 @@ export {securityGithubWebhook} from './security-github-webhook.js';
 
 export {securityMonitoringCheckout,securityMonitoringWebhook,securityMonitoringStatus} from './security-monitoring.js';
 
-// ISP management for the standalone HTML site; separate from Flutter Workspace.
+export {securityMonitorTick} from './security-monitor-worker.js';
+
+export {securityMonitoringResults} from './security-monitor-results.js';
+
+export {securityMonitoringControls} from './security-monitor-controls.js';
+
+export {securityAlertDelivery} from './security-alert-delivery.js';
+
+// Standalone HTML ISP operations; not shared with Flutter Workspace.
 export {adminIspOperations} from './isp_html.js';
