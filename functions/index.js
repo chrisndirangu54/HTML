@@ -305,3 +305,5 @@ export {securityPaystackCheckout,securityPaystackWebhook} from './security-payme
 export {securityGithubApp} from './security-github-app.js';
 
 export {securityGithubWebhook} from './security-github-webhook.js';
+
+export {securityMonitoringCheckout,securityMonitoringWebhook,securityMonitoringStatus} from './security-monitoring.js';
