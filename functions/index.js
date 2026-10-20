@@ -309,3 +309,5 @@ export {securityGithubWebhook} from './security-github-webhook.js';
 export {securityMonitoringCheckout,securityMonitoringWebhook,securityMonitoringStatus} from './security-monitoring.js';
 
 export {securityMonitorTick} from './security-monitor-worker.js';
+
+export {securityMonitoringResults} from './security-monitor-results.js';
