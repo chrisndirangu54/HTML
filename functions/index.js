@@ -315,3 +315,6 @@ export {securityMonitoringResults} from './security-monitor-results.js';
 export {securityMonitoringControls} from './security-monitor-controls.js';
 
 export {securityAlertDelivery} from './security-alert-delivery.js';
+
+// Standalone HTML ISP operations; not shared with Flutter Workspace.
+export {adminIspOperations} from './isp_html.js';

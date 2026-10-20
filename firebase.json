@@ -18,6 +18,14 @@
     ],
     "rewrites": [
       {
+        "source": "/api/adminIspOperations",
+        "function": {
+          "functionId": "adminIspOperations",
+          "region": "europe-west1",
+          "codebase": "commerce"
+        }
+      },
+      {
         "source": "/api/securityMonitoringControls",
         "function": {
           "functionId": "securityMonitoringControls",
