@@ -230,7 +230,9 @@ async function loadRequests(){
 function downloadCSV(){
  const kind=state.current,records=state.records[kind]||[],spec=state.modules[kind];if(!records.length)return message('No records to export',true);
  const columns=['id','status',...Object.keys(spec.fields),'createdAt'];
- const csv=[columns.map(v=>'"'+v+'"').join(','),...records.map(row=>columns.map(k=>'"'+fmt(row[k]).replaceAll('"','""')+'"').join(','))].join('\r\n');
+ // Neutralize spreadsheet formula injection from untrusted record text.
+ const csvSafe=value=>{const raw=fmt(value);return /^[=+@-]/.test(raw)?"'"+raw:raw;};
+ const csv=[columns.map(v=>'"'+v+'"').join(','),...records.map(row=>columns.map(k=>'"'+csvSafe(row[k]).replaceAll('"','""')+'"').join(','))].join('\r\n');
  const file=new Blob([csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(file);
  const a=document.createElement('a');a.href=url;a.download='tekntandao-isp-'+kind+'.csv';a.click();URL.revokeObjectURL(url);
  message('Downloaded the loaded '+kind+' records as CSV.');
