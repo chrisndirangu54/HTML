@@ -343,3 +343,6 @@ export {securityAlertDelivery} from './security-alert-delivery.js';
 
 // Standalone HTML ISP operations; not shared with Flutter Workspace.
 export {adminIspOperations} from './isp_html.js';
+
+// ISP HTML operations suite (admin only) and authenticated customer enquiries.
+export {ispSuiteApi,ispCustomerRequest} from './isp_suite.js';
