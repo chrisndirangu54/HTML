@@ -7,6 +7,6 @@ export function issueCodes(observation){
  return alerts;
 }
 export function newIssueCodes(before,after){
- const previous=new Set(issueCodes(before));
+ const previous=new Set(before?issueCodes(before):[]);
  return issueCodes(after).filter(x=>!previous.has(x));
 }
