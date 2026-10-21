@@ -45,7 +45,47 @@ export function createSelfCollision(model, THREE) {
   const proximalEnd = new THREE.Vector3();
   let unit = 1;
   let hasPose = false;
+  let wavingHand = null;
+  let clearanceWeight = 0;
   const colliders = [];
+  // Pick the outermost skinned hand vertices in multiple directions. Joint
+  // centres alone miss the fingers and thick armour around the palm.
+  const handSurfaces = new Map();
+  model.updateWorldMatrix(true, true);
+  for (const limb of limbs.filter(limb => limb.arm)) {
+    const hand = limb.bones[2];
+    const descendants = new Set();
+    hand.traverse(joint => descendants.add(joint));
+    const candidates = [];
+    model.traverse(mesh => {
+      if (!mesh.isSkinnedMesh) return;
+      mesh.skeleton.update();
+      const indices = mesh.geometry.getAttribute('skinIndex');
+      const weights = mesh.geometry.getAttribute('skinWeight');
+      if (!indices || !weights) return;
+      for (let i = 0; i < indices.count; i++) {
+        let handWeight = 0;
+        for (let j = 0; j < 4; j++) {
+          if (descendants.has(mesh.skeleton.bones[indices.getComponent(i, j)])) handWeight += weights.getComponent(i, j);
+        }
+        if (handWeight < 0.5) continue;
+        const point = mesh.getVertexPosition(i, new THREE.Vector3()).applyMatrix4(mesh.matrixWorld);
+        hand.worldToLocal(point);
+        candidates.push({ mesh, index: i, point });
+      }
+    });
+    const selected = new Set();
+    for (const x of [-1, 0, 1]) for (const y of [-1, 0, 1]) for (const z of [-1, 0, 1]) {
+      if (!x && !y && !z) continue;
+      let best = null, distance = -Infinity;
+      for (const vertex of candidates) {
+        const score = vertex.point.x * x + vertex.point.y * y + vertex.point.z * z;
+        if (score > distance) { best = vertex; distance = score; }
+      }
+      if (best) selected.add(best);
+    }
+    handSurfaces.set(limb.name, [...selected]);
+  }
 
   function refresh() {
     model.updateWorldMatrix(true, true);
@@ -105,16 +145,23 @@ export function createSelfCollision(model, THREE) {
   const samples = [
     [0, 1, 0.55, 0], [0, 1, 0.8, 0], [0, 1, 1, 0],
     [1, 2, 0.3, 1], [1, 2, 0.65, 1], [1, 2, 1, 1],
-    [2, 3, 0.5, 1], [2, 3, 1, 1]
+    [2, 3, 0, 1], [2, 3, 0.25, 1], [2, 3, 0.5, 1], [2, 3, 0.75, 1], [2, 3, 1, 1]
   ];
 
   function visit(correct) {
     let maximum = 0;
     for (const limb of limbs) {
       const others = limbs.filter(other => other !== limb);
+      const handClearance = limb.name === wavingHand ? clearanceWeight : 0;
       for (const [a, b, t, jointIndex] of samples) {
-        const radius = (limb.arm ? (a === 0 ? 0.12 : a === 1 ? 0.105 : 0.075) : (a === 0 ? 0.15 : 0.11)) * unit;
-        const obstacles = colliders.filter(collider => limb.arm || !['pelvis', 'torso'].includes(collider.kind));
+        // Cover the palm/knuckle armour, not just the thin wrist-to-index line.
+        const radius = (limb.arm ? (a === 0 ? 0.12 : a === 1 ? 0.105 : 0.075 + 0.055 * handClearance) : (a === 0 ? 0.15 : 0.11)) * unit;
+        const obstacles = colliders.filter(collider => limb.arm || !['pelvis', 'torso'].includes(collider.kind)).map(collider => {
+          // The chest capsule includes the shoulder socket. Expand clearance
+          // for palms only, so a connected upper arm is not pushed out of it.
+          const padding = handClearance && a === 2 ? (collider.kind === 'torso' ? 0.09 : collider.kind === 'chest' ? 0.08 : 0) : 0;
+          return padding ? { ...collider, radius: collider.radius + padding * handClearance * unit } : collider;
+        });
         if (a === 2 || (a === 1 && t >= 0.65)) {
           // A deeply folded elbow/knee can put the lower limb through its own
           // upper armour. Keep the shared joint clear of this test.
@@ -136,6 +183,36 @@ export function createSelfCollision(model, THREE) {
           if (correct && depth > 0.001 * unit) {
             rotateOut(limb.bones[jointIndex], sample);
             updateLimb(limb);
+            // A folded elbow can exhaust its safe swing. Move the shoulder too
+            // rather than forcing the palm through the enlarged armour bounds.
+            if (jointIndex === 1 && handClearance > 0) {
+              sample.copy(limb.points[a]).lerp(limb.points[b], t);
+              if (penetration(sample, radius, obstacle, limb.side) > 0.001 * unit) {
+                rotateOut(limb.bones[0], sample);
+                updateLimb(limb);
+              }
+            }
+          }
+        }
+      }
+      if (handClearance > 0) {
+        for (const vertex of handSurfaces.get(limb.name) || []) {
+          for (const body of colliders) {
+            // Mesh measurements put the front chest armour beyond the small
+            // joint capsule. Apply this envelope only to the waving hand.
+            const padding = ['torso', 'chest'].includes(body.kind) ? 0.11 * unit * handClearance : 0;
+            const collider = padding ? { ...body, radius: body.radius + padding } : body;
+            vertex.mesh.skeleton.update();
+            vertex.mesh.getVertexPosition(vertex.index, sample).applyMatrix4(vertex.mesh.matrixWorld);
+            const depth = penetration(sample, 0.015 * unit * handClearance, collider, limb.side);
+            maximum = Math.max(maximum, depth / unit);
+            if (correct && depth > 0.001 * unit) {
+              rotateOut(limb.bones[1], sample);
+              vertex.mesh.skeleton.update();
+              vertex.mesh.getVertexPosition(vertex.index, sample).applyMatrix4(vertex.mesh.matrixWorld);
+              if (penetration(sample, 0.015 * unit * handClearance, collider, limb.side) > 0.001 * unit) rotateOut(limb.bones[0], sample);
+              updateLimb(limb);
+            }
           }
         }
       }
@@ -147,13 +224,15 @@ export function createSelfCollision(model, THREE) {
     restore() {
       if (hasPose) controlled.forEach(({ bone: joint, animated }) => joint.quaternion.copy(animated));
     },
-    solve() {
+    solve({ wavingHand: hand = null, weight = 1 } = {}) {
+      wavingHand = hand;
+      clearanceWeight = THREE.MathUtils.clamp(weight, 0, 1);
       controlled.forEach(({ bone: joint, animated }) => animated.copy(joint.quaternion));
       hasPose = true;
       refresh();
       // Fixed work budget, independent of frame rate; no simulation instability
       // or bone translation/scaling, and corrections never feed into the mixer.
-      for (let i = 0; i < 8; i++) if (visit(true) < 0.002) break;
+      for (let i = 0; i < 16; i++) if (visit(true) < 0.002) break;
     },
     measure() { refresh(); return visit(false); }
   };

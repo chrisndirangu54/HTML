@@ -260,3 +260,71 @@ test('self-collision follows rotated/scaled rigs and cursor-driven head poses', 
     }
   }
 });
+
+
+test('only the waving palm gets extra clearance, blended with the action', async () => {
+  const r = await fixture();
+  r.button('wave').click();
+  for (let frame = 0; frame < 360; frame++) {
+    r.step();
+    const unit = r.model.getWorldScale(new THREE.Vector3()).x;
+    const waist = r.model.getObjectByName('CC_Base_Waist_028').getWorldPosition(new THREE.Vector3());
+    const chest = r.model.getObjectByName('CC_Base_Spine02_030').getWorldPosition(new THREE.Vector3());
+    const neck = r.model.getObjectByName('CC_Base_NeckTwist01_031').getWorldPosition(new THREE.Vector3());
+    const wave = r.action('wave');
+    const weight = r.classes.has('is-acting') ? wave.getEffectiveWeight() : 0;
+    if (weight <= 0) continue;
+    const clearance = Math.sqrt(weight);
+    const palmRadius = 0.075 + 0.055 * clearance;
+    for (const [handName, fingerName] of [['CC_Base_R_Hand_070', 'CC_Base_R_Index3_076']]) {
+      const wrist = r.model.getObjectByName(handName).getWorldPosition(new THREE.Vector3());
+      const finger = r.model.getObjectByName(fingerName).getWorldPosition(new THREE.Vector3());
+      for (const t of [0, 0.25, 0.5, 0.75, 1]) {
+        const palm = wrist.clone().lerp(finger, t);
+        for (const [a, b, radius] of [[waist, chest, 0.23 + 0.09 * clearance], [chest, neck, 0.26 + 0.08 * clearance]]) {
+          const closest = new THREE.Line3(a, b).closestPointToPoint(palm, true, new THREE.Vector3());
+          assert(palm.distanceTo(closest) / unit >= radius + palmRadius + 0.009,
+            `${handName}: palm intersects torso at wave frame ${frame}`);
+        }
+      }
+    }
+  }
+});
+
+
+test('visible waving-hand skin stays outside torso collision volumes', async () => {
+  const r = await fixture();
+  const hand = r.model.getObjectByName('CC_Base_R_Hand_070');
+  const descendants = new Set(); hand.traverse(joint => descendants.add(joint));
+  const vertices = [];
+  r.model.traverse(mesh => {
+    if (!mesh.isSkinnedMesh) return;
+    const indices = mesh.geometry.getAttribute('skinIndex');
+    const weights = mesh.geometry.getAttribute('skinWeight');
+    for (let i = 0; i < indices.count; i++) {
+      let weight = 0;
+      for (let j = 0; j < 4; j++) if (descendants.has(mesh.skeleton.bones[indices.getComponent(i, j)])) weight += weights.getComponent(i, j);
+      if (weight >= 0.5) vertices.push({ mesh, index: i });
+    }
+  });
+  assert(vertices.length > 100, 'Test must inspect actual hand armour and fingers');
+  r.button('wave').click();
+  for (let frame = 0; frame < 240; frame++) {
+    r.step();
+    if (!r.classes.has('is-acting') || frame % 3) continue;
+    const weight = Math.sqrt(r.action('wave').getEffectiveWeight());
+    const unit = r.model.getWorldScale(new THREE.Vector3()).x;
+    const waist = r.model.getObjectByName('CC_Base_Waist_028').getWorldPosition(new THREE.Vector3());
+    const chest = r.model.getObjectByName('CC_Base_Spine02_030').getWorldPosition(new THREE.Vector3());
+    const neck = r.model.getObjectByName('CC_Base_NeckTwist01_031').getWorldPosition(new THREE.Vector3());
+    r.model.traverse(mesh => { if (mesh.isSkinnedMesh) mesh.skeleton.update(); });
+    for (const { mesh, index } of vertices) {
+      const point = mesh.getVertexPosition(index, new THREE.Vector3()).applyMatrix4(mesh.matrixWorld);
+      for (const [a, b, radius] of [[waist, chest, 0.23 + 0.11 * weight], [chest, neck, 0.26 + 0.11 * weight]]) {
+        const closest = new THREE.Line3(a, b).closestPointToPoint(point, true, new THREE.Vector3());
+        assert(point.distanceTo(closest) / unit >= radius + 0.009 * weight,
+          `Visible hand vertex ${index} enters torso at wave frame ${frame}`);
+      }
+    }
+  }
+});

@@ -348,7 +348,7 @@
         const bodyMotion = activeAction ? 1 - activeAction.getEffectiveWeight() : 1;
         pivot.position.y = restY + (reduced ? 0 : Math.sin(t * 1.2) * 0.04 * bodyMotion);
         updateHead(dt);
-        selfCollision.solve();
+        selfCollision.solve({ wavingHand: activeName === 'wave' ? 'rightArm' : null, weight: Math.sqrt(activeAction?.getEffectiveWeight() || 0) });
         renderer.render(scene, camera);
       });
       root.classList.add('is-loaded');
