@@ -43,6 +43,8 @@ export function createSelfCollision(model, THREE) {
   const closest = new THREE.Vector3();
   const separation = new THREE.Vector3();
   const proximalEnd = new THREE.Vector3();
+  // Extra scratch vectors for the extended collider pairs.
+  const neckTop = new THREE.Vector3();
   let unit = 1;
   let hasPose = false;
   let wavingHand = null;
@@ -94,12 +96,16 @@ export function createSelfCollision(model, THREE) {
     positions[4].copy(headOffset); head.localToWorld(positions[4]);
     // Shoulder separation supplies a stable outward direction even upside down.
     sideways.copy(leftShoulder.getWorldPosition(from)).sub(rightShoulder.getWorldPosition(to)).normalize();
+    // Build the neck-top point: halfway between neck base and head centre.
+    neckTop.copy(positions[3]).lerp(positions[4], 0.5);
     colliders.length = 0;
     colliders.push(
       { a: positions[0], b: positions[1], radius: 0.21 * unit, kind: 'pelvis' },
       { a: positions[1], b: positions[2], radius: 0.23 * unit, kind: 'torso' },
       { a: positions[2], b: positions[3], radius: 0.26 * unit, kind: 'chest' },
-      { a: positions[4], b: positions[4], radius: 0.18 * unit, kind: 'head' }
+      // Neck collider — prevents extreme head-look from driving chin into chest.
+      { a: positions[3], b: neckTop,      radius: 0.12 * unit, kind: 'neck'  },
+      { a: positions[4], b: positions[4], radius: 0.18 * unit, kind: 'head'  }
     );
     limbs.forEach(updateLimb);
   }
@@ -141,7 +147,9 @@ export function createSelfCollision(model, THREE) {
   }
 
   // Sample the armour along each link, not just the joint/end-effector centres.
-  // The shoulder/hip socket itself must overlap its own adjacent body geometry.
+  // The shoulder/hip socket itself must overlap its own adjacent body geometry,
+  // so the upper segment starts at t=0.55 — testing any earlier would push arms
+  // and legs out at rest because the proximal socket lives inside the body capsule.
   const samples = [
     [0, 1, 0.55, 0], [0, 1, 0.8, 0], [0, 1, 1, 0],
     [1, 2, 0.3, 1], [1, 2, 0.65, 1], [1, 2, 1, 1],
@@ -156,10 +164,32 @@ export function createSelfCollision(model, THREE) {
       for (const [a, b, t, jointIndex] of samples) {
         // Cover the palm/knuckle armour, not just the thin wrist-to-index line.
         const radius = (limb.arm ? (a === 0 ? 0.12 : a === 1 ? 0.105 : 0.075 + 0.055 * handClearance) : (a === 0 ? 0.15 : 0.11)) * unit;
-        const obstacles = colliders.filter(collider => limb.arm || !['pelvis', 'torso'].includes(collider.kind)).map(collider => {
-          // The chest capsule includes the shoulder socket. Expand clearance
-          // for palms only, so a connected upper arm is not pushed out of it.
-          const padding = handClearance && a === 2 ? (collider.kind === 'torso' ? 0.09 : collider.kind === 'chest' ? 0.08 : 0) : 0;
+        const obstacles = colliders.filter(collider => {
+          // Legs only avoid chest/head/neck (not pelvis/torso which their sockets live in).
+          // Arms avoid all body colliders.
+          if (limb.arm) return true;
+          return !['pelvis', 'torso'].includes(collider.kind);
+        }).map(collider => {
+          // During waving, expand chest and torso clearance across ALL arm
+          // segments (upper arm, forearm, and hand), not just the hand/finger
+          // region. The upper arm and forearm sweep directly across the chest
+          // face during a wave and need the same enlarged envelope.
+          // Scale of padding by segment: upper arm needs the most push-out
+          // (it arcs closest to the pec armour), forearm slightly less, hand
+          // already had the original treatment.
+          let padding = 0;
+          if (handClearance && limb.arm) {
+            if (a === 0) {
+              // Upper arm arcs across chest/shoulder socket — largest padding.
+              padding = collider.kind === 'chest' ? 0.11 : collider.kind === 'torso' ? 0.07 : 0;
+            } else if (a === 1) {
+              // Forearm sweeps in front of the chest plate.
+              padding = collider.kind === 'chest' ? 0.09 : collider.kind === 'torso' ? 0.08 : 0;
+            } else {
+              // Hand / finger region — original values.
+              padding = collider.kind === 'torso' ? 0.09 : collider.kind === 'chest' ? 0.08 : 0;
+            }
+          }
           return padding ? { ...collider, radius: collider.radius + padding * handClearance * unit } : collider;
         });
         if (a === 2 || (a === 1 && t >= 0.65)) {
@@ -169,13 +199,41 @@ export function createSelfCollision(model, THREE) {
           obstacles.push({ a: limb.points[0], b: proximalEnd, radius: (limb.arm ? 0.12 : 0.15) * unit });
         }
         for (const other of others) {
-          // Arms avoid the legs; leg corrections do not chase moving arms.
+          // Arms avoid legs; leg corrections do not chase moving arms.
           if (!limb.arm && other.arm) continue;
+
+          // ── Upper segment of the other limb ──────────────────────────────────
           obstacles.push(
-            { a: other.points[0], b: other.points[1], radius: (other.arm ? 0.12 : 0.15) * unit },
+            { a: other.points[0], b: other.points[1], radius: (other.arm ? 0.12 : 0.15) * unit }
+          );
+
+          // ── Lower / mid segment of the other limb ───────────────────────────
+          obstacles.push(
             { a: other.points[1], b: other.points[2], radius: (other.arm ? 0.105 : 0.11) * unit }
           );
+
+          // ── Distal segment (hand / foot region) of the other limb ────────────
+          // Prevents a hand from poking through an opposing forearm or foot,
+          // and a foot from overlapping the opposite shin during crouches/flips.
+          if (other.points[2] && other.points[3]) {
+            obstacles.push(
+              { a: other.points[2], b: other.points[3], radius: (other.arm ? 0.075 : 0.09) * unit }
+            );
+          }
         }
+
+        // ── Cross-type avoidance: arm lower segments vs leg upper segments ─────
+        // Handles arms swinging toward thighs during idle sway and backflip.
+        if (limb.arm && (a === 1 || a === 2)) {
+          const legs = limbs.filter(l => !l.arm);
+          for (const leg of legs) {
+            obstacles.push(
+              { a: leg.points[0], b: leg.points[1], radius: 0.15 * unit },
+              { a: leg.points[1], b: leg.points[2], radius: 0.11 * unit }
+            );
+          }
+        }
+
         for (const obstacle of obstacles) {
           sample.copy(limb.points[a]).lerp(limb.points[b], t);
           const depth = penetration(sample, radius, obstacle, limb.side);
@@ -195,6 +253,36 @@ export function createSelfCollision(model, THREE) {
           }
         }
       }
+      // ── Dense arm-vs-chest sweep for the waving arm ──────────────────────────
+      // The general sample loop above already applies expanded chest/torso radii,
+      // but it only runs the fixed sample points. During a wave the upper arm
+      // and forearm arc continuously across the chest face, so we add a targeted
+      // pass with finer interval sampling along both segments against just the
+      // chest and torso body colliders.
+      if (handClearance > 0 && limb.arm) {
+        const wavingBodyObstacles = colliders.filter(c => ['chest', 'torso'].includes(c.kind)).map(c => ({
+          ...c,
+          radius: c.radius + (c.kind === 'chest' ? 0.11 : 0.09) * handClearance * unit
+        }));
+        // 7 evenly-spaced points across upper arm then forearm.
+        const waveSamples = [
+          [0, 1, 1 / 6, 0], [0, 1, 2 / 6, 0], [0, 1, 3 / 6, 0], [0, 1, 4 / 6, 0], [0, 1, 5 / 6, 0],
+          [1, 2, 1 / 6, 1], [1, 2, 2 / 6, 1], [1, 2, 3 / 6, 1], [1, 2, 4 / 6, 1], [1, 2, 5 / 6, 1]
+        ];
+        for (const [a, b, t, jointIndex] of waveSamples) {
+          const r = (a === 0 ? 0.12 : 0.105) * unit;
+          sample.copy(limb.points[a]).lerp(limb.points[b], t);
+          for (const obstacle of wavingBodyObstacles) {
+            const depth = penetration(sample, r, obstacle, limb.side);
+            maximum = Math.max(maximum, depth / unit);
+            if (correct && depth > 0.001 * unit) {
+              rotateOut(limb.bones[jointIndex], sample);
+              updateLimb(limb);
+            }
+          }
+        }
+      }
+
       if (handClearance > 0) {
         for (const vertex of handSurfaces.get(limb.name) || []) {
           for (const body of colliders) {

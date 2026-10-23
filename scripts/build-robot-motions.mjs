@@ -168,7 +168,7 @@ async function bake(name, filename) {
   return json;
 }
 
-const clips = [await bake('wave', 'Waving.fbx'), await bake('backflip', 'Backflip_2.fbx')];
+const clips = [await bake('wave', 'Wave_Hip_Hop_Dance.fbx'), await bake('wave2', 'Waving_2.fbx'), await bake('backflip', 'Backflip_2.fbx')];
 const output = {
   version: 1,
   model: 'sci-fi-ob-robot.glb',

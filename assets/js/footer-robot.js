@@ -348,7 +348,13 @@
         const bodyMotion = activeAction ? 1 - activeAction.getEffectiveWeight() : 1;
         pivot.position.y = restY + (reduced ? 0 : Math.sin(t * 1.2) * 0.04 * bodyMotion);
         updateHead(dt);
-        selfCollision.solve({ wavingHand: activeName === 'wave' ? 'rightArm' : null, weight: Math.sqrt(activeAction?.getEffectiveWeight() || 0) });
+        // Deadzone: ignore wave clearance at the fade-in/out tails so the arm
+        // only lifts away from the chest once the action is well established,
+        // and returns to rest before the action has fully faded out.
+        // Remap [0.2, 1] → [0, 1] then square for a smooth ease-in/out.
+        const _ew = activeAction?.getEffectiveWeight() || 0;
+        const _waveWeight = Math.max(0, (_ew - 0.2) / 0.8) ** 2;
+        selfCollision.solve({ wavingHand: activeName === 'wave' ? 'rightArm' : null, weight: _waveWeight });
         renderer.render(scene, camera);
       });
       root.classList.add('is-loaded');

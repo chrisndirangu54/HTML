@@ -1,4 +1,4 @@
-import {collection,getDocs,query,where} from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
+import {loadCatalogue} from './product-store.js';
 import {onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
 import {apiFetch,auth,config,dashboardForRole,db,firebaseReady,getSession,requireUser} from './auth-client.js';
 
@@ -8,14 +8,12 @@ const $=s=>document.querySelector(s);
 
 async function loadProducts(){
   try{
-    if(!firebaseReady||!db)throw new Error('Firebase config missing');
-    const snap=await getDocs(query(collection(db,'products'),where('active','==',true)));
-    products=snap.docs.map(d=>({id:d.id,...d.data()}));
-    if(!products.length)throw new Error('No Firestore products');
-    $('#shop-status').textContent='Live Firebase inventory.';
+    const catalogue=await loadCatalogue();products=catalogue.products;
+    $('#shop-status').textContent=catalogue.source==='live'?'Live Firebase inventory.':'Live inventory is unavailable. Showing the sample catalogue; confirm pricing and availability.';
+    const selected=products.find(product=>product.id===new URLSearchParams(location.search).get('product'));
+    if(selected)$('#search').value=selected.name;
   }catch(e){
-    const r=await fetch('data/products.seed.json');products=await r.json();
-    $('#shop-status').textContent='Showing seeded catalogue. Add Firebase config to load live Firestore inventory.';
+    $('#shop-status').textContent=e.message;products=[];
   }
   render();
 }
