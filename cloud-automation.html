@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cloud Automation | TeknTandao</title>
+<link rel="stylesheet" href="assets/css/commerce.css"><link rel="stylesheet" href="assets/css/site-pages.css">
+<style>main{max-width:950px;margin:auto;padding:2rem 1rem}fieldset{border:1px solid #a6a6a6;border-radius:12px;margin:1rem 0;padding:1rem}label{display:block;margin:.8rem 0}input,select,textarea{width:100%;max-width:650px;padding:.65rem;border:1px solid #888;border-radius:6px}button{cursor:pointer;padding:.8rem 1.1rem}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#17202b;color:#fff;padding:1rem;border-radius:8px}</style></head>
+<body><nav class="commerce-nav"><a class="brand" href="index.html">TeknTandao</a><a href="index.html">Home</a><a href="login.html?next=cloud-automation.html">Sign in</a></nav>
+<main><p class="badge">Cloud operations · customer preview</p><h1>AI-assisted cloud automation</h1>
+<p>Plan application deployment, monitoring, maintenance and cost controls. This is a local planning preview: no cloud resources are changed, no repository is accessed and no AI model is called until your organization connects an authorized backend.</p>
+<fieldset><legend>Deployment request</legend>
+<label>Application name <input id="app" maxlength="120" required placeholder="Customer portal"></label>
+<label>Repository URL (optional, public HTTPS link only) <input id="repo" type="url" placeholder="https://github.com/organization/project"></label>
+<label>Application stack <select id="stack"><option>Flutter web</option><option>React</option><option>Node.js</option><option>Python FastAPI</option><option>Docker container</option></select></label>
+<label>Cloud provider <select id="provider"><option>Azure</option><option>AWS</option><option>Google Cloud</option><option>Private infrastructure</option></select></label>
+<label>Maximum estimated monthly spend (USD) <input id="budget" type="number" min="1" max="100000" value="40"></label>
+<label><input id="approval" type="checkbox" style="width:auto"> I understand that production provisioning requires separate identity verification, permission grants and explicit approval.</label>
+<button id="plan" type="button" class="btn btn-primary">Generate deployment checklist</button></fieldset>
+<section aria-live="polite"><h2>Proposed plan</h2><pre id="output">Complete the form to see a non-executing plan.</pre></section>
+<section class="content-card"><h2>Move to TeknTandao Workspace</h2><p>Workspace supports centralized customer and organization management. Start a migration request to retain your plan; actual data transfer requires secure account linking and explicit consent.</p><button id="migrate" class="btn btn-primary">Prepare Workspace migration</button><p id="migration-status" role="status"></p><a href="https://tekntandaoworkspace.web.app/?module=cloud-automation" rel="noopener noreferrer">Open Workspace</a></section>
+</main><script>
+const $=id=>document.getElementById(id);let plan=null;
+$("plan").addEventListener("click",()=>{
+ const name=$("app").value.trim(),budget=Number($("budget").value),repo=$("repo").value.trim();
+ if(!name||!Number.isFinite(budget)||budget<1||budget>100000){$("output").textContent="Enter a name and a budget from $1 to $100,000.";return;}
+ if(repo&&!/^https:\/\/github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+\/?$/.test(repo)){$("output").textContent="Use a normal GitHub HTTPS repository URL or leave it blank.";return;}
+ plan={schemaVersion:1,kind:"cloud-automation-migration-request",appName:name,repositoryUrl:repo,stack:$("stack").value,provider:$("provider").value,monthlyBudgetUsd:budget,mode:"planning-only",source:"tekntandao-html"};
+ $("output").textContent=[`Application: ${name}`,`Platform: ${plan.provider} | Stack: ${plan.stack}`,`Budget ceiling requested: $${budget} (not a provider-enforced cap)`,"1. Authenticate customer and verify organization ownership.","2. Inspect repository with customer-authorized read-only access.","3. Generate IaC and cost estimate; customer approves.","4. Apply deployment via audited CI/CD under restricted credentials.","5. Enable monitoring, backups, alerts and controlled maintenance.","6. Escalate destructive changes and unexpected costs."].join("\n");
+});
+$("migrate").addEventListener("click",()=>{
+ if(!plan){$("migration-status").textContent="Generate a plan first.";return;}
+ if(!$("approval").checked){$("migration-status").textContent="Confirm the authorization notice first.";return;}
+ const safe=JSON.stringify({...plan,createdAt:new Date().toISOString()});
+ const blob=new Blob([safe],{type:"application/json"});const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");a.href=url;a.download="tekntandao-migration-request.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ $("migration-status").textContent="Migration request downloaded. Open Workspace and submit it to an administrator for verified import; no records have been transferred.";
+});
+</script></body></html>
