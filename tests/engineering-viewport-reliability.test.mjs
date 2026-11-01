@@ -38,7 +38,7 @@ test('only one active Three.js renderer is retained when replacing the model',()
  assert.match(src,/s\.editor\?\.dispose\(\)/);
  assert.match(src,/if\(s\.model\)\{s\.scene\.remove\(s\.model\);disposeModel\(s\.model\);\}/);
  assert.match(src,/return Object\.freeze\(\{active:!!currentView,rendererInstances:rendererCreated/);
- assert.match(src,/return showModel\(model,container/);
+ assert.match(src,/await showModel\(model,container/);
  assert.match(src,/window\.addEventListener\('resize'/);
 });
 test('stale asynchronous file reads and parses cannot overwrite a newer selected model',()=>{

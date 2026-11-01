@@ -128,3 +128,14 @@
 .eng-dashboard-enabled #eng-dashboard .eng-pipeline-stage-shell #fab-ai .eng-columns{grid-template-columns:1fr!important}
 .eng-pipeline-stage-shell #eng-cad .eng-cad-left,.eng-pipeline-stage-shell #eng-cad .eng-cad-inspector{max-width:100%}
 .eng-pipeline-stage-shell .eng-intel-grid{grid-template-columns:1fr!important}
+
+/* Persistent viewport part metrology and explicit source-unit conversion. */
+.eng-pipeline-unit-controls{display:flex;flex-wrap:wrap;align-items:end;gap:9px;margin:8px 0;padding:12px;background:rgba(14,42,37,.87);border:1px solid rgba(128,202,163,.33);border-radius:12px}
+.eng-pipeline-unit-controls[hidden]{display:none!important}
+.eng-pipeline-unit-controls label{display:grid;gap:6px;flex:1 1 170px;font-size:12px;color:#c5e4d4}
+.eng-pipeline-unit-controls select{min-height:39px;background:#122d2a;color:#fff;border:1px solid #688975;border-radius:8px;padding:8px}
+.eng-pipeline-unit-controls .tt-svc-button{min-height:39px}
+.eng-pipeline-unit-controls p{flex-basis:100%;margin:0!important;color:#cfdfd0;font-size:12px}
+.eng-pipeline[data-units-verified="false"] .eng-pipeline-unit-controls{border-color:rgba(244,189,98,.8)}
+.eng-pipeline[data-units-verified="false"] #eng-pipeline-use{opacity:.5;cursor:not-allowed}
+#eng-pipeline-dimensions{font-variant-numeric:tabular-nums}
