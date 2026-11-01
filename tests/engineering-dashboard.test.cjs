@@ -8,7 +8,7 @@ test('one responsive engineering dashboard includes every tool and overview',()=
  assert.match(html,/assets\/js\/engineering-dashboard\.js/);
 });
 test('original engineering controls are relocated into dashboard panels and never cloned',()=>{
- for(const id of ['eng-workspace','eng-calculators','eng-simulators','eng-cad','eng-ai','fab-ai','fab-tripo','fab-design','fab-account','fab-operator'])assert.ok(js.includes("'"+id+"'"),id);
+ for(const id of ['eng-workspace','eng-calculators','eng-simulators','eng-cad','eng-ai','fab-ai','fab-tripo','fab-design','fab-account','fab-plans','fab-operator'])assert.ok(js.includes("'"+id+"'"),id);
  assert.match(js,/sculpt\.append\(previewCard\)/);
  assert.match(js,/historyPanel\.append\(jobs,refresh\)/);
  assert.match(js,/panels\[name\]\.append\(section\)/);

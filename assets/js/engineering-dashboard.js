@@ -11,7 +11,7 @@
   ai:{title:'AI design studio',description:'Optional free on-device critique and authenticated Gemini/Tripo generation.',ids:['eng-ai','fab-ai','fab-tripo']},
   sculpt:{title:'3D sculpting & editing',description:'Edit models locally with brushes, transforms, import and export.',ids:['eng-sculpt']},
   fabrication:{title:'Fabrication quotation',description:'Prepare a private design request for human review, without automatic production.',ids:['fab-design']},
-  projects:{title:'Projects & credits',description:'Verified AI wallet and private fabrication quote history.',ids:['fab-account','eng-project-history','fab-operator']}
+  projects:{title:'Projects & credits',description:'Verified AI wallet and private fabrication quote history.',ids:['fab-account','fab-plans','eng-project-history','fab-operator']}
  };
  const element=(tag,cls,text)=>{
   const e=document.createElement(tag);
