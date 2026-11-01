@@ -4,6 +4,7 @@
   const HOME = '#home';
   const CSS_URL = 'assets/css/hero-gaming-pc.css';
   const MODEL_URL = 'assets/models/gaming-setup.glb';
+  const MODEL_CHUNKS = Array.from({ length: 6 }, (_, index) => `assets/models/gaming-pc-user.${index}.b64`);
   const THREE_URL = 'https://esm.sh/three@0.160.0';
   const GLTF_LOADER_URL = 'https://esm.sh/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
   const ROOM_ENV_URL = 'https://esm.sh/three@0.160.0/examples/jsm/environments/RoomEnvironment.js';
@@ -14,6 +15,41 @@
     link.rel = 'stylesheet';
     link.href = CSS_URL;
     document.head.appendChild(link);
+  }
+
+  async function loadModelBytes() {
+    const parts = await Promise.all(MODEL_CHUNKS.map(async path => {
+      const response = await fetch(path, { cache: 'force-cache' });
+      if (!response.ok) throw new Error(`Model chunk failed: ${path}`);
+      return response.text();
+    }));
+    const raw = atob(parts.join('').replace(/\s+/g, ''));
+    let bytes = new Uint8Array(raw.length);
+    for (let index = 0; index < raw.length; index++) bytes[index] = raw.charCodeAt(index);
+    const view = new DataView(bytes.buffer);
+    if (String.fromCharCode(...bytes.subarray(0, 4)) !== 'glTF' || view.getUint32(4, true) !== 2) {
+      throw new Error('Invalid model GLB signature or version');
+    }
+    const declaredLength = view.getUint32(8, true);
+    const missing = declaredLength - bytes.byteLength;
+    if (missing < 0 || missing > 4096) throw new Error('Unsafe model GLB length mismatch');
+    if (missing) {
+      const repaired = new Uint8Array(declaredLength);
+      repaired.set(bytes);
+      bytes = repaired;
+    }
+    const repairedView = new DataView(bytes.buffer);
+    const jsonLength = repairedView.getUint32(12, true);
+    const binHeader = 20 + jsonLength;
+    if (String.fromCharCode(...bytes.subarray(16, 20)) !== 'JSON' || binHeader + 8 > bytes.byteLength) {
+      throw new Error('Invalid model GLB JSON chunk');
+    }
+    const binLength = repairedView.getUint32(binHeader, true);
+    const binTag = bytes.subarray(binHeader + 4, binHeader + 8);
+    if (binTag[0] !== 66 || binTag[1] !== 73 || binTag[2] !== 78 || binTag[3] !== 0 || binHeader + 8 + binLength !== bytes.byteLength) {
+      throw new Error('Invalid model GLB binary chunk');
+    }
+    return bytes.buffer;
   }
 
   function mountShell(home) {
@@ -357,8 +393,9 @@
       const { GLTFLoader } = loaderModule;
       const sceneState = createScene(root, canvas, THREE);
       await addEnvironment(sceneState.renderer, sceneState.scene, THREE);
-      const gltf = await new Promise((resolve, reject) => {
-        new GLTFLoader().load(
+      const loader = new GLTFLoader();
+      const loadPrimary = () => new Promise((resolve, reject) => {
+        loader.load(
           MODEL_URL,
           resolve,
           event => {
@@ -373,6 +410,14 @@
           reject
         );
       });
+      let gltf;
+      try {
+        gltf = await loadPrimary();
+      } catch (primaryError) {
+        console.warn('Primary gaming setup model failed; trying the local user model.', primaryError);
+        const buffer = await loadModelBytes();
+        gltf = await new Promise((resolve, reject) => loader.parse(buffer, '', resolve, reject));
+      }
       const model = gltf.scene;
       prepareMaterials(model, THREE);
       const pivot = mountCentered(model, sceneState.scene, THREE);

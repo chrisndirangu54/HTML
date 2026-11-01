@@ -2,7 +2,7 @@
   'use strict';
 
   const HOME_SELECTOR = '#home';
-  const THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js';
+  const THREE_URL = 'https://esm.sh/three@0.160.0';
   const CONFIG_URL = 'assets/js/site-config.js';
   const CSS_URL = 'assets/css/orb-hero.css';
   const money = n => new Intl.NumberFormat('en-KE', {style:'currency',currency:'KES',maximumFractionDigits:0}).format(Number(n)||0);
@@ -101,12 +101,11 @@
 
   async function getRecommendations() {
     try { return rankRecommendations(await liveProducts()); }
-    catch (_) { try { return rankRecommendations(await fallbackProducts()); } catch (_) { return []; } }
+    catch (_) { return []; }
   }
 
-  function initThree(canvas, root, stage) {
-    if (!window.THREE) return null;
-    const THREE = window.THREE;
+  function initThree(canvas, root, stage, THREE) {
+    if (!THREE) return null;
     const mobile = matchMedia('(max-width: 640px)').matches;
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const renderer = new THREE.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:'high-performance'});
@@ -202,7 +201,7 @@
     const renderRecommendation = () => {
       if (!recommendations.length) { slot.innerHTML=''; copy.textContent='I can take you straight to the TeknTandao ICT shop. Live recommendations will appear here as soon as the catalogue is available.'; shopLink.href='shop.html'; return; }
       index=(index+1)%recommendations.length; const p=recommendations[index]; const img=safeUrl(p.image||p.imageUrl); const productHref=`shop.html?product=${encodeURIComponent(p.id||'')}`; copy.textContent='Here’s one useful pick from the live TeknTandao catalogue:';
-      slot.innerHTML=`<a class="tt-orb-product" href="${esc(productHref)}"><img src="${esc(img||'assets/images/tekntandao-favicon.png')}" alt="" loading="lazy"><span><b>${esc(p.name||'ICT product')}</b><span>${esc(money(p.priceKsh))}</span></span></a>`;
+      slot.innerHTML=`<a class="tt-orb-product" href="${esc(productHref)}"><img src="${esc(img||'assets/images/tekntandao-favicon.png')}" alt="" loading="lazy"><span><b>${esc(p.name||'ICT product')}</b><span>${esc(money(p.priceKes ?? p.priceKsh))}</span></span></a>`;
       shopLink.href=productHref;
     };
 
@@ -212,8 +211,9 @@
     root.querySelector('#tt-orb-next').addEventListener('click',()=>{three?.react();renderRecommendation();});
     root.querySelector('#tt-orb-shop-core').addEventListener('click',e=>{e.stopPropagation();three?.react();setTimeout(()=>{location.href='shop.html';},180);});
 
-    recommendations = await getRecommendations();
-    try { await loadScript(THREE_URL); three = initThree(root.querySelector('#tt-orb-canvas'),root,stage); root.querySelector('.tt-orb-fallback')?.remove(); }
+    try { recommendations = rankRecommendations(await fallbackProducts()); } catch (_) { recommendations = []; }
+    getRecommendations().then(rows => { if (rows.length) recommendations = rows; });
+    try { const THREE = await import(THREE_URL); three = initThree(root.querySelector('#tt-orb-canvas'),root,stage,THREE); root.querySelector('.tt-orb-fallback')?.remove(); }
     catch (_) { root.classList.add('tt-orb-no-webgl'); }
 
     setTimeout(()=>{ if(!bubble.classList.contains('is-open')) bubble.classList.add('is-open'); },2400);
