@@ -13,7 +13,8 @@
       { label: 'SEO Cloud', href: 'seo-cloud.html' },
       { label: 'Media Cloud', href: 'media-cloud.html' },
       { label: 'Web3', href: 'web3.html' },
-      { label: 'Web3 Studio', href: 'web3-studio.html' }
+      { label: 'Web3 Studio', href: 'web3-studio.html' },
+      { label: 'Engineering & Prototyping', href: 'engineering.html' }
     ] },
     { label: 'Shop', href: 'shop.html' },
     { label: 'Explore', children: [
@@ -177,6 +178,7 @@
       'SEO Cloud': 'las la-chart-line',
       'Web3': 'las la-cube',
       'Web3 Studio': 'las la-tools',
+      'Engineering & Prototyping': 'las la-drafting-compass',
       'Shop': 'las la-shopping-cart',
       'Explore': 'las la-compass',
       'About us': 'lar la-user',
