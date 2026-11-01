@@ -9,6 +9,7 @@
       { label: 'Cybersecurity', href: 'cybersecurity.html' },
       { label: 'ISP & networking', href: 'isp.html' },
       { label: 'Cloud Automation', href: 'cloud-automation.html' },
+      { label: 'Microsoft Products', href: 'microsoft-products.html' },
       { label: 'SEO Cloud', href: 'seo-cloud.html' },
       { label: 'Media Cloud', href: 'media-cloud.html' },
       { label: 'Web3', href: 'web3.html' }
