@@ -60,3 +60,12 @@ body.tt-engineering .eng-hero-visual img{filter:saturate(1.25)}
 @media(prefers-reduced-motion:reduce){
 .tt-os-picture::after,.tt-os-picture .tt-os-glimmer,.tt-os-gallery::before,.tt-os-nft-card,.tt-os-nft-card::before,.tt-os-hero-nft::before,.tt-os-vivid .tt-svc-gradient{animation:none!important;transition:none!important;translate:none!important;transform:none!important}
 }
+
+/* Keep decorative art secondary to login, dashboard and customer forms. */
+.auth-card>.tt-os-feature{max-width:440px;margin:3px auto 16px}
+.auth-card>.tt-os-feature img{max-height:150px;object-fit:cover}
+.mc-shell>.tt-os-feature{margin:7px 0 16px}
+.mc-shell>.tt-os-feature img{max-height:170px}
+.customer-wrap>.tt-os-feature{margin:14px 0 17px}
+.customer-wrap>.tt-os-feature img{max-height:200px}
+.tt-os-picture:focus-within{outline:2px solid var(--ov-green);outline-offset:3px}
