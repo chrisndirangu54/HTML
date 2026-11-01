@@ -144,6 +144,15 @@
     .tt-ai-robo { right: max(12px, env(safe-area-inset-right)); top: max(12px, env(safe-area-inset-top)); width: 130px; }
 }
 
+/* Large desktop: center the reel within the space between the fixed
+   information sidebar and the right-side navigation, not at the far right.
+   Shifts the shared 3D stage/video left without affecting the scroll morph. */
+@media (min-width: 1221px) {
+    .tt-gaming-pc__stage {
+        right: clamp(90px, 7vw, 145px);
+    }
+}
+
 @media (max-width: 1220px) {
     .tt-gaming-pc { max-width: 767px; }
 }
