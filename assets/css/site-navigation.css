@@ -121,3 +121,133 @@
   #main-nav .tt-nav-item > a, #main-nav .tt-nav-dropdown > summary { width:100%; min-height:44px; display:flex; align-items:center; }
   #main-nav .tt-nav-panel { position:static; min-width:0; box-shadow:none; }
 }
+
+/*
+ * Homepage only: restore the original compact black-and-gold floating
+ * hamburger dropdown. Shared navigation destinations and interactions
+ * stay intact, but the other public pages retain their modern nav.
+ */
+.home1-page .top-navbar .top-hamburger {
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 50%;
+  padding: 0;
+  min-width: 42px;
+  min-height: 42px;
+}
+.home1-page .top-navbar .top-hamburger:focus-visible {
+  outline: 2px solid #ffd700;
+  outline-offset: 4px;
+}
+.home1-page .top-navbar .top-mobile-menu.tt-nav-list {
+  width: min(220px, calc(100vw - 40px));
+  min-width: 0;
+  max-height: min(78vh, 680px);
+  left: 0;
+  right: auto;
+  padding: 8px 0;
+  background: rgba(20, 20, 20, 0.97);
+  border: 1px solid rgba(255, 215, 0, 0.15);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #8f7816 transparent;
+}
+.home1-page .top-navbar .top-mobile-menu.tt-nav-list .tt-nav-item {
+  width: 100%;
+}
+.home1-page .top-navbar .top-mobile-menu.tt-nav-list .tt-nav-item > .tt-nav-link,
+.home1-page .top-navbar .top-mobile-menu.tt-nav-list .tt-nav-dropdown > summary {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 38px;
+  padding: 6px 16px;
+  border-radius: 0;
+  border: 0;
+  box-sizing: border-box;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  text-align: left;
+  text-decoration: none;
+  background: transparent;
+  transition: color .2s ease, background .2s ease, transform .2s ease;
+}
+.home1-page .top-navbar .top-mobile-menu.tt-nav-list .tt-nav-item > .tt-nav-link i,
+.home1-page .top-navbar .top-mobile-menu.tt-nav-list .tt-nav-dropdown > summary i {
+  display: inline-block;
+  flex: 0 0 18px;
+  margin-right: 2px;
+  font-size: 18px;
+  color: inherit;
+  text-align: center;
+}
+.home1-page .top-navbar .top-mobile-menu.tt-nav-list .tt-nav-item > .tt-nav-link:hover,
+.home1-page .top-navbar .top-mobile-menu.tt-nav-list .tt-nav-dropdown > summary:hover,
+.home1-page .top-navbar .top-mobile-menu.tt-nav-list .tt-nav-item > .tt-nav-link[aria-current="page"],
+.home1-page .top-navbar .top-mobile-menu.tt-nav-list .tt-nav-current > .tt-nav-dropdown > summary {
+  color: #ffd700;
+  background: rgba(255, 215, 0, 0.1);
+  transform: translateX(3px);
+}
+.home1-page .top-navbar .top-mobile-menu.tt-nav-list .tt-nav-dropdown > summary::after {
+  margin-left: auto;
+  color: #ffd700;
+}
+.home1-page .top-navbar .top-mobile-menu.tt-nav-list .tt-nav-panel {
+  position: static;
+  min-width: 0;
+  width: auto;
+  margin: 2px 8px 8px;
+  padding: 4px 0;
+  border: 0;
+  border-left: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 0;
+  box-shadow: none;
+  background: rgba(0, 0, 0, 0.2);
+}
+.home1-page .top-navbar .top-mobile-menu.tt-nav-list .tt-nav-panel a {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: normal;
+  padding: 7px 10px;
+  color: #eee;
+  font-size: 13px;
+  line-height: 1.35;
+  border-radius: 4px;
+}
+.home1-page .top-navbar .top-mobile-menu.tt-nav-list .tt-nav-panel a i {
+  flex: 0 0 16px;
+  font-size: 15px;
+  text-align: center;
+}
+.home1-page .top-navbar .top-mobile-menu.tt-nav-list .tt-nav-panel a:hover,
+.home1-page .top-navbar .top-mobile-menu.tt-nav-list .tt-nav-panel a[aria-current="page"] {
+  color: #ffd700;
+  background: rgba(255, 215, 0, 0.1);
+}
+.home1-page .top-navbar .top-mobile-menu.tt-nav-list a:focus-visible,
+.home1-page .top-navbar .top-mobile-menu.tt-nav-list summary:focus-visible {
+  outline: 2px solid #ffd700;
+  outline-offset: -2px;
+}
+@media (min-width: 1025px) {
+  .home1-page .top-navbar .top-mobile-menu.tt-nav-list {
+    right: 0;
+    left: auto;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home1-page .top-navbar .top-mobile-menu.tt-nav-list,
+  .home1-page .top-navbar .top-mobile-menu.tt-nav-list a,
+  .home1-page .top-navbar .top-mobile-menu.tt-nav-list summary {
+    animation: none;
+    transition: none;
+  }
+}
