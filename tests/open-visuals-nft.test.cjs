@@ -56,21 +56,47 @@ test('all original vector illustrations are unique, self-contained and openly li
  }
 });
 
-test('public editorial and service pages without pictures gain contextual CC0 imagery',()=>{
- for(const [page,art] of enriched){
-   const html=read(page);
-   assert.match(html,/assets\/css\/open-visuals\.css/,page);
-   assert.ok(html.includes('assets/images/open-art/'+art+'.svg'),page+' lacks assigned illustration');
-   assert.match(html,/<img[^>]+alt="[^"]+"/i,page+' image has no alternative');
+test('non-Web3 public pages use real credited photographs, never NFT-style artwork',()=>{
+ const pages=[
+  'cloud-automation.html','media-cloud.html','microsoft-products.html',
+  'seo-cloud.html','training.html','contact_page.html','blog.html','events.html',
+  'gallery.html','podcasts.html','awards.html','newsletter.html','shop.html',
+  'blog-post.html','login.html','isp-customer.html','media-cloud-dashboard.html',
+  'engineering.html'
+ ];
+ const manifest=read('docs/real-photo-sources.md');
+ assert.match(manifest,/Unsplash License/);
+ assert.match(manifest,/representative stock photographs/);
+ for(const page of pages){
+  const html=read(page);
+  assert.match(html,/assets\/css\/real-photography\.css/,page+' missing neutral image style');
+  assert.match(html,/https:\/\/images\.unsplash\.com\/photo-[\d]+-[a-z0-9]+/,page+' has no real image');
+  assert.match(html,/<img[^>]*alt="[^"]+"/i,page+' has no meaningful alt');
+  assert.match(html,/unsplash\.com\/photos\//,page+' lacks photographic source credit');
+  assert.doesNotMatch(html,/assets\/css\/open-visuals\.css|assets\/images\/open-art\/|tt-os-|tt-os-vivid|open-nft-art/i,page+' still includes NFT artwork or styles');
  }
- const cloud=read('cloud-automation.html');
- assert.match(cloud,/id="microsoft-reseller"/);
- assert.match(cloud,/id="migrate"/);
- const media=read('media-cloud-dashboard.html');
- assert.match(media,/id="mc-export"/);
- assert.match(media,/id="mc-new-campaign"/);
+ assert.match(read('cloud-automation.html'),/id="microsoft-reseller"/);
+ assert.match(read('cloud-automation.html'),/id="migrate"/);
+ assert.match(read('media-cloud-dashboard.html'),/id="mc-export"/);
+ assert.match(read('media-cloud-dashboard.html'),/id="mc-new-campaign"/);
  assert.match(read('login.html'),/id="auth-password"/);
  assert.match(read('newsletter.html'),/id="newsletter-subscribe"/);
+ assert.match(read('engineering.html'),/id="eng-cad-viewport"/);
+ assert.match(read('engineering.html'),/id="eng-calculators"/);
+});
+
+test('photographic sources are documented and no awards/events are misrepresented',()=>{
+ const manifest=read('docs/real-photo-sources.md');
+ assert.match(manifest,/not photographs of TeknTandao employees/);
+ assert.match(manifest,/images\.unsplash\.com/);
+ const awards=read('awards.html'),events=read('events.html'),podcast=read('podcasts.html');
+ assert.match(awards,/not documentation of a TeknTandao award/);
+ assert.match(events,/not documentation of a TeknTandao event/);
+ assert.match(podcast,/not documentation of a TeknTandao recording/);
+ const style=read('assets/css/real-photography.css');
+ assert.match(style,/\.tt-photo-panel/);
+ assert.match(style,/@media\(max-width:520px\)/);
+ assert.doesNotMatch(style,/@keyframes|tt-os-nft|ovFrame|ovFloat|tt-os-vivid/);
 });
 
 test('Web3 NFT art gallery uses real CC0 Nouns sample and labels original non-minted concepts',()=>{
@@ -86,7 +112,7 @@ test('Web3 NFT art gallery uses real CC0 Nouns sample and labels original non-mi
    assert.match(html,/LICENSE-AND-SOURCES\.md/);
    assert.equal((html.match(/class="tt-os-nft-card"/g)||[]).length,4);
  }
- assert.match(read('engineering.html'),/assets\/images\/open-art\/nft-robot\.svg/);
+ assert.doesNotMatch(read('engineering.html'),/nft-robot|tt-os-nft|assets\/images\/open-art\//i);
  assert.match(read('web3-studio.html'),/id="w3-explorer"/);
  assert.match(read('web3-studio.html'),/id="w3-security"/);
  assert.match(read('engineering.html'),/id="eng-calculators"/);
