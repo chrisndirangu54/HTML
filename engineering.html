@@ -52,14 +52,40 @@
 <form id="eng-robot-form" class="eng-calc-form" data-calc-panel="robot" hidden><h3>Two-wheel differential-drive concept</h3><div class="eng-input-grid"><label>Left wheel motor shaft speed (rpm)<input name="leftRpm" type="number" min="-10000" max="10000" step="any" required value="120"></label><label>Right wheel motor shaft speed (rpm)<input name="rightRpm" type="number" min="-10000" max="10000" step="any" required value="120"></label><label>Gear ratio (motor:wheel)<input name="ratio" type="number" min=".01" max="10000" step="any" required value="1"></label><label>Wheel diameter (mm)<input name="diameterMm" type="number" min="1" max="1000" step="any" required value="70"></label><label>Wheel separation (mm)<input name="trackMm" type="number" min="1" max="5000" step="any" required value="180"></label><label>Drive efficiency (0–1)<input name="efficiency" type="number" min=".05" max="1" step=".01" required value=".9"></label></div><button type="submit" class="tt-svc-button primary">Estimate robot motion</button><p class="eng-fine">Planar no-slip kinematics, ignoring acceleration, terrain, motor torque, slip and load.</p></form>
 <div id="eng-calc-result" class="eng-measurements" aria-live="polite"><p>Choose an engineering calculation to see numerical results and limitations.</p></div>
 </div></section>
-<section class="eng-section" id="eng-cad"><div class="eng-head"><span class="tt-svc-eyebrow">Step 03 · Model & inspect</span><h2>Parametric 3D mounting plate</h2><p>Edit dimensions and inspect a real browser-rendered solid with four through-holes. Rotate, zoom, switch views and export either editable OpenSCAD source or a triangular STL mesh. Rendering is a geometric preview, not manufacturing certification.</p></div>
-<div class="eng-columns"><form id="eng-cad-form" class="eng-panel eng-form"><div class="eng-input-grid">
+<section class="eng-section" id="eng-cad"><div class="eng-head"><span class="tt-svc-eyebrow">Step 03 · Model · Simulate · Compare</span><h2>Interactive mounting-plate simulator</h2><p>Change geometry, material, and tip force; watch exaggerated displacement and an indicative bending-stress overlay in 3D. Compare scenarios, inspect calculation curves and export results. This is a transparent cantilever-beam approximation—not plate finite-element analysis or engineering certification.</p></div>
+<div class="eng-columns"><div class="eng-cad-left"><form id="eng-cad-form" class="eng-panel eng-form"><div class="eng-input-grid">
 <label>Length (mm)<input name="length" type="number" min="20" max="1000" value="100" required step=".1"></label><label>Width (mm)<input name="width" type="number" min="20" max="1000" value="60" required step=".1"></label>
 <label>Thickness (mm)<input name="thickness" type="number" min=".5" max="100" value="6" required step=".1"></label><label>Hole diameter (mm)<input name="hole" type="number" min="1" max="50" value="5" required step=".1"></label>
-<label>Hole center offset from edges (mm)<input name="offset" type="number" min="2" max="100" value="8" required step=".1"></label>
-</div><button class="tt-svc-button primary" type="submit">Update 3D model &amp; source</button><button class="tt-svc-button" type="button" id="eng-download-scad" disabled>Download .scad</button><p class="eng-fine">Hole locations are measured from edges to centers. Verify fabrication tolerances and load paths before use.</p></form>
+<label>Hole center offset from edges (mm)<input name="offset" id="eng-cad-offset" type="number" min="2" max="100" value="8" required step=".1" aria-describedby="eng-offset-help"></label>
+</div><p id="eng-offset-help" class="eng-offset-help" role="status" aria-live="polite">Suggested offset: 8 mm. Hole centers must remain inside the plate without overlap.</p>
+<div class="eng-cad-form-actions"><button class="tt-svc-button primary" type="submit">Update 3D model &amp; source</button><button id="eng-cad-reset" class="tt-svc-button" type="button">Restore 100 × 60 plate</button><button class="tt-svc-button" type="button" id="eng-download-scad" disabled>Download .scad</button></div><p class="eng-fine">Hole locations are measured from edges to centers. Verify fabrication tolerances and load paths before use.</p></form>
+<section class="eng-sim-controls" id="eng-sim-controls" aria-labelledby="eng-sim-heading">
+<h3 id="eng-sim-heading"><i class="las la-wave-square" aria-hidden="true"></i> Live load simulation</h3>
+<div class="eng-sim-quick" role="group" aria-label="Demonstration scenarios">
+<button type="button" data-eng-scenario="light" class="eng-sim-preset">Light load</button>
+<button type="button" data-eng-scenario="working" class="eng-sim-preset">Working load</button>
+<button type="button" data-eng-scenario="high" class="eng-sim-preset">High load</button>
+</div>
+<label>Illustrative material
+<select id="eng-sim-material">
+<option value="aluminum">Aluminium alloy (69 GPa)</option>
+<option value="steel">Mild steel (200 GPa)</option>
+<option value="abs">ABS (bulk-property assumption)</option>
+<option value="petg">PETG (bulk-property assumption)</option>
+</select></label>
+<label for="eng-sim-load">Downward tip load (N)
+<div class="eng-sim-range-row"><input id="eng-sim-load" type="range" min="0" max="500" step="1" value="25"><input id="eng-sim-load-number" type="number" min="0" max="5000" step="1" value="25" aria-label="Tip load in newtons"></div></label>
+<label for="eng-sim-scale">Visual deformation multiplier (not physical scale)
+<div class="eng-sim-range-row"><input id="eng-sim-scale" type="range" min="1" max="150" step="1" value="45"><output id="eng-sim-scale-value" for="eng-sim-scale">45×</output></div></label>
+<label>3D overlay<select id="eng-sim-view"><option value="stress">Nominal bending stress gradient</option><option value="solid">Plain material surface</option></select></label>
+<div class="eng-sim-playback"><button id="eng-sim-play" type="button" class="tt-svc-button">Play load sweep</button><button id="eng-sim-stop" type="button" class="tt-svc-button">Reset sweep</button><button id="eng-sim-export" type="button" class="tt-svc-button">Export results JSON</button></div>
+<label for="eng-sim-time">Load sweep position <output id="eng-sim-time-value" for="eng-sim-time">100%</output><input id="eng-sim-time" type="range" min="0" max="100" step="1" value="100"></label>
+<p class="eng-fine">Boundary conditions: entire left short edge ideally fixed; downward force distributed along right short edge. Bending-stiffness and displacement estimates treat the part as a solid rectangular beam without hole effects. Material strengths are illustrative.</p>
+</section>
+</div>
 <div class="eng-panel eng-cad-inspector">
-<div class="eng-viewer-header"><h3><i class="las la-cube" aria-hidden="true"></i> Interactive 3D preview</h3><span class="eng-viewer-status" id="eng-viewer-status" role="status" aria-live="polite">Preparing 3D viewer; fallback shown below</span></div>
+<div class="eng-viewer-header"><h3><i class="las la-cube" aria-hidden="true"></i> Interactive 3D load-response view</h3><span class="eng-viewer-status" id="eng-viewer-status" role="status" aria-live="polite">Preparing 3D viewer; fallback shown below</span></div>
+<div class="eng-sim-legend"><span class="eng-sim-key fixed">Fixed edge</span><span class="eng-sim-key force">Tip force</span><span class="eng-sim-key stress">Stress overlay is indicative</span></div>
 <div id="eng-cad-viewport" class="eng-cad-viewport" role="region" aria-label="Interactive 3D mounting plate model">
 <img class="eng-cad-fallback" id="eng-cad-fallback" src="assets/images/engineering/mounting-plate-placeholder.svg" width="940" height="580" alt="Illustrative mounting plate with four holes; interactive WebGL viewer loads when supported" decoding="async">
 </div>
@@ -72,6 +98,11 @@
 <button id="eng-download-stl" type="button" class="eng-cad-control eng-cad-download" disabled>Export STL</button>
 </div>
 <p class="eng-fine eng-viewer-guide"><strong>Controls:</strong> drag to orbit · scroll or pinch to zoom · right-drag to pan. Values are in millimetres. The model updates when dimensions change; previews require WebGL and pinned Three.js modules.</p>
+<section class="eng-sim-results" aria-labelledby="eng-sim-result-title"><div class="eng-sim-result-head"><h3 id="eng-sim-result-title">Simulation measurements</h3><span class="eng-sim-model-tag">Approximate beam model · not FEM</span></div>
+<div class="eng-sim-kpis" id="eng-sim-kpis" aria-live="polite"><div><span>Tip deflection</span><strong>—</strong></div><div><span>Nominal bending stress</span><strong>—</strong></div><div><span>Nominal margin to yield</span><strong>—</strong></div><div><span>Estimated mass</span><strong>—</strong></div></div>
+<div class="eng-sim-plot-wrap"><h4>Displacement along length</h4><svg id="eng-sim-plot" viewBox="0 0 600 180" role="img" aria-label="Calculated deflection profile along the mounting plate"></svg><p class="eng-fine">Calculated displacement, mm, from fixed end to free end. The displayed 3D deformation is exaggerated for visibility.</p></div>
+<details class="eng-sim-limitations" open><summary>Model assumptions and engineering warnings</summary><ul id="eng-sim-warnings"><li>Requires valid dimensions.</li></ul></details>
+<p id="eng-sim-error" class="eng-sim-error" role="alert" hidden></p></section>
 <dl class="eng-cad-specs" id="eng-cad-specs"><div><dt>Size</dt><dd>100 × 60 × 6 mm</dd></div><div><dt>Holes</dt><dd>4 × Ø5 mm</dd></div><div><dt>Edge offset</dt><dd>8 mm to centers</dd></div></dl>
 <details class="eng-cad-source-details" id="eng-cad-source-details">
 <summary>View editable OpenSCAD source</summary>
@@ -107,4 +138,5 @@
 <script src="assets/js/home-theme-bridge.js"></script><script src="assets/js/nav-responsive.js"></script><script src="assets/js/engineering-models.js"></script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/"}}</script>
 <script defer src="assets/js/engineering-studio.js"></script>
+<script defer src="assets/js/engineering-simulator.js"></script>
 <script type="module" src="assets/js/engineering-cad-viewer.js"></script></body></html>

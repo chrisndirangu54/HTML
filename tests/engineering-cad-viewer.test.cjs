@@ -50,7 +50,7 @@ test('the actual 3D geometry has 4 proper through-holes and uses real plate thic
  assert.match(viewer,/depth:thickness/);
  assert.match(viewer,/bevelEnabled:false/);
  assert.match(viewer,/geometry\.translate\(0,0,-thickness\/2\)/);
- assert.match(viewer,/new THREE\.EdgesGeometry\(geometry,28\)/);
+ assert.match(viewer,/new THREE\.EdgesGeometry\(plate\.geometry,28\)/);
  assert.match(viewer,/new THREE\.WebGLRenderer/);
  assert.match(viewer,/renderer\.render\(scene,camera\)/);
  assert.match(viewer,/new OrbitControls\(camera,renderer\.domElement\)/);
@@ -71,7 +71,7 @@ test('model export and preview originate from the same dimension validation',()=
  assert.match(client,/const updateCadSource=\(\)=>/);
  assert.match(client,/'eng-cad-form'\)\.addEventListener\('input',updateCadSource\)/);
  assert.match(client,/updateCadSource\(\);/);
- assert.match(viewer,/exporter\.parse\(plate,\{binary:false\}\)/);
+ assert.match(viewer,/exporter\.parse\(original,\{binary:false\}\)/);
  assert.match(viewer,/tekntandao-mounting-plate-mm\.stl/);
  assert.match(viewer,/STL downloaded · dimensions in mm; validate mesh before manufacturing/);
 });
@@ -105,6 +105,6 @@ test('realtime update, view presets, STL and fallback maintain usability',()=>{
 test('view cannot actuate hardware or claim native STEP/BREP/FEA certification',()=>{
  assert.doesNotMatch(viewer,/fetch\(|XMLHttpRequest|eth_sendTransaction|serial\.requestPort|navigator\.usb|WebSocket/);
  assert.doesNotMatch(viewer,/STEPExporter|BRepExporter/);
- assert.match(page,/not manufacturing certification/);
+ assert.match(page,/not plate finite-element analysis or engineering certification/);
  assert.match(page,/WebGL and pinned Three\.js modules/);
 });

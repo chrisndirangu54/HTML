@@ -17,6 +17,9 @@ const asNumber=name=>Number(form.elements.namedItem(name).value);
 if(viewport&&form&&status&&cadModel){
  let renderer,scene,camera,controls,plate,edgeLines,grid,axes,lastValues,lastSolid;
  let requestedFrame=0,resizeObserver=null,pending=0,edgeMode=true;
+ let originalPositions=null,support=null,loadArrow=null,activeSimulation=null;
+ const safeDisplay=(delta,exaggeration,length)=>Math.min(Math.max(0,delta*exaggeration),length*.25);
+ const simColorCold=new THREE.Color(0x25bdd5),simColorWarm=new THREE.Color(0xffb547);
  const dimensions=()=>Object.fromEntries(['length','width','thickness','hole','offset'].map(key=>[key,asNumber(key)]));
  const check=values=>cadModel.mountingPlate(values);
  const onRender=()=>{
@@ -30,12 +33,22 @@ if(viewport&&form&&status&&cadModel){
  const disposeSolid=()=>{
   if(plate){scene.remove(plate);plate.geometry.dispose();plate.material.dispose();plate=null;}
   if(edgeLines){scene.remove(edgeLines);edgeLines.geometry.dispose();edgeLines.material.dispose();edgeLines=null;}
+  if(lastSolid){lastSolid.dispose();lastSolid=null;}
+  if(support){scene.remove(support);support.geometry.dispose();support.material.dispose();support=null;}
+  if(loadArrow){
+    scene.remove(loadArrow);
+    loadArrow.line.geometry.dispose();
+    loadArrow.line.material.dispose();
+    loadArrow.cone.geometry.dispose();
+    loadArrow.cone.material.dispose();
+    loadArrow=null;
+  }
  };
  const setView=view=>{
   if(!camera||!lastValues)return;
   const {length,width,thickness}=lastValues;
   const span=Math.max(length,width,thickness*4,1);
-  const d=span*1.9;
+  const d=span*1.3;
   camera.up.set(0,view==='top'?1:0,view==='top'?0:1);
   if(view==='top')camera.position.set(0,0,d);
   else if(view==='side')camera.position.set(0,-d*.9,d*.16);
@@ -81,12 +94,15 @@ if(viewport&&form&&status&&cadModel){
   // Create both mesh and edge lines from the same actual perforated geometry.
   disposeSolid();
   const material=new THREE.MeshStandardMaterial({
-   color:0x30c9b8,metalness:.37,roughness:.3,side:THREE.DoubleSide
+   color:0xffffff,metalness:.25,roughness:.4,vertexColors:true,side:THREE.DoubleSide
   });
-  plate=new THREE.Mesh(geometry,material);
+  // Keep a pristine mesh for manufacturing exports; deformation is view-only.
+  lastSolid=geometry;
+  plate=new THREE.Mesh(geometry.clone(),material);
+  originalPositions=Float32Array.from(plate.geometry.attributes.position.array);
   scene.add(plate);
   const edgeMaterial=new THREE.LineBasicMaterial({color:0xb5fff0,transparent:true,opacity:.77});
-  edgeLines=new THREE.LineSegments(new THREE.EdgesGeometry(geometry,28),edgeMaterial);
+  edgeLines=new THREE.LineSegments(new THREE.EdgesGeometry(plate.geometry,28),edgeMaterial);
   edgeLines.visible=edgeMode;
   scene.add(edgeLines);
   if(grid)scene.remove(grid);
@@ -102,11 +118,72 @@ if(viewport&&form&&status&&cadModel){
   axes=new THREE.AxesHelper(Math.min(42,Math.max(15,Math.min(length,width)*.32)));
   axes.position.set(left-8,bottom-8,-thickness/2-2);
   scene.add(axes);
-  lastValues=values;lastSolid=geometry;
+  lastValues=values;
   updateSpecs(values);
-  status.textContent='3D ready · actual through-holes · millimetres';
+  const clampGeometry=new THREE.BoxGeometry(Math.max(3,thickness*.9),width+8,thickness+16);
+  support=new THREE.Mesh(clampGeometry,new THREE.MeshStandardMaterial({
+    color:0x5a7183,metalness:.55,roughness:.6,transparent:true,opacity:.85
+  }));
+  support.position.set(left-Math.max(3,thickness*.9)/2-1,0,0);
+  scene.add(support);
+  status.textContent='3D ready · through-holes · adjustable force';
   render();
  };
+ // Rendering uses a documented beam-surrogate deformation, not FEA.
+ const applySimulation=snapshot=>{
+  if(!plate||!lastValues||!snapshot?.simulation||!originalPositions)return;
+  activeSimulation=snapshot;
+  const {length,width,thickness}=lastValues;
+  const tip=snapshot.simulation.tipDeflectionMm;
+  const visual=safeDisplay(tip,Number(snapshot.exaggeration),length);
+  const geom=plate.geometry,position=geom.attributes.position;
+  const colors=new Float32Array(position.count*3);
+  const stressMaximum=Math.max(snapshot.simulation.nominalMaximumMpa,1e-8);
+  for(let i=0;i<position.count;i++){
+    const k=i*3,localX=originalPositions[k]+length/2;
+    const t=Math.min(1,Math.max(0,localX/length));
+    const deflection=visual*t*t*(3-t)/2;
+    position.array[k]=originalPositions[k];
+    position.array[k+1]=originalPositions[k+1];
+    position.array[k+2]=originalPositions[k+2]-deflection;
+    const localStress=snapshot.simulation.rootNominalStressMpa*(1-t);
+    const fraction=Math.min(1,localStress/stressMaximum);
+    const rgb=new THREE.Color(0x46ccb3);
+    if(snapshot.overlay==='stress')rgb.lerpColors(simColorCold,simColorWarm,fraction);
+    colors[k]=rgb.r;colors[k+1]=rgb.g;colors[k+2]=rgb.b;
+  }
+  position.needsUpdate=true;
+  geom.computeVertexNormals();
+  if(!geom.getAttribute('color'))geom.setAttribute('color',new THREE.BufferAttribute(colors,3));
+  else{geom.attributes.color.array.set(colors);geom.attributes.color.needsUpdate=true;}
+  geom.computeBoundingSphere();
+  if(edgeLines){
+    edgeLines.geometry.dispose();
+    edgeLines.geometry=new THREE.EdgesGeometry(geom,28);
+  }
+  if(snapshot.simulation.inputs.forceN>0){
+    const origin=new THREE.Vector3(length/2,0,thickness/2+Math.max(10,length*.19)-visual);
+    if(!loadArrow){
+      loadArrow=new THREE.ArrowHelper(new THREE.Vector3(0,0,-1),origin,
+        Math.max(10,length*.18),0xffb85d,Math.max(4,length*.05),Math.max(3,length*.027));
+      scene.add(loadArrow);
+    }
+    loadArrow.visible=true;
+    loadArrow.position.copy(origin);
+    loadArrow.setLength(Math.max(10,length*.18),Math.max(4,length*.05),Math.max(3,length*.027));
+  }else if(loadArrow){loadArrow.visible=false;}
+  status.textContent='Live simulation · '+snapshot.simulation.inputs.forceN.toFixed(1)+
+    ' N · displayed deformation '+Math.round(snapshot.exaggeration)+'× (capped for visibility)';
+  render();
+ };
+ window.addEventListener('eng:plate-simulation',event=>{
+  if(!renderer||!event.detail)return;
+  refresh(false);applySimulation(event.detail);
+ });
+ window.addEventListener('eng:plate-simulation-invalid',event=>{
+  status.textContent='Invalid geometry: '+(event.detail?.message||'check dimensions')+' — last valid model preserved';
+  byId('eng-download-stl').disabled=true;
+ });
  const refresh=(resetCamera=false)=>{
   try{
    const values=dimensions();
@@ -165,8 +242,10 @@ if(viewport&&form&&status&&cadModel){
   if('ResizeObserver' in window){resizeObserver=new ResizeObserver(resize);resizeObserver.observe(viewport);}
   else window.addEventListener('resize',resize,{passive:true});
   resize();
-  try{refresh(true);}
-  catch(error){status.textContent='Could not create preview: '+error.message;}
+  try{
+    refresh(true);
+    if(window.TeknPlateSimulationSnapshot)applySimulation(window.TeknPlateSimulationSnapshot);
+  }catch(error){status.textContent='Could not create preview: '+error.message;}
   buttons.forEach(id=>{if(id!=='eng-download-stl')byId(id).disabled=false;});
   byId('eng-view-iso').addEventListener('click',()=>setView('isometric'));
   byId('eng-view-top').addEventListener('click',()=>setView('top'));
@@ -182,9 +261,11 @@ if(viewport&&form&&status&&cadModel){
   byId('eng-download-stl').addEventListener('click',()=>{
    if(!plate||!lastSolid||!lastValues)return;
    try{
-    plate.updateMatrixWorld(true);
+    // Export the undeformed perforated CAD solid, never the exaggerated simulation mesh.
+    const original=new THREE.Mesh(lastSolid);
+    original.updateMatrixWorld(true);
     const exporter=new STLExporter();
-    const result=exporter.parse(plate,{binary:false});
+    const result=exporter.parse(original,{binary:false});
     const blob=new Blob([result],{type:'model/stl'});
     const url=URL.createObjectURL(blob),a=document.createElement('a');
     a.download='tekntandao-mounting-plate-mm.stl';a.href=url;a.click();
@@ -203,7 +284,7 @@ if(viewport&&form&&status&&cadModel){
  // Existing source form uses the same pure geometry validator.
  form.addEventListener('input',()=>{
   clearTimeout(pending);
-  pending=setTimeout(()=>{if(renderer)refresh(false);},160);
+  pending=setTimeout(()=>{if(renderer){refresh(false);if(window.TeknPlateSimulationSnapshot)applySimulation(window.TeknPlateSimulationSnapshot);}},160);
  });
  form.addEventListener('submit',()=>{
   if(renderer){clearTimeout(pending);refresh(false);}

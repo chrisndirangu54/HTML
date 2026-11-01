@@ -99,3 +99,51 @@
 @media(max-width:930px){.tt-engineering #eng-cad .eng-columns{grid-template-columns:1fr}.eng-cad-viewport{height:360px}}
 @media(max-width:530px){.eng-cad-viewport{height:300px}.eng-cad-controlbar{gap:5px}.eng-cad-control{padding:8px 9px;font-size:11px}.eng-cad-specs{gap:7px}.eng-cad-specs>div{min-width:95px;padding:9px}}
 @media(prefers-reduced-motion:reduce){.eng-cad-viewport canvas,.eng-cad-control{transition:none;animation:none}}
+
+
+/* Interactive cantilever screening simulation (not FEA).
+   Scopes all controls to the engineering CAD workspace. */
+.tt-engineering #eng-cad .eng-columns{grid-template-columns:minmax(0,.9fr) minmax(0,1.45fr)}
+.tt-engineering #eng-cad .eng-form{margin-bottom:0}
+.eng-offset-help{margin:7px 0 12px;font-size:12px;color:#91d4ae;line-height:1.55}
+.eng-offset-help.is-invalid{color:#ffb1a2}
+.eng-cad-form-actions{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 10px}
+.eng-cad-form-actions .tt-svc-button{font-size:12px}
+.eng-sim-controls{border:1px solid #497464;border-radius:18px;background:#13241d;margin-top:14px;padding:19px}
+.eng-sim-controls h3{color:#effff7;font-size:18px;margin:0 0 17px;display:flex;align-items:center;gap:8px}
+.eng-sim-controls h3 i{color:#76f8b5}
+.eng-sim-controls label{display:block;margin:0 0 15px;color:#deefe3;font-size:13px;font-weight:500}
+.eng-sim-controls input,.eng-sim-controls select{display:block;width:100%;box-sizing:border-box;margin-top:7px;min-height:41px;border:1px solid #507361;border-radius:10px;background:#0d1915;color:#fff;padding:8px 11px;font:400 13px Inter,system-ui,sans-serif}
+.eng-sim-controls input[type=range]{padding:0;min-height:20px;accent-color:#40edac;cursor:pointer}
+.eng-sim-controls input[type=number]{width:102px}
+.eng-sim-range-row{display:flex;gap:13px;align-items:center}
+.eng-sim-range-row input[type=range]{flex:1;min-width:0}
+.eng-sim-range-row output{font:600 14px Inter,sans-serif;color:#67ebbd;min-width:48px;text-align:right}
+.eng-sim-quick,.eng-sim-playback{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 19px}
+.eng-sim-preset{font:500 12px Inter,sans-serif;color:#bcebd4;background:#1b3d2e;border:1px solid #527d62;border-radius:9px;padding:9px 11px;cursor:pointer}
+.eng-sim-preset:hover{border-color:#85ffbc}
+.eng-sim-quick button:focus-visible,.eng-sim-playback button:focus-visible{outline:2px solid #a1ffd3;outline-offset:2px}
+.eng-sim-playback .tt-svc-button{font-size:12px;padding:9px 12px}
+.eng-sim-legend{display:flex;gap:9px;flex-wrap:wrap;margin:0 0 12px}
+.eng-sim-key{font-size:11px;border-radius:100px;padding:5px 9px;background:#193329;color:#bff3d6}
+.eng-sim-key.fixed{border:1px solid #91b5c3}.eng-sim-key.force{border:1px solid #f4b35c}.eng-sim-key.stress{border:1px solid #64edc9}
+.eng-sim-results{margin:18px 0 10px}
+.eng-sim-result-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:12px}
+.eng-sim-result-head h3{margin:0}
+.eng-sim-model-tag{font-size:11px;color:#a8d1ba;padding:5px 9px;border:1px solid #4c6e59;border-radius:100px}
+.eng-sim-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.eng-sim-kpis>div{padding:14px;border:1px solid #426f57;border-radius:12px;background:linear-gradient(138deg,#132d20,#112c31)}
+.eng-sim-kpis span{display:block;color:#afceb8;font-size:11px}
+.eng-sim-kpis strong{display:block;font-size:19px;color:#f2fff8;margin-top:7px;overflow-wrap:anywhere}
+.eng-sim-plot-wrap{padding:14px 10px 9px;margin-top:15px;border:1px solid #365f4f;border-radius:14px;background:#0b1d19}
+.eng-sim-plot-wrap h4{color:#d7f3e4;font-size:13px;margin:0 0 9px}
+#eng-sim-plot{display:block;width:100%;height:auto;max-height:180px}
+.eng-sim-limitations{margin:14px 0 10px;border:1px solid #546750;border-radius:12px;padding:13px 17px;background:#16241b}
+.eng-sim-limitations summary{color:#e9d9a5;font-size:13px;cursor:pointer;font-weight:600}
+.eng-sim-limitations ul{margin:12px 0 0;padding-left:17px}
+.eng-sim-limitations li{margin:7px 0;color:#c2d1c2;font-size:12px;line-height:1.55}
+.eng-sim-error{margin-top:12px;border-left:3px solid #ff9e80;background:#3b2022;color:#ffd1c6;padding:11px;font-size:12px}
+.eng-sim-error[hidden]{display:none}
+@media(max-width:960px){.tt-engineering #eng-cad .eng-columns{grid-template-columns:1fr}.eng-sim-controls{margin-bottom:17px}}
+@media(max-width:520px){.eng-sim-controls{padding:14px}.eng-sim-kpis{grid-template-columns:1fr 1fr}.eng-sim-kpis strong{font-size:16px}.eng-sim-range-row input[type=number]{width:80px}.eng-sim-playback .tt-svc-button{flex:1}}
+@media(prefers-reduced-motion:reduce){.eng-sim-preset,.eng-sim-controls input,.eng-sim-kpis>div{animation:none;transition:none}}
