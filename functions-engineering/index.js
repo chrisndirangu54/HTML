@@ -1,5 +1,6 @@
 import {createHmac,randomUUID,timingSafeEqual} from 'node:crypto';
 import {getApps,initializeApp} from 'firebase-admin/app';
+import {getAuth} from 'firebase-admin/auth';
 import {getFirestore,FieldValue} from 'firebase-admin/firestore';
 import {getStorage} from 'firebase-admin/storage';
 import {HttpsError,onCall,onRequest} from 'firebase-functions/v2/https';
@@ -212,6 +213,71 @@ export const engineeringSubmitProject=onCall(AUTH_OPTIONS,async request=>{
   tx.update(ref,{status:'submitted_for_review',file,consentToReview:true,submittedAt:clock(),updatedAt:clock()});
  });
  return {projectId,status:'submitted_for_review',message:'Submitted for operator review. This is not a price or fabrication order.'};
+});
+// Binary upload is authenticated server-side. No changes to shared Storage rules.
+export const engineeringUploadDesign=onRequest({region,maxInstances:20,cors:false,memory:'512MiB'},async(req,res)=>{
+ const origin=String(req.headers.origin||'');
+ const allowed=origin==='https://tekntandao.com'||origin==='https://www.tekntandao.com'||
+  /^https:\/\/tekntandao--[a-z0-9-]+\.web\.app$/.test(origin)||
+  /^http:\/\/localhost(:[0-9]+)?$/.test(origin)||/^http:\/\/127\.0\.0\.1(:[0-9]+)?$/.test(origin);
+ if(origin&&!allowed)return res.status(403).json({error:'Origin not allowed'});
+ if(allowed){res.set('Access-Control-Allow-Origin',origin);res.set('Vary','Origin');}
+ res.set('Access-Control-Allow-Headers','Authorization,Content-Type,X-Project-Id,X-File-Extension');
+ res.set('Access-Control-Allow-Methods','POST,OPTIONS');
+ if(req.method==='OPTIONS')return res.status(204).end();
+ if(req.method!=='POST')return res.status(405).json({error:'POST required'});
+ try{
+  const idToken=String(req.headers.authorization||'').replace(/^Bearer /i,'');
+  if(!idToken) return res.status(401).json({error:'Sign in first'});
+  const user=await getAuth().verifyIdToken(idToken,true);
+  if(!user.email_verified) return res.status(401).json({error:'Verified email required'});
+  const projectId=trim(req.headers['x-project-id'],80),ext=trim(req.headers['x-file-extension'],10).toLowerCase();
+  if(!/^[A-Za-z0-9]{16,80}$/.test(projectId)||!Object.hasOwn(ALLOWED_TYPES,ext))
+    return res.status(400).json({error:'Invalid project or file format'});
+  const bytes=req.rawBody;
+  if(!Buffer.isBuffer(bytes)||bytes.length===0||bytes.length>15*1024*1024)
+    return res.status(413).json({error:'Design must be a nonempty file of at most 15 MB'});
+  const doc=await projects().doc(projectId).get();
+  if(!doc.exists||doc.data().uid!==user.uid||doc.data().kind!=='upload'||doc.data().status!=='draft')
+    return res.status(403).json({error:'This account has no draft upload project with this identifier'});
+  const pathname='engineeringFiles/'+user.uid+'/'+projectId+'/design.'+ext;
+  const file=storage.bucket().file(pathname);
+  try{
+   await file.save(bytes,{resumable:false,validation:'crc32c',
+     contentType:ALLOWED_TYPES[ext],preconditionOpts:{ifGenerationMatch:0},
+     metadata:{metadata:{projectId,uid:user.uid,review:'unscanned'}}});
+  }catch(e){
+   if(e?.code===412)return res.status(409).json({error:'File already uploaded; create a new project to replace it.'});
+   throw e;
+  }
+  return res.status(201).json({path:pathname,size:bytes.length,extension:ext,
+    status:'uploaded_unscanned',message:'File received securely; not yet validated for fabrication.'});
+ }catch(e){
+  logger.error('Engineering upload error',{message:e?.message});
+  return res.status(500).json({error:'Could not upload file. Check authentication and storage configuration.'});
+ }
+});
+export const engineeringAdminReviewProject=onCall(AUTH_OPTIONS,async request=>{
+ const {uid}=who(request);
+ if(request.auth?.token?.engineering_admin!==true)
+  throw new HttpsError('permission-denied','Only an authorized engineering operator can review quotations.');
+ const projectId=trim(request.data?.projectId,80),next=trim(request.data?.status,36),
+  note=trim(request.data?.note,2000);
+ if(!/^[A-Za-z0-9]{16,80}$/.test(projectId)||
+    !['needs_revision','quoted','declined'].includes(next))
+  throw new HttpsError('invalid-argument','Invalid project or review status.');
+ const price=Number(request.data?.quoteKes);
+ if(next==='quoted'&&(!Number.isSafeInteger(price)||price<=0||price>100000000))
+  throw new HttpsError('invalid-argument','Quoted cost must be a positive whole-KES amount.');
+ const ref=projects().doc(projectId);
+ await db.runTransaction(async tx=>{
+  const snap=await tx.get(ref);
+  if(!snap.exists||!['submitted_for_review','needs_revision'].includes(snap.data().status))
+   throw new HttpsError('failed-precondition','Project is not awaiting review.');
+  tx.update(ref,{status:next,quoteKes:next==='quoted'?price:null,
+    operatorNote:note,reviewedBy:uid,reviewedAt:clock(),updatedAt:clock()});
+ });
+ return {projectId,status:next,quoteKes:next==='quoted'?price:null};
 });
 export const engineeringListProjects=onCall(AUTH_OPTIONS,async request=>{
  const {uid}=who(request);
