@@ -7,6 +7,10 @@ const read = path => readFile(new URL(path, root), 'utf8');
 
 const products = JSON.parse(await read('data/products.json'));
 const commerce = await read('assets/js/commerce.js');
+const shopPage = await read('shop.html');
+const homepage = await read('index.html');
+const homepageLoader = await read('assets/js/ajax-form.js');
+const homepageTheme = await read('assets/js/color.js');
 const functions = await read('functions-ict-commerce/index.js');
 const seeder = await read('scripts/seed-products.mjs');
 const rules = await read('firestore.rules');
@@ -36,16 +40,15 @@ test('catalogue covers requested ICT categories', () => {
   }
 });
 
-test('frontend contains requested destinations and WhatsApp number', () => {
-  for (const id of ['Shop', 'blogs', 'gallery', 'awards', 'podcasts', 'training', 'events']) {
-    assert.ok(commerce.includes(`'${id}'`) || commerce.includes(`\"${id}\"`), `missing ${id}`);
-  }
+test('shop owns the catalogue while the homepage stays free of injected sections', () => {
+  assert.match(shopPage, /id="tt-commerce-store"/);
+  assert.match(shopPage, /assets\/js\/commerce\.js/);
+  assert.match(commerce, /getElementById\('tt-commerce-store'\)/);
+  assert.doesNotMatch(homepageLoader, /assets\/js\/commerce\.js|data-tt-commerce/);
+  assert.doesNotMatch(homepage, /footer-robot\.js/);
+  assert.doesNotMatch(commerce, /id="(blogs|gallery|awards|podcasts|training|events)"/);
+  assert.match(homepageTheme, /!document\.body\.classList\.contains\('home1-page'\)/);
   assert.ok(config.includes("whatsappNumber: '254702258870'"));
-  assert.ok(commerce.includes('DMX7tXoCWi2'));
-  assert.ok(commerce.includes('DLsWD18CuJM'));
-  assert.ok(commerce.includes('DLpor3UCHb2'));
-  assert.match(commerce, /Podcasts coming soon/);
-  assert.match(commerce, /Awards showcase coming soon/);
 });
 
 test('checkout never accepts client prices or totals', () => {

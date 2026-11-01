@@ -51,74 +51,26 @@ function sectionMarkup(id, icon, kicker, title, lead, body) {
 }
 
 function installSections() {
-  if (document.getElementById('Shop')) return;
-  const contact = document.getElementById('contact');
-  if (!contact?.parentNode) return;
-
-  const html = `
-    ${sectionMarkup(
-      'Shop', 'las la-shopping-cart', 'TeknTandao Shop',
-      'Smart gadgets, connectivity and ICT equipment',
-      'Shop practical networking, Starlink, CCTV, smart-home, power and computing equipment. Reference prices were checked against Kenyan online sellers; final TeknTandao availability and selling price may change.',
-      `<div class="tt-shop-toolbar">
-        <input id="tt-product-search" type="search" placeholder="Search routers, CCTV, Starlink, smart gadgets…" aria-label="Search products">
-        <select id="tt-category-filter" aria-label="Filter product category"><option>All</option></select>
-        <button class="tt-action" id="tt-cart-open" type="button"><i class="las la-shopping-bag"></i> Cart <span id="tt-cart-count">0</span></button>
-      </div>
-      <div class="tt-market-note"><i class="las la-info-circle"></i><span>Market-reference pricing is shown for transparency. Payment checkout uses the current Firestore product price and never trusts a browser-supplied total.</span></div>
-      <div id="tt-product-grid" class="tt-product-grid"><div class="tt-empty">Loading catalogue…</div></div>`
-    )}
-
-    ${sectionMarkup(
-      'blogs', 'las la-newspaper', 'Blog',
-      'Insights from TeknTandao',
-      'Articles are delivered from Strapi so the team can publish without editing this website.',
-      `<div id="tt-blog-grid" class="tt-content-grid"><div class="tt-empty">Loading Strapi articles…</div></div>`
-    )}
-
-    ${sectionMarkup(
-      'gallery', 'las la-images', 'Gallery',
-      'Inside TeknTandao',
-      'Highlights from our builds, community work, installations and technology programmes.',
-      `<div class="tt-instagram-wrap">${instagramEmbed('https://www.instagram.com/p/DMX7tXoCWi2/')}</div>`
-    )}
-
-    ${sectionMarkup(
-      'awards', 'las la-trophy', 'Awards',
-      'Recognition & Awards',
-      'We are preparing a verified showcase of awards, competition results and partner recognition.',
-      comingSoon('las la-trophy', 'Awards showcase coming soon')
-    )}
-
-    ${sectionMarkup(
-      'podcasts', 'las la-podcast', 'Podcasts',
-      'TeknTandao Podcasts',
-      'Conversations with builders, founders and practitioners across technology and business.',
-      comingSoon('las la-microphone', 'Podcasts coming soon')
-    )}
-
-    ${sectionMarkup(
-      'training', 'las la-chalkboard-teacher', 'Training',
-      'Training & Workshops',
-      'Hands-on learning, technology demonstrations and practical skills programmes.',
-      `<div class="tt-instagram-wrap">${instagramEmbed('https://www.instagram.com/p/DLpor3UCHb2/')}</div>`
-    )}
-
-    ${sectionMarkup(
-      'events', 'las la-calendar', 'Events',
-      'Events & Community',
-      'Meetups, showcases and collaborative technology events from the TeknTandao ecosystem.',
-      `<div class="tt-instagram-wrap">${instagramEmbed('https://www.instagram.com/reel/DLsWD18CuJM/')}</div>`
-    )}
-  `;
+  const store = document.getElementById('tt-commerce-store');
+  if (!store || document.getElementById('Shop')) return;
 
   const holder = document.createElement('div');
-  holder.innerHTML = html;
-  while (holder.firstElementChild) contact.parentNode.insertBefore(holder.firstElementChild, contact);
+  holder.innerHTML = sectionMarkup(
+    'Shop', 'las la-shopping-cart', 'TeknTandao Shop',
+    'Smart gadgets, connectivity and ICT equipment',
+    'Shop practical networking, Starlink, CCTV, smart-home, power and computing equipment. Reference prices are for comparison; confirm current availability and selling price before ordering.',
+    `<div class="tt-shop-toolbar">
+      <input id="tt-product-search" type="search" placeholder="Search routers, CCTV, Starlink, smart gadgets…" aria-label="Search products">
+      <select id="tt-category-filter" aria-label="Filter product category"><option>All</option></select>
+      <button class="tt-action" id="tt-cart-open" type="button"><i class="las la-shopping-bag"></i> Cart <span id="tt-cart-count">0</span></button>
+    </div>
+    <div class="tt-market-note"><i class="las la-info-circle"></i><span>Market-reference pricing is shown for transparency. Checkout revalidates the current private inventory and never trusts a browser-supplied total.</span></div>
+    <div id="tt-product-grid" class="tt-product-grid"><div class="tt-empty">Loading catalogue…</div></div>`
+  );
+  store.appendChild(holder.firstElementChild);
 
   document.body.insertAdjacentHTML('beforeend', cartMarkup());
   bindUi();
-  loadInstagramEmbeds();
 }
 
 function instagramEmbed(permalink) {

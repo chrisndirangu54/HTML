@@ -391,18 +391,6 @@
     orbRaf = requestAnimationFrame(tick);
   }
 
-  function loadPageScripts() {
-    const add = (id, src) => {
-      if (document.getElementById(id)) return;
-      const script = document.createElement('script');
-      script.id = id;
-      script.src = src;
-      script.defer = true;
-      document.body.appendChild(script);
-    };
-    if (document.body.classList.contains('home1-page')) add('tt-footer-robot-loader', 'assets/js/footer-robot.js');
-  }
-
   function wireSettings() {
     document.addEventListener('click', event => {
       if (event.target.closest('.setting-toggle')) {
@@ -559,12 +547,13 @@
     } else {
       setAuto();
     }
-    const orb = mountOrb();
-    const chat = mountChat();
-    wireOrb(orb);
-    wireChat(orb, chat);
-    startOrb(orb);
-    loadPageScripts();
+    if (!document.body.classList.contains('home1-page')) {
+      const orb = mountOrb();
+      const chat = mountChat();
+      wireOrb(orb);
+      wireChat(orb, chat);
+      startOrb(orb);
+    }
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
