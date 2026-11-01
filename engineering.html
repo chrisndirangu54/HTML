@@ -16,7 +16,7 @@
 <div><span class="tt-svc-eyebrow">Simulation · Robotics · Electronics · CAD · AI</span>
 <h1>Design. Simulate.<br><span class="tt-svc-gradient">Prototype with evidence.</span></h1>
 <p>Turn a concept into an engineering brief, test preliminary assumptions, explore open-source simulators and generate editable CAD starting points. Use optional on-device AI to critique your design before physical prototyping.</p>
-<div class="tt-svc-actions"><a class="tt-svc-button primary" href="#eng-workspace">Start an engineering project</a><a class="tt-svc-button" href="#eng-simulators">Explore open-source simulators</a></div>
+<div class="tt-svc-actions"><a class="tt-svc-button primary" href="#eng-workspace">Start an engineering project</a><a class="tt-svc-button" href="#eng-simulators">Explore open-source simulators</a><a class="tt-svc-button" href="engineering-fabrication.html">AI design &amp; fabrication hub</a></div>
 </div><aside class="tt-svc-hero-aside eng-hero-visual">
 <img src="https://images.unsplash.com/photo-1640955785023-1854685dae05?auto=format&amp;fit=crop&amp;w=1200&amp;q=80" width="1200" height="750" alt="Real microchip being positioned on a printed circuit board" decoding="async" fetchpriority="high" referrerpolicy="no-referrer">
 <span>PCB assembly photograph: <a href="https://unsplash.com/photos/microchip-placement-on-circuit-board-zs4gtT8thO0" target="_blank" rel="noopener noreferrer">Vishnu Mohanan / Unsplash</a></span>
@@ -58,7 +58,7 @@
 <label>Thickness (mm)<input name="thickness" type="number" min=".5" max="100" value="6" required step=".1"></label><label>Hole diameter (mm)<input name="hole" type="number" min="1" max="50" value="5" required step=".1"></label>
 <label>Hole center offset from edges (mm)<input name="offset" id="eng-cad-offset" type="number" min="2" max="100" value="8" required step=".1" aria-describedby="eng-offset-help"></label>
 </div><p id="eng-offset-help" class="eng-offset-help" role="status" aria-live="polite">Suggested offset: 8 mm. Hole centers must remain inside the plate without overlap.</p>
-<div class="eng-cad-form-actions"><button class="tt-svc-button primary" type="submit">Update 3D model &amp; source</button><button id="eng-cad-reset" class="tt-svc-button" type="button">Restore 100 × 60 plate</button><button class="tt-svc-button" type="button" id="eng-download-scad" disabled>Download .scad</button></div><p class="eng-fine">Hole locations are measured from edges to centers. Verify fabrication tolerances and load paths before use.</p></form>
+<div class="eng-cad-form-actions"><button class="tt-svc-button primary" type="submit">Update 3D model &amp; source</button><button id="eng-cad-reset" class="tt-svc-button" type="button">Restore 100 × 60 plate</button><button class="tt-svc-button" type="button" id="eng-download-scad" disabled>Download .scad</button><a class="tt-svc-button" id="eng-send-fabrication" href="engineering-fabrication.html">Request fabrication quote</a></div><p class="eng-fine">Hole locations are measured from edges to centers. Verify fabrication tolerances and load paths before use.</p></form>
 <section class="eng-sim-controls" id="eng-sim-controls" aria-labelledby="eng-sim-heading">
 <h3 id="eng-sim-heading"><i class="las la-wave-square" aria-hidden="true"></i> Live load simulation</h3>
 <div class="eng-sim-quick" role="group" aria-label="Demonstration scenarios">
