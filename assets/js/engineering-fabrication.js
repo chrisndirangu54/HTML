@@ -218,6 +218,11 @@ function init(){
    if(!current){notice('Sign in with Google to access free introductory credits and secure fabrication requests.');return;}
    if(!current.emailVerified){notice('Please verify your account email before continuing.',true);return;}
    try{await reloadAccount();canUseCloud(true);
+    const idToken=await current.getIdTokenResult();
+    if(idToken.claims?.engineering_admin===true){
+      const admin=await import('./engineering-fabrication-admin.js');
+      await admin.enableOperator(call);
+    }
     const formEmail=form.elements.namedItem('contactEmail');
     if(!formEmail.value)formEmail.value=current.email;
     await Promise.all([reloadProjects(),restorePayment()]);
