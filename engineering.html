@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 <link rel="stylesheet" href="assets/css/commerce.css"><link rel="stylesheet" href="assets/css/isp-shop-pages.css"><link rel="stylesheet" href="assets/css/home-theme-bridge.css"><link rel="stylesheet" href="assets/css/service-home-ux.css">
-<link rel="stylesheet" href="assets/css/engineering-studio.css"><link rel="stylesheet" href="assets/css/engineering-fabrication.css">
+<link rel="stylesheet" href="assets/css/engineering-studio.css"><link rel="stylesheet" href="assets/css/engineering-fabrication.css"><link rel="stylesheet" href="assets/css/engineering-dashboard.css">
 <link rel="stylesheet" href="assets/css/real-photography.css"></head><body class="tt-home-aligned tt-service-page tt-engineering">
 <div class="tt-utility-head"><a class="brand" href="index.html">TeknTandao</a><div class="tt-utility-actions"><a href="shop.html?category=Robotics">Robotics equipment</a><a href="contact_page.html?subject=engineering">Request prototyping support</a></div></div>
 <main class="tt-svc-shell eng-shell">
@@ -27,6 +27,47 @@
 <a href="#fab-tripo">Tripo 3D</a><a href="#fab-design">Sculpt &amp; fabrication</a><a href="#fab-account">Credits</a></nav>
 <p class="eng-notice"><i class="las la-info-circle" aria-hidden="true"></i> Engineering calculations here are simplified early-stage estimates—not signed engineering drawings, component specifications, certified FEA, electrical safety assessments or approval to operate equipment. The page makes no physical actuator commands, manufacturing orders or external account changes.</p>
 <div class="tt-photo-brief"><figure class="tt-photo-panel"><img src="https://images.unsplash.com/photo-1634454023167-59d99c0921a5?auto=format&amp;fit=crop&amp;w=1200&amp;q=80" alt="An Arduino microcontroller development board and breadboard prepared for an electronics prototype" width="1200" height="750" loading="lazy" decoding="async" referrerpolicy="no-referrer"><figcaption>Representative electronics hardware · <a href="https://unsplash.com/photos/a-close-up-of-an-electronic-device-on-a-table-AcTlEUJJEIg" target="_blank" rel="noopener noreferrer">Photo: Vishnu Mohanan / Unsplash</a></figcaption></figure><div><span class="tt-svc-eyebrow">From design to real engineering</span><h2>Test ideas with actual hardware.</h2><p>Use open-source simulations, validated measurements and CAD previews to prepare practical prototypes. These photos illustrate electronics, not a commissioned TeknTandao project.</p><p><a href="docs/real-photo-sources.md">Photo sources and licences</a></p></div></div>
+<div id="eng-dashboard" class="eng-dashboard" aria-label="Unified Engineering dashboard">
+<aside class="eng-dash-sidebar" aria-label="Engineering navigation">
+<div class="eng-dash-brand"><i class="las la-drafting-compass" aria-hidden="true"></i><div><strong>Engineering Hub</strong><small>Design to manufacture</small></div></div>
+<nav class="eng-dash-menu" aria-label="Engineering modules">
+<a href="#eng-dashboard-overview" data-eng-view="overview" aria-current="page"><i class="las la-th-large" aria-hidden="true"></i>Overview</a>
+<a href="#eng-workspace" data-eng-view="analysis"><i class="las la-calculator" aria-hidden="true"></i>Calculators &amp; simulations</a>
+<a href="#eng-cad" data-eng-view="cad"><i class="las la-cubes" aria-hidden="true"></i>Parametric CAD &amp; STL</a>
+<a href="#eng-ai" data-eng-view="ai"><i class="las la-brain" aria-hidden="true"></i>AI design studio</a>
+<a href="#eng-sculpt" data-eng-view="sculpt"><i class="las la-paint-brush" aria-hidden="true"></i>3D sculpting &amp; imports</a>
+<a href="#fab-design" data-eng-view="fabrication"><i class="las la-industry" aria-hidden="true"></i>Fabrication quotations</a>
+<a href="#fab-account" data-eng-view="projects"><i class="las la-folder-open" aria-hidden="true"></i>Projects &amp; credits</a>
+</nav>
+<div class="eng-dash-wallet"><span>Engineering AI credits</span><strong id="eng-dash-side-credits">—</strong><a href="#fab-account" data-eng-view="projects">Manage wallet &amp; account</a></div>
+</aside>
+<div class="eng-dash-main">
+<header class="eng-dash-topbar"><div><span>TEKNTANDAO · ENGINEERING</span><h2 id="eng-dash-current-title">Engineering overview</h2>
+<p id="eng-dash-current-description">All six engineering workflows in one connected dashboard.</p></div>
+<a href="contact_page.html?subject=engineering" class="tt-svc-button">Contact engineer</a></header>
+<div id="eng-dash-panels" class="eng-dash-panels">
+<section id="eng-dashboard-overview" class="eng-dash-panel eng-dash-overview" data-eng-panel="overview" aria-label="Engineering dashboard overview">
+<div class="eng-dash-intro"><div><span>ENGINEERING CONTROL CENTRE</span><h3>Design. Simulate. Refine. Fabricate.</h3>
+<p>One continuous workspace for engineering calculations, editable CAD, AI design, local mesh sculpting and private fabrication quotation requests.</p>
+<div class="eng-dash-actions"><a class="tt-svc-button primary" href="#eng-cad" data-eng-view="cad">Start CAD design</a><a class="tt-svc-button" href="#eng-sculpt" data-eng-view="sculpt">Open 3D editor</a></div></div>
+<ol class="eng-dash-steps"><li>Calculate</li><li>Build CAD</li><li>Refine with AI</li><li>Sculpt &amp; inspect</li><li>Request fabrication</li></ol></div>
+<div class="eng-dash-stats">
+<div><span>Available AI credits</span><strong id="eng-dash-credit-count" aria-live="polite">—</strong><small>Server-verified wallet</small></div>
+<div><span>Fabrication requests</span><strong id="eng-dash-project-count" aria-live="polite">—</strong><small>Private project history</small></div>
+<div><span>Engineering account</span><strong id="eng-dash-account-state">Guest</strong><small>Sign in for hosted services</small></div>
+<div><span>Active plate dimensions</span><strong id="eng-dash-plate-size">100 × 60 mm</strong><small>Shared CAD &amp; quotation</small></div>
+</div>
+<h3 class="eng-dash-section-title">Engineering applications</h3>
+<div class="eng-dash-cards">
+<a class="eng-dash-card" href="#eng-workspace" data-eng-view="analysis"><i class="las la-calculator"></i><strong>Calculators &amp; simulation</strong><p>Circuit, robotics and mechanics estimators, and open-source simulators.</p><span>Launch workbench →</span></a>
+<a class="eng-dash-card" href="#eng-cad" data-eng-view="cad"><i class="las la-cubes"></i><strong>Parametric CAD &amp; STL</strong><p>3D mounting plate designer, load visualization and editable exports.</p><span>Open CAD studio →</span></a>
+<a class="eng-dash-card" href="#eng-ai" data-eng-view="ai"><i class="las la-brain"></i><strong>AI design studio</strong><p>Free local critique, Gemini copilot and Tripo text/image-to-3D.</p><span>Open AI studio →</span></a>
+<a class="eng-dash-card" href="#eng-sculpt" data-eng-view="sculpt"><i class="las la-paint-brush"></i><strong>3D sculpting &amp; imports</strong><p>Vertex editing, transform gizmos, STL/OBJ/GLB and model inspection.</p><span>Open 3D editor →</span></a>
+<a class="eng-dash-card" href="#fab-design" data-eng-view="fabrication"><i class="las la-industry"></i><strong>Fabrication quotation</strong><p>3D printing, CNC and PCB production requests with human review.</p><span>Request a quote →</span></a>
+<a class="eng-dash-card" href="#fab-account" data-eng-view="projects"><i class="las la-folder-open"></i><strong>Projects &amp; credits</strong><p>Track requests, credit balance, payment and account status.</p><span>Manage account →</span></a>
+</div>
+<p class="eng-dash-disclaimer">All simulations and AI outputs are exploratory. No design is certified or automatically ordered for fabrication; every production request requires separate authorization and human feasibility review.</p>
+</section></div></div></div>
 <section class="eng-metrics" aria-label="Capabilities"><div><i class="las la-drafting-compass"></i><strong>4</strong><span>Local engineering estimators</span></div><div><i class="las la-microchip"></i><strong>8</strong><span>Open-source simulation and CAD tools</span></div><div><i class="las la-cubes"></i><strong>CAD</strong><span>Editable OpenSCAD export</span></div><div><i class="las la-brain"></i><strong>AI</strong><span>Optional browser model</span></div></section>
 <section id="eng-workspace" class="eng-section">
 <div class="eng-head"><span class="tt-svc-eyebrow">Step 01 · Define the idea</span><h2>AI-assisted design brief</h2><p>Capture engineering requirements and obtain a rule-based checklist, suggested tools and a test plan. Optionally download and run a small language model locally for more detailed design critique.</p></div>
@@ -269,6 +310,7 @@
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/"}}</script>
 <script defer src="assets/js/engineering-studio.js"></script>
 <script defer src="assets/js/engineering-workspace.js"></script>
+<script defer src="assets/js/engineering-dashboard.js"></script>
 <script defer src="assets/js/engineering-simulator.js"></script>
 <script type="module" src="assets/js/engineering-cad-viewer.js"></script>
 <script type="module" src="assets/js/engineering-fabrication.js"></script></body></html>
