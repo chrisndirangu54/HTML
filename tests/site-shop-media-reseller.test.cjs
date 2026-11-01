@@ -25,7 +25,7 @@ test('Microsoft reseller dashboard routes to authorized Workspace module', () =>
   assert.match(cloud, /microsoft-reseller-onboarding\.html/);
   assert.match(cloud, /https:\/\/tekntandaoworkspace\.web\.app\/\?module=reseller-onboarding/);
   assert.match(cloud, /requires an authorized account/);
-  assert.match(cloud, /not a live Microsoft Partner Center session/);
+  assert.match(cloud, /not a live Microsoft Partner Center session|Neither page is a live Microsoft Partner Center session/);
   assert.match(cloud, /id="migrate"/);
   assert.match(cloud, /mode:"planning-only"/);
 });
