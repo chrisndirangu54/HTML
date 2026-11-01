@@ -60,6 +60,7 @@
  const stagePanels=new Map();
  for(const [id] of steps){
   const panel=build('section','eng-pipeline-stage');
+  panel.id='eng-pipeline-'+id;
   panel.dataset.pipelineTools=id;panel.hidden=id!=='model';stagePanels.set(id,panel);inspector.append(panel);
  }
  surface.append(visual,inspector);main.append(header,surface);
@@ -87,6 +88,7 @@
  let stage='model',source='parametric',generation=0,viewer=null,loading=false,renderTimer=null,renderAgain=false,wireframe=false;
  let lastSnapshot=window.TeknPlateSimulationSnapshot||null;
  const fromHash=hash=>{
+  if(/^#eng-pipeline-(brief|model|refine|analyze|deliver)$/.test(String(hash||'')))return String(hash).slice('#eng-pipeline-'.length);
   const fragment=String(hash||'').replace(/^#/,'');
   if(['eng-workspace','eng-brief-form'].includes(fragment))return 'brief';
   if(['eng-cad','eng-cad-form','eng-cad-viewport','eng-scad-preview'].includes(fragment))return 'model';
@@ -230,6 +232,10 @@
  });
  document.addEventListener('eng:pipeline-stage',event=>{
   if(stagePanels.has(event.detail?.stage)){setStage(event.detail.stage);viewPipeline();}
+ });
+ document.addEventListener('eng:pipeline-navigate',event=>{
+  const target=fromHash(event.detail?.hash);
+  if(target)setStage(target);
  });
  document.addEventListener('eng:open-view',event=>{
   if(event.detail?.view!=='pipeline')return;

@@ -114,6 +114,7 @@
   if(!a||!root.contains(a))return;
   event.preventDefault();
   activate(a.dataset.engView,{hash:a.getAttribute('href')});
+  if(a.dataset.engView==='pipeline')document.dispatchEvent(new CustomEvent('eng:pipeline-navigate',{detail:{hash:a.getAttribute('href')}}));
  });
  document.addEventListener('click',event=>{
   if(event.defaultPrevented)return;

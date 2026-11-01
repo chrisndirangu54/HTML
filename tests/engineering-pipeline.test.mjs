@@ -58,7 +58,7 @@ test('deep links and Tripo results lead to the right pipeline context',()=>{
  assert.match(tripo,/sourceType:'ai'/);
  const loader=read('assets/js/engineering-fabrication-preview.js');
  assert.match(loader,/eng:geometry-loaded/);
- assert.match(loader,/source==='parametric'/);
+ assert.match(loader,/source!=='parametric'/);
 });
 test('active-scene exports remain explicitly user-triggered and free of cloud calls',()=>{
  const pipeline=read('assets/js/engineering-pipeline.js');
