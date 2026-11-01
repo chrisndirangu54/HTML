@@ -65,6 +65,14 @@
     ],
     "rewrites": [
       {
+        "source": "/api/engineeringTripoDownload",
+        "function": {
+          "functionId": "engineeringTripoDownload",
+          "region": "europe-west1",
+          "codebase": "engineering"
+        }
+      },
+      {
         "source": "/api/engineeringUpload",
         "function": {
           "functionId": "engineeringUploadDesign",

@@ -1,6 +1,7 @@
 /* Customer-side Engineering Hub.
  * No client-secret credentials, fake credits or automatic manufacturing.
  */
+import {initTripo} from './engineering-tripo.js';
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
 import {getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
 import {getFunctions,httpsCallable} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js';
@@ -18,7 +19,7 @@ function output(message){$('fab-ai-output').textContent=message;}
 function escapeHTML(x){return String(x??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','"':'&#39;'}[ch]));}
 function call(name,data){if(!fx)throw Error('Cloud features are not configured.');return httpsCallable(fx,name)(data).then(r=>r.data);}
 function busy(on){submitting=on;$('fab-submit').disabled=on||!verified;}
-function canUseCloud(on){verified=on;for(const id of ['fab-ai-run','fab-buy-starter','fab-buy-maker','fab-submit','fab-refresh-jobs'])$(id).disabled=!on;}
+function canUseCloud(on){verified=on;for(const id of ['fab-ai-run','fab-buy-starter','fab-buy-maker','fab-submit','fab-refresh-jobs'])$(id).disabled=!on;tripo.setEnabled(on);}
 const dimensions=()=>Object.fromEntries(['length','width','thickness','hole','offset'].map(k=>[k,Number(form.elements.namedItem(k).value)]));
 function kind(){
  const selected=form.elements.namedItem('kind').value;
@@ -261,4 +262,5 @@ function init(){
   });
  }catch(e){notice('Firebase initialization failed: '+e.message,true);}
 }
+const tripo=initTripo({call,reloadAccount,getUser:()=>user,getAppCheck:()=>getToken(appCheck)});
 init();

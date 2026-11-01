@@ -42,6 +42,24 @@
 <div><strong>Maker</strong><b>50 credits</b><p>Configurable launch price</p><span>KSh 1,000</span><button id="fab-buy-maker" type="button" class="tt-svc-button" disabled>Buy Maker</button></div>
 </div><p class="eng-fine">Paid packages use secure Paystack checkout. Payments are verified on the server before credits are added; returning from checkout does not itself grant credits. Prices shown are initial merchant-configurable settings, not fabrication costs. No recurring subscription is started.</p></div>
 </section>
+
+<section class="eng-section" id="fab-tripo" aria-label="Tripo AI 3D generation">
+<div class="eng-head"><span class="tt-svc-eyebrow">Tripo AI · Text &amp; image to 3D</span><h2>Generate. Sculpt. Refine.</h2>
+<p>Generate an editable GLB mesh from a description or reference image. Tripo requests cost <strong>10 engineering credits</strong>; local sculpting is free.</p></div>
+<div class="eng-columns"><div class="eng-panel eng-form">
+<label>Generation input<select id="fab-tripo-mode"><option value="text">Text to 3D</option><option value="image">Image to 3D</option></select></label>
+<label id="fab-tripo-prompt-wrap">Model description<textarea id="fab-tripo-prompt" maxlength="1024" rows="4" placeholder="A rounded desktop robot shell with secure phone mount, USB cable routing and ventilation."></textarea></label>
+<label id="fab-tripo-image-wrap" hidden>Reference image (PNG or JPEG, maximum 4 MB)<input id="fab-tripo-image" type="file" accept="image/png,image/jpeg"></label>
+<button type="button" class="tt-svc-button primary" id="fab-tripo-run" disabled>Generate 3D · 10 credits</button>
+<p class="eng-fine">Prompts or images are transmitted to Tripo only after your confirmation. Generated triangle meshes are not validated dimensional CAD, STEP solids, engineering approval or fabrication orders.</p>
+</div><div class="eng-panel"><h3>AI 3D task</h3>
+<div id="fab-tripo-status" class="eng-fab-output" role="status" aria-live="polite">Sign in to create a 3D model. Jobs are private.</div>
+<progress id="fab-tripo-progress" max="100" value="0" aria-label="3D model generation progress"></progress>
+<button type="button" id="fab-tripo-resume" class="tt-svc-button" hidden disabled>Resume task</button>
+<div id="fab-tripo-actions" class="eng-fab-actions" hidden>
+<button type="button" id="fab-tripo-edit" class="tt-svc-button primary">Open in sculpt editor</button>
+<button type="button" id="fab-tripo-download" class="tt-svc-button">Download GLB</button>
+</div></div></div></section>
 <section class="eng-section" id="fab-design"><div class="eng-head"><span class="tt-svc-eyebrow">Manufacturing intake · human quotation</span><h2>Create a design or upload your own</h2><p>Select an existing engineering drawing or use a validated four-hole mounting plate starting point. Your request remains a private draft until you explicitly submit it for review.</p></div>
 <div class="eng-columns">
 <form id="fab-project-form" class="eng-panel eng-form">

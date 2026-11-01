@@ -96,3 +96,12 @@ These are numerical/contract and static UI/security tests. A production launch a
 ## Pricing and operations note
 
 The credit packages are implementation defaults, **not approved public commercial terms**. Review margins, payment processing fees, model inference costs, tax obligations and free-credit abuse protections before activating checkout. The fabrication quote is **independent** of AI credits and must be approved with a separate sales/purchase contract.
+
+
+## Tripo AI v3 mesh generation — requires deployment and provider activation
+
+The Fabrication Hub offers text-to-model and PNG/JPEG image-to-model generation using Tripo v3.1, with private asynchronous jobs, a server-side API secret and an independent 10-credit charge per generation. This charge is an initial operator-configurable value, not a statement of provider pricing. Check Tripo API fees and Kenyan credit-package economics before enabling real customers. The three introductory AI credits remain usable for the existing Gemini design assistant but are insufficient for a Tripo request.
+
+Store the API key using firebase functions:secrets:set ENGINEERING_TRIPO_API_KEY. Configure ENGINEERING_STORAGE_BUCKET, Firebase Auth and App Check, then deploy the engineering Functions and Hosting rewrite. A hosting-only deploy is insufficient. Reference images and prompts are transmitted to Tripo only after explicit consent. Model results are stored privately at engineeringTripoModels/{uid}/{jobId}/model.glb; an authenticated owner-scoped download endpoint returns GLB files up to 15 MB. Failed generations and unavailable results trigger idempotent credit refunds. The browser can resume its most recent job within the same browser session, then open GLB in the existing free sculpt editor. Edited STL selection and actual fabrication submission remain explicit separate steps.
+
+Outputs are approximate triangle meshes, generated without texture maps to control size; not validated BREP CAD or manufacturing geometry. Validate actual scale, watertightness, wall thickness, safety and fit before manufacturing. Test provider results, Firebase emulator flows, quotas and credit economics before go-live. Reference https://developers.tripo3d.ai/en/docs/quick-start

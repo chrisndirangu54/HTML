@@ -85,3 +85,9 @@
 .eng-fab-preview-canvas:focus-within{outline:2px solid #7cf0c9;outline-offset:3px}
 @media(max-width:650px){.eng-sculpt-brush-options{grid-template-columns:1fr}.eng-sculpt-brush-options .eng-sculpt-symmetry{grid-column:span 1}.eng-fab-preview-canvas{height:290px}.eng-sculpt-new .tt-svc-button{flex:1}}
 @media(prefers-reduced-motion:reduce){.eng-sculpt-workbench *{scroll-behavior:auto;animation:none!important;transition:none!important}}
+
+#fab-tripo .eng-panel{min-width:0}
+#fab-tripo select,#fab-tripo textarea,#fab-tripo input[type=file]{width:100%;max-width:100%}
+#fab-tripo progress{display:block;width:100%;margin:14px 0;accent-color:#55e7c1}
+#fab-tripo .eng-fab-output{white-space:pre-wrap;min-height:75px}
+#fab-tripo [hidden]{display:none!important}
