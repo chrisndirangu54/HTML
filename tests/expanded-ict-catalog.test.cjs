@@ -86,7 +86,7 @@ test('Microsoft brand is present in partners with accurate reseller description,
   assert.match(home,/class="partner-microsoft-link"/);
   assert.match(home,/Microsoft_logo\.svg/);
   assert.match(home,/Reseller solutions/);
-  assert.match(home,/cloud-automation\.html#microsoft-reseller/);
+  assert.match(home,/microsoft-products\.html/);
   assert.doesNotMatch(home,/Microsoft Gold Partner|Microsoft Solutions Partner|Microsoft-certified reseller/);
   assert.match(styles,/partner-microsoft-link/);
 });
