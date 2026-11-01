@@ -70,7 +70,7 @@ test('single viewport provides non-destructive X-ray, section plane and image ev
  const css=read('assets/css/engineering-dashboard.css');
  assert.match(src,/renderer\.localClippingEnabled=true/);
  assert.match(src,/setSection\(axis,ratio=\.5\)/);
- assert.match(src,/m\.clippingPlanes=plane\?\[plane\]:\[\]/);
+ assert.match(src,/mat\.clippingPlanes=plane\?\[plane\]:\[\]/);
  assert.match(src,/setXray\(enabled\)/);
  assert.match(src,/m\.transparent=enabled\|\|baseline\.transparent/);
  assert.match(src,/export async function captureEngineeringSnapshot/);

@@ -145,13 +145,13 @@
   const available=analysisSupported();
   main.dataset.exactPlate=String(available);
   main.dataset.unitsVerified=String(unitsVerified);
-  unitTools.hidden=available||source==='primitive';
+  unitTools.hidden=source.includes('parametric')||source.includes('primitive');
   unitApply.disabled=!viewer||!unitSelect.value;
   unitStatus.textContent=unitsVerified?
    'Verified source units: '+sourceUnits+'. The displayed and exported model uses millimetres.':
    'Units unverified: choose the source units and convert before preparing this mesh for fabrication.';
   measurements.textContent=activeBounds?
-   'Active bounds (mm'+(unitsVerified?'':', interpretation unverified')+'): '+
+   'Active bounds ('+(unitsVerified?'mm':'raw units, unverified')+'): '+
     activeBounds.map(n=>Number(n).toFixed(2)).join(' × ')+' · '+activeVertices.toLocaleString()+' vertices.':
    'Waiting for an active mesh to measure.';
 

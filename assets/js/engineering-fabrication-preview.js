@@ -237,7 +237,7 @@ async function showModel(model,container,label,source='imported',ticket=++reques
    for(const m of materials()){
     const baseline=originals.get(m);
     m.transparent=enabled||baseline.transparent;
-    m.opacity=enabled?.28:baseline.opacity;
+    m.opacity=enabled ? 0.28 : baseline.opacity;
     m.depthWrite=enabled?false:baseline.depthWrite;
     m.wireframe=baseline.wireframe;
     m.needsUpdate=true;
