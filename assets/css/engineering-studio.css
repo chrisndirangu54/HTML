@@ -65,3 +65,37 @@
 @media(max-width:750px){.eng-columns{grid-template-columns:1fr}.eng-next{flex-direction:column;align-items:start}.eng-calc-form{width:100%}}
 @media(max-width:530px){.tt-engineering .eng-shell{width:min(100% - 24px,1260px)}.eng-metrics,.eng-tool-grid,.eng-input-grid,.eng-measurements{grid-template-columns:1fr}.eng-panel{padding:18px}.eng-embed iframe{height:470px}.eng-actions .tt-svc-button{width:100%}}
 @media(prefers-reduced-motion:reduce){.eng-panel,.eng-tool-grid article{transition:none!important;animation:none!important}}
+
+
+/* Actual geometric CAD inspection, with a useful WebGL-free fallback. */
+.tt-engineering #eng-cad .eng-columns{grid-template-columns:minmax(0,.9fr) minmax(0,1.45fr);align-items:start}
+.tt-engineering .eng-cad-inspector{overflow:hidden}
+.eng-viewer-header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.eng-viewer-header h3{margin:0;display:flex;align-items:center;gap:8px}
+.eng-viewer-header i{color:#69ebc5;font-size:23px}
+.eng-viewer-status{color:#addcc8;font-size:11px;line-height:1.5;background:#173025;border:1px solid #42695b;border-radius:100px;padding:6px 10px}
+.eng-cad-viewport{position:relative;width:100%;height:clamp(280px,37vw,440px);overflow:hidden;border:1px solid #406458;border-radius:16px;background:radial-gradient(circle at 50% 55%,#173842,#07151c 78%);touch-action:none}
+.eng-cad-viewport canvas{display:block;width:100%;height:100%;outline:none;touch-action:none}
+.eng-cad-viewport:focus-within{outline:2px solid #64ebc7;outline-offset:3px}
+.eng-cad-fallback{display:block;width:100%;height:100%;object-fit:contain;background:#081923}
+.eng-cad-viewport.is-ready .eng-cad-fallback{display:none}
+.eng-cad-controlbar{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}
+.eng-cad-control{border:1px solid #427563;background:#112b25;color:#d8f8e8;padding:8px 12px;border-radius:10px;cursor:pointer;font:500 12px/1.4 Inter,sans-serif;min-height:38px}
+.eng-cad-control:hover:enabled{background:#1c493c;border-color:#75e8c6}
+.eng-cad-control:focus-visible{outline:2px solid #79ffcc;outline-offset:2px}
+.eng-cad-control:disabled{opacity:.55;cursor:not-allowed}
+.eng-cad-download{border-color:#5cb9ac;background:#1b3c42}
+.eng-viewer-guide{margin:10px 0 12px!important}
+.eng-cad-specs{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0 20px}
+.eng-cad-specs>div{border:1px solid #3c6653;background:#11261d;padding:10px 14px;border-radius:11px;min-width:125px;flex:1}
+.eng-cad-specs dt{font-size:11px;color:#9bcab4;margin-bottom:4px}
+.eng-cad-specs dd{font-size:13px;color:#e1fff0;font-weight:600;margin:0}
+.eng-cad-source-details{margin:16px 0 0;border:1px solid #3d624e;border-radius:12px;background:#0c1b16}
+.eng-cad-source-details>summary{list-style-position:inside;cursor:pointer;color:#bff9da;font:500 14px Inter,sans-serif;padding:17px}
+.eng-cad-source-details>summary:hover{background:#153727}
+.eng-cad-source-details>summary:focus-visible{outline:2px solid #79ffcc;outline-offset:2px}
+.eng-cad-source-inside{padding:0 17px 17px}
+.eng-cad-source-inside .eng-code{margin-top:14px;max-height:360px;tab-size:4}
+@media(max-width:930px){.tt-engineering #eng-cad .eng-columns{grid-template-columns:1fr}.eng-cad-viewport{height:360px}}
+@media(max-width:530px){.eng-cad-viewport{height:300px}.eng-cad-controlbar{gap:5px}.eng-cad-control{padding:8px 9px;font-size:11px}.eng-cad-specs{gap:7px}.eng-cad-specs>div{min-width:95px;padding:9px}}
+@media(prefers-reduced-motion:reduce){.eng-cad-viewport canvas,.eng-cad-control{transition:none;animation:none}}

@@ -61,8 +61,9 @@
      thickness=positive(p.thickness,'Thickness',100),hole=positive(p.hole,'Hole diameter',50),
      offset=positive(p.offset,'Offset',100);
    if(length<20||width<20||thickness<.5||hole<1||offset<2)throw new RangeError('Dimensions are below the supported minimum');
-   if(offset<=hole/2||offset>=Math.min(length,width)/2||hole>=Math.min(length,width)/2)
-      throw new RangeError('Hole centers need edge clearance and must remain distinct');
+   if(offset<=hole/2||offset>=Math.min(length,width)/2||hole>=Math.min(length,width)/2||
+      length-2*offset<=hole||width-2*offset<=hole)
+      throw new RangeError('Hole centers must clear the plate edges and holes must not overlap');
    const scad=`// TeknTandao concept prototype — verify material, fits and tolerances
 $fn = 72;
 length_mm = ${length};
