@@ -39,8 +39,10 @@
   function isCurrent(href) {
     if (/^https?:/i.test(href)) return false;
     const path = location.pathname.split('/').pop() || 'index.html';
-    const target = href.split('#')[0] || 'index.html';
-    return path === target;
+    const [target, fragment] = href.split('#');
+    if (path !== (target || 'index.html')) return false;
+    // Do not mark home-page section links active unless that section is selected.
+    return !fragment || location.hash === '#' + fragment;
   }
 
   function makeLink(item) {
