@@ -332,7 +332,9 @@ export const engineeringRecoverStaleCredits=onSchedule({region,schedule:'every 3
  const groups=await db.collectionGroup('requests').where('status','==','pending')
   .where('createdAt','<',cutoff).limit(75).get();
  for(const snap of groups.docs){
-  const uid=snap.ref.parent.parent?.id;
+  const parent=snap.ref.parent.parent;
+  if(!parent||parent.parent.id!=='engineeringAiJobs')continue;
+  const uid=parent.id;
   if(!uid)continue;
   await db.runTransaction(async tx=>{
    const [job,wallet]=await Promise.all([tx.get(snap.ref),tx.get(wallets().doc(uid))]);
