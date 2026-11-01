@@ -1,11 +1,58 @@
-import {loadCatalogue,escapeProductText as esc,productImage} from './product-store.js';
-const grid=document.getElementById('isp-products');
-const status=document.getElementById('isp-products-status');
-const money=value=>new Intl.NumberFormat('en-KE',{style:'currency',currency:'KES',maximumFractionDigits:0}).format(value);
-try{
-  const {products,source}=await loadCatalogue();
-  const equipment=products.filter(product=>/network|router|switch|starlink|\bont\b|\bolt\b|\bcpe\b|fiber|fibre|wireless|mikrotik|comfast/i.test(`${product.category||''} ${product.name||''}`));
-  status.textContent=source==='live'?'Equipment from the live shop inventory.':'Live inventory is unavailable. Showing the shop’s sample catalogue; confirm pricing and availability.';
-  grid.innerHTML=equipment.map(product=>`<article class="spec"><img src="${esc(productImage(product.image))}" alt="${esc(product.name)}" loading="lazy" width="320" height="200" style="width:100%;height:200px;object-fit:contain"><span class="status">${esc(product.category)}</span><h3>${esc(product.name)}</h3><div class="price">${Number.isFinite(Number(product.priceKsh))?money(Number(product.priceKsh)):'Request a quote'}</div><p>${esc(product.description)}</p><a class="btn" href="shop.html?product=${encodeURIComponent(product.id)}">View in shop</a></article>`).join('')||'<p>No networking equipment is currently listed. <a href="shop.html">Browse the shop</a> or contact us for a quote.</p>';
-  grid.querySelectorAll('img').forEach(image=>image.addEventListener('error',()=>{image.src='assets/images/services/wifi.jpg'},{once:true}));
-}catch(error){status.textContent=error.message;grid.replaceChildren();}
+/* Public equipment gallery shares the exact catalogue used by shop.html. */
+const grid = document.getElementById('isp-products');
+const status = document.getElementById('isp-products-status');
+const escapeText = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const isNetworkProduct = p => p.active !== false && (
+  p.ispDirectory === true ||
+  ['Networking', 'ISP Equipment', 'Starlink'].includes(p.category) ||
+  /\b(router|switch|starlink|access point|extender|wireless bridge|gpon|ont|cpe|ethernet cable)\b/i.test(p.name || '')
+);
+const formatPrice = value => new Intl.NumberFormat('en-KE', {style:'currency', currency:'KES', maximumFractionDigits:0}).format(value);
+const safeImage = value => {
+  try {
+    const url = new URL(value, location.href);
+    return ['https:', 'http:'].includes(url.protocol) ? url.href : 'assets/images/services/wifi.jpg';
+  } catch { return 'assets/images/services/wifi.jpg'; }
+};
+async function renderEquipment() {
+  try {
+    const response = await fetch('data/products.json', {cache:'no-store'});
+    if (!response.ok) throw new Error('Equipment could not be loaded right now.');
+    const payload = await response.json();
+    if (!Array.isArray(payload)) throw new Error('Equipment list is unavailable.');
+    const products = payload.filter(isNetworkProduct);
+    if (!products.length) {
+      grid.innerHTML = '<p>We are updating our networking products. <a href="shop.html">Visit the shop</a> or request a quotation.</p>';
+      status.textContent = 'No network products are currently listed';
+      return;
+    }
+    status.textContent = products.length + ' network products · availability on request';
+    grid.innerHTML = products.map(p => {
+      const href = 'shop.html?product=' + encodeURIComponent(p.id);
+      const quote = p.quoteOnly === true || !Number.isFinite(Number(p.priceKes)) || Number(p.priceKes) <= 0;
+      const price = quote ? 'Price on request' : 'Reference: ' + formatPrice(p.priceKes);
+      return `<article class="isp-product">
+        <a class="isp-product-picture" href="${href}" aria-label="View ${escapeText(p.name)} in shop"><img src="${escapeText(safeImage(p.imageUrl))}" alt="${escapeText(p.name)} product photograph" width="350" height="270" loading="lazy" referrerpolicy="no-referrer"></a>
+        <div class="isp-product-content">
+          <span class="isp-product-kind">${escapeText(p.category || 'Networking')}</span>
+          <h3>${escapeText(p.name)}</h3>
+          <p>${escapeText(p.description || 'Network equipment for suitable installations.')}</p>
+          <div class="isp-product-state">${escapeText(price)}</div>
+          <a class="isp-button primary" href="${href}">View in shop <i class="las la-arrow-right" aria-hidden="true"></i></a>
+        </div>
+      </article>`;
+    }).join('');
+    grid.querySelectorAll('img').forEach(img => {
+      img.addEventListener('error', () => {
+        if (img.dataset.fallback) return;
+        img.dataset.fallback = 'true';
+        img.src = 'assets/images/services/wifi.jpg';
+      });
+    });
+  } catch (error) {
+    status.textContent = 'Equipment list temporarily unavailable';
+    grid.innerHTML = '<p>Unable to show products. <a href="shop.html">Browse the shop</a> or <a href="isp-customer.html">request assistance</a>.</p>';
+    console.warn('ISP catalogue unavailable', error);
+  }
+}
+renderEquipment();
