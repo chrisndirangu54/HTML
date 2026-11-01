@@ -1,10 +1,11 @@
-import {loadCatalogue} from './product-store.js';
+import {escapeProductText,loadCatalogue,productImage} from './product-store.js';
 import {onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
-import {apiFetch,auth,config,dashboardForRole,db,firebaseReady,getSession,requireUser} from './auth-client.js';
+import {apiFetch,auth,config,dashboardForRole,getSession,requireUser} from './auth-client.js';
 
 const money=n=>new Intl.NumberFormat('en-KE',{style:'currency',currency:'KES',maximumFractionDigits:0}).format(n||0);
 let products=[];let cart=JSON.parse(localStorage.getItem('tekntandao-cart')||'{}');
 const $=s=>document.querySelector(s);
+function safeReferenceUrl(value){try{const url=new URL(String(value||''));return url.protocol==='https:'?url.href:''}catch{return ''}}
 
 async function loadProducts(){
   try{
@@ -20,7 +21,7 @@ async function loadProducts(){
 function filtered(){const q=($('#search')?.value||'').toLowerCase();const c=$('#category')?.value||'All';return products.filter(p=>(c==='All'||p.category===c)&&(`${p.name} ${p.description} ${p.category}`.toLowerCase().includes(q)))}
 function render(){
   const selected=$('#category')?.value||'All';const cats=['All',...new Set(products.map(p=>p.category))];$('#category').innerHTML=cats.map(c=>`<option ${c===selected?'selected':''}>${c}</option>`).join('');
-  $('#products').innerHTML=filtered().map(p=>`<article class="product-card"><img src="${p.image}" alt="${p.name}" loading="lazy"><div class="product-body"><span class="badge">${p.category}</span><h3>${p.name}</h3><p>${p.description||''}</p><div class="price">${money(p.priceKsh)}</div><button class="btn btn-primary" data-add="${p.id}">Add to cart</button></div></article>`).join('');
+  $('#products').innerHTML=filtered().map(p=>{const referenceUrl=safeReferenceUrl(p.referenceUrl);return `<article class="product-card"><img src="${escapeProductText(productImage(p.image))}" alt="${escapeProductText(p.name)}" loading="lazy"><div class="product-body"><span class="badge">${escapeProductText(p.category)}</span><h3>${escapeProductText(p.name)}</h3><p>${escapeProductText(p.description||'')}</p><div class="price">${money(p.priceKsh)}</div>${referenceUrl?`<a class="market-ref" href="${escapeProductText(referenceUrl)}" target="_blank" rel="noopener noreferrer">Market reference: ${escapeProductText(p.marketReference||'Kenya retail')}</a>`:''}${p.imageCredit?`<small>${escapeProductText(p.imageCredit)}</small>`:''}<button class="btn btn-primary" data-add="${escapeProductText(p.id)}">Add to cart</button></div></article>`}).join('');
   document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>add(b.dataset.add));renderCart();
 }
 function add(id){cart[id]=(cart[id]||0)+1;persist()}
