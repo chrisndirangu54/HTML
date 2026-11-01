@@ -183,7 +183,6 @@ export const adminSaveNewsletterSettings=onRequest({region:'europe-west1'},async
     if(url.protocol!=='https:'||!/(^|\.)(list-manage\.com|eepurl\.com|mailchi\.mp)$/.test(url.hostname))throw new Error('Use a Mailchimp public HTTPS signup URL');}
   await db.collection('siteContent').doc('newsletter-config').set({type:'community',title:'Newsletter settings',signupUrl,active:false,updatedBy:admin.uid,updatedAt:FieldValue.serverTimestamp()},{merge:true});return{saved:true};
 }));
-
 async function mpesaToken(){const raw=Buffer.from(`${mpesaKey.value()}:${mpesaSecret.value()}`).toString('base64');const r=await fetch('https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials',{headers:{Authorization:`Basic ${raw}`}});const j=await r.json();if(!r.ok||!j.access_token)throw new Error(j.errorMessage||'M-Pesa authentication failed');return j.access_token}
 function mpesaTimestamp(){const d=new Date();const p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`}
 
