@@ -41,6 +41,7 @@ export function createMeshEditor({model,scene,camera,renderer,orbit,redraw,onDir
    const g=mesh.geometry;
    // Clone to avoid mutating an imported file's source geometry in place.
    mesh.geometry=g.clone();
+   g.dispose(); // Original GPU buffers are no longer referenced after the editor takes its clone.
    try{topology.set(mesh,buildSculptTopology(mesh.geometry.attributes.position.array,mesh.geometry.index?.array||null));}
    catch(e){onMessage('Sculpt unavailable for this mesh: '+e.message);}
   }

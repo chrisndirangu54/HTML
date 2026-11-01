@@ -140,3 +140,17 @@ The Engineering Hub has a single Engineering Pipeline sidebar item with five sta
 An unchanged parametric plate can display a non-destructive color overlay driven by the existing simplified beam model. This is a surrogate, not general finite-element analysis. Imported, AI-generated, primitive and sculpt-edited meshes are visibly marked as not having a validated structural simulation; stale plate-specific simulation results and DFM screens are hidden in those cases.
 
 The active model has explicit source provenance. Parametric field edits only regenerate an unmodified parametric model. Replacing a sculpted or imported mesh with the parametric plate requires an explicit action. Tripo GLB generation loads into the central scene rather than a separate editor page. Manufacturing file selection remains explicit, and the submission handler rejects a parametric-plate request when the active model is a mesh. Existing signed-in consent, server-backed payments and human quotation review remain separate. This change is not a BREP/STEP modeller, certified FEA solver, automated manufacturing system, or live deployment verification. Existing deep links route to relevant pipeline stages.
+
+
+### Persistent WebGL renderer and explicit physical mesh units
+
+The pipeline viewport now maintains a persistent Three.js renderer, camera and orbit controls while swapping the active model; expensive GPU contexts are not recreated on routine plate parameter updates. Mesh replacement disposes obsolete sculpt-editor handlers, graphics geometry and materials. File imports use monotonically increasing request tickets to reject older asynchronous file reads/GLB parses after a newer import or primitive is selected, and new models undergo finite-coordinate, vertex-budget and bounded-size checks before replacing the last valid scene.
+
+Imported STL/OBJ/GLB and Tripo AI GLB coordinates are not assumed to represent millimetres. Users must explicitly select source units (mm, cm, m or inches), re-import the original model, and convert geometry to the shared millimetre basis before a mesh may be selected for fabrication. A measured X/Y/Z bounding-box summary and vertex count appear beside the central viewport. Reinterpretation of previously sculpted geometry requires confirmation, because it resets edits. Unit conversion clears any previously selected fabrication upload and requires explicit STL export/selection again; this prevents mistakenly submitting the pre-conversion file. The original parametric plate and locally created primitives use millimetres by design. Unit declarations are user supplied, not certified measurements. No uploaded data is transmitted during unit verification.
+
+A browser-level interactive model-viewer acceptance check is still needed before claiming full production readiness.
+
+
+### Non-destructive model inspection controls
+
+The single Engineering viewport also supports material X-ray transparency, a selectable X/Y/Z clipping plane with an interactive position slider, wireframe/solid views, and an explicit local PNG snapshot export. These use the active shared Three.js scene; clipping and opacity affect only appearance, never STL/OBJ geometry or the plate's calculation model. Sectioning does not cap open cross-sections or compute an actual manufacturing cut, and screenshots are visual evidence, not dimensioned or certified drawings. Inspection controls reset whenever a different active model loads, avoiding misleading carry-over.

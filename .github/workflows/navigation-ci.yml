@@ -38,6 +38,8 @@ on:
       - 'assets/js/engineering-dashboard.js'
       - 'assets/js/engineering-pipeline.js'
       - 'assets/js/engineering-pipeline-core.mjs'
+      - 'assets/js/engineering-geometry-units.mjs'
+      - 'tests/engineering-viewport-reliability.test.mjs'
       - 'tests/engineering-pipeline.test.mjs'
       - 'assets/js/engineering-design-intelligence*.js'
       - 'assets/js/engineering-design-intelligence-core.mjs'
@@ -119,6 +121,8 @@ on:
       - 'assets/js/engineering-dashboard.js'
       - 'assets/js/engineering-pipeline.js'
       - 'assets/js/engineering-pipeline-core.mjs'
+      - 'assets/js/engineering-geometry-units.mjs'
+      - 'tests/engineering-viewport-reliability.test.mjs'
       - 'tests/engineering-pipeline.test.mjs'
       - 'assets/js/engineering-design-intelligence*.js'
       - 'assets/js/engineering-design-intelligence-core.mjs'
@@ -187,6 +191,8 @@ jobs:
       - run: node --check assets/js/engineering-dashboard.js
       - run: node --check assets/js/engineering-pipeline.js
       - run: node --check assets/js/engineering-pipeline-core.mjs
+      - run: node --check assets/js/engineering-geometry-units.mjs
+      - run: node --check assets/js/engineering-fabrication-preview.js
       - run: node --check assets/js/engineering-design-intelligence.js
       - run: node --check assets/js/engineering-design-intelligence-core.mjs
       - run: node --check assets/js/engineering-variant-core.mjs
@@ -200,4 +206,4 @@ jobs:
       - run: npm --prefix functions-engineering run check
       - run: node --check assets/js/engineering-cad-viewer.js
       - run: node --check assets/js/engineering-simulator.js
-      - run: node --test tests/site-navigation.test.cjs tests/isp-shop-ux.test.cjs tests/home-theme.test.cjs tests/service-pages-ux.test.cjs tests/site-shop-media-reseller.test.cjs tests/operational-dashboards.test.cjs tests/expanded-ict-catalog.test.cjs tests/microsoft-storefront.test.cjs tests/cloud-microsoft-section.test.cjs tests/web3-studio.test.cjs tests/web3-visuals.test.cjs tests/engineering-studio.test.cjs tests/open-visuals-nft.test.cjs tests/engineering-cad-viewer.test.cjs tests/home-gaming-reel-position.test.cjs tests/engineering-plate-simulation.test.cjs tests/engineering-fabrication.test.cjs tests/engineering-unified.test.cjs tests/engineering-dashboard.test.cjs tests/engineering-pipeline.test.mjs tests/engineering-design-intelligence.test.mjs tests/engineering-variant-explorer.test.mjs tests/engineering-mesh-inspection.test.mjs tests/engineering-sculpt-core.test.mjs tests/engineering-sculpt-workbench.test.cjs
+      - run: node --test tests/site-navigation.test.cjs tests/isp-shop-ux.test.cjs tests/home-theme.test.cjs tests/service-pages-ux.test.cjs tests/site-shop-media-reseller.test.cjs tests/operational-dashboards.test.cjs tests/expanded-ict-catalog.test.cjs tests/microsoft-storefront.test.cjs tests/cloud-microsoft-section.test.cjs tests/web3-studio.test.cjs tests/web3-visuals.test.cjs tests/engineering-studio.test.cjs tests/open-visuals-nft.test.cjs tests/engineering-cad-viewer.test.cjs tests/home-gaming-reel-position.test.cjs tests/engineering-plate-simulation.test.cjs tests/engineering-fabrication.test.cjs tests/engineering-unified.test.cjs tests/engineering-dashboard.test.cjs tests/engineering-pipeline.test.mjs tests/engineering-viewport-reliability.test.mjs tests/engineering-design-intelligence.test.mjs tests/engineering-variant-explorer.test.mjs tests/engineering-mesh-inspection.test.mjs tests/engineering-sculpt-core.test.mjs tests/engineering-sculpt-workbench.test.cjs
