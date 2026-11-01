@@ -9,11 +9,12 @@ import {OBJLoader} from 'three/addons/loaders/OBJLoader.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {inspectTriangleGeometry} from './engineering-mesh-inspection.js';
 import {createMeshEditor} from './engineering-sculpt-editor.js';
+import {modelUnitScale,convertedBounds,modelVerificationStatus} from './engineering-geometry-units.mjs';
 
 const $=id=>document.getElementById(id);
 const MAX_FILE_BYTES=15*1024*1024;
 const MAX_VERTICES=750000;
-let session=null,currentView=null,requestVersion=0,rendererCreated=0;
+let session=null,currentView=null,requestVersion=0,rendererCreated=0,activeFile=null;
 const describe=message=>{const status=$('fab-sculpt-status');if(status)status.textContent=message;};
 
 function glbHasExternalUris(buffer){
@@ -170,10 +171,16 @@ function fitCamera(s,maxDimension,preserveDirection=false){
  s.orbit.target.set(0,0,0);s.orbit.minDistance=maxDimension*.25;s.orbit.maxDistance=maxDimension*30;
  s.orbit.update();
 }
-async function showModel(model,container,label,source='imported',ticket=++requestVersion){
+async function showModel(model,container,label,source='imported',ticket=++requestVersion,inputUnits=null){
  if(ticket!==requestVersion){disposeModel(model);return null;}
+ // Only a deliberate source-unit choice converts raw imported/AI coordinates.
+ const verification=modelVerificationStatus(source,inputUnits);
+ if(verification.unitsVerified&&!['parametric','primitive'].includes(source)){
+  model.scale.multiplyScalar(modelUnitScale(inputUnits));
+ }
  // Validate before evicting the last valid model.
  const summary=modelSummary(model);
+ if(verification.unitsVerified)convertedBounds(summary.size,verification.units);
  if(ticket!==requestVersion){disposeModel(model);return null;}
  const s=createSession(container);
  if(s.lost){disposeModel(model);throw Error('Graphics context is lost. Reload to continue editing.');}
@@ -240,14 +247,18 @@ async function showModel(model,container,label,source='imported',ticket=++reques
  };
  s.resize();s.redraw();
  document.dispatchEvent(new CustomEvent('eng:geometry-loaded',{detail:{
-  source,label,bounds:summary.size,vertices:summary.vertices,meshes:summary.meshes,rendererGeneration:rendererCreated
+  source,label,bounds:summary.size,vertices:summary.vertices,meshes:summary.meshes,
+  rendererGeneration:rendererCreated,unitsVerified:verification.unitsVerified,
+  sourceUnits:verification.originalUnits,unitBasis:verification.units
  }}));
  return {label,bounds:summary.size,vertices:summary.vertices};
 }
 export async function previewPrimitive(shape,container,dimensions){
  const ticket=++requestVersion;
  const model=defaultShape(shape,dimensions);
- return showModel(model,container,'Editable '+shape,shape==='plate'?'parametric':'primitive',ticket);
+ const result=await showModel(model,container,'Editable '+shape,shape==='plate'?'parametric':'primitive',ticket);
+ if(result)activeFile=null;
+ return result;
 }
 export async function previewFile(file,container,options={}){
  const ticket=++requestVersion;
@@ -275,7 +286,16 @@ export async function previewFile(file,container,options={}){
   model=parsed.scene;
  }
  if(ticket!==requestVersion){disposeModel(model);return null;}
- return showModel(model,container,ext.toUpperCase()+' source',options.sourceType==='ai'?'ai':'imported',ticket);
+ const result=await showModel(model,container,ext.toUpperCase()+' source',
+  options.sourceType==='ai'?'ai':'imported',ticket,options.inputUnits||null);
+ if(result)activeFile={file,container,sourceType:options.sourceType==='ai'?'ai':'imported'};
+ return result;
+}
+export async function reopenCurrentModelWithUnits(unit){
+ modelUnitScale(unit);
+ if(!activeFile)throw Error('There is no imported or AI source file to reinterpret.');
+ const {file,container,sourceType}=activeFile;
+ return previewFile(file,container,{sourceType,inputUnits:unit});
 }
 export function selectUnifiedView(mode){
  if(!currentView)return false;
@@ -290,5 +310,6 @@ export function showPlateSimulation(snapshot){
 export function currentGeometrySource(){return currentView?.source||null;}
 export function engineeringViewportDiagnostics(){
  return Object.freeze({active:!!currentView,rendererInstances:rendererCreated,
-  activeSource:currentView?.source||null,visibleCanvases:session?.container?.querySelectorAll('canvas').length||0});
+  activeSource:currentView?.source||null,visibleCanvases:session?.container?.querySelectorAll('canvas').length||0,
+  fileInMemory:!!activeFile});
 }
