@@ -47,8 +47,10 @@ test('homepage desktop and mobile fallbacks match and avoid old dead anchors', (
 test('specialist pages retain operational controls and contextual navigation', () => {
   const shop = read('shop.html');
   for (const id of ['cart-button', 'auth-link', 'whatsapp']) assert.ok(shop.includes('id="' + id + '"'));
-  assert.match(read('isp-customer.html'), /class="tt-site-nav"/);
-  assert.match(read('isp-equipment.html'), /class="commerce-nav"/);
+  assert.match(read('isp-customer.html'), /class="isp-request tt-home-aligned"/);
+  assert.match(read('isp-equipment.html'), /class="isp-catalogue tt-home-aligned"/);
+  assert.match(read('shop.html'), /class="tt-commerce-utility"/);
+  assert.match(read('isp.html'), /class="tt-utility-head"/);
   assert.match(read('isp-architecture.html'), /url=isp\.html/);
   assert.match(read('isp-architecture.html'), /location\.replace\('isp\.html'\)/);
   assert.match(read('cybersecurity.html'), /id="cyber-nav-toggle"/);
