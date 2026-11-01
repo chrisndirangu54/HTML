@@ -64,6 +64,9 @@ test('payments credit customer only after verified provider amount currency and 
 
 test('upload endpoint private, upload request not automatically manufacturing',()=>{
  assert.match(cloud,/verifyIdToken\(idToken,true\)/);
+ assert.match(cloud,/getAppCheck\(\)\.verifyToken\(appToken\)/);
+ assert.match(app,/getToken\(appCheck\)/);
+ assert.match(app,/X-Firebase-AppCheck/);
  assert.match(cloud,/engineeringUploadDesign=onRequest/);
  assert.match(cloud,/req\.rawBody/);
  assert.match(cloud,/15\*1024\*1024/);
