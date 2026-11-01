@@ -35,27 +35,18 @@
     <div class="top-navbar-container" id="navContainer">
 
         <!-- Hamburger (mobile only) -->
-        <div class="top-hamburger" onclick="toggleMobileMenu()">
+        <button class="top-hamburger" type="button" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle navigation">
             <span></span><span></span><span></span>
-        </div>
+        </button>
 
         <!-- Desktop horizontal menu -->
         <ul class="top-menu">
-            <li><a href="#blogs"><span>Blogs</span> <i class="las la-newspaper"></i></a></li>
-            <li><a href="#gallery"><span>Gallery</span> <i class="las la-images"></i></a></li>
-            <li><a href="#awards"><span>Awards</span> <i class="las la-trophy"></i></a></li>
-            <li><a href="https://chat.whatsapp.com/LwqKsFRyua3Kinc9SRgZnj" target="_blank"><span>Communities</span> <i class="las la-users"></i></a></li>
-            <li><a href="cybersecurity.html"><span>Cybersecurity</span> <i class="las la-shield-alt"></i></a></li>
-            <li><a href="web3.html"><span>Web3</span> <i class="las la-cube"></i></a></li>
-            <li><a href="isp.html"><span>ISP</span> <i class="las la-wifi"></i></a></li>
-            <li><a href="#Shop"><span>Shop</span> <i class="las la-market"></i></a></li>
-            <li><a href="#podcasts"><span>Podcasts</span><i class="las la-stream"></i></a></li>
-            <li><a href="#training"><span>Training</span><i class="las la-users"></i></a></li>
-            <li><a href="#events"><span>Events</span><i class="las la-users"></i></a></li>
-            <li><a href="seo-cloud.html"><span>SEO Cloud</span> <i class="las la-chart-line"></i></a></li>
-            <li><a class="workspace-menu-link" href="https://tekntandaoworkspace.web.app/" target="_blank" rel="noopener" title="Open TeknTandao Workspace"><span>Workspace</span> <i class="las la-arrow-right"></i></a></li>
-
-            
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#services">Services</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="blog.html">Blogs</a></li>
+            <li><a href="contact_page.html">Contact</a></li>
+            <li><a href="https://tekntandaoworkspace.web.app/" target="_blank" rel="noopener noreferrer">Workspace</a></li>
         </ul>
 
         <!-- Invisible sentinel to detect wrap -->
@@ -63,18 +54,12 @@
 
         <!-- Mobile menu (hidden until clicked) -->
         <ul class="top-mobile-menu" id="mobileMenu">
-            <li><a href="#blogs"><span>Blogs</span> <i class="las la-newspaper"></i></a></li>
-            <li><a href="#gallery"><span>Gallery</span> <i class="las la-images"></i></a></li>
-            <li><a href="#awards"><span>Awards</span> <i class="las la-trophy"></i></a></li>
-            <li><a href="https://chat.whatsapp.com/LwqKsFRyua3Kinc9SRgZnj" target="_blank"><span>Communities</span> <i class="las la-users"></i></a></li>
-            <li><a href="cybersecurity.html"><span>Cybersecurity</span> <i class="las la-shield-alt"></i></a></li>
-            <li><a href="web3.html"><span>Web3</span> <i class="las la-cube"></i></a></li>
-            <li><a href="isp.html"><span>ISP</span> <i class="las la-wifi"></i></a></li>
-            <li><a href="#Shop"><span>Shop</span> <i class="las la-shopping-cart"></i></a></li>
-            <li><a href="#podcasts"><span>Podcasts</span><i class="las la-stream"></i></a></li>
-            <li><a href="#training"><span>Training</span><i class="las la-users"></i></a></li>
-            <li><a href="#events"><span>Events</span><i class="las la-users"></i></a></li>
-            <li><a class="workspace-menu-link" href="https://tekntandaoworkspace.web.app/" target="_blank" rel="noopener" title="Open TeknTandao Workspace"><span>Workspace</span> <i class="las la-arrow-right"></i></a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#services">Services</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="blog.html">Blogs</a></li>
+            <li><a href="contact_page.html">Contact</a></li>
+            <li><a href="https://tekntandaoworkspace.web.app/" target="_blank" rel="noopener noreferrer">Workspace</a></li>
         </ul>
     </div>
 </header>
@@ -951,130 +936,51 @@
     <script src="assets/js/ScrollToPlugin.min.js"></script>
     <script src="assets/js/lightbox.min.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/nav-responsive.js"></script>
     <script src="assets/js/ajax-form.js"></script>
     <script src="assets/js/scene-policy.js"></script>
     <script src="assets/js/hero-gaming-pc.js"></script>
     <script src="assets/js/color.js"></script>
     <script src="assets/js/home-stage.js"></script>
 <script>
-// Reliable wrap detection using the sentinel
-const container = document.getElementById('navContainer');
-const sentinel = container.querySelector('.top-wrap-sentinel');
-
-function checkWrap() {
-    const sentinelRect = sentinel.getBoundingClientRect();
-    const containerRect = container.getBoundingClientRect();
-
-    // If sentinel is below the container top → it wrapped to a new line
-    if (sentinelRect.top > containerRect.top + 10) {
-        container.classList.add('wrapped');
-    } else {
-        container.classList.remove('wrapped');
+// Floating menu controls; shared destinations are populated by nav-responsive.js.
+(() => {
+  const container = document.getElementById('navContainer');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const button = document.querySelector('.top-hamburger');
+  const sentinel = container?.querySelector('.top-wrap-sentinel');
+  const checkWrap = () => {
+    if (!container || !sentinel) return;
+    container.classList.toggle('wrapped',
+      sentinel.getBoundingClientRect().top > container.getBoundingClientRect().top + 10);
+  };
+  const setOpen = open => {
+    if (!mobileMenu || !button) return;
+    mobileMenu.classList.toggle('show', open);
+    button.setAttribute('aria-expanded', String(open));
+    button.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+    if (!open) mobileMenu.querySelectorAll('details[open]').forEach(d => { d.open = false; });
+  };
+  button?.addEventListener('click', event => {
+    event.stopPropagation();
+    setOpen(!mobileMenu.classList.contains('show'));
+  });
+  mobileMenu?.addEventListener('click', event => {
+    if (event.target.closest('a')) setOpen(false);
+  });
+  document.addEventListener('click', event => {
+    if (!event.target.closest('.top-navbar')) setOpen(false);
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && mobileMenu?.classList.contains('show')) {
+      setOpen(false);
+      button?.focus();
     }
-}
-
-// Run on load, resize, and orientation change
-window.addEventListener('load', checkWrap);
-window.addEventListener('resize', checkWrap);
-window.addEventListener('orientationchange', checkWrap);
-
-// Hamburger toggle
-function toggleMobileMenu() {
-    document.getElementById('mobileMenu').classList.toggle('show');
-}
-
-let lastScrollTop = 0;
-const navbar = document.querySelector('.top-mobile-menu');
-const delta = 5;
-const navbarHeight = navbar?.offsetHeight || 60;
-
-let isNavbarVisible = false;
-let scrollOccurred = false;
-
-// Force hide at start
-if (navbar) {
-    navbar.style.transform = 'translateY(-100%)';
-    navbar.style.opacity = '0';
-    navbar.style.pointerEvents = 'none';
-}
-
-// ── Scroll: hide on ANY scroll (up or down) ──
-window.addEventListener('scroll', () => {
-    const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-    if (Math.abs(lastScrollTop - currentScrollTop) <= delta) return;
-
-    if (isNavbarVisible) {
-        hideNavbar();
-    }
-
-    scrollOccurred = true;
-    lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
-});
-
-// ── Click outside navbar → (don't toggle menu) ──
-document.addEventListener('click', (e) => {
-    if (!navbar) {
-        // Then toggle the actual menu
-        document.getElementById('mobileMenu').classList.remove('show');  
-    }
-
-
-    // Click inside navbar close menu when hiding navbar
-    if (navbar.contains(e.target)) {
-        // Then toggle the actual menu
-        document.getElementById('mobileMenu')?.classList.remove('show');  
-    }
-
-
-    
-    // Clicked outside → reveal navbar (but don't auto-open menu)
-    if (!isNavbarVisible) {
-        showNavbar();
-
-        // Then toggle the actual menu
-        document.getElementById('mobileMenu')?.classList.remove('show');        
-
-        
-    }
-});
-
-// ── Hamburger click – always ensure navbar is visible, then toggle menu ──
-const hamburger = document.querySelector('.hamburger'); // ← adjust selector if needed
-
-if (hamburger) {
-    hamburger.addEventListener('click', (e) => {
-        e.stopPropagation(); // prevent document click from interfering
-
-        // Most important fix: if navbar is hidden → show it first
-        if (!isNavbarVisible) {
-            showNavbar();
-        }
-
-        // Then toggle the actual menu
-        document.getElementById('mobileMenu')?.classList.toggle('show');
-    });
-}
-
-function showNavbar() {
-    if (!navbar) return;
-    navbar.style.transform = 'translateY(0)';
-    navbar.style.opacity = '1';
-    navbar.style.pointerEvents = 'auto';
-    isNavbarVisible = true;
-}
-
-function hideNavbar() {
-    if (!navbar) return;
-    navbar.style.transform = 'translateY(-100%)';
-    navbar.style.opacity = '0';
-    navbar.style.pointerEvents = 'none';
-    isNavbarVisible = false;
-
-    // Optional: also close menu when hiding navbar
-    document.getElementById('mobileMenu')?.classList.remove('show');
-}
-</script>
+  });
+  window.addEventListener('load', checkWrap);
+  window.addEventListener('resize', checkWrap);
+  window.addEventListener('orientationchange', checkWrap);
+})();
 </script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-H4YCVYBN9S">
