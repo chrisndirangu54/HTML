@@ -187,7 +187,8 @@ function visibleProducts() {
   const q = state.query.trim().toLowerCase();
   return state.products.filter(product => {
     const matchesCategory = state.category === 'All' || product.category === state.category;
-    const matchesCollection = state.collection !== 'isp' || ['ISP Equipment', 'Networking', 'Starlink'].includes(product.category) || product.ispDirectory;
+    const matchesCollection = state.collection !== 'isp' || ['ISP Equipment', 'Networking', 'Starlink'].includes(product.category) || product.ispDirectory ||
+      /\\b(ethernet cable|cat6|patch cable)\\b/i.test(product.name || '');
     const haystack = `${product.name} ${product.brand || ''} ${product.category || ''} ${product.description || ''}`.toLowerCase();
     return matchesCollection && matchesCategory && (!q || haystack.includes(q));
   });
