@@ -8,7 +8,7 @@ export const PACKAGES=Object.freeze({
 export const MAX_FILE_BYTES=15*1024*1024;
 export const ALLOWED_TYPES=Object.freeze({
   stl:'model/stl',obj:'text/plain',step:'application/octet-stream',stp:'application/octet-stream',
-  scad:'text/plain',dxf:'application/dxf',3mf:'application/octet-stream',
+  scad:'text/plain',dxf:'application/dxf','3mf':'application/octet-stream',
   glb:'model/gltf-binary',pdf:'application/pdf'
 });
 export const trim=(v,n=200)=>String(v??'').trim().slice(0,n);
