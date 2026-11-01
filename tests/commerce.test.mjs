@@ -104,3 +104,21 @@ test('Firestore exposes only active products to clients', () => {
   assert.match(rules, /match \/ictCommerceOrders\/\{orderId\}/);
   assert.match(rules, /allow read, write: if false/);
 });
+
+
+test('Starlink Standard Kit is quote-only and cannot use the Mini instalment deposit', () => {
+  const product = products.find(row => row.id === 'starlink-standard-kit');
+  assert.ok(product);
+  assert.equal(product.quoteOnly, true);
+  assert.equal(product.ispDirectory, true);
+  assert.equal(product.priceKes, null);
+  assert.equal(product.compareAtKes, null);
+  assert.equal(product.stock, 0);
+  assert.doesNotMatch(product.sourceNote, /6,?750/);
+  assert.match(product.sourceNote, /instalment deposit is not the full kit price/);
+  assert.match(commerce, /quoteById\.get\(product\.id\) \|\| product/);
+  assert.match(functions, /requested\.productId === 'starlink-standard-kit'/);
+  assert.match(functions, /product\.quoteOnly === true/);
+  assert.match(seeder, /id === 'starlink-standard-kit'/);
+  assert.match(seeder, /marketReferencePriceKes\) === 6750/);
+});
