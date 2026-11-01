@@ -64,3 +64,19 @@ test('unit change resets input file and blocks fabrication until explicit verifi
  assert.match(src,/unitBasis:verification\.units/);
  assert.match(pipeline,/activeBounds\.map\(n=>Number\(n\)\.toFixed\(2\)\)/);
 });
+test('single viewport provides non-destructive X-ray, section plane and image evidence',()=>{
+ const src=read('assets/js/engineering-fabrication-preview.js');
+ const pipeline=read('assets/js/engineering-pipeline.js');
+ const css=read('assets/css/engineering-dashboard.css');
+ assert.match(src,/renderer\.localClippingEnabled=true/);
+ assert.match(src,/setSection\(axis,ratio=\.5\)/);
+ assert.match(src,/m\.clippingPlanes=plane\?\[plane\]:\[\]/);
+ assert.match(src,/setXray\(enabled\)/);
+ assert.match(src,/m\.transparent=enabled\|\|baseline\.transparent/);
+ assert.match(src,/export async function captureEngineeringSnapshot/);
+ assert.match(src,/session\.renderer\.domElement\.toBlob/);
+ assert.doesNotMatch(src,/geometry\.deleteVertices|automaticManufacture|manufacturingApproval/);
+ for(const id of ['eng-pipeline-xray','eng-pipeline-section-axis','eng-pipeline-section-position','eng-pipeline-snapshot'])
+  assert.ok(pipeline.includes(id),id);
+ assert.match(css,/\.eng-pipeline-inspect-tools/);
+});

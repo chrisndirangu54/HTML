@@ -149,3 +149,8 @@ The pipeline viewport now maintains a persistent Three.js renderer, camera and o
 Imported STL/OBJ/GLB and Tripo AI GLB coordinates are not assumed to represent millimetres. Users must explicitly select source units (mm, cm, m or inches), re-import the original model, and convert geometry to the shared millimetre basis before a mesh may be selected for fabrication. A measured X/Y/Z bounding-box summary and vertex count appear beside the central viewport. Reinterpretation of previously sculpted geometry requires confirmation, because it resets edits. Unit conversion clears any previously selected fabrication upload and requires explicit STL export/selection again; this prevents mistakenly submitting the pre-conversion file. The original parametric plate and locally created primitives use millimetres by design. Unit declarations are user supplied, not certified measurements. No uploaded data is transmitted during unit verification.
 
 A browser-level interactive model-viewer acceptance check is still needed before claiming full production readiness.
+
+
+### Non-destructive model inspection controls
+
+The single Engineering viewport also supports material X-ray transparency, a selectable X/Y/Z clipping plane with an interactive position slider, wireframe/solid views, and an explicit local PNG snapshot export. These use the active shared Three.js scene; clipping and opacity affect only appearance, never STL/OBJ geometry or the plate's calculation model. Sectioning does not cap open cross-sections or compute an actual manufacturing cut, and screenshots are visual evidence, not dimensioned or certified drawings. Inspection controls reset whenever a different active model loads, avoiding misleading carry-over.
