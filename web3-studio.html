@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Web3 Intelligence & Developer Studio | TeknTandao</title>
+<meta name="description" content="Explore blockchain networks, inspect public contract records, review Solidity security patterns, learn Kenyan virtual-asset rules, create local document fingerprints and plan business blockchain projects.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://tekntandao.com/web3-studio.html">
+<link rel="icon" href="assets/images/tekntandao-favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+<link rel="stylesheet" href="assets/css/commerce.css"><link rel="stylesheet" href="assets/css/isp-shop-pages.css">
+<link rel="stylesheet" href="assets/css/home-theme-bridge.css"><link rel="stylesheet" href="assets/css/service-home-ux.css">
+<link rel="stylesheet" href="assets/css/web3-studio.css">
+</head><body class="tt-home-aligned tt-service-page tt-web3-studio">
+<div class="tt-utility-head"><a class="brand" href="index.html">TeknTandao</a><div class="tt-utility-actions"><a href="web3.html">Web3 briefing</a><a href="contact_page.html?subject=web3">Consultation</a></div></div>
+<main class="tt-svc-shell tt-w3-shell">
+<nav class="tt-svc-crumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span>›</span><a href="web3.html">Web3</a><span>›</span>Studio</nav>
+<header class="tt-svc-hero tt-svc-hero--split">
+<div><span class="tt-svc-eyebrow">Web3 intelligence · Tools · Learning</span><h1>Build, inspect and learn.<br><span class="tt-svc-gradient">With evidence.</span></h1>
+<p>Explore real public-chain information, test smart-contract patterns, understand Kenyan regulatory considerations, create verifiable document fingerprints and plan enterprise blockchain projects.</p>
+<div class="tt-svc-actions"><a class="tt-svc-button primary" href="#workspace">Open Web3 toolkit</a><a class="tt-svc-button" href="contact_page.html?subject=web3">Discuss a Web3 project</a></div>
+</div>
+<aside class="tt-svc-hero-aside"><i class="las la-cubes" aria-hidden="true"></i><h2>Read-only by design</h2>
+<p>Public-chain lookups and local educational tools are enabled. No private-key collection, wallet signing, trading, smart-contract deployment or investment recommendations.</p></aside>
+</header>
+<div class="tt-w3-notice"><i class="las la-info-circle" aria-hidden="true"></i><span>This is an educational, developer and consulting workspace. On-chain information comes from public explorers where available; automated pattern checks and regulatory suggestions are <strong>not audits, licensing determinations or investment advice</strong>. No uploaded document or source code leaves your browser in the local tools.</span></div>
+<section id="workspace" class="tt-w3-layout" aria-label="Web3 intelligence workspace">
+<nav class="tt-w3-sidebar" aria-label="Web3 tool selection">
+<button class="tt-w3-tab active" type="button" data-w3-tab="explorer" aria-current="page"><i class="las la-search" aria-hidden="true"></i> Chain explorer</button>
+<button class="tt-w3-tab" type="button" data-w3-tab="security"><i class="las la-shield-alt" aria-hidden="true"></i> Contract & wallet safety</button>
+<button class="tt-w3-tab" type="button" data-w3-tab="developer"><i class="las la-code" aria-hidden="true"></i> Developer studio</button>
+<button class="tt-w3-tab" type="button" data-w3-tab="compliance"><i class="las la-balance-scale" aria-hidden="true"></i> Kenya regulatory guide</button>
+<button class="tt-w3-tab" type="button" data-w3-tab="proofs"><i class="las la-certificate" aria-hidden="true"></i> Credential & provenance</button>
+<button class="tt-w3-tab" type="button" data-w3-tab="enterprise"><i class="las la-building" aria-hidden="true"></i> Enterprise project builder</button>
+<button class="tt-w3-tab" type="button" data-w3-tab="academy"><i class="las la-graduation-cap" aria-hidden="true"></i> Learn & AI-ready help</button>
+<button class="tt-w3-tab" type="button" data-w3-tab="research"><i class="las la-newspaper" aria-hidden="true"></i> Research & insights</button>
+<div class="tt-w3-sidebar-foot">No wallet connection needed for these tools. Production blockchain integrations require separate consent, engineering and approval.</div>
+</nav>
+<div class="tt-w3-main">
+<div id="w3-message" class="tt-w3-message" role="status" aria-live="polite"></div>
+<section class="tt-w3-view" id="w3-explorer" data-w3-view="explorer">
+<div class="tt-w3-view-head"><span class="tt-svc-eyebrow">Public chain data</span><h2>Blockchain intelligence explorer</h2><p>Inspect a public address, transaction or contract. Direct explorer links work even when browser API requests are blocked or rate-limited.</p></div>
+<form class="tt-w3-panel tt-w3-form" id="w3-search-form">
+<div class="tt-w3-form-row"><label>Network<select id="w3-network"><option value="ethereum">Ethereum</option><option value="base">Base</option><option value="arbitrum">Arbitrum</option><option value="polygon">Polygon</option><option value="optimism">Optimism</option><option value="bitcoin">Bitcoin</option></select></label>
+<label>Lookup type<select id="w3-type"><option value="address">Wallet or contract address</option><option value="transaction">Transaction hash</option></select></label></div>
+<label>Public address or transaction identifier<input id="w3-identifier" required spellcheck="false" autocomplete="off" placeholder="0x…" maxlength="100"></label>
+<div class="tt-svc-actions"><button type="submit" class="tt-svc-button primary">Inspect public data</button><a id="w3-explorer-link" class="tt-svc-button" target="_blank" rel="noopener noreferrer" href="https://eth.blockscout.com/">Open network explorer</a></div></form>
+<div id="w3-lookup-result" class="tt-w3-panel" aria-live="polite"><p>Provide an address or transaction hash to begin. Your search is public and read-only.</p></div>
+<section class="tt-w3-panel"><div class="tt-w3-inline-head"><h3>Observed network gas indicators</h3><button type="button" id="w3-gas-refresh" class="tt-svc-button">Refresh public data</button></div>
+<p id="w3-gas-status">Select Refresh to request gas indicators from the Ethereum Blockscout public API.</p>
+<div id="w3-gas-data" class="tt-w3-metrics"></div>
+<div class="tt-w3-form-row"><label>Gas units<input id="w3-gas-units" type="number" min="21000" max="3000000" value="21000"></label><label>Gas price in gwei<input id="w3-gas-price" type="number" min="0" step="any" placeholder="Enter current gas price"></label></div>
+<button id="w3-gas-estimate" class="tt-svc-button" type="button">Estimate network fee</button><p id="w3-gas-estimate-result" role="status"></p><small>Fee estimator excludes application fees, L2 data fees, token value, exchange rates and transaction failure costs. Not a guaranteed quote.</small></section>
+</section>
+<section class="tt-w3-view" id="w3-security" data-w3-view="security" hidden>
+<div class="tt-w3-view-head"><span class="tt-svc-eyebrow">Security triage</span><h2>Smart-contract & wallet safety</h2><p>Review Solidity source for common privileged operations and risky constructs, then use specialist tools for a formal analysis.</p></div>
+<div class="tt-w3-panel tt-w3-form"><label>Paste Solidity source (local analysis only)<textarea id="w3-solidity" rows="11" maxlength="75000" spellcheck="false" placeholder="pragma solidity ^0.8.20; ..."></textarea></label>
+<div class="tt-svc-actions"><button id="w3-analyze" class="tt-svc-button primary" type="button">Run preliminary source checks</button><button id="w3-analyze-export" class="tt-svc-button" type="button" disabled>Export findings</button><a class="tt-svc-button" href="https://github.com/crytic/slither" target="_blank" rel="noopener noreferrer">Run Slither in a development environment</a></div>
+<p class="tt-w3-small">Pattern detection only. It cannot establish exploitability, bytecode equivalence, maliciousness, investment suitability or contract safety. Compile, test and commission a real audit.</p></div>
+<div id="w3-audit-result" class="tt-w3-panel" aria-live="polite">No contract analyzed yet.</div>
+<div class="tt-w3-panel"><h3>Wallet permission hygiene</h3><p>Inspect token allowances on a dedicated approval dashboard; no seed phrases or private keys should ever be entered here.</p>
+<label>Optional public EVM wallet address<input id="w3-wallet-address" maxlength="42" placeholder="0x… public address only" autocomplete="off" spellcheck="false"></label>
+<div class="tt-svc-actions"><button id="w3-approval-link" class="tt-svc-button primary" type="button">Open approval inspector</button><a class="tt-svc-button" href="https://revoke.cash/" target="_blank" rel="noopener noreferrer">Revoke.cash</a></div>
+<p id="w3-wallet-status" role="status"></p><p class="tt-w3-small">We do not claim to inspect active approvals from this page. Disconnecting a wallet does not revoke its on-chain permissions.</p></div>
+</section>
+<section class="tt-w3-view" id="w3-developer" data-w3-view="developer" hidden>
+<div class="tt-w3-view-head"><span class="tt-svc-eyebrow">Open-source tools</span><h2>Smart-contract developer studio</h2><p>Design standard tokens and membership passes with OpenZeppelin. Use isolated testing before any mainnet deployment.</p></div>
+<div class="tt-w3-panel"><div class="tt-w3-inline-head"><h3>OpenZeppelin Contracts Wizard</h3><a class="tt-svc-button" href="https://wizard.openzeppelin.com/" target="_blank" rel="noopener noreferrer">Open full Wizard</a></div>
+<p>The official embedded Wizard provides configurable ERC-20, ERC-721, ERC-1155 and governance templates. External content may be restricted by your browser.</p><div class="tt-w3-wizard"><oz-wizard data-tab="ERC721"></oz-wizard></div></div>
+<div class="tt-w3-grid two"><article class="tt-w3-panel"><h3>Contract development workflow</h3><ol><li>Define rights and ownership</li><li>Build with audited libraries</li><li>Test access control, edge cases and invariants</li><li>Run static analysis and human review</li><li>Deploy to a testnet with explicit authorization</li></ol><a href="https://book.getfoundry.sh/" target="_blank" rel="noopener noreferrer">Foundry developer guide</a></article>
+<article class="tt-w3-panel"><h3>Digital memberships & NFT prototypes</h3><p>Use verifiable credentials for certificates and access rights. Do not imply an NFT itself proves legal ownership of an off-chain asset.</p><a href="https://docs.openzeppelin.com/contracts/5.x/erc721" target="_blank" rel="noopener noreferrer">ERC-721 reference</a></article></div>
+</section>
+<section class="tt-w3-view" id="w3-compliance" data-w3-view="compliance" hidden>
+<div class="tt-w3-view-head"><span class="tt-svc-eyebrow">Kenya · Primary sources</span><h2>Regulatory activity navigator</h2><p>Identify possible obligations before offering digital-asset services. Results are indicative and must be verified against official documents and legal advice.</p></div>
+<form class="tt-w3-panel tt-w3-form" id="w3-reg-form"><label>What are you proposing?<select id="w3-reg-activity">
+<option value="development">Build software or provide technical consulting only</option>
+<option value="exchange">Operate a virtual-asset exchange or brokerage</option>
+<option value="custody">Hold or administer customers' virtual assets</option>
+<option value="payment">Process virtual-asset payments or issue stablecoins</option>
+<option value="token">Issue, tokenize or distribute investment-linked assets</option>
+<option value="collectible">Publish non-financial collectibles or membership passes</option>
+<option value="advice">Provide paid virtual-asset investment advice or management</option>
+</select></label><button class="tt-svc-button primary" type="submit">Generate regulatory questions</button></form>
+<div id="w3-reg-result" class="tt-w3-panel" aria-live="polite">Select an activity and generate your diligence questions.</div>
+<div class="tt-w3-panel"><h3>Authoritative references</h3><p>Reviewed for this directory on <strong>1 November 2026</strong>. Regulations and regulator notices may change—follow the sources directly.</p>
+<ul class="tt-w3-links">
+<li><a href="https://www.cma.or.ke/regulatory-framework/" target="_blank" rel="noopener noreferrer">CMA legislation and Virtual Asset Service Providers Regulations</a></li>
+<li><a href="https://www.centralbank.go.ke/policy-procedures/legislation-and-guidelines/" target="_blank" rel="noopener noreferrer">CBK legislation, guidelines and notices</a></li>
+<li><a href="https://www.mygov.go.ke/sites/default/files/2025-11/CMA%20Notice%20of%20Commencement%20Of%20The%20Virtual%20Assets%20Service%20Providers%20Act%2C%202025.pdf" target="_blank" rel="noopener noreferrer">Joint CBK/CMA VASP Act commencement notice (2025)</a></li></ul>
+<p class="tt-w3-small">The VASP Act commenced 4 November 2025; the existing-operator transition reference of 4 November 2026 is time-sensitive. The applicable licensing category and current status must be checked with CBK/CMA.</p></div>
+</section>
+<section class="tt-w3-view" id="w3-proofs" data-w3-view="proofs" hidden>
+<div class="tt-w3-view-head"><span class="tt-svc-eyebrow">Cryptographic proofs</span><h2>Verify credentials & supply-chain records</h2><p>Generate or verify a SHA-256 document fingerprint entirely in the browser. Useful for certificates, batch records, assay reports and supply-chain evidence.</p></div>
+<div class="tt-w3-panel tt-w3-form"><label>Local file to hash (never uploaded)<input id="w3-proof-file" type="file"></label>
+<label>Or enter text to fingerprint<textarea id="w3-proof-text" rows="4" maxlength="50000" placeholder="Certificate ID, issuer, issued date and credential statement…"></textarea></label>
+<div class="tt-svc-actions"><button id="w3-proof-create" class="tt-svc-button primary" type="button">Generate SHA-256 proof</button><button id="w3-proof-download" class="tt-svc-button" type="button" disabled>Download proof JSON</button></div>
+<div id="w3-proof-result" class="tt-w3-result" aria-live="polite">No fingerprint generated yet.</div>
+<label>Compare against an existing SHA-256 hexadecimal digest<input id="w3-proof-compare" maxlength="64" spellcheck="false" autocomplete="off" placeholder="64 hexadecimal characters"></label><button id="w3-proof-verify" class="tt-svc-button" type="button">Compare fingerprints</button><p id="w3-proof-status" role="status"></p>
+<p class="tt-w3-small">A matching hash proves that two inputs have the same digest, subject to hash security—not the author's identity, authenticity of the underlying claim, official land title, ownership, legal compliance or on-chain anchoring. No blockchain transaction is made.</p>
+</div>
+</section>
+<section class="tt-w3-view" id="w3-enterprise" data-w3-view="enterprise" hidden>
+<div class="tt-w3-view-head"><span class="tt-svc-eyebrow">Business applications</span><h2>Enterprise blockchain project planner</h2><p>Create a concrete requirements brief for verifiable credentials, product traceability, digital memberships or tokenization feasibility, then send it to the TeknTandao team.</p></div>
+<form id="w3-business-form" class="tt-w3-panel tt-w3-form">
+<div class="tt-w3-form-row"><label>Use case<select id="w3-case"><option value="credentials">Digital certificates and credentials</option><option value="provenance">Supply-chain and mineral provenance</option><option value="membership">Digital membership and event access</option><option value="tokenization">Real-world asset tokenization feasibility</option><option value="payments">Digital payment systems feasibility</option></select></label>
+<label>Expected monthly records<input id="w3-volume" type="number" min="1" max="100000000" value="1000" required></label></div>
+<div class="tt-w3-form-row"><label>External systems<select id="w3-systems"><option value="none">No integrations yet</option><option value="single">One ERP, CRM or LMS</option><option value="multiple">Several enterprise systems</option></select></label>
+<label>Data confidentiality<select id="w3-privacy"><option value="restricted">Private and permissioned</option><option value="hybrid">Hybrid, public proofs only</option><option value="public">Public non-sensitive data</option></select></label></div>
+<label>Project goal<textarea id="w3-goal" rows="3" maxlength="1200" placeholder="Which process or evidence do you need to make verifiable?"></textarea></label>
+<div class="tt-svc-actions"><button type="submit" class="tt-svc-button primary">Generate project scope</button><button id="w3-enterprise-export" type="button" class="tt-svc-button" disabled>Export scope</button><a class="tt-svc-button" href="contact_page.html?subject=web3">Discuss with TeknTandao</a></div></form>
+<div id="w3-business-result" class="tt-w3-panel" aria-live="polite">Complete the requirements form for a suggested architecture and review checklist. No fee or implementation deadline is estimated without discovery.</div>
+</section>
+<section class="tt-w3-view" id="w3-academy" data-w3-view="academy" hidden>
+<div class="tt-w3-view-head"><span class="tt-svc-eyebrow">Guided learning</span><h2>Web3 academy & learning assistant</h2><p>Short lessons, interactive knowledge checks and source-linked explanations. Learning progress is stored only in this browser.</p></div>
+<div class="tt-w3-grid two"><div class="tt-w3-panel"><h3>Practice a concept</h3><label>Topic<select id="w3-lesson"><option value="wallet">Public and private keys</option><option value="approval">Token approvals</option><option value="contracts">Smart-contract risks</option><option value="regulation">Kenyan regulatory boundaries</option><option value="provenance">Data authenticity and provenance</option></select></label>
+<p id="w3-lesson-text"></p><fieldset><legend>Quick check</legend><div id="w3-lesson-options"></div></fieldset>
+<button id="w3-lesson-grade" class="tt-svc-button primary" type="button">Check my answer</button><p id="w3-lesson-feedback" role="status"></p><p id="w3-academy-progress"></p></div>
+<div class="tt-w3-panel tt-w3-form"><h3>Guided question assistant</h3>
+<label>Your question<textarea id="w3-assistant-query" rows="4" maxlength="900" placeholder="How can I check token approvals?"></textarea></label>
+<button id="w3-assistant-ask" type="button" class="tt-svc-button primary">Find a relevant explanation</button>
+<div id="w3-assistant-response" class="tt-w3-result" aria-live="polite">Searches a reviewed local knowledge base; it is not a connected generative AI model.</div>
+<p class="tt-w3-small">Generative AI with citations and evaluation can be added later through a secured retrieval service. Never paste seed phrases or private keys.</p></div></div>
+</section>
+<section class="tt-w3-view" id="w3-research" data-w3-view="research" hidden>
+<div class="tt-w3-view-head"><span class="tt-svc-eyebrow">Research sources</span><h2>Web3 market, research & security desk</h2><p>Explore authoritative resources and current public dashboards. The links lead to external sources; the items below are not automatically updated news headlines.</p></div>
+<div class="tt-w3-grid">
+<article class="tt-w3-panel"><h3>Research & protocol trends</h3><p>Open protocol repositories and developer research to evaluate real capabilities and adoption.</p><a href="https://ethereum.org/en/developers/" target="_blank" rel="noopener noreferrer">Ethereum developer research</a></article>
+<article class="tt-w3-panel"><h3>Security and incident intelligence</h3><p>Learn about security reports, contract review and known incident patterns.</p><a href="https://github.com/crytic/slither" target="_blank" rel="noopener noreferrer">Slither and security tooling</a></article>
+<article class="tt-w3-panel"><h3>Kenyan policy monitoring</h3><p>Primary CBK and CMA source documents for updated obligations and licences.</p><a href="https://www.cma.or.ke/regulatory-framework/" target="_blank" rel="noopener noreferrer">Official CMA resource centre</a></article>
+<article class="tt-w3-panel"><h3>Public network analytics</h3><p>Explore block counts, addresses, transactions and network activity.</p><a href="https://eth.blockscout.com/" target="_blank" rel="noopener noreferrer">Ethereum Blockscout explorer</a></article>
+<article class="tt-w3-panel"><h3>Smart contract standards</h3><p>Token standards, access control, and well-supported design patterns.</p><a href="https://docs.openzeppelin.com/contracts" target="_blank" rel="noopener noreferrer">OpenZeppelin documentation</a></article>
+<article class="tt-w3-panel"><h3>Enterprise implementation</h3><p>Request a feasibility or project design review to translate research into a practical implementation.</p><a href="contact_page.html?subject=web3">Discuss a business project</a></article>
+</div></section>
+</div>
+</section>
+<footer class="tt-svc-footer">TeknTandao · Nairobi, Kenya · <a href="web3.html">Back to Web3 briefing</a> · <a href="contact_page.html?subject=web3">Enterprise services</a></footer>
+</main>
+<script src="assets/js/home-theme-bridge.js"></script><script src="assets/js/nav-responsive.js"></script>
+<script async src="https://wizard.openzeppelin.com/build/embed.js"></script>
+<script defer src="assets/js/web3-studio.js"></script>
+</body></html>
