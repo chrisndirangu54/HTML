@@ -1,0 +1,53 @@
+/* Private Engineering Fabrication Hub. Engineering theme aligned, no NFT animations. */
+.eng-fab-hero{display:block;padding:28px 10px 30px}
+.eng-fab-hero h1{max-width:940px}
+.eng-fab-hero p{max-width:900px}
+.eng-fab-account{margin:0 0 52px}
+.eng-fab-account-head{display:flex;justify-content:space-between;align-items:start;gap:26px}
+.eng-fab-account h2,.eng-fab-plans h3{font-size:22px;color:#fff;margin:0 0 12px}
+.eng-fab-account-head p{font-size:14px;max-width:560px}
+.eng-fab-credit{min-width:166px;border:1px solid #67a78c;border-radius:18px;padding:16px 20px;text-align:center;background:#102e21}
+.eng-fab-credit span,.eng-fab-credit small{display:block;color:#abd1bc;font-size:12px}
+.eng-fab-credit strong{display:block;color:#fff;font-size:34px;line-height:1.4}
+.eng-fab-actions{display:flex;align-items:center;gap:15px;flex-wrap:wrap;margin:14px 0}
+.eng-fab-small{color:#b2d0c3;font-size:13px}
+.eng-fab-status{padding:12px 15px;background:#173626;border:1px solid #456e58;border-radius:11px;color:#d5ffe5}
+.eng-fab-status.is-error{border-color:#c58873;background:#38241f;color:#ffd5c2}
+.eng-fab-output{padding:15px;min-height:115px;white-space:pre-wrap;overflow-wrap:anywhere;border:1px solid #476c58;border-radius:12px;background:#0b2016;font-size:13px;color:#cef2db;line-height:1.75;margin-bottom:16px}
+.eng-fab-plans{margin:22px 0}
+.eng-fab-plan-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.eng-fab-plan-grid>div{border:1px solid #476a54;border-radius:15px;background:#122a20;padding:17px}
+.eng-fab-plan-grid strong,.eng-fab-plan-grid b,.eng-fab-plan-grid span{display:block}
+.eng-fab-plan-grid b{font-size:27px;color:#caffde;margin:10px 0}
+.eng-fab-plan-grid span{font-size:16px;font-weight:600;color:#fff;margin:6px 0 16px}
+.eng-fab-plan-grid button{max-width:100%;width:100%}
+.eng-fab-choice{border:1px solid #4a725d;border-radius:12px;padding:12px;margin:0 0 17px}
+.eng-fab-choice legend{font-size:13px;font-weight:600;color:#e9ffeb;padding:0 9px}
+.eng-fab-choice label{display:flex;align-items:center;gap:9px;margin:8px 0;cursor:pointer}
+.eng-fab-choice input[type=radio],.eng-fab-consent input[type=checkbox]{width:18px;height:18px;min-height:0;margin:0;accent-color:#4be6a6;flex:none}
+.eng-fab-parametric,.eng-fab-upload{padding:16px;border:1px solid #3f624b;background:#10251a;border-radius:13px;margin:15px 0}
+.eng-fab-parametric[hidden],.eng-fab-upload[hidden]{display:none}
+.eng-fab-consent{display:flex!important;gap:12px;align-items:flex-start;margin:19px 0!important}
+.eng-fab-consent input{margin-top:3px!important}
+.eng-fab-preview-canvas{height:275px;background:radial-gradient(circle,#193b38,#09191c);border:1px dashed #517969;border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;margin:12px 0 20px}
+.eng-fab-preview-canvas p{padding:20px;max-width:420px}
+.eng-fab-preview-canvas canvas{display:block;width:100%;height:100%}
+.eng-fab-upload label input{padding:13px}
+.eng-fab-upload p{font-size:12px;color:#bed6c4}
+.eng-fab-preview h3:not(:first-child){margin-top:28px}
+.eng-fab-job{border:1px solid #3d6751;border-radius:13px;background:#0f241a;padding:15px;margin:10px 0}
+.eng-fab-job strong,.eng-fab-job span,.eng-fab-job small{display:block}
+.eng-fab-job strong{color:#e8fff0;font-size:15px}
+.eng-fab-job span{color:#a9d7c0;font-size:12px;margin:6px 0}
+.eng-fab-job small{color:#cbdad0;font-size:12px;margin-top:7px}
+.eng-fab-tools{margin-top:22px}
+.eng-fab-tools article{min-height:205px}
+.eng-fab-tools article h3{margin-top:0}
+.eng-fab-tools article a{display:inline-block;margin-top:auto}
+.tt-engineering #fab-ai .eng-form label{margin-bottom:14px}
+#fab-ai-output{min-height:180px}
+#fab-apply-draft[hidden],#fab-signout[hidden]{display:none}
+.eng-fab-terms{font-size:11px;max-width:1000px;color:#bed0bd}
+@media(max-width:900px){.eng-fab-plan-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:660px){.eng-fab-account-head{flex-direction:column}.eng-fab-credit{width:100%}.eng-fab-plan-grid{grid-template-columns:1fr}.eng-fab-preview-canvas{height:225px}}
+@media(prefers-reduced-motion:reduce){.eng-fab-job,.eng-fab-plan-grid>*{transition:none;animation:none}}
