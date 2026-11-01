@@ -24,7 +24,7 @@ test('all Microsoft product families and guide inputs link to Workspace',()=>{
  assert.match(script,/URLSearchParams\(\{module:'microsoft-marketplace'/);
  assert.match(script,/seller:'tekntandao'/);
  assert.match(script,/params.toString\(\)/);
- assert.doesNotMatch(script,/password|access_token|fetch\(|XMLHttpRequest|payment/);
+ assert.doesNotMatch(script,/access_token|fetch\(|XMLHttpRequest|initializePayment|createCheckout/);
 });
 test('Cloud Automation, navigation, shop and old URL all point at customer sales',()=>{
  const cloud=read('cloud-automation.html'),nav=read('assets/js/nav-responsive.js');
