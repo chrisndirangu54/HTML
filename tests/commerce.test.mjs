@@ -16,7 +16,7 @@ const seeder = await read('scripts/seed-products.mjs');
 const rules = await read('firestore.rules');
 const config = await read('assets/js/commerce-config.js');
 
-test('catalogue has unique, sourced, sellable products', () => {
+test('catalogue has unique, sourced, priced or quote-only products', () => {
   assert.ok(products.length >= 10);
   const ids = new Set();
   for (const product of products) {
@@ -24,8 +24,14 @@ test('catalogue has unique, sourced, sellable products', () => {
     assert.equal(ids.has(product.id), false, `duplicate ${product.id}`);
     ids.add(product.id);
     assert.ok(product.name.length > 2);
-    assert.ok(Number.isSafeInteger(product.priceKes) && product.priceKes > 0);
-    assert.ok(Number.isSafeInteger(product.stock) && product.stock >= 0);
+    if (product.quoteOnly === true) {
+      assert.equal(product.priceKes, null, product.id + ' should not advertise an unverified price');
+      assert.equal(product.stock, 0, product.id + ' should not claim verified stock');
+      assert.equal(product.ispDirectory, true, product.id + ' quote reference must be in ISP directory');
+    } else {
+      assert.ok(Number.isSafeInteger(product.priceKes) && product.priceKes > 0);
+      assert.ok(Number.isSafeInteger(product.stock) && product.stock >= 0);
+    }
     assert.match(product.sourcePriceUrl, /^https:\/\//);
     assert.match(product.imageUrl, /^https:\/\//);
     assert.ok(product.sourceLabel);
