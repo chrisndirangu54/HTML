@@ -82,6 +82,75 @@ difference() {
    return {scad,volumeMm3:length*width*thickness-4*Math.PI*(hole/2)**2*thickness,
      holes:4,material:'User-specified; not assumed'};
  }
+ // A transparent, simplified Euler-Bernoulli cantilever surrogate.
+ // Plate is clamped along its entire left short edge; downward tip load is
+ // distributed across the entire right short edge. Holes do not modify EI.
+ // This is NOT a plate FEM or a local stress-concentration analysis.
+ const plateMaterials=Object.freeze({
+   aluminum: Object.freeze({label:'Aluminium alloy (illustrative)',youngsGpa:69,yieldMpa:275,densityKgM3:2700}),
+   steel: Object.freeze({label:'Mild structural steel (illustrative)',youngsGpa:200,yieldMpa:250,densityKgM3:7850}),
+   abs: Object.freeze({label:'ABS bulk polymer (illustrative)',youngsGpa:2.1,yieldMpa:40,densityKgM3:1040}),
+   petg: Object.freeze({label:'PETG bulk polymer (illustrative)',youngsGpa:2.0,yieldMpa:45,densityKgM3:1270})
+ });
+ function plateBeamDeflectionMm(forceN,lengthMm,widthMm,thicknessMm,youngsGpa,xMm){
+   const F=bounded(forceN,'Load',0,5000),L=positive(lengthMm,'Length',1000)/1000,
+    b=positive(widthMm,'Width',1000)/1000,h=positive(thicknessMm,'Thickness',100)/1000,
+    E=positive(youngsGpa,'Young modulus',1200)*1e9,x=bounded(xMm,'Position',0,lengthMm)/1000,
+    I=b*h*h*h/12;
+   return 1000*F*x*x*(3*L-x)/(6*E*I);
+ }
+ function plateStressAtMm(forceN,lengthMm,widthMm,thicknessMm,xMm){
+   const F=bounded(forceN,'Load',0,5000),
+     L=positive(lengthMm,'Length',1000)/1000,
+     b=positive(widthMm,'Width',1000)/1000,
+     h=positive(thicknessMm,'Thickness',100)/1000,
+     x=bounded(xMm,'Position',0,lengthMm)/1000;
+   return (6*F*(L-x)/(b*h*h))/1e6;
+ }
+ function plateSimulation(input){
+   const {length,width,thickness,hole,offset}=input;
+   const plate=mountingPlate({length,width,thickness,hole,offset});
+   const key=String(input.material||'aluminum');
+   if(!Object.hasOwn(plateMaterials,key))throw new RangeError('Choose a supported illustrative material');
+   const material=plateMaterials[key],
+     forceN=bounded(input.forceN,'Tip force',0,5000);
+   const delta=plateBeamDeflectionMm(forceN,length,width,thickness,material.youngsGpa,length);
+   const rootStress=plateStressAtMm(forceN,length,width,thickness,0);
+   const netWidth=width-2*hole;
+   // Nominal reduced section estimate only: two cylindrical holes in the
+   // cross section at x=offset. This is NOT the hole-edge peak stress.
+   const holeSectionStress=6*forceN*((length-offset)/1000)/((netWidth/1000)*Math.pow(thickness/1000,2))/1e6;
+   const nominalMax=Math.max(rootStress,holeSectionStress);
+   const ratio=nominalMax>0?material.yieldMpa/nominalMax:null;
+   const massKg=plate.volumeMm3*1e-9*material.densityKgM3;
+   const Lmeters=length/1000;
+   const slender=length/thickness;
+   const warnings=[
+     'Simplified cantilever beam surrogate; not plate FEA. Entire left edge ideal-fixed, force distributed along right edge.',
+     'The holes are excluded from bending stiffness. Hole-section stress is nominal only; notch concentrations, bolt preload, contact, shear and fatigue are not computed.',
+     'Material properties are illustrative, not a verified batch datasheet or 3D-printed anisotropic strength.'
+   ];
+   if(delta/(length)>0.05)warnings.push('Predicted deflection exceeds 5% of span: linear small-deflection theory may be invalid.');
+   if(slender<5)warnings.push('Short/thick geometry: shear deformation can be substantial; Euler–Bernoulli assumptions are weak.');
+   if(ratio!==null&&ratio<1)warnings.push('Nominal stress estimate exceeds illustrative material yield strength. Do not fabricate from this screening result.');
+   if(key==='abs'||key==='petg')warnings.push('Printed polymer parts depend on build direction, infill, creep, temperature and layer bonding.');
+   const profile=Array.from({length:21},(_,i)=>{
+     const xMm=length*i/20;
+     return {xMm,deflectionMm:plateBeamDeflectionMm(forceN,length,width,thickness,material.youngsGpa,xMm),
+       nominalStressMpa:plateStressAtMm(forceN,length,width,thickness,xMm)};
+   });
+   return {
+     model:'Euler-Bernoulli cantilever surrogate — not FEM',
+     material:key,materialLabel:material.label,
+     youngsGpa:material.youngsGpa,yieldMpa:material.yieldMpa,densityKgM3:material.densityKgM3,
+     inputs:{length,width,thickness,hole,offset,forceN},
+     massKg,volumeMm3:plate.volumeMm3,tipDeflectionMm:delta,
+     rootNominalStressMpa:rootStress,holeSectionNominalStressMpa:holeSectionStress,
+     nominalMaximumMpa:nominalMax,nominalYieldMargin:ratio,
+     largeDeflection:delta/Lmeters/1000>0.05,
+     profile,warnings,notCertified:true,noFEM:true
+   };
+ }
  const catalog={
   robotics:{
    subsystems:['Controller and power distribution','Motor drivers, motors and encoders','Sensors and safety stops','Chassis, bearings and mechanisms','Software, firmware and telemetry'],
@@ -125,5 +194,5 @@ difference() {
     constraints,subsystems:[...info.subsystems],tests:[...info.tests],tools:[...info.tools],
     risks,estimatedBudget:null,partsOrderPlaced:false,approvedForManufacture:false};
  }
- return Object.freeze({dcSeries,batteryEnergy,cantilever,robotDrive,mountingPlate,designBrief});
+ return Object.freeze({dcSeries,batteryEnergy,cantilever,robotDrive,mountingPlate,designBrief,plateMaterials,plateBeamDeflectionMm,plateStressAtMm,plateSimulation});
 });
