@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Engineering Studio &amp; Fabrication | TeknTandao</title>
+<title>TeknTandao Engineering Hub | CAD, Simulation, AI &amp; DFM</title>
 <meta name="description" content="Prototype electronics, robotics and mechanical concepts with TeknTandao's engineering calculators, open-source simulators, parametric CAD templates and optional on-device AI design assistant.">
 <link rel="canonical" href="https://tekntandao.com/engineering.html">
 <link rel="icon" href="assets/images/tekntandao-favicon.png">
@@ -155,7 +155,29 @@
 <pre class="eng-code" id="eng-scad-preview">Generate a model to view editable OpenSCAD source.</pre>
 <a href="https://openscad.org/" target="_blank" rel="noopener noreferrer">OpenSCAD official project</a></div>
 </details>
-</div></div></section>
+</div></div><section class="eng-section eng-intelligence-panel" id="eng-preflight" aria-labelledby="eng-preflight-title">
+<div class="eng-head"><span class="tt-svc-eyebrow">Explainable design screening &amp; revisions</span><h2 id="eng-preflight-title">Design Intelligence &amp; Manufacturing Preflight</h2>
+<p>Screen your parametric plate for geometric clearances and manufacturing review concerns, then capture, restore and compare designs. These results are advisory—not machine CAM, certified FEA, material qualification or fabrication approval.</p></div>
+<div class="eng-intel-grid">
+<div class="eng-panel eng-intel-results">
+<div class="eng-intel-section-head"><h3>Manufacturing preflight</h3><span class="eng-intel-review-tag">Human review required</span></div>
+<div id="eng-preflight-summary" class="eng-intel-summary" role="status" aria-live="polite">Evaluating dimensions…</div>
+<details class="eng-intel-detail" open><summary>Geometry, tooling and inspection findings</summary><ul id="eng-preflight-findings" aria-live="polite"></ul></details>
+<div class="eng-intel-actions"><button type="button" id="eng-preflight-export" class="tt-svc-button" disabled>Download evidence JSON</button><button type="button" id="eng-preflight-attach" class="tt-svc-button" disabled>Add findings to quote draft</button></div>
+<p class="eng-fine">Even zero warnings would not establish manufacturability or safety. Qualified operators must verify tolerances, processing, batch properties and service loading. <a href="https://www.nist.gov/programs-projects/additive-manufacturing-part-qualification" target="_blank" rel="noopener noreferrer">NIST qualification guidance</a>.</p>
+</div>
+<div class="eng-panel eng-intel-revisions">
+<div class="eng-intel-section-head"><h3>Design revisions</h3><span><output id="eng-revision-count">0</output> / 12</span></div>
+<p>Capture, restore and compare geometry, selected material, manufacturing process and illustrative load. Your design history is session-only unless you explicitly opt into browser storage.</p>
+<div class="eng-intel-actions"><button type="button" class="tt-svc-button primary" id="eng-revision-save">Capture revision</button><button type="button" class="tt-svc-button" id="eng-revision-download" disabled>Export revision archive</button></div>
+<label class="eng-intel-choice"><input id="eng-revision-persist" type="checkbox"> Keep my design revisions on this browser</label>
+<label>Saved revisions<select id="eng-revisions"><option value="">Select a saved design revision</option></select></label>
+<div class="eng-intel-actions"><button type="button" id="eng-revision-restore" class="tt-svc-button" disabled>Restore design</button><button type="button" id="eng-revision-compare" class="tt-svc-button" disabled>Compare with current</button><button type="button" id="eng-revision-clear" class="tt-svc-button" disabled>Clear local history</button></div>
+<label>Import a design revision archive (JSON, maximum 128 KB)<input id="eng-revision-upload" type="file" accept="application/json,.json"></label>
+<p class="eng-fine" id="eng-revision-status" role="status" aria-live="polite">Your saved revisions never include contact information or AI prompts.</p>
+<div id="eng-revision-comparison" class="eng-intel-compare" aria-live="polite">Capture a revision to compare later changes.</div>
+</div></div>
+</section></section>
 <section class="eng-section" id="eng-simulators"><div class="eng-head"><span class="tt-svc-eyebrow">Step 04 · Simulate with open-source software</span><h2>Open-source simulation workbench</h2><p>Launch full simulators in a new tab or open the CircuitJS1 browser simulator here. Desktop programs are linked—not misrepresented as running inside this site.</p></div>
 <div class="eng-panel"><div class="eng-inline"><div><h3>Live circuit workbench · CircuitJS1</h3><p>Simulate electrical networks, switches, waveforms and components interactively. It runs on the third-party project site; it loads here only when you choose.</p></div><button id="eng-load-circuit" type="button" class="tt-svc-button primary">Load circuit simulator</button></div>
 <div id="eng-circuit-embed" class="eng-embed"><p>External simulator not loaded. Select the button to open it here, or use the direct link below.</p></div>
@@ -313,4 +335,5 @@
 <script defer src="assets/js/engineering-dashboard.js"></script>
 <script defer src="assets/js/engineering-simulator.js"></script>
 <script type="module" src="assets/js/engineering-cad-viewer.js"></script>
-<script type="module" src="assets/js/engineering-fabrication.js"></script></body></html>
+<script type="module" src="assets/js/engineering-fabrication.js"></script>
+<script type="module" src="assets/js/engineering-design-intelligence.js"></script></body></html>

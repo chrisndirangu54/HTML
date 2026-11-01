@@ -54,3 +54,28 @@
 @media(max-width:750px){.eng-dashboard{display:block}.eng-dash-sidebar{position:static;margin-bottom:12px}.eng-dash-brand{padding:5px 8px 12px}.eng-dash-menu{display:flex;overflow-x:auto;scroll-snap-type:x proximity;gap:6px}.eng-dash-menu a{flex:0 0 auto;scroll-snap-align:start;padding:10px}.eng-dash-wallet{display:none}.eng-dash-main{padding:12px}.eng-dash-intro{grid-template-columns:1fr}.eng-dash-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.eng-dash-cards{grid-template-columns:1fr}}
 @media(max-width:430px){.eng-dash-stats>div{padding:10px}.eng-dash-topbar>a{font-size:10px;padding:8px}.eng-dash-intro{padding:15px}}
 @media(prefers-reduced-motion:reduce){.eng-dash-card{transition:none}.eng-dash-card:hover{transform:none}}
+
+/* Explainable engineering preflight and local revision manager. */
+.eng-intelligence-panel{margin:25px 0 0;padding-top:20px;border-top:1px solid rgba(117,207,169,.28)}
+.eng-intel-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.eng-intel-grid .eng-panel{margin:0;min-width:0}
+.eng-intel-section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.eng-intel-section-head h3{margin:0;color:#fff;font-size:19px}
+.eng-intel-section-head span{font-size:11px;color:#ccebd4}
+.eng-intel-review-tag{padding:7px 10px;border:1px solid rgba(255,209,105,.55);border-radius:14px;background:rgba(247,187,71,.1);color:#ffda87!important}
+.eng-intel-summary{padding:16px;background:#102826;border:1px solid #376454;border-radius:12px;margin:14px 0;color:#e9f9f0;font-size:13px;line-height:1.55}
+.eng-intel-summary p{margin:8px 0 0}
+.eng-intel-detail{margin:14px 0;color:#effcf3;font-size:13px}
+.eng-intel-detail>summary{cursor:pointer;font-weight:600}
+.eng-intel-detail ul{padding:5px 0 0;list-style:none;display:grid;gap:8px}
+.eng-intel-finding{padding:12px;border-radius:9px;border-left:3px solid #6ccbb3;background:rgba(101,173,142,.09)}
+.eng-intel-review{border-left-color:#f2c568;background:rgba(245,190,72,.07)}
+.eng-intel-finding strong{font-size:13px}.eng-intel-finding p{font-size:12px;line-height:1.55;margin:6px 0 0}
+.eng-intel-actions{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}
+.eng-intel-revisions label{display:block;font-size:13px;color:#d6f3e5;margin:13px 0}
+.eng-intel-revisions select,.eng-intel-revisions input[type=file]{display:block;width:100%;max-width:100%;margin-top:7px;padding:9px;background:#142b26;border:1px solid #456857;border-radius:9px;color:#e8f8ee}
+.eng-intel-revisions .eng-intel-choice{display:flex;align-items:center;gap:9px}
+.eng-intel-choice input{accent-color:#c9d95b}
+.eng-intel-compare{font-size:12px;line-height:1.6;padding:14px;border:1px solid rgba(144,197,162,.2);border-radius:10px;margin-top:13px;max-height:270px;overflow:auto}
+.eng-intel-compare p{margin:5px 0}
+@media(max-width:970px){.eng-intel-grid{grid-template-columns:1fr}}
