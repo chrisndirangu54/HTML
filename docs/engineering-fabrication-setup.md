@@ -13,6 +13,21 @@ Status: **source implemented, external services NOT automatically activated or d
 - Operator-only queue, quote decisions and temporary download links, restricted to verified users with the `engineering_admin` Firebase custom claim.
 - No fabrication scheduling, machinery activation, automatic bill, stock reservation, CAD/FEM certification, AI-driven manufacturing authorization or guaranteed printing turnaround.
 
+
+## Local sculpting and 3D mesh editing (browser-only)
+
+The Fabrication Hub now offers interactive mesh editing without sign-in or AI credits. Start with a **sphere, box, cylinder or generated four-hole mounting plate**, or open an uploaded **STL, OBJ or self-contained GLB** file. The workbench uses the same pinned Three.js runtime for OrbitControls, TransformControls, STLExporter and model loaders.
+
+- **Object editing:** translate, rotate or scale with axis gizmos.
+- **Sculpt brushes:** inflate, deflate, smooth, flatten and grab/drag with adjustable radius and strength; optional mirror symmetry about the mesh's local X axis.
+- **Edit history:** up to 12 undo states, redo, reset to imported/pristine geometry.
+- **Export:** local binary STL download or explicit **Use edited STL for quote**. Edited files are never uploaded automatically; selecting the edited export for a quote replaces the pending source design only until a further edit occurs.
+- **Inspection:** refresh the existing approximate triangle topology report after each completed edit. A 150,000-vertex cap on brushes and a 15 MB uploaded STL limit protect browser memory and backend limits. Over-limit meshes can still use object transform tools and local download.
+- **File formats:** STL is a triangle mesh format. When converting a GLB/OBJ to STL, materials, UVs, colors, rigging and textures are not preserved. STEP/BREP and SCAD parameter trees are **not** directly editable in the sculpt canvas; use FreeCAD/OpenSCAD or compatible tools to edit source CAD.
+- **Manufacturing caveat:** brush edits can create holes, self-intersections, non-manifold topology or lost dimensional precision. The local mesh heuristic is not a fabrication readiness certificate. Confirm units, watertightness, fit and tolerances before submitting.
+
+The sculpt implementation uses the official open-source [Three.js](https://github.com/mrdoob/three.js) geometry, raycasting, [TransformControls](https://threejs.org/docs/pages/TransformControls) and STLExporter, plus custom local brush algorithms for welded duplicate vertices and neighbor smoothing. Additional reference: [marmelab/sculpt-3D](https://github.com/marmelab/sculpt-3D) (MIT). That reference implementation is **not bundled or copied** into TeknTandao.
+
 ## Required Firebase setup
 
 1. Use a Firebase project with billing and required APIs enabled for Cloud Functions 2nd gen, Cloud Storage, Firestore, Firebase Auth and App Check. Enable Google sign-in in Firebase Authentication, authorize your website domains, and configure App Check with a genuine site key.
