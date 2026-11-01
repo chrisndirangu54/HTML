@@ -205,12 +205,10 @@ function renderProducts() {
   }
   grid.innerHTML = products.map(product => {
     const img = safeHttpUrl(product.imageUrl);
-    const source = safeHttpUrl(product.sourcePriceUrl);
     const isQuote = product.quoteOnly === true || !Number.isFinite(Number(product.priceKes)) || Number(product.priceKes) <= 0;
     const compare = !isQuote && Number(product.compareAtKes || 0) > Number(product.priceKes || 0)
       ? `<span class="tt-compare">${formatKes(product.compareAtKes)}</span>` : '';
     const price = isQuote ? 'Price on request' : formatKes(product.priceKes);
-    const sourceMarkup = source === '#' ? '' : `<div class="tt-source">Model reference: <a href="${source}" target="_blank" rel="noopener noreferrer">${safeText(product.sourceLabel || 'product information')}</a>. ${safeText(product.sourceNote || '')}<br>${safeText(product.imageCredit || '')}</div>`;
     return `<article class="tt-product-card${product.id === state.requestedProduct ? ' is-selected' : ''}" id="product-${safeText(product.id)}">
       <div class="tt-product-media">
         <img src="${img}" alt="${safeText(product.name)}" loading="lazy" referrerpolicy="no-referrer" onerror="if (!this.dataset.fallback) { this.dataset.fallback='1'; this.src='assets/images/services/wifi.jpg'; }">
@@ -225,7 +223,6 @@ function renderProducts() {
           ${!isQuote ? `<button class="tt-action is-primary" type="button" data-add-product="${safeText(product.id)}"><i class="las la-cart-plus"></i> Add to cart</button>` : ''}
           <button class="tt-action${isQuote ? ' is-primary' : ''}" type="button" data-whatsapp-product="${safeText(product.id)}"><i class="lab la-whatsapp"></i> ${isQuote ? 'Request a quote' : 'Ask'}</button>
         </div>
-        ${sourceMarkup}
       </div>
     </article>`;
   }).join('');
