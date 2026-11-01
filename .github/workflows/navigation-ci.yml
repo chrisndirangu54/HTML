@@ -15,6 +15,8 @@ on:
       - 'assets/css/home-theme-bridge.css'
       - 'assets/js/home-theme-bridge.js'
       - 'tests/home-theme.test.cjs'
+      - 'tests/home-gaming-reel-position.test.cjs'
+      - 'assets/css/hero-gaming-pc.css'
       - 'tests/service-pages-ux.test.cjs'
       - 'tests/site-shop-media-reseller.test.cjs'
       - 'tests/operational-dashboards.test.cjs'
@@ -64,6 +66,8 @@ on:
       - 'assets/css/home-theme-bridge.css'
       - 'assets/js/home-theme-bridge.js'
       - 'tests/home-theme.test.cjs'
+      - 'tests/home-gaming-reel-position.test.cjs'
+      - 'assets/css/hero-gaming-pc.css'
       - 'tests/service-pages-ux.test.cjs'
       - 'tests/site-shop-media-reseller.test.cjs'
       - 'tests/operational-dashboards.test.cjs'
@@ -119,4 +123,4 @@ jobs:
       - run: node --check assets/js/engineering-models.js
       - run: node --check assets/js/engineering-studio.js
       - run: node --check assets/js/engineering-cad-viewer.js
-      - run: node --test tests/site-navigation.test.cjs tests/isp-shop-ux.test.cjs tests/home-theme.test.cjs tests/service-pages-ux.test.cjs tests/site-shop-media-reseller.test.cjs tests/operational-dashboards.test.cjs tests/expanded-ict-catalog.test.cjs tests/microsoft-storefront.test.cjs tests/cloud-microsoft-section.test.cjs tests/web3-studio.test.cjs tests/web3-visuals.test.cjs tests/engineering-studio.test.cjs tests/open-visuals-nft.test.cjs tests/engineering-cad-viewer.test.cjs
+      - run: node --test tests/site-navigation.test.cjs tests/isp-shop-ux.test.cjs tests/home-theme.test.cjs tests/service-pages-ux.test.cjs tests/site-shop-media-reseller.test.cjs tests/operational-dashboards.test.cjs tests/expanded-ict-catalog.test.cjs tests/microsoft-storefront.test.cjs tests/cloud-microsoft-section.test.cjs tests/web3-studio.test.cjs tests/web3-visuals.test.cjs tests/engineering-studio.test.cjs tests/open-visuals-nft.test.cjs tests/engineering-cad-viewer.test.cjs tests/home-gaming-reel-position.test.cjs
