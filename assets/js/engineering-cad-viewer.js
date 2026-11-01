@@ -35,13 +35,20 @@ if(viewport&&form&&status&&cadModel){
   if(edgeLines){scene.remove(edgeLines);edgeLines.geometry.dispose();edgeLines.material.dispose();edgeLines=null;}
   if(lastSolid){lastSolid.dispose();lastSolid=null;}
   if(support){scene.remove(support);support.geometry.dispose();support.material.dispose();support=null;}
-  if(loadArrow){scene.remove(loadArrow);loadArrow.dispose();loadArrow=null;}
+  if(loadArrow){
+    scene.remove(loadArrow);
+    loadArrow.line.geometry.dispose();
+    loadArrow.line.material.dispose();
+    loadArrow.cone.geometry.dispose();
+    loadArrow.cone.material.dispose();
+    loadArrow=null;
+  }
  };
  const setView=view=>{
   if(!camera||!lastValues)return;
   const {length,width,thickness}=lastValues;
   const span=Math.max(length,width,thickness*4,1);
-  const d=span*1.9;
+  const d=span*1.3;
   camera.up.set(0,view==='top'?1:0,view==='top'?0:1);
   if(view==='top')camera.position.set(0,0,d);
   else if(view==='side')camera.position.set(0,-d*.9,d*.16);
@@ -154,13 +161,17 @@ if(viewport&&form&&status&&cadModel){
     edgeLines.geometry.dispose();
     edgeLines.geometry=new THREE.EdgesGeometry(geom,28);
   }
-  if(loadArrow){scene.remove(loadArrow);loadArrow.dispose();loadArrow=null;}
   if(snapshot.simulation.inputs.forceN>0){
     const origin=new THREE.Vector3(length/2,0,thickness/2+Math.max(10,length*.19)-visual);
-    loadArrow=new THREE.ArrowHelper(new THREE.Vector3(0,0,-1),origin,
-      Math.max(10,length*.18),0xffb85d,Math.max(4,length*.05),Math.max(3,length*.027));
-    scene.add(loadArrow);
-  }
+    if(!loadArrow){
+      loadArrow=new THREE.ArrowHelper(new THREE.Vector3(0,0,-1),origin,
+        Math.max(10,length*.18),0xffb85d,Math.max(4,length*.05),Math.max(3,length*.027));
+      scene.add(loadArrow);
+    }
+    loadArrow.visible=true;
+    loadArrow.position.copy(origin);
+    loadArrow.setLength(Math.max(10,length*.18),Math.max(4,length*.05),Math.max(3,length*.027));
+  }else if(loadArrow){loadArrow.visible=false;}
   status.textContent='Live simulation · '+snapshot.simulation.inputs.forceN.toFixed(1)+
     ' N · displayed deformation '+Math.round(snapshot.exaggeration)+'× (capped for visibility)';
   render();
