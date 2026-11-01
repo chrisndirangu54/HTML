@@ -15,6 +15,8 @@ on:
       - 'assets/css/home-theme-bridge.css'
       - 'assets/js/home-theme-bridge.js'
       - 'tests/home-theme.test.cjs'
+      - 'tests/service-pages-ux.test.cjs'
+      - 'assets/css/service-home-ux.css'
       - '.github/workflows/navigation-ci.yml'
   pull_request:
     paths:
@@ -30,6 +32,8 @@ on:
       - 'assets/css/home-theme-bridge.css'
       - 'assets/js/home-theme-bridge.js'
       - 'tests/home-theme.test.cjs'
+      - 'tests/service-pages-ux.test.cjs'
+      - 'assets/css/service-home-ux.css'
       - '.github/workflows/navigation-ci.yml'
 
 jobs:
@@ -44,4 +48,4 @@ jobs:
       - run: node --check assets/js/home-theme-bridge.js
       - run: node --check assets/js/commerce.js
       - run: node --check assets/js/isp-products.js
-      - run: node --test tests/site-navigation.test.cjs tests/isp-shop-ux.test.cjs tests/home-theme.test.cjs
+      - run: node --test tests/site-navigation.test.cjs tests/isp-shop-ux.test.cjs tests/home-theme.test.cjs tests/service-pages-ux.test.cjs
