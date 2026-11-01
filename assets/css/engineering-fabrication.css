@@ -62,3 +62,26 @@
 .eng-fab-admin-card textarea,.eng-fab-admin-card input{width:100%;padding:10px;min-height:42px;background:#0c2116;color:#fff;border:1px solid #50735d;border-radius:9px;margin:7px 0}
 .eng-fab-admin-card label{display:block;font-size:12px;color:#c6e5d0}
 @media(max-width:860px){.eng-fab-admin-list{grid-template-columns:1fr}}
+
+
+/* Browser-based CAD sculpting — controls remain secondary to the 3D canvas. */
+.eng-sculpt-workbench{padding:15px 16px;margin:14px 0 12px;background:linear-gradient(145deg,#122c25,#142026);border:1px solid #487f6d;border-radius:16px}
+.eng-sculpt-workbench>label{display:block;font-size:12px;font-weight:600;color:#c8e7d7;margin:14px 0 7px}
+.eng-sculpt-workbench select{width:100%;min-height:43px;border:1px solid #5d907f;border-radius:11px;background:#0b221b;color:#f4fff9;padding:10px;font-size:13px}
+.eng-sculpt-new,.eng-sculpt-actions{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 12px}
+.eng-sculpt-new .tt-svc-button,.eng-sculpt-actions .tt-svc-button{padding:10px 13px;font-size:12px;min-height:38px}
+.eng-sculpt-actions .tt-svc-button.primary{flex-grow:1}
+.eng-sculpt-workbench .tt-svc-button:disabled{opacity:.47;cursor:not-allowed}
+.eng-sculpt-brush-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;border:1px solid #416b59;background:#091e1b;border-radius:12px;padding:12px}
+.eng-sculpt-brush-options label{display:block;font-size:12px;color:#bfe4d0}
+.eng-sculpt-brush-options input[type=range]{display:block;width:100%;margin-top:12px;accent-color:#54e5b3;cursor:pointer}
+.eng-sculpt-brush-options output{display:inline-block;float:right;color:#66f7c4;font-weight:600}
+.eng-sculpt-brush-options .eng-sculpt-symmetry{grid-column:span 2;display:flex;align-items:center;gap:8px;margin:3px 0}
+.eng-sculpt-symmetry input{accent-color:#55eeb3;width:17px;height:17px}
+#fab-sculpt-status{font-size:12px;line-height:1.55;background:#17372b;border-left:3px solid #60edaa;border-radius:6px;padding:11px;color:#d6f5e3;min-height:38px}
+.eng-sculpt-workbench .eng-fine{margin:12px 0 2px}
+.eng-fab-preview-canvas{height:340px;touch-action:none}
+.eng-fab-preview-canvas canvas{touch-action:none;outline:none}
+.eng-fab-preview-canvas:focus-within{outline:2px solid #7cf0c9;outline-offset:3px}
+@media(max-width:650px){.eng-sculpt-brush-options{grid-template-columns:1fr}.eng-sculpt-brush-options .eng-sculpt-symmetry{grid-column:span 1}.eng-fab-preview-canvas{height:290px}.eng-sculpt-new .tt-svc-button{flex:1}}
+@media(prefers-reduced-motion:reduce){.eng-sculpt-workbench *{scroll-behavior:auto;animation:none!important;transition:none!important}}
