@@ -264,6 +264,38 @@ export const engineeringUploadDesign=onRequest({region,maxInstances:20,cors:fals
   return res.status(500).json({error:'Could not upload file. Check authentication and storage configuration.'});
  }
 });
+export const engineeringAdminListProjects=onCall(AUTH_OPTIONS,async request=>{
+ who(request);
+ if(request.auth?.token?.engineering_admin!==true)
+  throw new HttpsError('permission-denied','Engineering operator role required.');
+ const rows=await projects().where('status','in',['submitted_for_review','needs_revision','quoted']).limit(50).get();
+ return {projects:rows.docs.map(doc=>({
+  id:doc.id,title:doc.data().title,status:doc.data().status,contactEmail:doc.data().contactEmail,
+  quantity:doc.data().quantity,material:doc.data().material,process:doc.data().process,
+  notes:doc.data().notes,kind:doc.data().kind,dimensions:doc.data().dimensions||null,
+  file:doc.data().file||null,quoteKes:doc.data().quoteKes||null,
+  operatorNote:doc.data().operatorNote||'',
+  createdAt:doc.data().createdAt?.toDate()?.toISOString()||null
+ }))};
+});
+export const engineeringAdminFileLink=onCall(AUTH_OPTIONS,async request=>{
+ who(request);
+ if(request.auth?.token?.engineering_admin!==true)
+  throw new HttpsError('permission-denied','Engineering operator role required.');
+ const projectId=trim(request.data?.projectId,80);
+ if(!/^[A-Za-z0-9]{16,80}$/.test(projectId))throw new HttpsError('invalid-argument','Invalid project.');
+ const doc=await projects().doc(projectId).get();
+ if(!doc.exists||!doc.data().file?.path)throw new HttpsError('not-found','No uploaded design on this project.');
+ const path=doc.data().file.path;
+ if(!path.startsWith('engineeringFiles/'+doc.data().uid+'/'+projectId+'/design.'))
+  throw new HttpsError('failed-precondition','Invalid file ownership path.');
+ try{
+  const [signedUrl]=await storage.bucket().file(path).getSignedUrl({
+   version:'v4',action:'read',expires:Date.now()+10*60*1000
+  });
+  return {url:signedUrl,expiresMinutes:10};
+ }catch(e){throw new HttpsError('unavailable','Private file link needs Storage signer configuration. Review it through the authorized cloud console.');}
+});
 export const engineeringAdminReviewProject=onCall(AUTH_OPTIONS,async request=>{
  const {uid}=who(request);
  if(request.auth?.token?.engineering_admin!==true)
