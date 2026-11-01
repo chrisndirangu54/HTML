@@ -63,7 +63,7 @@
 <p class="eng-fine">The generated plate uses four through-holes and the same dimensional constraints as the Engineering Studio. <a href="engineering.html#eng-cad">Open interactive CAD simulator</a> for geometry and exploratory load checks.</p></div>
 <div id="fab-upload-area" class="eng-fab-upload" hidden><label>CAD or drawing file (15 MB maximum)
 <input id="fab-file" type="file" accept=".stl,.obj,.step,.stp,.scad,.dxf,.3mf,.glb,.pdf"></label>
-<p class="eng-fine">Supported: STL, OBJ, STEP, STP, SCAD, DXF, 3MF, GLB and PDF. Files are private, not published. Only STL/OBJ/GLB have local quick-view support; other formats require external tools for inspection. Uploads are considered unscanned pending operator review.</p>
+<p class="eng-fine">Supported: STL, OBJ, STEP, STP, SCAD, DXF, 3MF, GLB and PDF. You can locally edit STL, OBJ and GLB and export a new STL for review. Files are private, not published. Only STL/OBJ/GLB have local quick-view support; other formats require external tools for inspection. Uploads are considered unscanned pending operator review.</p>
 <p id="fab-file-details" aria-live="polite">No file selected.</p></div>
 <div class="eng-input-grid"><label>Quantity<input name="quantity" type="number" min="1" max="1000" step="1" value="1" required></label>
 <label>Contact email<input name="contactEmail" type="email" required autocomplete="email" placeholder="name@example.com"></label></div>
@@ -73,8 +73,39 @@
 <button type="submit" id="fab-submit" class="tt-svc-button primary" disabled>Submit for fabrication quotation</button>
 <p class="eng-fine">No automatic price, payment obligation or manufacturing approval. Uploading or submitting a file does not imply suitability for fabrication.</p>
 </form>
-<div class="eng-panel eng-fab-preview"><h3>Design file inspection</h3><div id="fab-preview" class="eng-fab-preview-canvas" role="region" aria-label="Preview of uploaded model or source design">
-<p>For uploaded STL, OBJ and GLB files, your browser can show a read-only 3D preview without uploading them. For other types, use the matching open-source CAD editor.</p></div>
+<div class="eng-panel eng-fab-preview"><h3>Design file inspection</h3><p class="eng-fine">Edit locally with Three.js sculpting brushes or transform gizmos; no AI credits are consumed. Begin with a primitive or an uploaded STL/OBJ/GLB, or generate a plate from the parameter form.</p>
+<section id="fab-sculpt-workbench" class="eng-sculpt-workbench" aria-label="3D sculpting and editing tools">
+<div class="eng-sculpt-new" role="group" aria-label="New editable model">
+<button type="button" id="fab-sculpt-plate" class="tt-svc-button">New plate</button>
+<button type="button" data-sculpt-shape="sphere" class="tt-svc-button">Sphere</button>
+<button type="button" data-sculpt-shape="box" class="tt-svc-button">Box</button>
+<button type="button" data-sculpt-shape="cylinder" class="tt-svc-button">Cylinder</button>
+</div>
+<label for="fab-sculpt-tool">3D editing tool</label>
+<select id="fab-sculpt-tool" aria-label="Sculpt or transform mode">
+<option value="orbit">Inspect / orbit camera</option>
+<optgroup label="Object editing"><option value="translate">Move object</option><option value="rotate">Rotate object</option><option value="scale">Scale object</option></optgroup>
+<optgroup label="Sculpting brushes"><option value="inflate">Raise / inflate</option><option value="deflate">Carve / deflate</option><option value="smooth">Smooth</option><option value="flatten">Flatten</option><option value="grab">Grab / drag</option></optgroup>
+</select>
+<div class="eng-sculpt-brush-options">
+<label>Brush size <output id="fab-brush-radius-label" for="fab-brush-radius">20%</output>
+<input id="fab-brush-radius" type="range" min="2" max="70" step="1" value="20"></label>
+<label>Brush strength <output id="fab-brush-strength-label" for="fab-brush-strength">35%</output>
+<input id="fab-brush-strength" type="range" min="1" max="100" step="1" value="35"></label>
+<label class="eng-sculpt-symmetry"><input id="fab-sculpt-symmetry" type="checkbox"> Mirror brush across local X axis</label>
+</div>
+<div class="eng-sculpt-actions" role="group" aria-label="Editing history and export">
+<button type="button" id="fab-sculpt-undo" class="tt-svc-button" disabled>Undo</button>
+<button type="button" id="fab-sculpt-redo" class="tt-svc-button" disabled>Redo</button>
+<button type="button" id="fab-sculpt-reset" class="tt-svc-button" disabled>Reset edits</button>
+<button type="button" id="fab-sculpt-export" class="tt-svc-button" disabled>Download edited STL</button>
+<button type="button" id="fab-sculpt-use" class="tt-svc-button primary" disabled>Use edited STL for quote</button>
+</div>
+<p id="fab-sculpt-status" role="status" aria-live="polite">Select an STL, OBJ or self-contained GLB, or start a primitive to enable sculpting.</p>
+<p class="eng-fine">Select a brush, then drag on the model to sculpt; use Inspect to orbit/zoom/pan. Move/Rotate/Scale use axis gizmos. Sculpting changes the triangle mesh, not parametric CAD features. Confirm the unit system and model integrity before requesting fabrication.</p>
+</section>
+<div id="fab-preview" class="eng-fab-preview-canvas" role="region" aria-label="Interactive 3D model sculpting canvas">
+<p>Choose a model or an editing primitive above. STL, OBJ and GLB support local interactive sculpting; other uploaded formats require external CAD software.</p></div>
 <div id="fab-mesh-report" class="eng-fab-mesh-report" aria-live="polite">Local geometry checks will appear here after you choose a previewable file. Model units must be confirmed independently.</div>
 <div id="fab-upload-summary" class="eng-fab-output" aria-live="polite">Set your requirements to prepare a private manufacturing request.</div>
 <h3>My fabrication requests</h3><div id="fab-jobs" aria-live="polite">Sign in to retrieve your private quote requests.</div>
