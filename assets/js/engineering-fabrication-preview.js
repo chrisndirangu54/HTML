@@ -122,6 +122,7 @@ function createSession(container){
  rendererCreated++;
  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.7));
  renderer.setClearColor(0x0b1e21);
+ renderer.localClippingEnabled=true;
  renderer.outputColorSpace=THREE.SRGBColorSpace;
  renderer.domElement.tabIndex=0;
  renderer.domElement.setAttribute('aria-label','Active engineering 3D model: drag to orbit, wheel to zoom');
@@ -179,7 +180,8 @@ async function showModel(model,container,label,source='imported',ticket=++reques
   model.scale.multiplyScalar(modelUnitScale(inputUnits));
  }
  // Validate before evicting the last valid model.
- const summary=modelSummary(model);
+ let summary;
+ try{summary=modelSummary(model);}catch(error){disposeModel(model);throw error;}
  if(verification.unitsVerified)convertedBounds(summary.size,verification.units);
  if(ticket!==requestVersion){disposeModel(model);return null;}
  const s=createSession(container);
@@ -204,6 +206,15 @@ async function showModel(model,container,label,source='imported',ticket=++reques
  const badge=document.createElement('span');badge.className='eng-fab-model-badge';
  badge.textContent=label+' · editing local · imported units must be verified before fabrication. STL drops color and texture.';
  container.append(badge);
+ const originals=new WeakMap();
+ const materials=()=>{
+  const list=new Set();
+  model.traverse(obj=>{if(obj.isMesh)for(const mat of (Array.isArray(obj.material)?obj.material:[obj.material]))if(mat)list.add(mat);});
+  return [...list];
+ };
+ for(const mat of materials())originals.set(mat,{
+  transparent:mat.transparent,opacity:mat.opacity,depthWrite:mat.depthWrite,wireframe:mat.wireframe
+ });
  currentView={
   model,source,
   setCamera(view){
@@ -214,12 +225,38 @@ async function showModel(model,container,label,source='imported',ticket=++reques
    s.camera.up.set(0,0,1);s.camera.lookAt(0,0,0);s.orbit.target.set(0,0,0);s.orbit.update();s.redraw();
   },
   setWireframe(enabled){
-   model.traverse(mesh=>{if(mesh.isMesh){
-    for(const m of (Array.isArray(mesh.material)?mesh.material:[mesh.material])){
-     if(m){m.wireframe=Boolean(enabled);m.needsUpdate=true;}
-    }
-   }});
+   for(const m of materials()){
+    const baseline=originals.get(m);
+    m.wireframe=Boolean(enabled);
+    m.transparent=baseline.transparent;m.opacity=baseline.opacity;
+    m.depthWrite=baseline.depthWrite;m.needsUpdate=true;
+   }
    s.redraw();
+  },
+  setXray(enabled){
+   for(const m of materials()){
+    const baseline=originals.get(m);
+    m.transparent=enabled||baseline.transparent;
+    m.opacity=enabled?.28:baseline.opacity;
+    m.depthWrite=enabled?false:baseline.depthWrite;
+    m.wireframe=baseline.wireframe;
+    m.needsUpdate=true;
+   }
+   s.redraw();
+  },
+  setSection(axis,ratio=.5){
+   if(!['x','y','z',null].includes(axis))throw new RangeError('Select X, Y or Z section');
+   if(!Number.isFinite(ratio)||ratio<0||ratio>1)throw new RangeError('Section must be between zero and one');
+   let plane=null;
+   if(axis){
+    const box=new THREE.Box3().setFromObject(model);
+    const min=box.min[axis],max=box.max[axis];
+    const normal=new THREE.Vector3(axis==='x'?1:0,axis==='y'?1:0,axis==='z'?1:0);
+    const point=new THREE.Vector3();point[axis]=min+(max-min)*ratio;
+    plane=new THREE.Plane().setFromNormalAndCoplanarPoint(normal,point);
+   }
+   for(const mat of materials()){mat.clippingPlanes=plane?[plane]:[];mat.needsUpdate=true;}
+   s.redraw();return Boolean(plane);
   },
   applyPlateOverlay(snapshot){
    if(source!=='parametric'||!snapshot?.simulation)return false;
@@ -303,6 +340,26 @@ export function selectUnifiedView(mode){
  if(mode==='wireframe'){currentView.setWireframe(true);return true;}
  if(mode==='solid'){currentView.setWireframe(false);return true;}
  return false;
+}
+export function setEngineeringSection(axis,ratio=.5){
+ return currentView?.setSection(axis,ratio)||false;
+}
+export function toggleEngineeringXray(enabled){
+ if(!currentView)return false;
+ currentView.setXray(enabled);return true;
+}
+export async function captureEngineeringSnapshot(){
+ if(!session||session.lost||!currentView)throw new Error('No active 3D viewport to export.');
+ session.renderer.render(session.scene,session.camera);
+ const blob=await new Promise((resolve,reject)=>{
+  session.renderer.domElement.toBlob(value=>value?resolve(value):reject(new Error('Canvas snapshot not supported')),'image/png');
+ });
+ if(!blob.size)throw new Error('Viewport snapshot is empty.');
+ const url=URL.createObjectURL(blob),anchor=document.createElement('a');
+ anchor.href=url;anchor.download='tekntandao-engineering-viewport.png';
+ document.body.append(anchor);anchor.click();anchor.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1500);
+ return blob.size;
 }
 export function showPlateSimulation(snapshot){
  return currentView?.applyPlateOverlay(snapshot)||false;
