@@ -18,7 +18,7 @@ test('fabrication UI offers design, upload, fabrication review, account credits 
  }
  for(const name of ['replicad','ToubkalCAD','FreeCAD','OpenSCAD','MeshRight','KiCad','Webots','OpenFOAM'])
    assert.ok(html.includes(name),name);
- assert.match(html,/fabrication feasibility review/);
+ assert.match(html,/manufacturing feasibility review/);
  assert.match(html,/no automatic price|No automatic price/);
  assert.match(html,/unscanned/);
  assert.match(read('engineering.html'),/id="eng-send-fabrication"/);
