@@ -1,6 +1,7 @@
 import {createHmac,randomUUID,timingSafeEqual} from 'node:crypto';
 import {getApps,initializeApp} from 'firebase-admin/app';
 import {getAuth} from 'firebase-admin/auth';
+import {getAppCheck} from 'firebase-admin/app-check';
 import {getFirestore,FieldValue} from 'firebase-admin/firestore';
 import {getStorage} from 'firebase-admin/storage';
 import {HttpsError,onCall,onRequest} from 'firebase-functions/v2/https';
@@ -183,9 +184,9 @@ export const engineeringConfirmCheckout=onCall({...AUTH_OPTIONS,secrets:[PAYMENT
 });
 export const engineeringPaystackWebhook=onRequest({region,secrets:[PAYMENT_KEY],maxInstances:10},async(req,res)=>{
  if(req.method!=='POST')return res.status(405).send('POST required');
- const signature=String(req.headers['x-paystack-signature']||'');
+ const signature=String(req.headers['x-paystack-signature']||'').toLowerCase();
  const expected=createHmac('sha512',PAYMENT_KEY.value()).update(req.rawBody).digest('hex');
- if(signature.length!==expected.length||!timingSafeEqual(Buffer.from(signature),Buffer.from(expected)))
+ if(!/^[0-9a-f]{128}$/.test(signature)||!timingSafeEqual(Buffer.from(signature),Buffer.from(expected)))
   return res.status(401).send('Invalid signature');
  if(req.body?.event!=='charge.success')return res.status(200).send('Ignored');
  const ref=trim(req.body?.data?.reference,90);
@@ -235,13 +236,16 @@ export const engineeringUploadDesign=onRequest({region,maxInstances:20,cors:fals
   /^http:\/\/localhost(:[0-9]+)?$/.test(origin)||/^http:\/\/127\.0\.0\.1(:[0-9]+)?$/.test(origin);
  if(origin&&!allowed)return res.status(403).json({error:'Origin not allowed'});
  if(allowed){res.set('Access-Control-Allow-Origin',origin);res.set('Vary','Origin');}
- res.set('Access-Control-Allow-Headers','Authorization,Content-Type,X-Project-Id,X-File-Extension');
+ res.set('Access-Control-Allow-Headers','Authorization,Content-Type,X-Project-Id,X-File-Extension,X-Firebase-AppCheck');
  res.set('Access-Control-Allow-Methods','POST,OPTIONS');
  if(req.method==='OPTIONS')return res.status(204).end();
  if(req.method!=='POST')return res.status(405).json({error:'POST required'});
  try{
   const idToken=String(req.headers.authorization||'').replace(/^Bearer /i,'');
   if(!idToken) return res.status(401).json({error:'Sign in first'});
+  const appToken=String(req.headers['x-firebase-appcheck']||'');
+  if(!appToken)return res.status(401).json({error:'App Check token required'});
+  try{await getAppCheck().verifyToken(appToken);}catch(_){return res.status(401).json({error:'App Check verification failed'});}
   const user=await getAuth().verifyIdToken(idToken,true);
   if(!user.email_verified) return res.status(401).json({error:'Verified email required'});
   const projectId=trim(req.headers['x-project-id'],80),ext=trim(req.headers['x-file-extension'],10).toLowerCase();
