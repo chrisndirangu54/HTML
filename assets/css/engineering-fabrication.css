@@ -51,3 +51,14 @@
 @media(max-width:900px){.eng-fab-plan-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:660px){.eng-fab-account-head{flex-direction:column}.eng-fab-credit{width:100%}.eng-fab-plan-grid{grid-template-columns:1fr}.eng-fab-preview-canvas{height:225px}}
 @media(prefers-reduced-motion:reduce){.eng-fab-job,.eng-fab-plan-grid>*{transition:none;animation:none}}
+
+.eng-fab-preview-canvas{position:relative}
+.eng-fab-preview-canvas canvas{position:absolute;inset:0}
+.eng-fab-model-badge{position:absolute;left:9px;right:9px;bottom:9px;padding:6px 8px;font:400 10px/1.5 Inter,sans-serif;border-radius:8px;background:rgba(5,20,23,.88);color:#d4f9e6;pointer-events:none}
+.eng-fab-admin-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.eng-fab-admin-card{padding:17px;border:1px solid #527d64;border-radius:16px;background:#10271c;min-width:0}
+.eng-fab-admin-card h3{font-size:17px}
+.eng-fab-admin-card p,.eng-fab-admin-card pre{font-size:12px;color:#c5e4d0;white-space:pre-wrap;overflow-wrap:anywhere}
+.eng-fab-admin-card textarea,.eng-fab-admin-card input{width:100%;padding:10px;min-height:42px;background:#0c2116;color:#fff;border:1px solid #50735d;border-radius:9px;margin:7px 0}
+.eng-fab-admin-card label{display:block;font-size:12px;color:#c6e5d0}
+@media(max-width:860px){.eng-fab-admin-list{grid-template-columns:1fr}}
