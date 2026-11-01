@@ -1,0 +1,28 @@
+name: Public site navigation checks
+
+on:
+  push:
+    paths:
+      - '*.html'
+      - 'assets/js/nav-responsive.js'
+      - 'assets/css/site-navigation.css'
+      - 'tests/site-navigation.test.cjs'
+      - '.github/workflows/navigation-ci.yml'
+  pull_request:
+    paths:
+      - '*.html'
+      - 'assets/js/nav-responsive.js'
+      - 'assets/css/site-navigation.css'
+      - 'tests/site-navigation.test.cjs'
+      - '.github/workflows/navigation-ci.yml'
+
+jobs:
+  navigation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --check assets/js/nav-responsive.js
+      - run: node --test tests/site-navigation.test.cjs
