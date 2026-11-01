@@ -75,6 +75,7 @@ A hosting rewrite for `/api/adminIspOperations` is included in `firebase.json`. 
 - Confirm duplicate subscriber account codes fail, including different casing.
 - Confirm only allowed incident and work-order transitions succeed.
 - Confirm the page does not present these records as live network performance.
+- Confirm each administrative mutation creates an audit entry with the actor and action.
 
 ## Function deployment is currently blocked (2026-10-20)
 
