@@ -20,6 +20,8 @@ on:
       - 'tests/operational-dashboards.test.cjs'
       - 'tests/expanded-ict-catalog.test.cjs'
       - 'tests/microsoft-storefront.test.cjs'
+      - 'tests/cloud-microsoft-section.test.cjs'
+      - 'assets/css/microsoft-cloud-section.css'
       - 'assets/js/microsoft-store.js'
       - 'assets/css/microsoft-store.css'
       - 'assets/css/shop-expansion.css'
@@ -47,6 +49,8 @@ on:
       - 'tests/operational-dashboards.test.cjs'
       - 'tests/expanded-ict-catalog.test.cjs'
       - 'tests/microsoft-storefront.test.cjs'
+      - 'tests/cloud-microsoft-section.test.cjs'
+      - 'assets/css/microsoft-cloud-section.css'
       - 'assets/js/microsoft-store.js'
       - 'assets/css/microsoft-store.css'
       - 'assets/css/shop-expansion.css'
@@ -70,4 +74,4 @@ jobs:
       - run: node --check assets/js/isp-products.js
       - run: node --check assets/js/media-cloud-dashboard.js
       - run: node --check assets/js/microsoft-store.js
-      - run: node --test tests/site-navigation.test.cjs tests/isp-shop-ux.test.cjs tests/home-theme.test.cjs tests/service-pages-ux.test.cjs tests/site-shop-media-reseller.test.cjs tests/operational-dashboards.test.cjs tests/expanded-ict-catalog.test.cjs tests/microsoft-storefront.test.cjs
+      - run: node --test tests/site-navigation.test.cjs tests/isp-shop-ux.test.cjs tests/home-theme.test.cjs tests/service-pages-ux.test.cjs tests/site-shop-media-reseller.test.cjs tests/operational-dashboards.test.cjs tests/expanded-ict-catalog.test.cjs tests/microsoft-storefront.test.cjs tests/cloud-microsoft-section.test.cjs
