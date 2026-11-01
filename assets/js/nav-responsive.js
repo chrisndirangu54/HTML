@@ -14,8 +14,7 @@
       { label: 'Media Cloud', href: 'media-cloud.html' },
       { label: 'Web3', href: 'web3.html' },
       { label: 'Web3 Studio', href: 'web3-studio.html' },
-      { label: 'Engineering & Prototyping', href: 'engineering.html' },
-      { label: 'Engineering Fabrication', href: 'engineering-fabrication.html' }
+      { label: 'Engineering & Prototyping', href: 'engineering.html' }
     ] },
     { label: 'Shop', href: 'shop.html' },
     { label: 'Explore', children: [

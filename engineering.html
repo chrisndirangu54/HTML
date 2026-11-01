@@ -1,26 +1,30 @@
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Engineering & Prototyping Studio | TeknTandao</title>
+<title>Engineering Studio &amp; Fabrication | TeknTandao</title>
 <meta name="description" content="Prototype electronics, robotics and mechanical concepts with TeknTandao's engineering calculators, open-source simulators, parametric CAD templates and optional on-device AI design assistant.">
 <link rel="canonical" href="https://tekntandao.com/engineering.html">
 <link rel="icon" href="assets/images/tekntandao-favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 <link rel="stylesheet" href="assets/css/commerce.css"><link rel="stylesheet" href="assets/css/isp-shop-pages.css"><link rel="stylesheet" href="assets/css/home-theme-bridge.css"><link rel="stylesheet" href="assets/css/service-home-ux.css">
-<link rel="stylesheet" href="assets/css/engineering-studio.css">
+<link rel="stylesheet" href="assets/css/engineering-studio.css"><link rel="stylesheet" href="assets/css/engineering-fabrication.css">
 <link rel="stylesheet" href="assets/css/real-photography.css"></head><body class="tt-home-aligned tt-service-page tt-engineering">
 <div class="tt-utility-head"><a class="brand" href="index.html">TeknTandao</a><div class="tt-utility-actions"><a href="shop.html?category=Robotics">Robotics equipment</a><a href="contact_page.html?subject=engineering">Request prototyping support</a></div></div>
 <main class="tt-svc-shell eng-shell">
 <nav class="tt-svc-crumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span>›</span>Engineering &amp; Prototyping</nav>
 <header class="tt-svc-hero tt-svc-hero--split eng-hero">
-<div><span class="tt-svc-eyebrow">Simulation · Robotics · Electronics · CAD · AI</span>
+<div><span class="tt-svc-eyebrow">Simulation · Robotics · CAD · Sculpting · AI · Fabrication</span>
 <h1>Design. Simulate.<br><span class="tt-svc-gradient">Prototype with evidence.</span></h1>
-<p>Turn a concept into an engineering brief, test preliminary assumptions, explore open-source simulators and generate editable CAD starting points. Use optional on-device AI to critique your design before physical prototyping.</p>
-<div class="tt-svc-actions"><a class="tt-svc-button primary" href="#eng-workspace">Start an engineering project</a><a class="tt-svc-button" href="#eng-simulators">Explore open-source simulators</a><a class="tt-svc-button" href="engineering-fabrication.html">AI design &amp; fabrication hub</a></div>
+<p>Turn a concept into an engineering brief, test preliminary assumptions, explore open-source simulators and generate editable CAD starting points. Use optional AI, edit and sculpt 3D models, and request fabrication quotations in one workspace.</p>
+<div class="tt-svc-actions"><a class="tt-svc-button primary" href="#eng-workspace">Start an engineering project</a><a class="tt-svc-button" href="#eng-simulators">Explore open-source simulators</a><a class="tt-svc-button" href="#fab-tripo">Generate AI 3D</a><a class="tt-svc-button" href="#fab-design">Sculpt &amp; fabrication</a></div>
 </div><aside class="tt-svc-hero-aside eng-hero-visual">
 <img src="https://images.unsplash.com/photo-1640955785023-1854685dae05?auto=format&amp;fit=crop&amp;w=1200&amp;q=80" width="1200" height="750" alt="Real microchip being positioned on a printed circuit board" decoding="async" fetchpriority="high" referrerpolicy="no-referrer">
 <span>PCB assembly photograph: <a href="https://unsplash.com/photos/microchip-placement-on-circuit-board-zs4gtT8thO0" target="_blank" rel="noopener noreferrer">Vishnu Mohanan / Unsplash</a></span>
 </aside></header>
+<nav class="eng-workflow-nav" aria-label="Engineering workspace">
+<a href="#eng-workspace">Brief</a><a href="#eng-calculators">Calculators</a><a href="#eng-cad">CAD &amp; simulation</a>
+<a href="#eng-simulators">Open-source tools</a><a href="#eng-ai">Free AI</a><a href="#fab-ai">Cloud AI</a>
+<a href="#fab-tripo">Tripo 3D</a><a href="#fab-design">Sculpt &amp; fabrication</a><a href="#fab-account">Credits</a></nav>
 <p class="eng-notice"><i class="las la-info-circle" aria-hidden="true"></i> Engineering calculations here are simplified early-stage estimates—not signed engineering drawings, component specifications, certified FEA, electrical safety assessments or approval to operate equipment. The page makes no physical actuator commands, manufacturing orders or external account changes.</p>
 <div class="tt-photo-brief"><figure class="tt-photo-panel"><img src="https://images.unsplash.com/photo-1634454023167-59d99c0921a5?auto=format&amp;fit=crop&amp;w=1200&amp;q=80" alt="An Arduino microcontroller development board and breadboard prepared for an electronics prototype" width="1200" height="750" loading="lazy" decoding="async" referrerpolicy="no-referrer"><figcaption>Representative electronics hardware · <a href="https://unsplash.com/photos/a-close-up-of-an-electronic-device-on-a-table-AcTlEUJJEIg" target="_blank" rel="noopener noreferrer">Photo: Vishnu Mohanan / Unsplash</a></figcaption></figure><div><span class="tt-svc-eyebrow">From design to real engineering</span><h2>Test ideas with actual hardware.</h2><p>Use open-source simulations, validated measurements and CAD previews to prepare practical prototypes. These photos illustrate electronics, not a commissioned TeknTandao project.</p><p><a href="docs/real-photo-sources.md">Photo sources and licences</a></p></div></div>
 <section class="eng-metrics" aria-label="Capabilities"><div><i class="las la-drafting-compass"></i><strong>4</strong><span>Local engineering estimators</span></div><div><i class="las la-microchip"></i><strong>8</strong><span>Open-source simulation and CAD tools</span></div><div><i class="las la-cubes"></i><strong>CAD</strong><span>Editable OpenSCAD export</span></div><div><i class="las la-brain"></i><strong>AI</strong><span>Optional browser model</span></div></section>
@@ -58,7 +62,7 @@
 <label>Thickness (mm)<input name="thickness" type="number" min=".5" max="100" value="6" required step=".1"></label><label>Hole diameter (mm)<input name="hole" type="number" min="1" max="50" value="5" required step=".1"></label>
 <label>Hole center offset from edges (mm)<input name="offset" id="eng-cad-offset" type="number" min="2" max="100" value="8" required step=".1" aria-describedby="eng-offset-help"></label>
 </div><p id="eng-offset-help" class="eng-offset-help" role="status" aria-live="polite">Suggested offset: 8 mm. Hole centers must remain inside the plate without overlap.</p>
-<div class="eng-cad-form-actions"><button class="tt-svc-button primary" type="submit">Update 3D model &amp; source</button><button id="eng-cad-reset" class="tt-svc-button" type="button">Restore 100 × 60 plate</button><button class="tt-svc-button" type="button" id="eng-download-scad" disabled>Download .scad</button><a class="tt-svc-button" id="eng-send-fabrication" href="engineering-fabrication.html">Request fabrication quote</a></div><p class="eng-fine">Hole locations are measured from edges to centers. Verify fabrication tolerances and load paths before use.</p></form>
+<div class="eng-cad-form-actions"><button class="tt-svc-button primary" type="submit">Update 3D model &amp; source</button><button id="eng-cad-reset" class="tt-svc-button" type="button">Restore 100 × 60 plate</button><button class="tt-svc-button" type="button" id="eng-download-scad" disabled>Download .scad</button><a class="tt-svc-button" id="eng-send-fabrication" href="#fab-design">Request fabrication quote</a></div><p class="eng-fine">Hole locations are measured from edges to centers. Verify fabrication tolerances and load paths before use.</p></form>
 <section class="eng-sim-controls" id="eng-sim-controls" aria-labelledby="eng-sim-heading">
 <h3 id="eng-sim-heading"><i class="las la-wave-square" aria-hidden="true"></i> Live load simulation</h3>
 <div class="eng-sim-quick" role="group" aria-label="Demonstration scenarios">
@@ -124,6 +128,10 @@
 <article><i class="las la-drafting-compass" aria-hidden="true"></i><h3>FreeCAD</h3><p>Parametric CAD, drawings, mechanical models and optional engineering analysis workbenches.</p><a href="https://www.freecad.org/" target="_blank" rel="noopener noreferrer">Get FreeCAD</a></article>
 <article><i class="las la-shapes" aria-hidden="true"></i><h3>OpenSCAD</h3><p>Code-driven solid modelling for editable, repeatable mechanical prototypes.</p><a href="https://openscad.org/" target="_blank" rel="noopener noreferrer">Get OpenSCAD</a></article>
 <article><i class="las la-chart-line" aria-hidden="true"></i><h3>OpenModelica</h3><p>Modelling and simulation for dynamic multi-domain physical systems.</p><a href="https://openmodelica.org/" target="_blank" rel="noopener noreferrer">Get OpenModelica</a></article>
+<article><h3>OpenCascade / replicad</h3><p>Parametric BREP geometry, fillets and STEP-capable engineering solid modelling.</p><a href="https://github.com/sgenoud/replicad" target="_blank" rel="noopener noreferrer">GitHub: replicad</a></article>
+<article><h3>ToubkalCAD</h3><p>Browser-based OCCT/Three.js CAD with sketching, parametric operations and STEP exchange.</p><a href="https://github.com/ToubkalCAD/ToubkalCAD" target="_blank" rel="noopener noreferrer">GitHub: ToubkalCAD</a></article>
+<article><h3>MeshRight</h3><p>External desktop/locally hosted mesh review and repair. GPLv3; not embedded in this service.</p><a href="https://github.com/Huzy85/MeshRight" target="_blank" rel="noopener noreferrer">GitHub: MeshRight</a></article>
+<article><h3>OpenFOAM</h3><p>Advanced CFD for supported high-fidelity engineering workflows; GPL licence, separate environment.</p><a href="https://github.com/OpenFOAM/OpenFOAM-dev" target="_blank" rel="noopener noreferrer">GitHub: OpenFOAM</a></article>
 </div>
 <p class="eng-fine">Optional browser notebook: <a href="https://jupyter.org/try" target="_blank" rel="noopener noreferrer">JupyterLite</a> for Python prototyping. Wokwi is a separate hosted service, <strong>not</strong> listed as open-source simulator software.</p></section>
 <section id="eng-ai" class="eng-section"><div class="eng-head"><span class="tt-svc-eyebrow">Step 05 · Critique and refine</span><h2>Optional on-device AI engineering copilot</h2><p>Run an open-source local inference engine when your browser supports WebGPU. The model can help brainstorm risks and test cases, while all numerical results remain deterministic and independently checkable.</p></div>
@@ -133,10 +141,134 @@
 <label>Ask about your prototype<textarea id="eng-ai-question" rows="5" maxlength="1800" placeholder="Suggest low-risk tests and integration considerations for my ESP32 robotics prototype. Do not invent simulation results."></textarea></label>
 <button id="eng-ask-ai" type="button" class="tt-svc-button" disabled>Get AI design critique</button><p class="eng-fine">The generated text may be inaccurate. Never use it as certification, structural sign-off, wiring authorization, fire-safety design or autonomous equipment approval.</p></div>
 <div class="eng-panel eng-result"><h3>AI response</h3><div id="eng-ai-output" role="status" aria-live="polite">When the local model is ready, you can request a critique. A deterministic design checklist is already available above, even without WebGPU.</div><p class="eng-fine">Model inference uses <a href="https://webllm.mlc.ai/docs/" target="_blank" rel="noopener noreferrer">open-source WebLLM</a> when supported, loaded from a third-party package CDN. Queries remain on-device after assets load. AI cannot control machinery, deploy firmware or place orders.</p></div></div></section>
+<section class="eng-section" id="eng-fabrication"><div class="eng-head"><span class="tt-svc-eyebrow">Step 06 · Generate, sculpt &amp; fabricate</span>
+<h2>From design to human-reviewed fabrication</h2>
+<p>One interface for secure credit-backed AI, Tripo generation, free 3D mesh editing and fabrication requests. Previewing a model is never a fabrication order.</p></div>
+<p class="eng-notice"><strong>Clear fabrication boundary:</strong> No automatic price or production approval. Human manufacturing feasibility review is required; uploaded files remain unscanned until screened.</p></section>
+<section class="eng-fab-account eng-panel" id="fab-account" aria-label="Engineering account and credits">
+<div class="eng-fab-account-head"><div><h2>Engineering design account</h2><p>Sign in with Google to access your private projects, starting credits, paid AI and fabrication submissions.</p></div>
+<div class="eng-fab-credit"><span>AI credits</span><strong id="fab-balance">—</strong><small>1 credit per AI request</small></div></div>
+<div class="eng-fab-actions">
+<button type="button" class="tt-svc-button primary" id="fab-signin" disabled>Sign in with Google</button>
+<button type="button" class="tt-svc-button" id="fab-signout" hidden>Sign out</button>
+<span id="fab-user" class="eng-fab-small">Not signed in.</span>
+</div>
+<p class="eng-fab-status" id="fab-service-status" role="status" aria-live="polite">Checking service configuration…</p>
+<p class="eng-fine">Each verified account is eligible for a one-time allocation of <strong>3 introductory credits</strong>. Balances and purchases are recorded on the server, not in browser storage. Credit packages and terms are configurable by the merchant.</p>
+</section>
+<section class="eng-section" id="fab-ai"><div class="eng-head"><span class="tt-svc-eyebrow">AI design copilot · credit-gated</span><h2>Describe it. Refine it. Validate it.</h2><p>Use AI to draft an editable parametric plate or critique your own engineering requirements. The hosted model is only called after authentication and server-side credit authorization; the free CAD and simulation tools remain available without payment.</p></div>
+<div class="eng-columns">
+<div class="eng-panel eng-form"><label>AI workflow<select id="fab-ai-mode"><option value="design">Generate mounting-plate dimensions</option><option value="review">Review manufacturability and risks</option></select></label>
+<label>Your design prompt<textarea id="fab-ai-prompt" rows="5" maxlength="1800" placeholder="Design a compact mounting plate for four M5 bolts, 120 × 80 mm, 5 mm thick, suitable for CNC machining."></textarea></label>
+<button type="button" class="tt-svc-button primary" id="fab-ai-run" disabled>Use 1 credit</button>
+<p class="eng-fine">AI can suggest parametric dimensions or provide textual recommendations. It does not perform BREP modelling, certified FEA, stock verification, or manufacturing.</p></div>
+<div class="eng-panel"><h3>AI design output</h3><div id="fab-ai-output" class="eng-fab-output" aria-live="polite">Sign in and describe a design to request AI guidance. Your three starter credits will be issued only once on the authenticated backend.</div>
+<button type="button" class="tt-svc-button" id="fab-apply-draft" hidden>Use proposed dimensions in request</button></div>
+</div>
+<div class="eng-panel eng-fab-plans" id="fab-plans"><h3>AI credit top-ups</h3>
+<div class="eng-fab-plan-grid">
+<div><strong>Introductory access</strong><b>3 credits</b><p>One-time verified-account allocation</p><span>Free</span></div>
+<div><strong>Starter</strong><b>10 credits</b><p>Configurable launch price</p><span>KSh 250</span><button id="fab-buy-starter" type="button" class="tt-svc-button" disabled>Buy Starter</button></div>
+<div><strong>Maker</strong><b>50 credits</b><p>Configurable launch price</p><span>KSh 1,000</span><button id="fab-buy-maker" type="button" class="tt-svc-button" disabled>Buy Maker</button></div>
+</div><p class="eng-fine">Paid packages use secure Paystack checkout. Payments are verified on the server before credits are added; returning from checkout does not itself grant credits. Prices shown are initial merchant-configurable settings, not fabrication costs. No recurring subscription is started.</p></div>
+</section>
+
+<section class="eng-section" id="fab-tripo" aria-label="Tripo AI 3D generation">
+<div class="eng-head"><span class="tt-svc-eyebrow">Tripo AI · Text &amp; image to 3D</span><h2>Generate. Sculpt. Refine.</h2>
+<p>Generate an editable GLB mesh from a description or reference image. Tripo requests cost <strong>10 engineering credits</strong>; local sculpting is free.</p></div>
+<div class="eng-columns"><div class="eng-panel eng-form">
+<label>Generation input<select id="fab-tripo-mode"><option value="text">Text to 3D</option><option value="image">Image to 3D</option></select></label>
+<label id="fab-tripo-prompt-wrap">Model description<textarea id="fab-tripo-prompt" maxlength="1024" rows="4" placeholder="A rounded desktop robot shell with secure phone mount, USB cable routing and ventilation."></textarea></label>
+<label id="fab-tripo-image-wrap" hidden>Reference image (PNG or JPEG, maximum 4 MB)<input id="fab-tripo-image" type="file" accept="image/png,image/jpeg"></label>
+<button type="button" class="tt-svc-button primary" id="fab-tripo-run" disabled>Generate 3D · 10 credits</button>
+<p class="eng-fine">Prompts or images are transmitted to Tripo only after your confirmation. Generated triangle meshes are not validated dimensional CAD, STEP solids, engineering approval or fabrication orders.</p>
+</div><div class="eng-panel"><h3>AI 3D task</h3>
+<div id="fab-tripo-status" class="eng-fab-output" role="status" aria-live="polite">Sign in to create a 3D model. Jobs are private.</div>
+<progress id="fab-tripo-progress" max="100" value="0" aria-label="3D model generation progress"></progress>
+<button type="button" id="fab-tripo-resume" class="tt-svc-button" hidden disabled>Resume task</button>
+<div id="fab-tripo-actions" class="eng-fab-actions" hidden>
+<button type="button" id="fab-tripo-edit" class="tt-svc-button primary">Open in sculpt editor</button>
+<button type="button" id="fab-tripo-download" class="tt-svc-button">Download GLB</button>
+</div></div></div></section>
+<section class="eng-section" id="fab-design"><div class="eng-head"><span class="tt-svc-eyebrow">Manufacturing intake · human quotation</span><h2>Create a design or upload your own</h2><p>Select an existing engineering drawing or use a validated four-hole mounting plate starting point. Your request remains a private draft until you explicitly submit it for review.</p></div>
+<div class="eng-columns">
+<form id="fab-project-form" class="eng-panel eng-form">
+<fieldset class="eng-fab-choice"><legend>How will you provide the design?</legend>
+<label><input type="radio" name="kind" value="generated" checked> Start from an editable parametric plate</label>
+<label><input type="radio" name="kind" value="upload"> Upload my own engineering design</label>
+</fieldset>
+<label>Project title<input name="title" maxlength="100" required placeholder="ESP32 robotics chassis bracket"></label>
+<div class="eng-input-grid">
+<label>Manufacturing method<select name="process"><option value="3d-printing">3D printing</option><option value="cnc-milling">CNC milling</option><option value="laser-cutting">Laser cutting</option><option value="pcb-assembly">PCB assembly</option><option value="other">Not sure — review needed</option></select></label>
+<label>Material preference<select name="material"><option>PLA</option><option>PETG</option><option>ABS</option><option>Aluminium</option><option>Steel</option><option>Acrylic</option><option>PCB-FR4</option><option>Other</option></select></label></div>
+<div id="fab-parametric" class="eng-fab-parametric">
+<h3>Mounting plate · shared CAD designer</h3>
+<p class="eng-fab-output" id="fab-plate-reference" aria-live="polite">100 × 60 × 6 mm; 5 mm holes; 8 mm offset</p>
+<input type="hidden" name="length" value="100"><input type="hidden" name="width" value="60"><input type="hidden" name="thickness" value="6"><input type="hidden" name="hole" value="5"><input type="hidden" name="offset" value="8">
+<p class="eng-fine">Edit this plate once in the <a href="#eng-cad">interactive CAD and simulation workbench</a>. The validated dimensions feed this fabrication request automatically. Alternatively, upload or sculpt a different model.</p></div>
+<div id="fab-upload-area" class="eng-fab-upload" hidden><label>CAD or drawing file (15 MB maximum)
+<input id="fab-file" type="file" accept=".stl,.obj,.step,.stp,.scad,.dxf,.3mf,.glb,.pdf"></label>
+<p class="eng-fine">Supported: STL, OBJ, STEP, STP, SCAD, DXF, 3MF, GLB and PDF. You can locally edit STL, OBJ and GLB and export a new STL for review. Files are private, not published. Only STL/OBJ/GLB have local quick-view support; other formats require external tools for inspection. Uploads are considered unscanned pending operator review.</p>
+<p id="fab-file-details" aria-live="polite">No file selected.</p></div>
+<div class="eng-input-grid"><label>Quantity<input name="quantity" type="number" min="1" max="1000" step="1" value="1" required></label>
+<label>Contact email<input name="contactEmail" type="email" required autocomplete="email" placeholder="name@example.com"></label></div>
+<label>City / delivery area<input name="deliveryLocation" maxlength="160" placeholder="Nairobi, Kenya"></label>
+<label>Requirements and tolerances<textarea name="notes" rows="4" maxlength="1800" placeholder="Expected use, materials, dimensional tolerance, surface finish, critical dimensions, target schedule and any safety constraints."></textarea></label>
+<label class="eng-fab-consent"><input id="fab-consent" type="checkbox" required> I confirm I have rights to submit this design and authorize TeknTandao to review it solely for quotation and fabrication feasibility.</label>
+<button type="submit" id="fab-submit" class="tt-svc-button primary" disabled>Submit for fabrication quotation</button>
+<p class="eng-fine">No automatic price, payment obligation or manufacturing approval. Uploading or submitting a file does not imply suitability for fabrication.</p>
+</form>
+<div class="eng-panel eng-fab-preview"><h3>Design file inspection</h3><p class="eng-fine">Edit locally with Three.js sculpting brushes or transform gizmos; no AI credits are consumed. Begin with a primitive or an uploaded STL/OBJ/GLB, or generate a plate from the parameter form.</p>
+<section id="fab-sculpt-workbench" class="eng-sculpt-workbench" aria-label="3D sculpting and editing tools">
+<div class="eng-sculpt-new" role="group" aria-label="New editable model">
+<button type="button" id="fab-sculpt-plate" class="tt-svc-button">New plate</button>
+<button type="button" data-sculpt-shape="sphere" class="tt-svc-button">Sphere</button>
+<button type="button" data-sculpt-shape="box" class="tt-svc-button">Box</button>
+<button type="button" data-sculpt-shape="cylinder" class="tt-svc-button">Cylinder</button>
+</div>
+<label for="fab-sculpt-tool">3D editing tool</label>
+<select id="fab-sculpt-tool" aria-label="Sculpt or transform mode">
+<option value="orbit">Inspect / orbit camera</option>
+<optgroup label="Object editing"><option value="translate">Move object</option><option value="rotate">Rotate object</option><option value="scale">Scale object</option></optgroup>
+<optgroup label="Sculpting brushes"><option value="inflate">Raise / inflate</option><option value="deflate">Carve / deflate</option><option value="smooth">Smooth</option><option value="flatten">Flatten</option><option value="grab">Grab / drag</option></optgroup>
+</select>
+<div class="eng-sculpt-brush-options">
+<label>Brush size <output id="fab-brush-radius-label" for="fab-brush-radius">20%</output>
+<input id="fab-brush-radius" type="range" min="2" max="70" step="1" value="20"></label>
+<label>Brush strength <output id="fab-brush-strength-label" for="fab-brush-strength">35%</output>
+<input id="fab-brush-strength" type="range" min="1" max="100" step="1" value="35"></label>
+<label class="eng-sculpt-symmetry"><input id="fab-sculpt-symmetry" type="checkbox"> Mirror brush across local X axis</label>
+</div>
+<div class="eng-sculpt-actions" role="group" aria-label="Editing history and export">
+<button type="button" id="fab-sculpt-undo" class="tt-svc-button" disabled>Undo</button>
+<button type="button" id="fab-sculpt-redo" class="tt-svc-button" disabled>Redo</button>
+<button type="button" id="fab-sculpt-reset" class="tt-svc-button" disabled>Reset edits</button>
+<button type="button" id="fab-sculpt-export" class="tt-svc-button" disabled>Download edited STL</button>
+<button type="button" id="fab-sculpt-use" class="tt-svc-button primary" disabled>Use edited STL for quote</button>
+</div>
+<p id="fab-sculpt-status" role="status" aria-live="polite">Select an STL, OBJ or self-contained GLB, or start a primitive to enable sculpting.</p>
+<p class="eng-fine">Select a brush, then drag on the model to sculpt; use Inspect to orbit/zoom/pan. Move/Rotate/Scale use axis gizmos. Sculpting changes the triangle mesh, not parametric CAD features. Confirm the unit system and model integrity before requesting fabrication.</p>
+</section>
+<div id="fab-preview" class="eng-fab-preview-canvas" role="region" aria-label="Interactive 3D model sculpting canvas">
+<p>Choose a model or an editing primitive above. STL, OBJ and GLB support local interactive sculpting; other uploaded formats require external CAD software.</p></div>
+<div id="fab-mesh-report" class="eng-fab-mesh-report" aria-live="polite">Local geometry checks will appear here after you choose a previewable file. Model units must be confirmed independently.</div>
+<div id="fab-upload-summary" class="eng-fab-output" aria-live="polite">Set your requirements to prepare a private manufacturing request.</div>
+<h3>My fabrication requests</h3><div id="fab-jobs" aria-live="polite">Sign in to retrieve your private quote requests.</div>
+<button id="fab-refresh-jobs" type="button" class="tt-svc-button" disabled>Refresh requests</button></div>
+</div></section>
+<section class="eng-section" id="fab-operator" hidden>
+<div class="eng-head"><span class="tt-svc-eyebrow">Authorized TeknTandao operators only</span><h2>Fabrication quotations and review queue</h2>
+<p>Private projects and design files are visible only to users assigned the `engineering_admin` Firebase custom claim. Human review determines suitability, feasibility, pricing and production scheduling.</p></div>
+<div class="eng-panel"><div class="eng-fab-actions"><button type="button" id="fab-admin-refresh" class="tt-svc-button">Refresh pending jobs</button><span id="fab-admin-status" role="status" aria-live="polite"></span></div>
+<div id="fab-admin-list" class="eng-fab-admin-list" aria-live="polite"></div></div>
+</section>
 <section class="eng-section"><div class="eng-panel eng-next"><div><span class="tt-svc-eyebrow">From simulations to physical prototypes</span><h2>Need sourcing, fabrication or testing?</h2><p>Use the shop for controllers, sensors, robots, cameras and related components—or contact the team to scope an engineering project with a real bill of materials, safety tests and supplier quotes.</p></div><div class="eng-actions"><a class="tt-svc-button primary" href="contact_page.html?subject=engineering">Discuss a prototype</a><a class="tt-svc-button" href="shop.html?category=Robotics">Explore robotics equipment</a></div></div></section>
 <footer class="tt-svc-footer">TeknTandao Engineering · Concept to bench test · <a href="web3-studio.html">Web3 Studio</a> · <a href="contact_page.html?subject=engineering">Contact</a></footer></main>
+<script src="assets/js/commerce-config.js"></script><script src="assets/js/engineering-fabrication-config.js"></script>
 <script src="assets/js/home-theme-bridge.js"></script><script src="assets/js/nav-responsive.js"></script><script src="assets/js/engineering-models.js"></script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/"}}</script>
 <script defer src="assets/js/engineering-studio.js"></script>
+<script defer src="assets/js/engineering-workspace.js"></script>
 <script defer src="assets/js/engineering-simulator.js"></script>
-<script type="module" src="assets/js/engineering-cad-viewer.js"></script></body></html>
+<script type="module" src="assets/js/engineering-cad-viewer.js"></script>
+<script type="module" src="assets/js/engineering-fabrication.js"></script></body></html>
