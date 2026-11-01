@@ -22,9 +22,10 @@ test('Microsoft reseller dashboard routes to authorized Workspace module', () =>
   const cloud = read('cloud-automation.html');
   assert.match(cloud, /id="microsoft-reseller"/);
   assert.match(cloud, /id="microsoft-reseller-dashboard"/);
-  assert.match(cloud, /https:\/\/tekntandaoworkspace\.web\.app\/\?module=reseller/);
-  assert.match(cloud, /Restricted access/);
-  assert.match(cloud, /not a live Partner Center session/);
+  assert.match(cloud, /microsoft-reseller-onboarding\.html/);
+  assert.match(cloud, /https:\/\/tekntandaoworkspace\.web\.app\/\?module=reseller-onboarding/);
+  assert.match(cloud, /requires an authorized account/);
+  assert.match(cloud, /not a live Microsoft Partner Center session|Neither page is a live Microsoft Partner Center session/);
   assert.match(cloud, /id="migrate"/);
   assert.match(cloud, /mode:"planning-only"/);
 });
@@ -38,8 +39,9 @@ test('Media Cloud is a service with a real route and accurate development status
     assert.ok(page.includes(asset), asset);
   }
   assert.match(page, /tt-home-aligned tt-service-page/);
-  assert.match(page, /not yet a deployed SaaS dashboard/);
-  assert.match(page, /https:\/\/github\.com\/chrisndirangu54\/Media-Cloud/);
+  assert.match(page, /media-cloud-dashboard\.html/);
+  assert.doesNotMatch(page, /View development repository/);
+  assert.match(page, /social publishing, AI model inference/i);
   assert.match(page, /contact_page\.html\?subject=media-cloud/);
   assert.match(nav, /label: 'Media Cloud', href: 'media-cloud\.html'/);
   assert.match(home, /href="media-cloud\.html"/);
@@ -52,5 +54,5 @@ test('new service does not claim live scheduling, publishing or Microsoft pricin
   assert.match(page, /will require platform permissions and explicit customer approval/);
   assert.match(page, /planned/i);
   assert.match(cloud, /requires an authorized account/);
-  assert.match(cloud, /Product availability and reseller eligibility must be verified/);
+  assert.match(cloud, /partner eligibility require verification/);
 });

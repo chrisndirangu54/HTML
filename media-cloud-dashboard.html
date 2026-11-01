@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Media Cloud Dashboard | TeknTandao</title>
+<meta name="description" content="Manage local social media campaign plans, content drafts and campaign performance notes with TeknTandao Media Cloud.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="assets/images/tekntandao-favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+<link rel="stylesheet" href="assets/css/commerce.css">
+<link rel="stylesheet" href="assets/css/isp-shop-pages.css">
+<link rel="stylesheet" href="assets/css/home-theme-bridge.css">
+<link rel="stylesheet" href="assets/css/service-home-ux.css">
+<link rel="stylesheet" href="assets/css/media-cloud-dashboard.css">
+</head><body class="tt-home-aligned tt-service-page tt-media-dashboard">
+<div class="tt-utility-head"><a class="brand" href="index.html">TeknTandao</a><div class="tt-utility-actions"><a href="media-cloud.html">Media Cloud</a><a href="contact_page.html?subject=media-cloud">Support</a></div></div>
+<main class="tt-svc-shell mc-shell">
+<nav class="tt-svc-crumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span>›</span><a href="media-cloud.html">Media Cloud</a><span>›</span>Dashboard</nav>
+<div class="mc-dashboard-layout">
+<aside class="mc-sidebar" aria-label="Dashboard sections">
+  <div class="mc-sidebar-brand"><i class="las la-bullhorn" aria-hidden="true"></i><span>Media Cloud <small>Workspace preview</small></span></div>
+  <div class="mc-sidebar-nav">
+    <button class="mc-nav-link active" type="button" data-section="overview" aria-current="page"><i class="las la-columns" aria-hidden="true"></i> Overview</button>
+    <button class="mc-nav-link" type="button" data-section="campaigns"><i class="las la-bullhorn" aria-hidden="true"></i> Campaigns</button>
+    <button class="mc-nav-link" type="button" data-section="content"><i class="las la-calendar-alt" aria-hidden="true"></i> Content planner</button>
+    <button class="mc-nav-link" type="button" data-section="creators"><i class="las la-users" aria-hidden="true"></i> Creator shortlist</button>
+    <button class="mc-nav-link" type="button" data-section="reports"><i class="las la-chart-bar" aria-hidden="true"></i> Reports</button>
+  </div>
+  <div class="mc-sidebar-note"><i class="las la-lock" aria-hidden="true"></i> Local browser workspace. No social account is connected and nothing is published.</div>
+</aside>
+<div class="mc-content">
+<div class="mc-topline"><div><span class="tt-svc-eyebrow">Campaign operations</span><h1>Media Cloud <span class="tt-svc-gradient">Dashboard</span></h1><p>Plan campaigns, organize content and review metrics you enter yourself.</p></div><div class="mc-actions"><button id="mc-export" class="tt-svc-button" type="button"><i class="las la-download" aria-hidden="true"></i> Export data</button><button id="mc-new-campaign" class="tt-svc-button primary" type="button"><i class="las la-plus" aria-hidden="true"></i> New campaign</button></div></div>
+<div class="mc-notice" role="note"><i class="las la-info-circle" aria-hidden="true"></i> <span><strong>Working local preview:</strong> drafts and metrics are saved only in this browser. Analytics are calculated from your manually entered data. No live APIs, automatic posting, AI model inference or shared team accounts are connected yet. Do not enter passwords, access tokens or private customer records.</span></div>
+<div id="mc-alert" class="mc-alert" role="status" aria-live="polite"></div>
+
+<section class="mc-view" data-view="overview" aria-label="Overview">
+<div class="mc-metrics">
+<article class="mc-stat"><span>Campaigns</span><strong id="mc-total-campaigns">0</strong><small>Local plans</small></article>
+<article class="mc-stat"><span>Content drafts</span><strong id="mc-total-drafts">0</strong><small>Saved ideas</small></article>
+<article class="mc-stat"><span>Ready for review</span><strong id="mc-ready-drafts">0</strong><small>Not published</small></article>
+<article class="mc-stat"><span>Creators shortlisted</span><strong id="mc-total-creators">0</strong><small>Manual research</small></article>
+</div>
+<div class="mc-two-col"><section class="mc-panel"><div class="mc-panel-head"><h2>Campaign pipeline</h2><button type="button" class="mc-text-button" data-go="campaigns">View all</button></div><div id="mc-overview-campaigns" class="mc-stack"><p class="mc-empty">Create your first campaign to get started.</p></div></section>
+<section class="mc-panel"><div class="mc-panel-head"><h2>Content queue</h2><button type="button" class="mc-text-button" data-go="content">Open planner</button></div><div id="mc-overview-drafts" class="mc-stack"><p class="mc-empty">No content drafts yet.</p></div></section></div>
+<section class="mc-panel"><div class="mc-panel-head"><h2>Get started</h2></div><div class="mc-steps"><div><i class="las la-check-circle" aria-hidden="true"></i><strong>01 · Create a campaign</strong><p>Give it a goal, audience and timeframe.</p></div><div><i class="las la-pen" aria-hidden="true"></i><strong>02 · Write content drafts</strong><p>Organize proposed posts and mark them for review.</p></div><div><i class="las la-chart-line" aria-hidden="true"></i><strong>03 · Record results</strong><p>Enter verified reach and engagement after publishing elsewhere.</p></div></div></section>
+</section>
+
+<section class="mc-view" data-view="campaigns" aria-label="Campaigns" hidden>
+<div class="mc-section-heading"><div><h2>Campaigns</h2><p>Track objectives, dates and planning status.</p></div><button class="tt-svc-button primary" data-action="new-campaign" type="button">Add campaign</button></div>
+<div id="mc-campaign-list" class="mc-card-grid"></div>
+</section>
+
+<section class="mc-view" data-view="content" aria-label="Content planner" hidden>
+<div class="mc-section-heading"><div><h2>Content planner</h2><p>Draft post copy and prepare it for approval. This does not publish or schedule posts.</p></div></div>
+<form id="mc-draft-form" class="mc-panel mc-form">
+  <div class="mc-form-row"><label>Campaign<select name="campaignId" id="mc-draft-campaign" required></select></label><label>Platform<select name="platform" required><option>LinkedIn</option><option>Instagram</option><option>Facebook</option><option>TikTok</option><option>YouTube</option><option>X</option><option>Other</option></select></label><label>Target date<input name="targetDate" type="date" required></label></div>
+  <label>Post title<input name="title" maxlength="100" required placeholder="Product announcement"></label>
+  <label>Draft caption<textarea name="caption" maxlength="2000" rows="4" required placeholder="Write your message. Avoid entering private customer data."></textarea></label>
+  <div class="mc-form-footer"><p>Drafts remain local and require manual review before any use.</p><button type="submit" class="tt-svc-button primary">Save draft</button></div>
+</form>
+<div class="mc-panel"><h3>Saved content</h3><div id="mc-drafts" class="mc-stack"></div></div>
+</section>
+
+<section class="mc-view" data-view="creators" aria-label="Creator shortlist" hidden>
+<div class="mc-section-heading"><div><h2>Creator shortlist</h2><p>Keep a manually researched list for potential collaborations. No profiling or scraping is performed.</p></div></div>
+<form id="mc-creator-form" class="mc-panel mc-form">
+<div class="mc-form-row"><label>Public display name<input name="name" maxlength="100" required placeholder="Creator / channel"></label><label>Platform<select name="platform"><option>Instagram</option><option>TikTok</option><option>YouTube</option><option>LinkedIn</option><option>Facebook</option><option>Other</option></select></label><label>Topic fit<select name="fit"><option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option></select></label></div>
+<label>Research notes (public, non-sensitive)<textarea name="notes" rows="2" maxlength="500" placeholder="Relevant audience and campaign fit"></textarea></label>
+<button type="submit" class="tt-svc-button primary">Add to shortlist</button>
+</form><div class="mc-panel"><h3>Shortlisted creators</h3><div id="mc-creators" class="mc-stack"></div></div>
+</section>
+
+<section class="mc-view" data-view="reports" aria-label="Campaign reports" hidden>
+<div class="mc-section-heading"><div><h2>Manual performance reports</h2><p>Record your observed results; the dashboard computes a simple engagement rate.</p></div></div>
+<form id="mc-report-form" class="mc-panel mc-form">
+<div class="mc-form-row"><label>Campaign<select name="campaignId" id="mc-report-campaign" required></select></label><label>Reach<input name="reach" type="number" min="0" max="1000000000" step="1" required placeholder="0"></label><label>Engagements<input name="engagements" type="number" min="0" max="1000000000" step="1" required placeholder="0"></label></div>
+<label>Measurement note<input name="note" maxlength="180" placeholder="Reporting period and source; manually verified"></label>
+<div class="mc-form-footer"><p>Engagement rate = engagements ÷ reach × 100. Results are not fetched from any platform.</p><button type="submit" class="tt-svc-button primary">Save measurement</button></div>
+</form><div id="mc-report-list" class="mc-card-grid"></div>
+</section>
+<div class="mc-footer-actions"><button id="mc-clear" class="mc-text-button" type="button">Clear this browser's Media Cloud drafts</button><a href="media-cloud.html">Back to Media Cloud services</a></div>
+</div></div>
+</main>
+<dialog id="mc-campaign-dialog" class="mc-dialog"><form id="mc-campaign-form" method="dialog" class="mc-form"><div class="mc-panel-head"><h2>New campaign</h2><button id="mc-close-dialog" class="mc-close" type="button" aria-label="Close dialog">×</button></div>
+<label>Campaign name<input name="name" maxlength="90" required placeholder="Q1 brand awareness"></label>
+<label>Primary goal<select name="goal"><option>Awareness</option><option>Engagement</option><option>Leads</option><option>Community</option><option>Sales support</option></select></label>
+<label>Audience / channel notes<textarea name="audience" maxlength="350" rows="3" placeholder="Who is the campaign for?"></textarea></label>
+<div class="mc-form-row"><label>Start date<input name="start" type="date" required></label><label>End date<input name="end" type="date" required></label></div>
+<div class="mc-form-footer"><button id="mc-cancel-campaign" class="tt-svc-button" type="button">Cancel</button><button class="tt-svc-button primary" type="submit">Create campaign</button></div>
+</form></dialog>
+<script src="assets/js/home-theme-bridge.js"></script><script src="assets/js/nav-responsive.js"></script>
+<script src="assets/js/media-cloud-dashboard.js" defer></script>
+</body></html>
