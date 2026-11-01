@@ -4,7 +4,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const root=path.resolve(__dirname,'..');
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
-const html=read('engineering-fabrication.html'),
+const html=read('engineering.html'),
   app=read('assets/js/engineering-fabrication.js'),
   preview=read('assets/js/engineering-fabrication-preview.js'),
   admin=read('assets/js/engineering-fabrication-admin.js'),
@@ -22,7 +22,7 @@ test('fabrication UI offers design, upload, fabrication review, account credits 
  assert.match(html,/no automatic price|No automatic price/);
  assert.match(html,/unscanned/);
  assert.match(read('engineering.html'),/id="eng-send-fabrication"/);
- assert.match(read('assets/js/nav-responsive.js'),/Engineering Fabrication/);
+ assert.match(read('assets/js/nav-responsive.js'),/Engineering & Prototyping/);
 });
 
 test('cloud actions need verified user, App Check, server-authorized credits and explicit consent',()=>{

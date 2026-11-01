@@ -147,3 +147,10 @@
 @media(max-width:960px){.tt-engineering #eng-cad .eng-columns{grid-template-columns:1fr}.eng-sim-controls{margin-bottom:17px}}
 @media(max-width:520px){.eng-sim-controls{padding:14px}.eng-sim-kpis{grid-template-columns:1fr 1fr}.eng-sim-kpis strong{font-size:16px}.eng-sim-range-row input[type=number]{width:80px}.eng-sim-playback .tt-svc-button{flex:1}}
 @media(prefers-reduced-motion:reduce){.eng-sim-preset,.eng-sim-controls input,.eng-sim-kpis>div{animation:none;transition:none}}
+
+/* Unified Engineering workspace navigation */
+.eng-workflow-nav{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0;padding:12px;border:1px solid #467969;border-radius:16px;background:rgba(11,36,31,.89)}
+.eng-workflow-nav a{padding:9px 12px;background:rgba(89,165,140,.24);color:#e3fff5;border-radius:9px;font-weight:600;text-decoration:none;font-size:12px}
+.eng-workflow-nav a:hover,.eng-workflow-nav a:focus-visible{background:rgba(108,226,192,.35)}
+#fab-account,#fab-ai,#fab-tripo,#fab-design,#eng-cad,#eng-ai{scroll-margin-top:20px}
+@media(max-width:650px){.eng-workflow-nav a{flex:1 1 auto;text-align:center}}

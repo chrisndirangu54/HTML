@@ -68,13 +68,11 @@
       scad=model.scad;
       text('eng-scad-preview',scad+'\n// Nominal solid volume estimate: '+fmt(model.volumeMm3,6)+' mm³');
       $('eng-download-scad').disabled=false;
-      const values=parseForm($('eng-cad-form'));
-      const query=new URLSearchParams(Object.fromEntries(['length','width','thickness','hole','offset'].map(k=>[k,values[k]])));
-      $('eng-send-fabrication').href='engineering-fabrication.html?'+query.toString();
+      $('eng-send-fabrication').href='#fab-design';
     }catch(error){
       scad=null;
       $('eng-download-scad').disabled=true;
-      $('eng-send-fabrication').href='engineering-fabrication.html';
+      $('eng-send-fabrication').href='#fab-design';
       text('eng-scad-preview','CAD dimensions invalid: '+error.message);
     }
   };

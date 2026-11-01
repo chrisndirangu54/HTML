@@ -2,7 +2,7 @@ const test=require('node:test');
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
 const read=p=>fs.readFileSync(path.join(__dirname,'..',p),'utf8');
-const html=read('engineering-fabrication.html');
+const html=read('engineering.html');
 const app=read('assets/js/engineering-fabrication.js');
 const editor=read('assets/js/engineering-sculpt-editor.js');
 const loader=read('assets/js/engineering-fabrication-preview.js');
