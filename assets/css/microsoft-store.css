@@ -1,0 +1,25 @@
+/* Microsoft software storefront shares the actual homepage dark/outlined design. */
+.ms-buy-stepper{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:22px 0}
+.ms-buy-stepper span{font-size:12px;color:#d4e5db;padding:14px 15px;background:rgba(24,32,26,.8);
+ border:1px solid #565656;border-radius:12px}
+.ms-buy-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:24px 0}
+.ms-buy-grid label{position:relative;display:block;cursor:pointer}
+.ms-buy-grid input{position:absolute;top:18px;right:18px;accent-color:var(--primary-color,#28e98c);width:18px;height:18px;z-index:2}
+.ms-buy-grid label > span{display:flex;flex-direction:column;gap:9px;border:1px solid #565656;background:rgba(20,20,20,.84);
+ padding:22px 44px 20px 20px;min-height:155px;border-radius:18px}
+.ms-buy-grid input:checked + span,.ms-buy-grid input:focus-visible + span{
+ border-color:var(--primary-color,#28e98c);box-shadow:0 0 0 2px rgba(40,233,140,.17)}
+.ms-buy-grid i{font-size:29px;color:var(--primary-color,#28e98c)}
+.ms-buy-grid strong{font-size:17px;color:#fff;font-weight:500}
+.ms-buy-grid small{font-size:12px;color:#acbcb0;line-height:1.5}
+.ms-need-options{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tt-service-page .ms-need-options label{display:flex;align-items:center;gap:9px;color:#fff;font-size:13px;
+padding:6px 7px;margin:0;cursor:pointer}
+.tt-service-page .ms-need-options input{width:17px;height:17px;accent-color:var(--primary-color,#28e98c)}
+.ms-summary{align-self:stretch;position:sticky;top:20px}
+.ms-summary h2{margin:20px 0}
+#ms-recommendation{white-space:pre-line;line-height:1.9;font-size:14px;color:#d3e1d6;min-height:160px}
+#ms-continue{width:100%;text-align:center}
+.ms-security-note{font-size:12px;color:#a4b0a7;margin-top:15px}
+@media(max-width:840px){.ms-buy-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ms-buy-stepper{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:570px){.ms-buy-grid,.ms-buy-stepper,.ms-need-options{grid-template-columns:1fr}.ms-summary{position:static}}
