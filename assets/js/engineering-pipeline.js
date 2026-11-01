@@ -84,7 +84,7 @@
  // Existing fabrication quote remains a separate human-reviewed, authorized action.
  const fieldKeys=['length','width','thickness','hole','offset'];
  const currentDims=()=>Object.fromEntries(fieldKeys.map(name=>[name,Number(cadForm.elements.namedItem(name).value)]));
- let stage='model',source='parametric',generation=0,viewer=null,loading=false,renderTimer=null,wireframe=false;
+ let stage='model',source='parametric',generation=0,viewer=null,loading=false,renderTimer=null,renderAgain=false,wireframe=false;
  let lastSnapshot=window.TeknPlateSimulationSnapshot||null;
  const fromHash=hash=>{
   const fragment=String(hash||'').replace(/^#/,'');
@@ -184,7 +184,8 @@
   setStage('model');
  });
  const renderPlate=async()=>{
-  if(source!=='parametric'||loading)return;
+  if(source!=='parametric')return;
+  if(loading){renderAgain=true;return;}
   let values;try{values=currentDims();window.TeknEngineeringModels.mountingPlate(values);}
   catch(error){viewportNote.textContent='Invalid plate: '+error.message;return;}
   loading=true;
@@ -194,7 +195,10 @@
    if(lastSnapshot)viewer.showPlateSimulation(lastSnapshot);
    wireframe=false;edges.textContent='Wireframe off';edges.setAttribute('aria-pressed','false');
   }catch(error){viewportNote.textContent='Shared 3D viewport failed: '+error.message;}
-  finally{loading=false;updateContext();}
+  finally{
+   loading=false;updateContext();
+   if(renderAgain&&source==='parametric'){renderAgain=false;setTimeout(()=>renderPlate(),0);}
+  }
  };
  cadForm.addEventListener('input',()=>{
   if(source!=='parametric')return; // Never replace sculpted/imported meshes silently.

@@ -28,6 +28,9 @@ function kind(){
  return selected;
 }
 function stateFromForm(){
+ const source=window.TeknEngineeringPipeline;
+ if(source?.requiresMeshSelection&&form.elements.namedItem('kind').value==='generated')
+  throw Error('The active design is a mesh, not the parametric plate. Choose "Use edited STL for quote" or explicitly replace the model with a new parametric plate before submitting.');
  const data=Object.fromEntries(new FormData(form).entries());
  const result={kind:kind(),title:data.title||'',process:data.process,material:data.material,
   quantity:Number(data.quantity),notes:data.notes||'',contactEmail:data.contactEmail||'',

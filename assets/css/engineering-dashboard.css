@@ -123,3 +123,8 @@
 .eng-dashboard-enabled .eng-pipeline #eng-cad .eng-cad-inspector:empty{display:none}
 @media(max-width:1050px){.eng-pipeline-surface{grid-template-columns:1fr}.eng-pipeline-viewport-shell{position:relative;top:auto}.eng-pipeline-stage-shell{min-height:0}}
 @media(max-width:730px){.eng-pipeline-stage-nav button{font-size:11px;padding:10px}.eng-pipeline-viewport-shell #fab-preview{height:340px}.eng-pipeline-stage-shell{padding:10px}}
+
+.eng-dashboard-enabled #eng-dashboard .eng-pipeline-stage-shell #eng-cad .eng-columns{grid-template-columns:1fr!important}
+.eng-dashboard-enabled #eng-dashboard .eng-pipeline-stage-shell #fab-ai .eng-columns{grid-template-columns:1fr!important}
+.eng-pipeline-stage-shell #eng-cad .eng-cad-left,.eng-pipeline-stage-shell #eng-cad .eng-cad-inspector{max-width:100%}
+.eng-pipeline-stage-shell .eng-intel-grid{grid-template-columns:1fr!important}
