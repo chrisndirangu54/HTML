@@ -94,6 +94,34 @@ async function reloadProjects(){
 }
 form.querySelectorAll('input[name=kind]').forEach(el=>el.addEventListener('change',syncDraft));
 form.addEventListener('input',syncDraft);
+const modelContainer=$('fab-preview');
+const beginShape=async shape=>{
+ try{
+  const module=await import('./engineering-fabrication-preview.js');
+  pendingFile=null;window.TeknUploadedDesignFile=null;
+  $('fab-file').value='';
+  $('fab-file-details').textContent='Editable '+shape+' created locally. Select "Use edited STL for quote" to prepare a fabrication upload.';
+  await module.previewPrimitive(shape,modelContainer,shape==='plate'?dimensions():undefined);
+  $('fab-sculpt-status').scrollIntoView({block:'nearest',behavior:'smooth'});
+  syncDraft();
+ }catch(error){$('fab-sculpt-status').textContent='Could not create model: '+error.message;}
+};
+$('fab-sculpt-plate').addEventListener('click',()=>beginShape('plate'));
+document.querySelectorAll('[data-sculpt-shape]').forEach(button=>button.addEventListener('click',()=>beginShape(button.dataset.sculptShape)));
+document.addEventListener('fab:sculpt-changed',()=>{
+ pendingFile=null;window.TeknUploadedDesignFile=null;
+ $('fab-file-details').textContent='Unsaved mesh edit. Click "Use edited STL for quote" after editing to select the updated model.';
+ syncDraft();
+});
+document.addEventListener('fab:edited-stl-ready',event=>{
+ const file=event.detail?.file;
+ if(!(file instanceof File)||file.size===0||file.size>cfg.maxUploadBytes)return;
+ pendingFile=file;window.TeknUploadedDesignFile=file;
+ const upload=form.querySelector('input[name="kind"][value="upload"]');
+ upload.checked=true;kind();
+ $('fab-file-details').textContent='Edited model prepared: '+file.name+' ('+(file.size/1024/1024).toFixed(2)+' MB). This is the version that will be uploaded only when you submit the fabrication request.';
+ syncDraft();
+});
 $('fab-file').addEventListener('change',async e=>{
  const file=e.target.files?.[0];pendingFile=null;window.TeknUploadedDesignFile=null;
  if(!file){syncDraft();return;}
