@@ -4,6 +4,7 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {STLLoader} from 'three/addons/loaders/STLLoader.js';
 import {OBJLoader} from 'three/addons/loaders/OBJLoader.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {inspectTriangleGeometry} from './engineering-mesh-inspection.js';
 
 let cleanup=null;
 function glbHasExternalUris(buf){
@@ -45,6 +46,25 @@ export async function previewFile(file,container){
  const scene=new THREE.Scene();
  scene.add(new THREE.HemisphereLight(0xe9fffa,0x204540,2.4));
  const key=new THREE.DirectionalLight(0xffffff,2.7);key.position.set(8,-7,10);scene.add(key);
+ const assessments=[];
+ model.traverse(node=>{
+   if(!node.isMesh||!node.geometry?.attributes?.position)return;
+   try{
+     const g=node.geometry,positions=g.attributes.position.array,idx=g.index?.array||null;
+     assessments.push(inspectTriangleGeometry(positions,idx,Math.max(5000,Math.floor(50000/(assessments.length+1)))));
+   }catch(_){ /* File may still be viewable even when mesh heuristics cannot inspect it. */ }
+ });
+ const report=document.getElementById('fab-mesh-report');
+ if(report){
+   const triangles=assessments.reduce((n,x)=>n+x.triangleCount,0);
+   const boundaries=assessments.reduce((n,x)=>n+x.approximateBoundaryEdges,0);
+   const nonManifold=assessments.reduce((n,x)=>n+x.approximateNonManifoldEdges,0);
+   const degenerate=assessments.reduce((n,x)=>n+x.degenerateTriangles,0);
+   report.textContent='Local mesh preflight: '+triangles.toLocaleString()+' triangles; '+
+      boundaries+' approximate open edges; '+nonManifold+' non-manifold edges; '+
+      degenerate+' degenerate triangles. '+(assessments.some(a=>a.partial)?'Partial scan: complex model. ':'')+
+      'This does not certify watertightness, fit, strength, dimensions or fabrication readiness. Units must be verified.';
+ }
  const box=new THREE.Box3().setFromObject(model);
  if(box.isEmpty())throw Error('No renderable 3D geometry found.');
  const size=box.getSize(new THREE.Vector3());
