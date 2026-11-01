@@ -6,6 +6,7 @@
  if(!root||!stage)return;
  const views={
   overview:{title:'Engineering overview',description:'Every engineering workflow in one connected workspace.',ids:[]},
+  pipeline:{title:'Engineering design pipeline',description:'One active design, one shared 3D viewport, five connected stages.',ids:[]},
   analysis:{title:'Engineering calculators & simulation',description:'Engineering briefs, real estimators and open-source simulation workbenches.',ids:['eng-workspace','eng-calculators','eng-simulators']},
   cad:{title:'Parametric CAD & STL',description:'Create 3D geometry, simulate approximate loads, export SCAD and STL.',ids:['eng-cad']},
   ai:{title:'AI design studio',description:'Optional free on-device critique and authenticated Gemini/Tripo generation.',ids:['eng-ai','fab-ai','fab-tripo']},
@@ -129,7 +130,7 @@
   const name=event.detail?.view;
   if(views[name])activate(name,{hash:'#eng-dashboard-'+name,scroll:false});
  });
- document.addEventListener('fab:edited-stl-ready',()=>activate('fabrication',{hash:'#fab-design'}));
+ document.addEventListener('fab:edited-stl-ready',()=>activate('pipeline',{hash:'#eng-pipeline'}));
  fileInput.addEventListener('change',()=>{
   const file=fileInput.files?.[0];if(!file)return;
   if(!/\.(stl|obj|glb)$/i.test(file.name)||file.size<=0||file.size>15*1024*1024){
@@ -141,6 +142,7 @@
    choice.checked=true;choice.dispatchEvent(new Event('change',{bubbles:true}));
    original.dispatchEvent(new Event('change',{bubbles:true}));
    importStatus.textContent='Opened locally: '+file.name+'. Submit a quote separately if desired.';
+   document.dispatchEvent(new CustomEvent('eng:pipeline-stage',{detail:{stage:'refine'}}));
   }catch(error){importStatus.textContent='Local model import unavailable: '+error.message;}
  });
  // Apply panel hiding only after every original module has been successfully assigned.
