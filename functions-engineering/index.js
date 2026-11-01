@@ -5,7 +5,7 @@ import {getFirestore,FieldValue} from 'firebase-admin/firestore';
 import {getStorage} from 'firebase-admin/storage';
 import {HttpsError,onCall,onRequest} from 'firebase-functions/v2/https';
 import {onSchedule} from 'firebase-functions/v2/scheduler';
-import {defineSecret} from 'firebase-functions/params';
+import {defineSecret,defineString} from 'firebase-functions/params';
 import * as logger from 'firebase-functions/logger';
 import {FREE_CREDITS,AI_COST,PACKAGES,trim,validateDesign,validateUploadMeta,
   verifyPaidPurchase,allowAIQuestion,ALLOWED_TYPES} from './core.mjs';
@@ -14,6 +14,12 @@ if(!getApps().length)initializeApp();
 const db=getFirestore(),storage=getStorage(),region='europe-west1';
 const AI_KEY=defineSecret('ENGINEERING_GEMINI_API_KEY');
 const PAYMENT_KEY=defineSecret('ENGINEERING_PAYSTACK_SECRET_KEY');
+const STORAGE_BUCKET=defineString('ENGINEERING_STORAGE_BUCKET',{default:''});
+function engineeringBucket(){
+ const name=String(STORAGE_BUCKET.value()||'').trim();
+ if(!name)throw new Error('ENGINEERING_STORAGE_BUCKET is not configured.');
+ return storage.bucket(name);
+}
 const AUTH_OPTIONS={region,enforceAppCheck:true,maxInstances:30};
 const clock=()=>FieldValue.serverTimestamp();
 const wallets=()=>db.collection('engineeringWallets');
@@ -209,7 +215,7 @@ export const engineeringSubmitProject=onCall(AUTH_OPTIONS,async request=>{
   const ext=trim(request.data?.ext,10).toLowerCase();
   if(!Object.hasOwn(ALLOWED_TYPES,ext))throw new HttpsError('invalid-argument','Unsupported design file.');
   const path='engineeringFiles/'+uid+'/'+projectId+'/design.'+ext;
-  const [metadata]=await storage.bucket().file(path).getMetadata().catch(()=>[null]);
+  const [metadata]=await engineeringBucket().file(path).getMetadata().catch(()=>[null]);
   if(!metadata)throw new HttpsError('failed-precondition','Upload your design file before requesting fabrication.');
   try{file=validateUploadMeta(path,uid,projectId,{ext,size:Number(metadata.size)});}
   catch(e){throw new HttpsError('invalid-argument',e.message);}
@@ -248,7 +254,7 @@ export const engineeringUploadDesign=onRequest({region,maxInstances:20,cors:fals
   if(!doc.exists||doc.data().uid!==user.uid||doc.data().kind!=='upload'||doc.data().status!=='draft')
     return res.status(403).json({error:'This account has no draft upload project with this identifier'});
   const pathname='engineeringFiles/'+user.uid+'/'+projectId+'/design.'+ext;
-  const file=storage.bucket().file(pathname);
+  const file=engineeringBucket().file(pathname);
   try{
    await file.save(bytes,{resumable:false,validation:'crc32c',
      contentType:ALLOWED_TYPES[ext],preconditionOpts:{ifGenerationMatch:0},
@@ -290,7 +296,7 @@ export const engineeringAdminFileLink=onCall(AUTH_OPTIONS,async request=>{
  if(!path.startsWith('engineeringFiles/'+doc.data().uid+'/'+projectId+'/design.'))
   throw new HttpsError('failed-precondition','Invalid file ownership path.');
  try{
-  const [signedUrl]=await storage.bucket().file(path).getSignedUrl({
+  const [signedUrl]=await engineeringBucket().file(path).getSignedUrl({
    version:'v4',action:'read',expires:Date.now()+10*60*1000
   });
   return {url:signedUrl,expiresMinutes:10};
