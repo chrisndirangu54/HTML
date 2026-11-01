@@ -4,7 +4,11 @@ const fs=require('node:fs');
 const path=require('node:path');
 const root=path.resolve(__dirname,'..');
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
-const models=require('../assets/js/engineering-models.js');
+const vm=require('node:vm');
+const scope={};
+vm.runInNewContext(read('assets/js/engineering-models.js'),{globalThis:scope});
+const models=scope.TeknEngineeringModels;
+assert.ok(models && typeof models.dcSeries==='function');
 const approx=(actual,expected,tol=1e-9)=>assert.ok(Math.abs(actual-expected)<tol,actual+' differs from '+expected);
 
 test('DC series circuit obeys Ohm law and power conservation',()=>{
@@ -101,7 +105,7 @@ test('engineering page offers functional local workflows and clearly distinguish
     'https://openmodelica.org/','https://jupyter.org/try']){
   assert.ok(html.includes(tool),tool);
  }
- assert.match(html,/not listed as open-source simulator/);
+ assert.match(html,/<strong>not<\/strong> listed as open-source simulator software/);
  assert.match(html,/model download may be large/);
  assert.match(html,/not signed engineering drawings/);
  assert.match(js,/frame\.src='https:\/\/www\.falstad\.com\/circuit\/'/);
