@@ -4,13 +4,13 @@
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
 import {getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
 import {getFunctions,httpsCallable} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-functions.js';
-import {initializeAppCheck,ReCaptchaV3Provider} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app-check.js';
+import {initializeAppCheck,ReCaptchaV3Provider,getToken} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app-check.js';
 
 const cfg=window.TeknTandaoEngineeringConfig||{},M=window.TeknEngineeringModels;
 const $=id=>document.getElementById(id);
 const status=$('fab-service-status');
 const form=$('fab-project-form');
-let firebaseAuth=null,fx=null,user=null,verified=false,lastDraft=null,pendingFile=null,submitting=false;
+let firebaseAuth=null,appCheck=null,fx=null,user=null,verified=false,lastDraft=null,pendingFile=null,submitting=false;
 const validConfig=cfg.firebase&&['apiKey','authDomain','projectId','appId'].every(k=>Boolean(cfg.firebase[k]))&&
   Boolean(cfg.appCheckSiteKey);
 function notice(message,error=false){status.textContent=message;status.classList.toggle('is-error',error);}
@@ -169,11 +169,11 @@ form.addEventListener('submit',async e=>{
  try{
   const created=await call('engineeringCreateProject',design);
   if(design.kind==='upload'){
-   const token=await user.getIdToken(true),ext=pendingFile.name.split('.').pop().toLowerCase();
+   const token=await user.getIdToken(true),appCheckToken=(await getToken(appCheck)).token,ext=pendingFile.name.split('.').pop().toLowerCase();
    notice('Uploading private CAD file for human review…');
    const r=await fetch(cfg.uploadEndpoint,{
     method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/octet-stream',
-      'X-Project-Id':created.projectId,'X-File-Extension':ext},body:pendingFile
+      'X-Project-Id':created.projectId,'X-File-Extension':ext,'X-Firebase-AppCheck':appCheckToken},body:pendingFile
    });
    const receipt=await r.json().catch(()=>({}));
    if(!r.ok)throw Error('Upload failed: '+(receipt.error||r.status)+'. Draft reference: '+created.projectId);
@@ -207,7 +207,7 @@ function init(){
  }
  try{
   const app=initializeApp(cfg.firebase,'engineering-fabrication');
-  initializeAppCheck(app,{provider:new ReCaptchaV3Provider(cfg.appCheckSiteKey),isTokenAutoRefreshEnabled:true});
+  appCheck=initializeAppCheck(app,{provider:new ReCaptchaV3Provider(cfg.appCheckSiteKey),isTokenAutoRefreshEnabled:true});
   firebaseAuth=getAuth(app);fx=getFunctions(app,cfg.functionsRegion||'europe-west1');
   $('fab-signin').disabled=false;
   onAuthStateChanged(firebaseAuth,async current=>{
