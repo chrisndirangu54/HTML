@@ -33,7 +33,6 @@ jobs:
           node --check assets/js/color.js
           node --check assets/js/hero-gaming-pc.js
           node --check assets/js/hero-lottie-fallback.js
-          node --check assets/js/orb-hero.js
       - name: Validate ISP HTML integration
         run: |
           test -s isp-architecture.html
@@ -75,7 +74,7 @@ jobs:
           node -e "const fs=require('fs'),zlib=require('zlib'); const lite=JSON.parse(fs.readFileSync('assets/lottie/ai-robo-lite.json','utf8')); if(lite.w!==700||lite.h!==700||!Array.isArray(lite.layers)||lite.layers.length<3) throw new Error('invalid lite Lottie'); const packed=fs.readFileSync('assets/lottie/ai-robo-core.gz.b64','utf8').replace(/\\s+/g,''); const core=JSON.parse(zlib.gunzipSync(Buffer.from(packed,'base64')).toString('utf8')); if(core.w!==700||core.h!==700||!Array.isArray(core.layers)||core.layers.length<3) throw new Error('invalid compressed Lottie'); console.log('Lottie assets valid',core.nm,core.layers.length);"
       - name: Validate required web pages and hero assets
         run: |
-          for f in shop.html login.html account.html admin.html attendant.html delivery.html blog.html gallery.html events.html training.html podcasts.html awards.html assets/css/commerce.css assets/css/hero-gaming-pc.css assets/css/orb-hero.css assets/js/site-config.js assets/js/hero-gaming-pc.js assets/js/hero-lottie-fallback.js assets/js/orb-hero.js assets/lottie/ai-robo-lite.json assets/lottie/ai-robo-core.gz.b64 firestore.rules firebase.json; do test -s "$f" || exit 1; done
+          for f in shop.html login.html account.html admin.html attendant.html delivery.html blog.html gallery.html events.html training.html podcasts.html awards.html assets/css/commerce.css assets/css/hero-gaming-pc.css assets/js/site-config.js assets/js/hero-gaming-pc.js assets/js/hero-lottie-fallback.js assets/lottie/ai-robo-lite.json assets/lottie/ai-robo-core.gz.b64 firestore.rules firebase.json; do test -s "$f" || exit 1; done
           for i in 0 1 2 3 4 5; do test -s "assets/models/gaming-pc-user.$i.b64" || exit 1; done
           grep -q "loadPageScripts" assets/js/color.js
           grep -q "tt-ai-robo-lottie" assets/js/color.js
