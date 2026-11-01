@@ -79,6 +79,12 @@
 <h3>My fabrication requests</h3><div id="fab-jobs" aria-live="polite">Sign in to retrieve your private quote requests.</div>
 <button id="fab-refresh-jobs" type="button" class="tt-svc-button" disabled>Refresh requests</button></div>
 </div></section>
+<section class="eng-section" id="fab-operator" hidden>
+<div class="eng-head"><span class="tt-svc-eyebrow">Authorized TeknTandao operators only</span><h2>Fabrication quotations and review queue</h2>
+<p>Private projects and design files are visible only to users assigned the `engineering_admin` Firebase custom claim. Human review determines suitability, feasibility, pricing and production scheduling.</p></div>
+<div class="eng-panel"><div class="eng-fab-actions"><button type="button" id="fab-admin-refresh" class="tt-svc-button">Refresh pending jobs</button><span id="fab-admin-status" role="status" aria-live="polite"></span></div>
+<div id="fab-admin-list" class="eng-fab-admin-list" aria-live="polite"></div></div>
+</section>
 <section class="eng-section" id="fab-open-source"><div class="eng-head"><span class="tt-svc-eyebrow">Open-source design ecosystem</span><h2>Powerful engineering tools from GitHub</h2><p>Use these established open projects to build, inspect, simulate and prepare designs. The built-in Three.js preview and OpenSCAD geometry workflow are integrated; other applications open separately and do not secretly transmit your files.</p></div>
 <div class="eng-tool-grid eng-fab-tools">
 <article><h3>OpenCascade / replicad</h3><p>Parametric BREP geometry, fillets and STEP-capable engineering solid modelling.</p><a href="https://github.com/sgenoud/replicad" target="_blank" rel="noopener noreferrer">GitHub: replicad</a></article>
