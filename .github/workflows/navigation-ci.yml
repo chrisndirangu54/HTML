@@ -24,6 +24,9 @@ on:
       - 'tests/web3-studio.test.cjs'
       - 'tests/web3-visuals.test.cjs'
       - 'tests/engineering-studio.test.cjs'
+      - 'tests/open-visuals-nft.test.cjs'
+      - 'assets/css/open-visuals.css'
+      - 'assets/images/open-art/**'
       - 'assets/js/engineering-studio.js'
       - 'assets/js/engineering-models.js'
       - 'assets/css/engineering-studio.css'
@@ -65,6 +68,9 @@ on:
       - 'tests/web3-studio.test.cjs'
       - 'tests/web3-visuals.test.cjs'
       - 'tests/engineering-studio.test.cjs'
+      - 'tests/open-visuals-nft.test.cjs'
+      - 'assets/css/open-visuals.css'
+      - 'assets/images/open-art/**'
       - 'assets/js/engineering-studio.js'
       - 'assets/js/engineering-models.js'
       - 'assets/css/engineering-studio.css'
@@ -102,4 +108,4 @@ jobs:
       - run: node --check assets/js/web3-visuals.js
       - run: node --check assets/js/engineering-models.js
       - run: node --check assets/js/engineering-studio.js
-      - run: node --test tests/site-navigation.test.cjs tests/isp-shop-ux.test.cjs tests/home-theme.test.cjs tests/service-pages-ux.test.cjs tests/site-shop-media-reseller.test.cjs tests/operational-dashboards.test.cjs tests/expanded-ict-catalog.test.cjs tests/microsoft-storefront.test.cjs tests/cloud-microsoft-section.test.cjs tests/web3-studio.test.cjs tests/web3-visuals.test.cjs tests/engineering-studio.test.cjs
+      - run: node --test tests/site-navigation.test.cjs tests/isp-shop-ux.test.cjs tests/home-theme.test.cjs tests/service-pages-ux.test.cjs tests/site-shop-media-reseller.test.cjs tests/operational-dashboards.test.cjs tests/expanded-ict-catalog.test.cjs tests/microsoft-storefront.test.cjs tests/cloud-microsoft-section.test.cjs tests/web3-studio.test.cjs tests/web3-visuals.test.cjs tests/engineering-studio.test.cjs tests/open-visuals-nft.test.cjs

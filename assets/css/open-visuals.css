@@ -1,0 +1,71 @@
+/* CC0/open visual system: colorful NFT-inspired motion, scoped to opt-in pages. */
+:root{--ov-pink:#ff59c8;--ov-purple:#8e65ff;--ov-blue:#31ceff;--ov-green:#52f9c8;--ov-yellow:#ffe578}
+.tt-os-picture{position:relative;isolation:isolate;overflow:hidden;border:1px solid rgba(173,171,255,.44);border-radius:22px;background:linear-gradient(132deg,rgba(51,27,117,.85),rgba(11,43,77,.88));box-shadow:0 15px 50px rgba(16,9,68,.24)}
+.tt-os-picture img{display:block;width:100%;height:100%;max-height:350px;object-fit:cover;aspect-ratio:16/10}
+.tt-os-picture::after{content:"";position:absolute;inset:-70%;z-index:1;pointer-events:none;background:conic-gradient(from 0deg,transparent 0deg,rgba(255,82,207,.17) 45deg,transparent 90deg,rgba(71,222,255,.22) 155deg,transparent 210deg,rgba(145,255,101,.13) 275deg,transparent 310deg);animation:ovRotate 35s linear infinite;mix-blend-mode:screen}
+.tt-os-picture .tt-os-glimmer{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.2) 49%,transparent 62%);transform:translateX(-140%);animation:ovSweep 10s ease-in-out infinite}
+.tt-os-feature{margin:12px 0 20px;display:block}
+.tt-os-feature .tt-os-caption{padding:12px 15px;color:#c7d5e7;font:500 12px/1.6 Inter,Arial,sans-serif}
+.tt-os-attribution{font:400 11px/1.5 Inter,Arial,sans-serif;color:#a6b8c1;max-width:1100px;margin:12px auto 20px}
+.tt-os-attribution a{color:#98e4fe}
+.tt-os-aside-illustration{display:block;max-height:225px!important;height:auto!important;aspect-ratio:16/10;object-fit:cover;width:100%;border-radius:14px;border:1px solid rgba(129,238,245,.36);margin:0 0 16px}
+.tt-os-aside-illustration + i{display:none!important}
+.tt-os-gallery{margin:32px 0 36px;padding:24px 21px 28px;border:1px solid rgba(206,161,255,.55);background:linear-gradient(132deg,rgba(23,17,53,.96),rgba(14,32,54,.98));border-radius:24px;position:relative;overflow:hidden}
+.tt-os-gallery::before{content:"";position:absolute;inset:-40%;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 20% 35%,rgba(242,58,206,.22),transparent 38%),radial-gradient(ellipse at 78% 69%,rgba(25,230,241,.2),transparent 38%);animation:ovDrift 19s ease-in-out infinite alternate}
+.tt-os-gallery>*{position:relative;z-index:1}
+.tt-os-gallery-header{display:flex;justify-content:space-between;align-items:start;gap:17px;flex-wrap:wrap;margin:0 0 20px}
+.tt-os-gallery-header h2{color:#fff;font:400 clamp(22px,2.7vw,33px)/1.2 Inter,Arial,sans-serif;letter-spacing:-.02em;margin:8px 0}
+.tt-os-gallery-header p{color:#c5d5ea;font:400 13px/1.7 Inter,sans-serif;max-width:770px;margin:5px 0}
+.tt-os-gallery-header a,.tt-os-gallery figcaption a{color:#8decfd}
+.tt-os-nft-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.tt-os-nft-card{position:relative;overflow:hidden;border-radius:19px;background:linear-gradient(133deg,#391c84,#192d5f);border:1px solid rgba(197,146,255,.45);box-shadow:0 12px 22px rgba(0,0,0,.16);margin:0;transform:translateY(0) rotate(0);transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease}
+.tt-os-nft-card::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;border-radius:inherit;border:2px solid transparent;background:linear-gradient(125deg,#ff7ac8,#9f7aff,#5ffbe2,#ffdc72,#ff7ac8) border-box;mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);mask-composite:exclude;opacity:.45;animation:ovFrame 9s linear infinite}
+.tt-os-nft-card img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:16px 16px 0 0}
+.tt-os-nft-card:first-child img{image-rendering:pixelated;background:#d5d7e1;object-fit:contain}
+.tt-os-nft-card figcaption{padding:13px 15px;color:#f2f4ff;font:500 13px/1.5 Inter,Arial,sans-serif}
+.tt-os-nft-card figcaption small{display:block;margin-top:5px;color:#c0c7da;font:400 11px/1.6 Inter,sans-serif}
+.tt-os-nft-card:hover,.tt-os-nft-card:focus-within{transform:translateY(-7px) rotate(-1deg);border-color:#86ffef;box-shadow:0 22px 37px rgba(83,32,169,.33)}
+.tt-os-nft-card:nth-child(2){animation:ovFloat 7s ease-in-out infinite alternate}
+.tt-os-nft-card:nth-child(3){animation:ovFloat 8.3s ease-in-out infinite alternate-reverse}
+.tt-os-nft-card:nth-child(4){animation:ovFloat 9s ease-in-out infinite alternate}
+.tt-os-hero-nft{position:relative}
+.tt-os-hero-nft::before{content:"";position:absolute;inset:-4px;z-index:-1;border-radius:25px;background:linear-gradient(100deg,rgba(255,51,205,.4),rgba(64,218,255,.35),rgba(246,225,100,.26));filter:blur(11px);animation:ovBreathe 6s ease-in-out infinite alternate;pointer-events:none}
+.tt-os-page-banner{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:20px;align-items:center;padding:17px;margin:0 0 25px;border:1px solid rgba(124,194,246,.34);background:rgba(25,23,55,.94);border-radius:21px}
+.tt-os-page-banner figure{margin:0}
+.tt-os-page-banner img{width:100%;height:auto;max-height:275px;aspect-ratio:16/10;object-fit:cover;border-radius:15px}
+.tt-os-page-banner figcaption{font:400 11px Inter,sans-serif;color:#aabdda;margin-top:7px}
+.tt-os-page-banner h2{font:500 24px/1.3 Inter,sans-serif;color:#fff}
+.tt-os-page-banner p{font:400 13px/1.75 Inter,sans-serif;color:#bed0e4}
+.tt-os-page-banner a{color:#92d9ff}
+.tt-os-editorial{width:min(870px,100%);margin:0 auto 20px}
+.tt-os-editorial img{max-height:320px}
+.tt-os-coming{max-width:640px;margin:10px auto 24px;display:block}
+.tt-os-coming img{height:auto}
+.tt-os-coming figcaption{color:#bbd3ef;padding:8px 12px;font-size:12px}
+.tt-os-editorial a{color:#91dbff}
+body.tt-web3-studio .tt-w3-hero-art,body.tt-home-aligned.tt-web3-page .tt-w3-briefing-hero-picture,body.tt-engineering .eng-hero-visual{border:1px solid rgba(153,112,255,.67);box-shadow:0 0 27px rgba(181,69,255,.23),0 0 54px rgba(51,226,228,.1)}
+body.tt-web3-studio .tt-w3-feature-banner{background:linear-gradient(120deg,rgba(38,19,108,.96),rgba(23,49,96,.93),rgba(14,80,80,.87));border-color:rgba(183,96,255,.65)}
+body.tt-web3-studio .tt-w3-feature-banner:hover{border-color:#fd7bd7;box-shadow:0 16px 28px rgba(129,49,217,.3)}
+body.tt-engineering .eng-hero-visual img{filter:saturate(1.25)}
+.tt-os-vivid .tt-svc-gradient{background:linear-gradient(110deg,#5ef7ca,#72cbff,#ff74ce,#ffe47b);background-clip:text;-webkit-background-clip:text;color:transparent;animation:ovHueShift 11s ease-in-out infinite alternate}
+@keyframes ovFrame{0%,100%{opacity:.3;filter:hue-rotate(0)}50%{opacity:.9;filter:hue-rotate(95deg)}}
+@keyframes ovFloat{0%{translate:0 0}100%{translate:0 -8px}}
+@keyframes ovRotate{to{transform:rotate(360deg)}}
+@keyframes ovSweep{0%,17%{transform:translateX(-140%)}60%,100%{transform:translateX(140%)}}
+@keyframes ovDrift{from{transform:translate(-2%,-3%) scale(.96)}to{transform:translate(3%,3%) scale(1.04)}}
+@keyframes ovBreathe{from{opacity:.48}to{opacity:1}}
+@keyframes ovHueShift{from{filter:hue-rotate(0)}to{filter:hue-rotate(65deg)}}
+@media(max-width:900px){.tt-os-nft-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.tt-os-page-banner{grid-template-columns:1fr}}
+@media(max-width:560px){.tt-os-nft-grid{gap:10px}.tt-os-nft-card figcaption{padding:10px;font-size:12px}.tt-os-gallery{padding:17px 12px}.tt-os-page-banner{padding:12px}.tt-os-page-banner img{max-height:210px}}
+@media(prefers-reduced-motion:reduce){
+.tt-os-picture::after,.tt-os-picture .tt-os-glimmer,.tt-os-gallery::before,.tt-os-nft-card,.tt-os-nft-card::before,.tt-os-hero-nft::before,.tt-os-vivid .tt-svc-gradient{animation:none!important;transition:none!important;translate:none!important;transform:none!important}
+}
+
+/* Keep decorative art secondary to login, dashboard and customer forms. */
+.auth-card>.tt-os-feature{max-width:440px;margin:3px auto 16px}
+.auth-card>.tt-os-feature img{max-height:150px;object-fit:cover}
+.mc-shell>.tt-os-feature{margin:7px 0 16px}
+.mc-shell>.tt-os-feature img{max-height:170px}
+.customer-wrap>.tt-os-feature{margin:14px 0 17px}
+.customer-wrap>.tt-os-feature img{max-height:200px}
+.tt-os-picture:focus-within{outline:2px solid var(--ov-green);outline-offset:3px}
