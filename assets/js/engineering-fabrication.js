@@ -62,6 +62,7 @@ function parseReferral(){
   try{
    const d={...dimensions(),...vals};M.mountingPlate(d);
    for(const [k,v] of Object.entries(d))form.elements.namedItem(k).value=String(v);
+   document.dispatchEvent(new CustomEvent('eng:plate-from-fabrication',{detail:{dimensions:d}}));
    form.elements.namedItem('kind').value='generated';
   }catch(_){}
  }
@@ -170,6 +171,7 @@ $('fab-apply-draft').addEventListener('click',()=>{
  try{
   M.mountingPlate(lastDraft);
   for(const [key,value] of Object.entries(lastDraft))form.elements.namedItem(key).value=String(value);
+  document.dispatchEvent(new CustomEvent('eng:plate-from-fabrication',{detail:{dimensions:lastDraft}}));
   const choice=form.querySelector('input[name=kind][value=generated]');choice.checked=true;
   kind();syncDraft();$('fab-upload-summary').scrollIntoView({behavior:'smooth',block:'center'});
  }catch(e){output('AI draft failed validation: '+e.message);}
