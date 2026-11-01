@@ -44,7 +44,18 @@
   // devices, constrained networks and browsers that disallow autoplay.
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const saveData = Boolean(navigator.connection?.saveData);
-  if (!reduce && !saveData) {
+  const videoThemes = ['earth-lines-sphere', '3d-abstract-ball', 'water-waves', 'liquids-wavy', 'simple-strings'];
+  let selectedVideo = 0;
+  let noVideo = false;
+  try {
+    if (localStorage.getItem('videoThemeMode') === 'manual') {
+      const saved = localStorage.getItem('selectedTheme');
+      noVideo = saved === 'solid-color';
+      const index = videoThemes.indexOf(saved);
+      if (index >= 0) selectedVideo = index;
+    }
+  } catch (_) { /* The original homepage palette remains the fallback. */ }
+  if (!reduce && !saveData && !noVideo) {
     const video = document.createElement('video');
     video.className = 'tt-home-video';
     video.muted = true;
@@ -54,7 +65,7 @@
     video.setAttribute('aria-hidden', 'true');
     video.preload = 'none';
     const source = document.createElement('source');
-    source.src = 'assets/images/video1.mp4';
+    source.src = 'assets/images/video' + (selectedVideo + 1) + '.mp4';
     source.type = 'video/mp4';
     video.appendChild(source);
     document.body.prepend(video);
