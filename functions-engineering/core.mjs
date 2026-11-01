@@ -12,7 +12,7 @@ export const ALLOWED_TYPES=Object.freeze({
   glb:'model/gltf-binary',pdf:'application/pdf'
 });
 export const trim=(v,n=200)=>String(v??'').trim().slice(0,n);
-export const validEmail=s=>/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(String(s||''));
+export const validEmail=s=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(s||''));
 export function validateDesign(raw){
   const d=raw||{},kind=trim(d.kind,20);
   if(!['generated','upload'].includes(kind))throw Error('Choose generated or uploaded design.');
