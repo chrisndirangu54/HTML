@@ -156,7 +156,13 @@ async function loadProducts() {
         // Quotation-only ISP reference models stay visible even before a merchant
         // publishes them to the authorized inventory; never enable their checkout.
         const quoteOnly = local.filter(product => product.active !== false && product.quoteOnly === true);
-        state.products = [...live, ...quoteOnly.filter(p => !live.some(item => item.id === p.id))];
+        const quoteById = new Map(quoteOnly.map(product => [product.id, product]));
+        // Corrected quote-only records override stale public Firestore prices.
+        // Private verified merchant inventory is managed independently.
+        state.products = [
+          ...live.map(product => quoteById.get(product.id) || product),
+          ...quoteOnly.filter(product => !live.some(item => item.id === product.id))
+        ];
       }
     } catch (error) {
       console.warn('Firestore catalogue unavailable; using sourced local catalogue.', error);
