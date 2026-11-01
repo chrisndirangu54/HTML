@@ -111,8 +111,18 @@ if(viewport&&form&&status&&cadModel){
   try{
    const values=dimensions();
    const changed=!lastValues||['length','width','thickness','hole','offset'].some(k=>lastValues[k]!==values[k]);
+   const previousSpan=lastValues?Math.max(lastValues.length,lastValues.width,lastValues.thickness*4,1):null;
    if(changed)makePlate(values);
-   if(resetCamera)setView('isometric');else render();
+   if(resetCamera||!previousSpan){setView('isometric');}
+   else if(changed){
+    // Preserve the user's viewing direction while framing large size changes.
+    const nextSpan=Math.max(values.length,values.width,values.thickness*4,1);
+    camera.position.multiplyScalar(nextSpan/previousSpan);
+    controls.minDistance=nextSpan*.28;
+    controls.maxDistance=nextSpan*12;
+    controls.update();
+    render();
+   }else render();
   }catch(error){
    status.textContent='Invalid CAD dimensions: '+error.message+' — showing last valid model';
    byId('eng-download-stl').disabled=true;
