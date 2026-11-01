@@ -158,12 +158,52 @@
     });
   }
 
+  // Homepage retains its original icon-led black-and-gold dropdown visual.
+  // Links and nested destinations are still supplied by the shared catalogue.
+  function decorateHomeMenu(menu) {
+    if (!menu) return;
+    const icons = {
+      'Home': 'las la-home',
+      'Services': 'las la-stream',
+      'All services': 'las la-stream',
+      'Cybersecurity': 'las la-shield-alt',
+      'ISP & networking': 'las la-wifi',
+      'Cloud Automation': 'las la-cloud',
+      'SEO Cloud': 'las la-chart-line',
+      'Web3': 'las la-cube',
+      'Shop': 'las la-shopping-cart',
+      'Explore': 'las la-compass',
+      'About us': 'lar la-user',
+      'Blogs': 'las la-newspaper',
+      'Gallery': 'las la-images',
+      'Awards': 'las la-trophy',
+      'Podcasts': 'las la-microphone',
+      'Events': 'las la-calendar',
+      'Training': 'las la-graduation-cap',
+      'Communities': 'las la-users',
+      'Contact': 'las la-envelope',
+      'Workspace': 'las la-arrow-right'
+    };
+    const buttons = menu.querySelectorAll('.tt-nav-item > a, .tt-nav-item > details > summary, .tt-nav-panel > a');
+    buttons.forEach(node => {
+      if (node.querySelector('i')) return;
+      const iconName = icons[node.textContent.trim()];
+      if (!iconName) return;
+      const icon = document.createElement('i');
+      icon.className = iconName;
+      icon.setAttribute('aria-hidden', 'true');
+      node.prepend(icon);
+    });
+  }
+
   function setupHome() {
     const desktop = document.querySelector('.top-menu');
     const mobile = document.querySelector('.top-mobile-menu');
     if (!desktop && !mobile) return;
     fillList(desktop);
     fillList(mobile);
+    decorateHomeMenu(desktop);
+    decorateHomeMenu(mobile);
     const header = document.querySelector('.top-navbar');
     if (header) {
       header.setAttribute('role', 'navigation');
