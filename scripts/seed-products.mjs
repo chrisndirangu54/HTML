@@ -13,8 +13,24 @@ const db = getFirestore();
 for (let offset = 0; offset < products.length; offset += 200) {
   const batch = db.batch();
   for (const product of products.slice(offset, offset + 200)) {
-    if (!product.id || !Number.isSafeInteger(product.priceKes) || product.priceKes < 1) {
+    if (!product.id || (!product.quoteOnly && (!Number.isSafeInteger(product.priceKes) || product.priceKes < 1))) {
       throw new Error(`Invalid product ${product.id || '<missing id>'}`);
+    }
+
+    if (product.quoteOnly === true) {
+      // Reference models must never receive a merchant price or stock record.
+      const { id, stock: ignoredStock, ...reference } = product;
+      batch.set(db.collection('ictCommerceCatalog').doc(id), {
+        ...reference,
+        priceKes: null,
+        compareAtKes: null,
+        quoteOnly: true,
+        active: product.active !== false,
+        seededFrom: 'data/products.json',
+        seededAt: FieldValue.serverTimestamp(),
+        updatedAt: FieldValue.serverTimestamp(),
+      }, { merge: true });
+      continue;
     }
 
     // Market-reference catalogue data is intentionally separate from real
