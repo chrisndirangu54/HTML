@@ -20,16 +20,20 @@ for (let offset = 0; offset < products.length; offset += 200) {
     if (product.quoteOnly === true) {
       // Reference models must never receive a merchant price or stock record.
       const { id, stock: ignoredStock, ...reference } = product;
-      batch.set(db.collection('ictCommerceCatalog').doc(id), {
-        ...reference,
-        priceKes: null,
-        compareAtKes: null,
-        quoteOnly: true,
-        active: product.active !== false,
-        seededFrom: 'data/products.json',
-        seededAt: FieldValue.serverTimestamp(),
-        updatedAt: FieldValue.serverTimestamp(),
-      }, { merge: true });
+      const referenceRef = db.collection('ictCommerceCatalog').doc(id);
+      const currentReference = await referenceRef.get();
+      if (!currentReference.exists) {
+        batch.create(referenceRef, {
+          ...reference,
+          priceKes: null,
+          compareAtKes: null,
+          quoteOnly: true,
+          active: product.active !== false,
+          seededFrom: 'data/products.json',
+          seededAt: FieldValue.serverTimestamp(),
+          updatedAt: FieldValue.serverTimestamp(),
+        });
+      }
       continue;
     }
 
