@@ -83,7 +83,7 @@ export const engineeringAiAssist=onCall({...AUTH_OPTIONS,secrets:[AI_KEY],timeou
  const question=allowAIQuestion(request.data?.question);
  const id=trim(request.data?.requestId,80);
  if(!/^[a-zA-Z0-9_-]{12,80}$/.test(id))throw new HttpsError('invalid-argument','Request identifier is invalid.');
- const context=trim(request.data?.context,1800),jobRef=requests(uid).doc(id);
+ const context=trim(request.data?.context,1800),mode=request.data?.mode==='design'?'design':'review',jobRef=requests(uid).doc(id);
  await ensureWallet(uid);
  try{
   await db.runTransaction(async tx=>{
@@ -91,7 +91,7 @@ export const engineeringAiAssist=onCall({...AUTH_OPTIONS,secrets:[AI_KEY],timeou
    if(job.exists)throw new HttpsError('already-exists','This AI request was already submitted. Refresh credits before retrying.');
    if(!wallet.exists||wallet.data().balance<AI_COST)throw new HttpsError('resource-exhausted','No AI credits left. Purchase credits to continue.');
    tx.update(wallets().doc(uid),{balance:FieldValue.increment(-AI_COST),spent:FieldValue.increment(AI_COST),updatedAt:clock()});
-   tx.create(jobRef,{uid,status:'pending',cost:AI_COST,question,createdAt:clock()});
+   tx.create(jobRef,{uid,status:'pending',cost:AI_COST,question,mode,createdAt:clock()});
   });
  }catch(e){throw asError(e);}
  try{
@@ -103,22 +103,29 @@ export const engineeringAiAssist=onCall({...AUTH_OPTIONS,secrets:[AI_KEY],timeou
    const resp=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',{
     method:'POST',signal:controller.signal,headers:{'Content-Type':'application/json','x-goog-api-key':AI_KEY.value()},
     body:JSON.stringify({
-     systemInstruction:{parts:[{text:'You are a careful engineering design assistant. Provide requirements, manufacturability checks, alternatives, tolerances, bill-of-material suggestions and safety tests. This is educational design critique, not certified structural/electrical engineering or machine commands. Do not pretend a CAD file was generated, simulated, fabricated or approved. Say when a calculation or detail requires verification. Decline hazardous instructions.'}]},
+     systemInstruction:{parts:[{text:mode==='design'?'Return only a JSON object with 5 numeric dimensions of a rectangular mounting plate: length between 20–1000 mm, width between 20–1000 mm, thickness between 0.5–100 mm, hole between 1–50 mm, offset between 2–100 mm; ensure holes do not touch edges or each other. Include one rationale string. Keys: length,width,thickness,hole,offset,rationale. These are editable ideas, not certified designs.':'You are a careful engineering design assistant. Provide requirements, manufacturability checks, alternatives, tolerances, bill-of-material suggestions and safety tests. This is educational design critique, not certified structural/electrical engineering or machine commands. Do not pretend a CAD file was generated, simulated, fabricated or approved. Say when a calculation or detail requires verification. Decline hazardous instructions.'}]},
      contents:[{role:'user',parts:[{text:'Prototype description: '+context+'\nUser request: '+question}]}],
-     generationConfig:{temperature:0.25,maxOutputTokens:1050}
+     generationConfig:{temperature:0.25,maxOutputTokens:1050,...(mode==='design'?{responseMimeType:'application/json'}:{})}
     })
    });
    result=await resp.json();
    if(!resp.ok)throw Error('Upstream model unavailable: '+resp.status);
   }finally{clearTimeout(timer);}
-  const answer=trim((result.candidates?.[0]?.content?.parts||[]).map(p=>p.text||'').join('\n'),6500);
+  let answer=trim((result.candidates?.[0]?.content?.parts||[]).map(p=>p.text||'').join('\n'),6500);
   if(answer.length<20)throw Error('Model returned no usable response.');
+  let suggestedPlate=null;
+  if(mode==='design'){
+   const draft=JSON.parse(answer);
+   const valid=validateDesign({kind:'generated',title:'AI mounting plate draft',process:'cnc-milling',material:'Aluminium',quantity:1,contactEmail:'design@example.com',dimensions:draft});
+   suggestedPlate=valid.dimensions;
+   answer='Editable plate dimensions: '+JSON.stringify(suggestedPlate)+'\nRationale: '+trim(draft.rationale,450)+'\nReview tolerances, load paths and fabrication requirements.';
+  }
   await db.runTransaction(async tx=>{
    const job=await tx.get(jobRef);
    if(job.data()?.status!=='pending')throw Error('AI reservation expired before completion.');
    tx.update(jobRef,{status:'completed',answer,completedAt:clock()});
   });
-  return {answer,cost:AI_COST,model:'gemini-2.5-flash',disclaimer:'Model-generated design advice; not verified CAD or a certified engineering analysis.'};
+  return {answer,suggestedPlate,cost:AI_COST,model:'gemini-2.5-flash',disclaimer:'Model-generated design advice; not verified CAD or a certified engineering analysis.'};
  }catch(e){
   // Failures cannot silently consume credits.
   await db.runTransaction(async tx=>{
@@ -284,7 +291,7 @@ export const engineeringListProjects=onCall(AUTH_OPTIONS,async request=>{
  const snapshot=await projects().where('uid','==',uid).limit(50).get();
  return {projects:snapshot.docs.map(x=>({id:x.id,title:x.data().title,
   kind:x.data().kind,process:x.data().process,status:x.data().status,
-  createdAt:x.data().createdAt?.toDate()?.toISOString()||null})).sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt)))};
+  quoteKes:x.data().quoteKes||null,operatorNote:x.data().operatorNote||'',createdAt:x.data().createdAt?.toDate()?.toISOString()||null})).sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt)))};
 });
 // Refund stale model reservations after 30 min, e.g. if an instance terminated.
 export const engineeringRecoverStaleCredits=onSchedule({region,schedule:'every 30 minutes'},async()=>{
