@@ -55,6 +55,29 @@ test('specialist pages retain operational controls and contextual navigation', (
   assert.match(read('cybersecurity.html'), /class="nav-cta"/);
 });
 
+test('homepage preserves the original black-and-gold floating menu with shared functionality', () => {
+  const oldStyles = read('assets/css/style.css');
+  const sharedStyles = read('assets/css/site-navigation.css');
+  const code = read('assets/js/nav-responsive.js');
+  const html = read('index.html');
+
+  assert.match(oldStyles, /\.top-navbar[\s\S]*?border-radius: 50%/);
+  assert.match(oldStyles, /\.top-hamburger::before[\s\S]*?content: "☰"/);
+  assert.match(sharedStyles, /Homepage only: restore the original compact/);
+  assert.match(sharedStyles, /\.home1-page \.top-navbar \.top-mobile-menu\.tt-nav-list/);
+  assert.match(sharedStyles, /width: min\(220px, calc\(100vw - 40px\)\)/);
+  assert.match(sharedStyles, /rgba\(20, 20, 20, 0\.97\)/);
+  assert.match(sharedStyles, /#ffd700/);
+  assert.match(sharedStyles, /@media \(min-width: 1025px\)/);
+  assert.match(code, /decorateHomeMenu\(desktop\)/);
+  assert.match(code, /decorateHomeMenu\(mobile\)/);
+  assert.match(code, /'Blogs': 'las la-newspaper'/);
+  assert.match(code, /'Workspace': 'las la-arrow-right'/);
+  assert.match(html, /aria-controls="mobileMenu"/);
+  assert.match(html, /aria-expanded="false"/);
+  assert.match(html, /setOpen\(!mobileMenu\.classList\.contains\('show'\)\)/);
+});
+
 test('responsive navigation styles exist', () => {
   const css = read('assets/css/site-navigation.css');
   assert.match(css, /@media \(max-width:1100px\)/);
