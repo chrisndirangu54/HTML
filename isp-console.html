@@ -19,7 +19,7 @@
 <div class="side-foot">Connection status is explicit. Pending approvals do not execute commands. <a href="admin.html" style="color:#9bead4">Return to main admin</a>.</div>
 </aside><main class="main">
 <header class="header"><div><span class="eyebrow">Authorized staff access</span><h1 id="page-title">ISP Operations Control</h1><p id="page-subtitle">Centralized fiber and wireless management workspace</p></div>
-<div class="header-actions"><a class="btn" href="isp.html">Customer ISP page</a><a class="btn" href="isp-architecture.html">Architecture reference</a><a class="btn" href="isp-equipment.html">Procurement guide</a><button class="btn" type="button" id="isp-refresh">Refresh</button><button class="btn primary" type="button" id="new-record" hidden>Add record +</button></div></header>
+<div class="header-actions"><a class="btn" href="isp.html">Customer ISP page</a><a class="btn" href="isp-equipment.html">Customer product directory</a><button class="btn" type="button" id="isp-refresh">Refresh</button><button class="btn primary" type="button" id="new-record" hidden>Add record +</button></div></header>
 <div id="auth-banner" class="banner warning">Sign in with a TeknTandao administrator account to view operational records. No customer data is exposed before authentication.</div>
 <p id="isp-message" class="message" role="status" aria-live="polite"></p>
 <section id="isp-content" hidden>
@@ -28,9 +28,32 @@
 <div class="grid" id="isp-overview-metrics"></div>
 <section class="panel" style="margin-top:18px"><div class="section-header"><h2>Service operations</h2><span class="status off">Adapters disabled by default</span></div>
 <div class="grid three" id="overview-actions"></div></section>
-<section class="panel"><h2>Equipment and standards</h2><p>Compare low-cost TR-069/OMCI-managed ONTs and CPEs in the <a href="isp-equipment.html">procurement notes</a>. Checks include SNMP/MIBs, APIs, syslog, VLAN isolation, RADIUS, captive portal, PoE, firmware recovery, port speeds and model revisions.</p></section>
+<section class="panel"><h2>Equipment and standards</h2><p>Internal procurement comparisons, equipment compatibility checks and network diagrams are available in the Architecture view. Customer-friendly product listings are in the <a href="isp-equipment.html">public equipment directory</a>.</p></section>
 </div>
-<div id="view-architecture" hidden><section class="panel"><h2>Hybrid network topology</h2><p>The 50-subscriber fiber and wireless layout is an illustrative planning scenario, not installed-service telemetry or a service guarantee. Validate equipment compatibility, optical budgets, radio approvals and site conditions before procurement.</p><div class="diagram-wrap"><img src="assets/isp/architecture.svg" alt="Illustrative upstream router connecting GPON fiber and wireless-fed buildings with separate monitoring and management"></div><p class="pill-note">Network provisioning, payment settlement, telemetry collection and AI operations remain disconnected.</p></section></div>
+<div id="view-architecture" hidden><section class="panel"><h2>Hybrid network topology</h2><p>The 50-subscriber fiber and wireless layout is an illustrative planning scenario, not installed-service telemetry or a service guarantee. Validate equipment compatibility, optical budgets, radio approvals and site conditions before procurement.</p><div class="diagram-wrap"><img src="assets/isp/architecture.svg" alt="Illustrative upstream router connecting GPON fiber and wireless-fed buildings with separate monitoring and management"></div><p class="pill-note">Network provisioning, payment settlement, telemetry collection and AI operations remain disconnected.</p></section><section class="panel" aria-labelledby="engineering-guide">
+<h2 id="engineering-guide">Engineering equipment review</h2>
+<p>Use the following internal candidate list when planning procurement. None of these are confirmed connected devices, available stock, or verified selling quotations.</p>
+<div class="table-wrap"><table class="table"><thead><tr><th>Model</th><th>Indicative historical reference (KES)</th><th>Before approval</th></tr></thead><tbody>
+<tr><td>Huawei EG8145V5 GPON ONT</td><td>~2,899</td><td>Check OLT compatibility, OMCI profiles and the actual firmware release</td></tr>
+<tr><td>TP-Link EC220-G5</td><td>~4,504</td><td>Confirm Ethernet WAN model and TR-069 support; not a fiber ONT</td></tr>
+<tr><td>MikroTik hAP ac²</td><td>~9,900</td><td>Validate RouterOS, secure management and port capacity</td></tr>
+<tr><td>MikroTik hAP ax²</td><td>~13,471</td><td>Confirm coverage, power and supported hardware revision</td></tr>
+<tr><td>MikroTik hAP lite / ac lite</td><td>~3,500–7,540</td><td>100 Mbps Ethernet ports constrain higher-speed plans</td></tr>
+<tr><td>COMFAST CF-E313AC V2</td><td>~15,000 planning allowance</td><td>Survey line of sight, regulatory approvals, PoE and tagged VLAN behavior</td></tr>
+</tbody></table></div>
+<p class="pill-note">These historical figures are not selling prices. Final supplier quotations, VAT, type approvals and lead times require confirmation.</p>
+<h3>Acceptance and interoperability checklist</h3>
+<div class="table-wrap"><table class="table"><thead><tr><th>Review area</th><th>Evidence required</th></tr></thead><tbody>
+<tr><td>SNMP / MIBs and alarms</td><td>Supported monitoring versions, vendor MIB files and sample telemetry</td></tr>
+<tr><td>REST / secure CLI / remote management</td><td>Authorized APIs, TR-069/369 or tested secure access method</td></tr>
+<tr><td>Syslog / event records</td><td>Log-export capability and fault samples</td></tr>
+<tr><td>VLANs and client isolation</td><td>Traffic separation tests and supported tagging behavior</td></tr>
+<tr><td>Subscriber identity / captive portal</td><td>PPPoE, RADIUS or compatible gateway configuration</td></tr>
+<tr><td>Firmware operations</td><td>Signed update support, staged rollout and rollback plan</td></tr>
+<tr><td>PoE and link capacity</td><td>Exact power standard, port bandwidth and expected peak traffic</td></tr>
+<tr><td>Hardware revisions</td><td>Warranty, supplier documents, security support lifecycle and model revision</td></tr>
+</tbody></table></div>
+</section></div>
 <div id="view-integrations" hidden><section class="panel"><h2>Integration commissioning</h2><p>Vendor-neutral integration requirements. No external credentials are requested or stored in the browser. These integrations must be configured by an authorized administrator and verified in a controlled test environment.</p><div class="grid three" id="integration-grid"></div></section></div>
 <div id="view-economics" hidden><section class="panel">
 <h2>Pilot revenue and equipment budget</h2><p>Adjust illustrative values. These are estimates, not quotes or actual customer revenue.</p>
