@@ -212,6 +212,9 @@ function init(){
   $('fab-signin').disabled=false;
   onAuthStateChanged(firebaseAuth,async current=>{
    user=current;canUseCloud(false);$('fab-signout').hidden=!current;
+   document.getElementById('fab-operator').hidden=true;
+   document.getElementById('fab-admin-list').replaceChildren();
+   if(!current)$('fab-jobs').replaceChildren();
    $('fab-signin').hidden=Boolean(current);
    $('fab-user').textContent=current?.email||'Not signed in.';
    $('fab-balance').textContent='—';
