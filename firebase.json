@@ -3,10 +3,17 @@
     {
       "source": "functions",
       "codebase": "commerce"
+    },
+    {
+      "source": "functions-ict-commerce",
+      "codebase": "ict-commerce",
+      "ignore": ["node_modules", ".git", "firebase-debug.log", "firebase-debug.*.log"],
+      "predeploy": ["npm --prefix functions-ict-commerce run check"]
     }
   ],
   "firestore": {
-    "rules": "firestore.rules"
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
   },
   "hosting": {
     "public": ".",
@@ -15,10 +22,14 @@
       "**/.*",
       "**/node_modules/**",
       "functions/**",
+      "functions-ict-commerce/**",
       "scripts/**",
       "docs/**",
       "**/*.log",
       "**/*.rules",
+      "firestore.indexes.json",
+      "package.json",
+      "tests/**",
       "ECOMMERCE_SETUP.md",
       "CNAME",
       "**/.*/**",

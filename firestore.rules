@@ -1,8 +1,15 @@
+// Commerce model: ictCommerceCatalog contains public reference pricing and no
+// live inventory; ictCommerceProducts contains server-managed selling price,
+// stock and active state. Orders, rate limits and payment events are private.
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    function activeCatalogItem() {
+      return resource.data.active == true;
+    }
+
     match /products/{productId} {
-      allow read: if resource.data.active == true;
+      allow get, list: if activeCatalogItem();
       allow write: if false;
     }
     match /orders/{orderId} {
@@ -12,6 +19,24 @@ service cloud.firestore {
       allow read: if resource.data.published == true;
       allow write: if false;
     }
+
+    match /ictCommerceCatalog/{productId} {
+      allow get, list: if activeCatalogItem();
+      allow write: if false;
+    }
+    match /ictCommerceProducts/{productId} {
+      allow read, write: if false;
+    }
+    match /ictCommerceOrders/{orderId} {
+      allow read, write: if false;
+    }
+    match /ictCommerceRateLimits/{bucketId} {
+      allow read, write: if false;
+    }
+    match /ictCommercePaymentEvents/{eventId} {
+      allow read, write: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

@@ -67,3 +67,15 @@ node_modules/
 
 # dataconnect generated files
 .dataconnect
+
+# Local Firebase commerce secrets and runtime files
+.env.*
+!.env.example
+functions/.env
+functions/.env.*
+!functions/.env.example
+functions-ict-commerce/.env
+functions-ict-commerce/.env.*
+!functions-ict-commerce/.env.example
+*.local
+.DS_Store
