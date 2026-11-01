@@ -16,6 +16,16 @@ Everyone can open the customer ISP page. Signed-in people use the same [sign-in 
 
 `isp-architecture.html` only forwards old links. Customers, attendants, and delivery land on `isp.html`. Staff land on the staff desk. Administrators land on the ISP section of the admin desk. The architecture diagram is not shown.
 
+## Public ISP directory and technical references
+
+- `isp.html`: customer-facing Wi-Fi installation and survey landing page.
+- `isp-customer.html`: signed-in customer enquiry form; no engineering topology in the customer journey.
+- `isp-equipment.html`: photographic directory populated from the same `data/products.json` used by the shop, with direct `shop.html?product=<id>` links.
+- `isp-architecture.html`: legacy link redirects to the customer landing page. The engineering network diagram and procurement checklist now appear in the ISP administration console's Architecture view and the technician reference on the staff desk.
+- `data/products.json`: includes seven ISP candidate models as `quoteOnly: true`, without verified retail price or inventory. Quote-only products must never enter checkout.
+- `scripts/seed-products.mjs`: registers quotation references only if absent, without overwriting merchant prices or creating private purchasable stock.
+- Technical HTML and architecture SVGs remain static-site assets. Moving references out of the public navigation is **not** an access-control boundary; confidential data requires an authenticated server endpoint and appropriate authorization rules.
+
 ## What each ISP desk can record
 
 Administrators, on the admin page:
