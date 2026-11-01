@@ -30,14 +30,14 @@ test('nine distinctive original SVG illustrations are self-hosted and well-forme
     assert.match(svg,/viewBox="0 0 1200 720"/);
     assert.match(svg,/<\/svg>$/);
     assert.ok(svg.length>1200,name+' should have meaningful artwork');
-    assert.doesNotMatch(svg,/<script|<foreignObject|<image|onload=|https?:\/\//i,name+' must be self-contained vector artwork');
+    assert.doesNotMatch(svg,/<script|<foreignObject|<image|onload=|xlink:href|<use\s/i,name+' must be self-contained vector artwork');
     assert.ok(!illustrations.has(svg),name+' image duplicated');
     illustrations.add(svg);
   }
 });
 
 test('Web3 Studio has a high-priority visual hero with animated but decorative network', () => {
-  assert.match(studio,/class="tt-w3-hero-aside"/);
+  assert.match(studio,/class="tt-svc-hero-aside tt-w3-hero-aside"/);
   assert.match(studio,/assets\/images\/web3\/blockchain-hero\.svg/);
   assert.match(studio,/fetchpriority="high"/);
   assert.match(studio,/class="tt-w3-network-motion" aria-hidden="true"/);
