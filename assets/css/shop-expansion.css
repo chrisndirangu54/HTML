@@ -1,0 +1,28 @@
+/* Department browsing for TeknTandao shop; consistent with the homepage theme. */
+.tt-shop-categories{padding:35px 0 17px}
+.tt-shop-dept-head{display:flex;gap:18px;align-items:end;justify-content:space-between;margin-bottom:17px;flex-wrap:wrap}
+.tt-shop-dept-head h2{font:300 clamp(24px,3vw,35px)/1.2 Inter,sans-serif;color:#fff;letter-spacing:-.03em;margin:13px 0 0}
+.tt-shop-reset{font-size:14px;color:var(--primary-color,#28e98c);text-decoration:none;padding:9px 0}
+.tt-shop-reset:hover{text-decoration:underline}
+.tt-shop-dept-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.tt-shop-dept{
+display:flex;flex-direction:column;align-items:flex-start;gap:9px;text-decoration:none;
+border:1px solid #565656;background:rgba(20,20,20,.79);border-radius:18px;
+padding:21px;min-height:160px;transition:border-color .2s ease,transform .2s ease
+}
+.tt-shop-dept:hover,.tt-shop-dept:focus-visible,.tt-shop-dept[aria-current="true"]{
+border-color:var(--primary-color,#28e98c);background:rgba(35,55,40,.74);transform:translateY(-2px)
+}
+.tt-shop-dept i{font-size:28px;color:var(--primary-color,#28e98c)}
+.tt-shop-dept strong{font:500 16px Inter,sans-serif;color:#fff}
+.tt-shop-dept span{font:400 12px/1.5 Inter,sans-serif;color:#aeb5b0}
+.tt-shop-dept-note{border-left:3px solid var(--primary-color,#28e98c);margin:22px 0 4px;background:rgba(22,33,26,.85);border-radius:8px;padding:14px 17px;color:#c8d0ca;font:400 13px/1.7 Inter,sans-serif}
+.tt-shop-dept-note i{color:var(--primary-color,#28e98c);font-size:18px;margin-right:6px}
+.tt-product-media{position:relative}
+.tt-product-media .tt-image-disclosure{position:absolute;right:8px;bottom:8px;border-radius:30px;padding:4px 9px;
+background:rgba(0,0,0,.82);font:500 10px Inter,sans-serif;color:#dce8dd;border:1px solid rgba(255,255,255,.21)}
+.tt-product-media img{object-fit:contain;background:#ecefed}
+@media(max-width:850px){.tt-shop-dept-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:550px){.tt-shop-dept-grid{grid-template-columns:1fr 1fr;gap:10px}.tt-shop-dept{min-height:135px;padding:16px}.tt-shop-dept strong{font-size:14px}.tt-shop-dept span{font-size:11px}}
+@media(max-width:390px){.tt-shop-dept-grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.tt-shop-dept{transition:none}.tt-shop-dept:hover{transform:none}}
