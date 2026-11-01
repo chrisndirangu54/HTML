@@ -68,7 +68,20 @@
  const use=build('button','tt-svc-button primary','Use active mesh for quote');
  use.id='eng-pipeline-use';use.type='button';
  toolbar.append(rebuild,use);
- visual.append(toolbar);
+ const inspect=build('div','eng-pipeline-inspect-tools');
+ inspect.setAttribute('role','group');inspect.setAttribute('aria-label','Non-destructive model inspection');
+ const xray=build('button','tt-svc-button','X-ray off');xray.type='button';xray.id='eng-pipeline-xray';xray.setAttribute('aria-pressed','false');
+ const sectionLabel=build('label',null,'Inspection section');
+ const sectionAxis=build('select');sectionAxis.id='eng-pipeline-section-axis';
+ for(const [value,label] of [['','No section'],['x','Section X'],['y','Section Y'],['z','Section Z']]){
+  const opt=document.createElement('option');opt.value=value;opt.textContent=label;sectionAxis.append(opt);
+ }
+ sectionLabel.append(sectionAxis);
+ const sectionSlider=build('input');sectionSlider.id='eng-pipeline-section-position';sectionSlider.type='range';sectionSlider.min='0';sectionSlider.max='100';sectionSlider.value='50';sectionSlider.disabled=true;
+ sectionSlider.setAttribute('aria-label','Section plane position');sectionSlider.setAttribute('aria-valuetext','50 percent');
+ const snapshot=build('button','tt-svc-button','Save viewport PNG');snapshot.type='button';snapshot.id='eng-pipeline-snapshot';
+ inspect.append(xray,sectionLabel,sectionSlider,snapshot);
+ visual.append(toolbar,inspect);
  const inspector=build('div','eng-pipeline-stage-shell');
  inspector.setAttribute('aria-label','Active engineering tools');
  const stagePanels=new Map();
@@ -100,7 +113,7 @@
  const fieldKeys=['length','width','thickness','hole','offset'];
  const currentDims=()=>Object.fromEntries(fieldKeys.map(name=>[name,Number(cadForm.elements.namedItem(name).value)]));
  let stage='model',source='parametric',generation=0,viewer=null,loading=false,renderTimer=null,renderAgain=false,wireframe=false;
- let unitsVerified=true,sourceUnits='mm',activeBounds=null,activeVertices=0;
+ let unitsVerified=true,sourceUnits='mm',activeBounds=null,activeVertices=0,xrayEnabled=false;
  let lastSnapshot=window.TeknPlateSimulationSnapshot||null;
  const fromHash=hash=>{
   if(/^#eng-pipeline-(brief|model|refine|analyze|deliver)$/.test(String(hash||'')))return String(hash).slice('#eng-pipeline-'.length);
@@ -222,6 +235,8 @@
    await viewer.previewPrimitive('plate',viewport,values);
    if(lastSnapshot)viewer.showPlateSimulation(lastSnapshot);
    wireframe=false;edges.textContent='Wireframe off';edges.setAttribute('aria-pressed','false');
+   xrayEnabled=false;xray.textContent='X-ray off';xray.setAttribute('aria-pressed','false');
+   sectionAxis.value='';sectionSlider.disabled=true;sectionSlider.value='50';
   }catch(error){viewportNote.textContent='Shared 3D viewport failed: '+error.message;}
   finally{
    loading=false;updateContext();
@@ -242,6 +257,8 @@
  });
  document.addEventListener('eng:geometry-loaded',event=>{
   if(!event.detail?.source)return;
+  xrayEnabled=false;xray.textContent='X-ray off';xray.setAttribute('aria-pressed','false');
+  sectionAxis.value='';sectionSlider.disabled=true;sectionSlider.value='50';
   unitsVerified=event.detail.unitsVerified===true;
   sourceUnits=event.detail.sourceUnits||'unknown';
   activeBounds=Array.isArray(event.detail.bounds)?event.detail.bounds:null;
@@ -251,6 +268,36 @@
   if(analysisSupported()&&lastSnapshot)viewer?.showPlateSimulation(lastSnapshot);
  });
  document.addEventListener('fab:sculpt-changed',()=>markEdited());
+ xray.addEventListener('click',async()=>{
+  try{
+   const api=viewer||await import('./engineering-fabrication-preview.js');
+   xrayEnabled=!xrayEnabled;
+   if(api.toggleEngineeringXray(xrayEnabled)){
+    xray.textContent=xrayEnabled?'X-ray on':'X-ray off';
+    xray.setAttribute('aria-pressed',String(xrayEnabled));
+    if(wireframe){wireframe=false;edges.textContent='Wireframe off';edges.setAttribute('aria-pressed','false');}
+   }
+  }catch(error){viewportNote.textContent='X-ray unavailable: '+error.message;}
+ });
+ const inspectSection=async()=>{
+  try{
+   sectionSlider.disabled=!sectionAxis.value;
+   const api=viewer||await import('./engineering-fabrication-preview.js');
+   api.setEngineeringSection(sectionAxis.value||null,Number(sectionSlider.value)/100);
+   sectionSlider.setAttribute('aria-valuetext',sectionSlider.value+' percent');
+  }catch(error){viewportNote.textContent='Section unavailable: '+error.message;}
+ };
+ sectionAxis.addEventListener('change',inspectSection);
+ sectionSlider.addEventListener('input',inspectSection);
+ snapshot.addEventListener('click',async()=>{
+  snapshot.disabled=true;
+  try{
+   const api=viewer||await import('./engineering-fabrication-preview.js');
+   await api.captureEngineeringSnapshot();
+   viewportNote.textContent='Current viewport image saved locally. It is an illustration, not a dimensioned engineering drawing.';
+  }catch(error){viewportNote.textContent='Screenshot failed: '+error.message;}
+  finally{snapshot.disabled=false;}
+ });
  unitSelect.addEventListener('change',()=>{unitApply.disabled=!unitSelect.value||!viewer;});
  unitApply.addEventListener('click',async()=>{
   if(!viewer||!unitSelect.value){unitStatus.textContent='Select known source units to continue.';return;}
