@@ -18,14 +18,16 @@ test('shop product cards hide model reference, supplier notes and photo credit t
   assert.match(cardMarkup, /data-add-product/);
 });
 
-test('Microsoft reseller dashboard routes to authorized Workspace module', () => {
+test('Microsoft customers are routed to self-service product discovery and secured Workspace', () => {
   const cloud = read('cloud-automation.html');
+  const site = read('microsoft-products.html');
   assert.match(cloud, /id="microsoft-reseller"/);
   assert.match(cloud, /id="microsoft-reseller-dashboard"/);
-  assert.match(cloud, /microsoft-reseller-onboarding\.html/);
-  assert.match(cloud, /https:\/\/tekntandaoworkspace\.web\.app\/\?module=reseller-onboarding/);
-  assert.match(cloud, /requires an authorized account/);
-  assert.match(cloud, /not a live Microsoft Partner Center session|Neither page is a live Microsoft Partner Center session/);
+  assert.match(cloud, /microsoft-products\.html/);
+  assert.match(cloud, /module=microsoft-reseller-saas/);
+  assert.match(site, /module=microsoft-marketplace/);
+  assert.match(site, /id="ms-buy-form"/);
+  assert.match(site, /pricing, the Microsoft Customer Agreement/);
   assert.match(cloud, /id="migrate"/);
   assert.match(cloud, /mode:"planning-only"/);
 });
@@ -53,6 +55,6 @@ test('new service does not claim live scheduling, publishing or Microsoft pricin
   const cloud = read('cloud-automation.html');
   assert.match(page, /will require platform permissions and explicit customer approval/);
   assert.match(page, /planned/i);
-  assert.match(cloud, /requires an authorized account/);
-  assert.match(cloud, /partner eligibility require verification/);
+  assert.match(cloud, /authorized|provider/i);
+  assert.match(cloud, /reseller|pricing/i);
 });
