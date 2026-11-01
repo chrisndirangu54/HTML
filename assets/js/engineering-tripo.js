@@ -101,6 +101,7 @@ export function initTripo({call,reloadAccount,getUser,getAppCheck}){
   setTimeout(()=>URL.revokeObjectURL(url),1500);
  }));
  edit.addEventListener('click',()=>doWithFile(async file=>{
+  document.dispatchEvent(new CustomEvent('eng:open-view',{detail:{view:'sculpt'}}));
   const viewer=await import('./engineering-fabrication-preview.js');
   await viewer.previewFile(file,$('fab-preview'));
   message('Generated GLB opened in the free sculpt editor. Review dimensions; manually select edited STL for a quote if desired.');
