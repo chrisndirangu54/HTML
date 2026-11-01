@@ -37,17 +37,15 @@ test('Local Media Cloud dashboard performs meaningful draft and reporting operat
   assert.match(read('media-cloud-dashboard.html'),/No live APIs, automatic posting, AI model inference/);
 });
 
-test('Reseller operator sees a progress dashboard and protected actual onboarding route',()=>{
-  const page=read('microsoft-reseller-onboarding.html');
-  const cloud=read('cloud-automation.html');
-  assert.match(cloud,/href="microsoft-reseller-onboarding\.html"/);
-  assert.match(page,/id="ms-checklist"/);
-  assert.match(page,/id="ms-progress"/);
-  assert.match(page,/data-ms-check="7"/);
-  assert.match(page,/localStorage\.setItem\(key/);
-  assert.match(page,/\?module=reseller-onboarding/);
-  assert.match(page,/requires an authorized account|only after authorized sign-in/);
-  assert.match(page,/does not query Microsoft Partner Center/);
+test('Legacy reseller route redirects customers to the Microsoft storefront', () => {
+  const old = read('microsoft-reseller-onboarding.html');
+  const cloud = read('cloud-automation.html');
+  const site = read('microsoft-products.html');
+  assert.match(old, /location.replace\('microsoft-products.html'\)/);
+  assert.match(cloud, /href="microsoft-products\.html"/);
+  assert.match(site, /id="ms-families"/);
+  assert.match(site, /id="ms-seat-count"/);
+  assert.match(site, /module=microsoft-marketplace/);
 });
 
 test('Previously protected areas and store remain separate from dashboards',()=>{
