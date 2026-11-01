@@ -159,8 +159,8 @@ body.tt-home-aligned .isp-button:not(.primary){background:rgba(0,0,0,.34);border
 body.tt-home-aligned .isp-button:not(.primary):hover{border-color:var(--primary-color,#28e98c);color:var(--primary-color,#28e98c)}
 body.tt-home-aligned .isp-card,
 body.tt-home-aligned .isp-product,
-body.tt-home-aligned .isp-request .service,
-body.tt-home-aligned .isp-request .panel{
+body.tt-home-aligned.isp-request .service,
+body.tt-home-aligned.isp-request .panel{
   background:rgba(21,21,21,.79);border:1px solid #565656;
   border-radius:23px;box-shadow:none;backdrop-filter:blur(9px);
 }
@@ -183,24 +183,24 @@ body.tt-home-aligned .isp-product-state{color:#eee}
 body.tt-home-aligned .isp-catalogue-note{background:#171717;border-color:#565656;color:#ccc}
 body.tt-home-aligned .isp-product-picture{background:#e8e8e8}
 body.tt-home-aligned .isp-product-content{background:rgba(18,18,18,.88)}
-body.tt-home-aligned .isp-request .customer-wrap{
+body.tt-home-aligned.isp-request .customer-wrap{
   max-width:1130px;width:min(1130px,calc(100% - 34px));padding:25px 0 85px
 }
-body.tt-home-aligned .isp-request .customer-hero,
+body.tt-home-aligned.isp-request .customer-hero,
 body.tt-home-aligned .customer-hero{
   background:rgba(0,0,0,.42);border:1px solid #565656;
   box-shadow:none;border-radius:28px;
 }
-body.tt-home-aligned .isp-request .service strong{font-weight:500}
-body.tt-home-aligned .isp-request .panel h2{font-weight:300}
-body.tt-home-aligned .isp-request .field input:not([type=checkbox]),
-body.tt-home-aligned .isp-request .field select,
-body.tt-home-aligned .isp-request .field textarea{
+body.tt-home-aligned.isp-request .service strong{font-weight:500}
+body.tt-home-aligned.isp-request .panel h2{font-weight:300}
+body.tt-home-aligned.isp-request .field input:not([type=checkbox]),
+body.tt-home-aligned.isp-request .field select,
+body.tt-home-aligned.isp-request .field textarea{
   background:#101010;border:1px solid #565656;color:#fff;
 }
-body.tt-home-aligned .isp-request .field input:focus,
-body.tt-home-aligned .isp-request .field select:focus,
-body.tt-home-aligned .isp-request .field textarea:focus{
+body.tt-home-aligned.isp-request .field input:focus,
+body.tt-home-aligned.isp-request .field select:focus,
+body.tt-home-aligned.isp-request .field textarea:focus{
   outline:2px solid var(--primary-color,#28e98c);outline-offset:1px;
 }
 body.tt-home-aligned .shop-intro{
