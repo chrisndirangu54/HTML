@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" width="1200" height="720" role="img" aria-label="Original TeknTandao Web3 technology illustration"><defs><linearGradient id="back" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#091b1a"/><stop offset=".55" stop-color="#102336"/><stop offset="1" stop-color="#071b19"/></linearGradient><radialGradient id="glow"><stop stop-color="#1c8b89" stop-opacity=".36"/><stop offset="1" stop-color="#1c8b89" stop-opacity="0"/></radialGradient><pattern id="grid" width="54" height="54" patternUnits="userSpaceOnUse"><path d="M54 0H0V54" fill="none" stroke="#61dcc3" stroke-opacity=".095" stroke-width="1"/></pattern></defs><rect width="1200" height="720" rx="22" fill="url(#back)"/><circle cx="605" cy="345" r="540" fill="url(#glow)"/><rect width="1200" height="720" fill="url(#grid)"/><g stroke="#7ee8ce" opacity=".32" fill="none"><path d="M22 120 153 71 274 140M878 45l182 65 108-33M24 624 174 569 326 627M865 625l131-60 180 40"/><circle cx="153" cy="71" r="6" fill="#53e8c3"/><circle cx="1060" cy="110" r="7" fill="#53e8c3"/><circle cx="174" cy="569" r="7" fill="#53e8c3"/></g>
+<g opacity=".48" stroke="#19dbab" stroke-width="3"><path d="M122 169 315 127 452 254 660 159 853 245 1063 142M113 524 290 438 491 518 686 418 896 518 1089 415M315 127 290 438M452 254 491 518M660 159 686 418M853 245 896 518M1063 142 1089 415" fill="none"/></g>
+<g fill="#0df0ba" stroke="#b5fff0" stroke-width="4"><circle cx="122" cy="169" r="11"/><circle cx="315" cy="127" r="12"/><circle cx="290" cy="438" r="13"/><circle cx="660" cy="159" r="11"/><circle cx="853" cy="245" r="12"/><circle cx="896" cy="518" r="13"/><circle cx="1089" cy="415" r="11"/></g>
+<g transform="translate(355 175)">
+<path d="m0 170 215-124 210 124-210 128z" fill="#0b4543" stroke="#6bfff1" stroke-width="7"/>
+<path d="M0 170v191l215 128V298z" fill="#09332f" stroke="#18daba" stroke-width="7"/>
+<path d="M425 170v191L215 489V298z" fill="#071d32" stroke="#41c6ff" stroke-width="7"/>
+<path d="m215 46 0 252" stroke="#d1fff5" stroke-width="5" opacity=".72"/>
+<path d="m54 191 160-93 154 93-154 96z" fill="none" stroke="#42f1e1" stroke-width="3" opacity=".8"/>
+<path d="m88 257 126-73 124 73-124 76z" fill="none" stroke="#31dffc" stroke-width="3" opacity=".75"/>
+</g>
+<g fill="#86e9ff"><circle cx="120" cy="520" r="7"/><circle cx="1045" cy="600" r="7"/></g><rect x="25" y="25" width="1150" height="670" rx="18" stroke="#64f3c9" stroke-opacity=".17" fill="none" stroke-width="2"/></svg>
