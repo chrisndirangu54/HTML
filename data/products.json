@@ -4,9 +4,9 @@
     "name": "Starlink Standard Kit",
     "category": "Starlink",
     "brand": "Starlink",
-    "priceKes": 6750,
-    "compareAtKes": 6750,
-    "stock": 6,
+    "priceKes": null,
+    "compareAtKes": null,
+    "stock": 0,
     "active": true,
     "featured": true,
     "description": "High-speed satellite internet hardware for homes, remote offices and sites where fibre is unavailable.",
@@ -14,7 +14,9 @@
     "imageCredit": "Wikimedia Commons / Wikideas1, CC0",
     "sourceLabel": "Starlink Kenya",
     "sourcePriceUrl": "https://starlink.com/ke/residential",
-    "sourceNote": "Starlink Kenya advertised hardware starting from KES 6,750 in selected areas when checked in September 2026."
+    "sourceNote": "Hardware pricing varies by Starlink plan, service address and promotional eligibility. Ask for a verified current quote; any instalment deposit is not the full kit price.",
+    "quoteOnly": true,
+    "ispDirectory": true
   },
   {
     "id": "tp-link-archer-ax10",

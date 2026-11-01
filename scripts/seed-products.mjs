@@ -22,6 +22,23 @@ for (let offset = 0; offset < products.length; offset += 200) {
       const { id, stock: ignoredStock, ...reference } = product;
       const referenceRef = db.collection('ictCommerceCatalog').doc(id);
       const currentReference = await referenceRef.get();
+      if (currentReference.exists
+          && id === 'starlink-standard-kit'
+          && currentReference.data()?.seededFrom === 'data/products.json'
+          && Number(currentReference.data()?.marketReferencePriceKes) === 6750) {
+        // Update only the incorrect seeded market reference. Do not touch
+        // independently verified merchant prices or private inventory.
+        batch.update(referenceRef, {
+          priceKes: null,
+          compareAtKes: null,
+          marketReferencePriceKes: null,
+          marketReferenceCompareAtKes: null,
+          quoteOnly: true,
+          ispDirectory: true,
+          sourceNote: reference.sourceNote,
+          updatedAt: FieldValue.serverTimestamp(),
+        });
+      }
       if (!currentReference.exists) {
         batch.create(referenceRef, {
           ...reference,

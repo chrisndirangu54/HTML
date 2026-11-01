@@ -90,8 +90,14 @@ async function buildServerCart(rawItems) {
 
   snapshots.forEach((snapshot, index) => {
     const requested = items[index];
+    // Prevent checkout at a historic Mini deposit mislabelled as Standard Kit price.
+    // Remove the specific block only after a verified reseller price is recorded.
+    if (requested.productId === 'starlink-standard-kit') {
+      throw new HttpsError('failed-precondition', 'Starlink kit pricing is being verified; please request a quotation.');
+    }
     if (!snapshot.exists) throw new HttpsError('failed-precondition', `Product ${requested.productId} is unavailable.`);
     const product = snapshot.data();
+    if (product.quoteOnly === true) throw new HttpsError('failed-precondition', 'This item requires a confirmed quotation.');
     if (product.active === false) throw new HttpsError('failed-precondition', `${product.name || requested.productId} is unavailable.`);
     const priceKes = Number(product.priceKes);
     const stock = Number(product.stock ?? 0);
