@@ -22,6 +22,10 @@ on:
       - 'tests/microsoft-storefront.test.cjs'
       - 'tests/cloud-microsoft-section.test.cjs'
       - 'tests/web3-studio.test.cjs'
+      - 'tests/web3-visuals.test.cjs'
+      - 'assets/css/web3-visuals.css'
+      - 'assets/js/web3-visuals.js'
+      - 'assets/images/web3/**'
       - 'assets/js/web3-studio.js'
       - 'assets/css/web3-studio.css'
       - 'assets/css/microsoft-cloud-section.css'
@@ -54,6 +58,10 @@ on:
       - 'tests/microsoft-storefront.test.cjs'
       - 'tests/cloud-microsoft-section.test.cjs'
       - 'tests/web3-studio.test.cjs'
+      - 'tests/web3-visuals.test.cjs'
+      - 'assets/css/web3-visuals.css'
+      - 'assets/js/web3-visuals.js'
+      - 'assets/images/web3/**'
       - 'assets/js/web3-studio.js'
       - 'assets/css/web3-studio.css'
       - 'assets/css/microsoft-cloud-section.css'
@@ -81,4 +89,5 @@ jobs:
       - run: node --check assets/js/media-cloud-dashboard.js
       - run: node --check assets/js/microsoft-store.js
       - run: node --check assets/js/web3-studio.js
-      - run: node --test tests/site-navigation.test.cjs tests/isp-shop-ux.test.cjs tests/home-theme.test.cjs tests/service-pages-ux.test.cjs tests/site-shop-media-reseller.test.cjs tests/operational-dashboards.test.cjs tests/expanded-ict-catalog.test.cjs tests/microsoft-storefront.test.cjs tests/cloud-microsoft-section.test.cjs tests/web3-studio.test.cjs
+      - run: node --check assets/js/web3-visuals.js
+      - run: node --test tests/site-navigation.test.cjs tests/isp-shop-ux.test.cjs tests/home-theme.test.cjs tests/service-pages-ux.test.cjs tests/site-shop-media-reseller.test.cjs tests/operational-dashboards.test.cjs tests/expanded-ict-catalog.test.cjs tests/microsoft-storefront.test.cjs tests/cloud-microsoft-section.test.cjs tests/web3-studio.test.cjs tests/web3-visuals.test.cjs
