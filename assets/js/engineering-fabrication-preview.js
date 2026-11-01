@@ -9,6 +9,7 @@ import {inspectTriangleGeometry} from './engineering-mesh-inspection.js';
 import {createMeshEditor} from './engineering-sculpt-editor.js';
 
 let cleanup=null;
+let currentView=null;
 const $=id=>document.getElementById(id);
 function glbHasExternalUris(buffer){
  const data=new DataView(buffer);
@@ -66,7 +67,7 @@ function defaultShape(type,dimensions){
 function clearViewer(){
  if(cleanup){cleanup();cleanup=null;}
 }
-async function showModel(model,container,label){
+async function showModel(model,container,label,source='imported'){
  clearViewer();
  container.replaceChildren();
  let renderer;
@@ -110,11 +111,59 @@ async function showModel(model,container,label){
  if('ResizeObserver' in window){observer=new ResizeObserver(resize);observer.observe(container);}
  else window.addEventListener('resize',resize);
  const message=t=>{$('fab-sculpt-status').textContent=t;};
+ const clearOverlay=()=>{
+  model.traverse(mesh=>{if(mesh.isMesh){
+   const materials=Array.isArray(mesh.material)?mesh.material:[mesh.material];
+   for(const m of materials)if(m?.vertexColors){m.vertexColors=false;m.needsUpdate=true;}
+  }});
+ };
  const editor=createMeshEditor({model,scene,camera,renderer,orbit,redraw,
   onDirty:()=>{
+   clearOverlay();redraw();
    document.dispatchEvent(new CustomEvent('fab:sculpt-changed'));
    reportMesh(model);
   },onMessage:message});
+ currentView={
+  model,source,redraw,
+  setCamera(view){
+   const d=maxDimension*2;
+   camera.up.set(0,0,1);
+   if(view==='top')camera.position.set(0,0,d);
+   else if(view==='side')camera.position.set(0,-d,.01);
+   else camera.position.set(d*1.1,-d*1.25,d*.9);
+   camera.lookAt(0,0,0);orbit.target.set(0,0,0);orbit.update();redraw();
+  },
+  setWireframe(enabled){
+   model.traverse(mesh=>{if(mesh.isMesh){
+    const mats=Array.isArray(mesh.material)?mesh.material:[mesh.material];
+    for(const m of mats)if(m){m.wireframe=Boolean(enabled);m.needsUpdate=true;}
+   }});
+   redraw();
+  },
+  applyPlateOverlay(snapshot){
+   if(source!=='parametric'||!snapshot?.simulation)return false;
+   const length=Number(snapshot.values?.length);
+   if(!Number.isFinite(length)||length<=0)return false;
+   let applied=false;
+   model.traverse(mesh=>{
+    if(applied||!mesh.isMesh||!mesh.geometry?.attributes?.position)return;
+    const geometry=mesh.geometry,positions=geometry.attributes.position,colors=new Float32Array(positions.count*3);
+    const peak=Math.max(snapshot.simulation.nominalMaximumMpa,1e-8);
+    const cold=new THREE.Color(0x35b6dc),warm=new THREE.Color(0xffbb50),plain=new THREE.Color(0x62dec1),pixel=new THREE.Color();
+    for(let i=0;i<positions.count;i++){
+     const t=Math.max(0,Math.min(1,(positions.getX(i)+length/2)/length));
+     const stress=Math.max(0,snapshot.simulation.rootNominalStressMpa*(1-t));
+     if(snapshot.overlay==='stress')pixel.lerpColors(cold,warm,Math.min(1,stress/peak));
+     else pixel.copy(plain);
+     colors[i*3]=pixel.r;colors[i*3+1]=pixel.g;colors[i*3+2]=pixel.b;
+    }
+    geometry.setAttribute('color',new THREE.BufferAttribute(colors,3));
+    for(const m of (Array.isArray(mesh.material)?mesh.material:[mesh.material]))if(m){m.vertexColors=true;m.needsUpdate=true;}
+    applied=true;
+   });
+   redraw();return applied;
+  }
+ };
  reportMesh(model);
  resize();
  const badge=document.createElement('span');badge.className='eng-fab-model-badge';
@@ -129,20 +178,20 @@ async function showModel(model,container,label){
    for(const mat of materials)mat?.dispose?.();
   }});
   renderer.dispose();
+  if(currentView?.model===model)currentView=null;
   container.replaceChildren();
  };
+ document.dispatchEvent(new CustomEvent('eng:geometry-loaded',{detail:{source,label}}));
  return {label};
 }
 export async function previewPrimitive(shape,container,dimensions){
  const model=defaultShape(shape,dimensions);
- await showModel(model,container,'Editable '+shape);
+ await showModel(model,container,'Editable '+shape,shape==='plate'?'parametric':'primitive');
 }
-export async function previewFile(file,container){
- clearViewer();
- container.replaceChildren();
+export async function previewFile(file,container,options={}){
  const ext=file.name.split('.').pop().toLowerCase();
  if(!['stl','obj','glb'].includes(ext)){
-  container.textContent='This format can be submitted for a quotation, but local sculpting currently supports STL, OBJ and self-contained GLB only. Use FreeCAD, OpenSCAD or a compatible CAD tool for STEP, DXF, SCAD, 3MF and PDF.';
+  // Preserve the active viewport if a CAD file cannot be previewed as a mesh.
   $('fab-sculpt-status').textContent='Editing unavailable for '+ext.toUpperCase()+'. Upload is still supported.';
   return;
  }
@@ -163,5 +212,17 @@ export async function previewFile(file,container){
   const result=await new Promise((resolve,reject)=>new GLTFLoader().parse(bytes,'',resolve,reject));
   model=result.scene;
  }
- await showModel(model,container,ext.toUpperCase()+' source');
+ await showModel(model,container,ext.toUpperCase()+' source',options.sourceType==='ai'?'ai':'imported');
 }
+export function selectUnifiedView(mode){
+ if(!currentView)return false;
+ if(['iso','top','side'].includes(mode)){currentView.setCamera(mode);return true;}
+ if(mode==='wireframe'){currentView.setWireframe(true);return true;}
+ if(mode==='solid'){currentView.setWireframe(false);return true;}
+ return false;
+}
+export function showPlateSimulation(snapshot){
+ return currentView?.applyPlateOverlay(snapshot)||false;
+}
+export function currentGeometrySource(){return currentView?.source||null;}
+
