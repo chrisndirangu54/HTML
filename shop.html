@@ -13,22 +13,21 @@
   <link rel="stylesheet" href="assets/css/ict-commerce.css">
   <link rel="stylesheet" href="assets/css/site-pages.css">
   <link rel="stylesheet" href="assets/css/isp-shop-pages.css">
+<link rel="stylesheet" href="assets/css/home-theme-bridge.css">
 </head>
-<body class="shop-page">
-  <nav class="commerce-nav">
+<body class="shop-page tt-home-aligned">
+  <div class="tt-commerce-utility">
     <a class="brand" href="index.html">TeknTandao</a>
-    <a href="index.html">Home</a>
-    <a href="shop.html">Shop</a>
-    <a href="blog.html">Blogs</a>
-    <a href="gallery.html">Gallery</a>
-    <a id="whatsapp" href="https://wa.me/254702258870" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-    <a id="auth-link" href="login.html?next=shop.html">Sign in</a>
-    <button id="cart-button" class="btn btn-primary">Cart <span id="cart-count">0</span></button>
-  </nav>
+    <div class="tt-utility-actions">
+      <a id="whatsapp" href="https://wa.me/254702258870" target="_blank" rel="noopener noreferrer"><i class="lab la-whatsapp" aria-hidden="true"></i> WhatsApp</a>
+      <a id="auth-link" href="login.html?next=shop.html">Sign in</a>
+      <button id="cart-button" type="button" class="btn btn-primary">Cart <span id="cart-count">0</span></button>
+    </div>
+  </div>
   <main class="commerce-shell">
     <div class="shop-intro">
       <span class="isp-eyebrow">TeknTandao · ICT equipment shop</span>
-      <h1>Better technology.<br><span style="color:#28e98c">Built around you.</span></h1>
+      <h1>Better technology.<br><span>Built around you.</span></h1>
       <p>Explore routers, Wi-Fi solutions, Starlink equipment, security cameras, smart-home devices and essential accessories. We can also help with installation and setup.</p>
       <div class="shop-shortcuts">
         <a class="isp-button primary" href="shop.html?collection=isp"><i class="las la-wifi" aria-hidden="true"></i> ISP &amp; networking</a>
@@ -38,7 +37,8 @@
     </div>
     <div id="tt-commerce-store"></div>
   </main>
-  <script src="assets/js/nav-responsive.js"></script>
+  <script src="assets/js/home-theme-bridge.js"></script>
+<script src="assets/js/nav-responsive.js"></script>
   <script src="assets/js/commerce-config.js"></script>
   <script type="module" src="assets/js/commerce.js"></script>
 </body>
