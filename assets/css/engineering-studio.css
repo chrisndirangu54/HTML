@@ -1,0 +1,67 @@
+/* Engineering & Prototyping Studio · scoped responsive UI */
+.tt-engineering .eng-shell{width:min(1260px,calc(100% - 36px));max-width:1260px}
+.tt-engineering .eng-hero{align-items:center}
+.tt-engineering .eng-hero-visual{padding:14px;position:relative;overflow:hidden}
+.tt-engineering .eng-hero-visual img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;border:1px solid #2b6a58;border-radius:18px}
+.tt-engineering .eng-hero-visual span{display:block;color:#bdeccf;font-size:12px;padding:12px 4px 0}
+.eng-notice{border-left:3px solid #4aea9b;background:rgba(21,37,26,.92);border-radius:12px;padding:17px 20px;line-height:1.65;color:#c9daca;font-size:13px;margin:17px 0 22px}
+.eng-notice i{color:#4beaab;font-size:19px;margin-right:7px}
+.eng-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-bottom:38px}
+.eng-metrics>div{background:rgba(16,23,20,.89);border:1px solid #486252;border-radius:17px;padding:21px}
+.eng-metrics i{display:block;font-size:29px;color:#63ebac}
+.eng-metrics strong{display:block;font-size:30px;font-weight:500;color:#fff;margin-top:8px}
+.eng-metrics span{display:block;color:#b5c7b9;font-size:12px;margin-top:3px}
+.eng-section{scroll-margin-top:50px;margin:0 0 58px}
+.eng-head{margin:0 0 19px}
+.eng-head h2{color:#fff;font:300 clamp(27px,3.6vw,41px)/1.22 Inter,sans-serif;letter-spacing:-.025em;margin:12px 0}
+.eng-head p{font:400 14px/1.75 Inter,sans-serif;color:#acbdb1;max-width:950px}
+.eng-columns{display:grid;grid-template-columns:1fr 1fr;gap:17px;align-items:start}
+.eng-panel{min-width:0;border:1px solid #506356;border-radius:20px;padding:clamp(18px,2.5vw,26px);background:rgba(17,23,19,.93);color:#dbe9de}
+.eng-panel h3{font:500 19px/1.3 Inter,sans-serif;color:#fff;margin:0 0 14px}
+.eng-panel p{font-size:13px;line-height:1.7;color:#bac7bc}
+.eng-panel a:not(.tt-svc-button){color:#94eaba}
+.eng-panel ul,.eng-panel ol{padding-left:20px}
+.eng-panel li{font-size:13px;color:#cbd7ce;margin-bottom:8px;line-height:1.65}
+.eng-form label,.eng-panel label{display:block;font:500 13px/1.5 Inter,sans-serif;color:#dcebe0;margin-bottom:13px}
+.eng-form input,.eng-form select,.eng-form textarea,.eng-panel input,.eng-panel select,.eng-panel textarea{display:block;width:100%;min-width:0;margin-top:6px;min-height:43px;background:#0d1912;border:1px solid #5d7260;border-radius:11px;color:#fff;padding:10px 12px;font:400 14px/1.5 Inter,sans-serif}
+.eng-form textarea,.eng-panel textarea{min-height:80px;resize:vertical}
+.eng-form :is(input,select,textarea):focus-visible,.eng-panel :is(input,select,textarea):focus-visible{outline:2px solid #5af8b0;outline-offset:2px}
+.eng-input-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px 16px}
+.eng-actions{display:flex;align-items:center;gap:11px;flex-wrap:wrap;margin-top:12px}
+.eng-fine{font-size:12px!important;line-height:1.6;color:#9eb5a4!important;margin-top:14px}
+.eng-result{min-height:265px;overflow-wrap:anywhere}
+.eng-result section{border-top:1px solid #395243;padding-top:13px;margin-top:15px}
+.eng-result section h4{color:#d8f4e1;margin:0 0 10px;font:600 13px Inter,sans-serif}
+.eng-calc-tabs{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:15px}
+.eng-calc-tabs button{min-height:44px;border:1px solid #52705b;border-radius:13px;background:#14251b;color:#bfd4c3;font:500 13px Inter,sans-serif;padding:11px 16px;cursor:pointer}
+.eng-calc-tabs button:hover,.eng-calc-tabs button.active{border-color:#52efaf;background:#1d392a;color:#adffcb}
+.eng-calc-tabs button:focus-visible{outline:2px solid #78fac4}
+.eng-calc-form[hidden]{display:none}
+.eng-calc-form h3{margin-bottom:17px}
+.eng-measurements{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:22px;border-top:1px solid #455e49;padding-top:22px}
+.eng-measurements .eng-value{background:#10261c;border:1px solid #43644e;border-radius:14px;padding:17px}
+.eng-value span{display:block;font-size:12px;color:#aac1b0}
+.eng-value strong{display:block;color:#fff;font:600 clamp(15px,1.9vw,22px) Inter,sans-serif;margin-top:10px;overflow-wrap:anywhere}
+.eng-measurements .eng-calc-warning{grid-column:1/-1;color:#e5cdb4;font-size:12px;line-height:1.65}
+.eng-code{display:block;max-height:430px;overflow:auto;border:1px solid #375744;border-radius:12px;padding:16px;background:#0b1510;color:#b0edc2;font-size:12px;line-height:1.55;white-space:pre-wrap;word-break:break-word}
+.eng-inline{display:flex;align-items:start;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.eng-inline p{max-width:840px}
+.eng-embed{min-height:150px;margin:20px 0;border:1px dashed #54765d;border-radius:14px;background:#101b17;display:grid;place-items:center;text-align:center;padding:20px;color:#c0d0c3;overflow:hidden}
+.eng-embed iframe{border:0;width:100%;height:560px;display:block;background:#fff}
+.eng-embed:has(iframe){display:block;padding:0}
+.eng-tool-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:15px}
+.eng-tool-grid article{border:1px solid #475e4d;border-radius:17px;background:rgba(16,24,20,.91);padding:20px;display:flex;flex-direction:column;align-items:flex-start;min-height:235px}
+.eng-tool-grid i{font-size:29px;color:#5de8a6}
+.eng-tool-grid h3{font-size:16px;font-weight:500;color:#fff;margin:15px 0 8px}
+.eng-tool-grid p{font-size:12px;line-height:1.65;color:#acbbae;flex:1}
+.eng-tool-grid a{color:#a0edba;font-size:12px;margin-top:11px}
+.eng-next{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.eng-next>div:first-child{max-width:700px}
+.eng-next h2{color:#fff;font:400 27px Inter,sans-serif;margin:10px 0}
+#eng-ai-output{white-space:pre-wrap;overflow-wrap:anywhere;max-height:620px;overflow:auto;line-height:1.7;font-size:13px;color:#c8e7d1}
+#eng-ai-status{color:#9ae6b4}
+#eng-brief-result{overflow:auto}
+@media(max-width:1000px){.eng-tool-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.eng-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:750px){.eng-columns{grid-template-columns:1fr}.eng-next{flex-direction:column;align-items:start}.eng-calc-form{width:100%}}
+@media(max-width:530px){.tt-engineering .eng-shell{width:min(100% - 24px,1260px)}.eng-metrics,.eng-tool-grid,.eng-input-grid,.eng-measurements{grid-template-columns:1fr}.eng-panel{padding:18px}.eng-embed iframe{height:470px}.eng-actions .tt-svc-button{width:100%}}
+@media(prefers-reduced-motion:reduce){.eng-panel,.eng-tool-grid article{transition:none!important;animation:none!important}}
