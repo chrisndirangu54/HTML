@@ -7,9 +7,17 @@
 <p>Our proposed hybrid network separates subscriber control at the MikroTik core from managed access devices at each home. The aim is to use GPON OMCI and compatible TR-069/USP management where possible, rather than requiring a full REST API and SNMP on every inexpensive customer router.</p></header>
 <section class="panel"><h2>Networking equipment from our shop</h2>
 <p>Browse the same active networking products and images as our shop. Confirm hardware revision, firmware compatibility, stock, VAT and type approval before ordering.</p>
-<p id="isp-products-status" role="status">Loading shop inventory�</p>
+<p id="isp-products-status" role="status">Loading shop inventory�</p>
 <div class="spec-grid" id="isp-products" aria-live="polite"></div>
 <p><a href="shop.html">Browse all shop products</a></p></section>
+<section class="panel"><h2>Equipment shortlist and price guidance</h2><p>These are historic Kenyan listing figures or engineering estimates, not verified current quotations. Confirm hardware revision, firmware, stock, VAT and type approval before ordering.</p><div class="spec-grid">
+<article class="spec"><span class="status good">Fiber ONT candidate</span><h3>Huawei EG8145V5</h3><div class="price">~KSh 2,899</div><span class="hint">Prior VAT-inclusive estimate</span><p>Test OMCI/TR-069 support against the exact OLT, ACS and supplier firmware.</p></article>
+<article class="spec"><span class="status">Ethernet WAN CPE</span><h3>TP-Link EC220-G5</h3><div class="price">~KSh 4,504</div><span class="hint">Prior listing; VAT unconfirmed</span><p>Verify TR-069 profiles, PPPoE, remote firmware management and hardware revision.</p></article>
+<article class="spec"><span class="status">Managed Wi-Fi 5</span><h3>MikroTik hAP ac²</h3><div class="price">~KSh 9,900</div><span class="hint">Prior local price reference</span><p>RouterOS features require secure management access and controlled testing.</p></article>
+<article class="spec"><span class="status">Managed Wi-Fi 6</span><h3>MikroTik hAP ax²</h3><div class="price">~KSh 13,471</div><span class="hint">Prior listing</span><p>Validate port speeds, radio coverage and power requirements for the intended site.</p></article>
+<article class="spec"><span class="status off">Fast Ethernet constraint</span><h3>MikroTik hAP lite / ac lite</h3><div class="price">~KSh 3,500–7,540</div><span class="hint">Past price indications</span><p>100 Mbps wired ports may constrain higher-speed service plans.</p></article>
+<article class="spec"><span class="status off">Wireless backhaul candidate</span><h3>COMFAST CF-E313AC V2</h3><div class="price">~KSh 15,000</div><span class="hint">Planning allowance, not a quote</span><p>Validate line of sight, throughput, tagged VLAN, PoE and radio authorization.</p></article>
+</div></section>
 <section class="panel"><h2>Ten critical acceptance requirements</h2>
 <div class="table-wrap"><table class="table"><thead><tr><th>Requirement</th><th>Why it matters</th><th>Procurement evidence to request</th></tr></thead><tbody>
 <tr><td>SNMP and MIBs</td><td>Interface counters, alarms and health data</td><td>Official MIB download, supported SNMP versions and MIB coverage</td></tr>

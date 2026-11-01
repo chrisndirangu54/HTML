@@ -9,6 +9,7 @@
 <div class="nav-label">Operations</div>
 <nav class="sidenav" id="isp-nav" aria-label="ISP operations">
 <button type="button" data-view="overview" aria-current="page">◈ &nbsp; Overview</button>
+<button type="button" data-view="architecture">⌁ &nbsp; Network architecture</button>
 <button type="button" data-view="integrations">◉ &nbsp; Integrations</button>
 <button type="button" data-view="economics">▥ &nbsp; Pilot economics</button>
 <button type="button" data-view="quality">◷ &nbsp; Quality & analytics</button>
@@ -18,7 +19,7 @@
 <div class="side-foot">Connection status is explicit. Pending approvals do not execute commands. <a href="admin.html" style="color:#9bead4">Return to main admin</a>.</div>
 </aside><main class="main">
 <header class="header"><div><span class="eyebrow">Authorized staff access</span><h1 id="page-title">ISP Operations Control</h1><p id="page-subtitle">Centralized fiber and wireless management workspace</p></div>
-<div class="header-actions"><a class="btn" href="isp.html">Customer ISP page</a><a class="btn" href="isp-equipment.html">Procurement guide</a><button class="btn" type="button" id="isp-refresh">Refresh</button><button class="btn primary" type="button" id="new-record" hidden>Add record +</button></div></header>
+<div class="header-actions"><a class="btn" href="isp.html">Customer ISP page</a><a class="btn" href="isp-architecture.html">Architecture reference</a><a class="btn" href="isp-equipment.html">Procurement guide</a><button class="btn" type="button" id="isp-refresh">Refresh</button><button class="btn primary" type="button" id="new-record" hidden>Add record +</button></div></header>
 <div id="auth-banner" class="banner warning">Sign in with a TeknTandao administrator account to view operational records. No customer data is exposed before authentication.</div>
 <p id="isp-message" class="message" role="status" aria-live="polite"></p>
 <section id="isp-content" hidden>
@@ -29,6 +30,7 @@
 <div class="grid three" id="overview-actions"></div></section>
 <section class="panel"><h2>Equipment and standards</h2><p>Compare low-cost TR-069/OMCI-managed ONTs and CPEs in the <a href="isp-equipment.html">procurement notes</a>. Checks include SNMP/MIBs, APIs, syslog, VLAN isolation, RADIUS, captive portal, PoE, firmware recovery, port speeds and model revisions.</p></section>
 </div>
+<div id="view-architecture" hidden><section class="panel"><h2>Hybrid network topology</h2><p>The 50-subscriber fiber and wireless layout is an illustrative planning scenario, not installed-service telemetry or a service guarantee. Validate equipment compatibility, optical budgets, radio approvals and site conditions before procurement.</p><div class="diagram-wrap"><img src="assets/isp/architecture.svg" alt="Illustrative upstream router connecting GPON fiber and wireless-fed buildings with separate monitoring and management"></div><p class="pill-note">Network provisioning, payment settlement, telemetry collection and AI operations remain disconnected.</p></section></div>
 <div id="view-integrations" hidden><section class="panel"><h2>Integration commissioning</h2><p>Vendor-neutral integration requirements. No external credentials are requested or stored in the browser. These integrations must be configured by an authorized administrator and verified in a controlled test environment.</p><div class="grid three" id="integration-grid"></div></section></div>
 <div id="view-economics" hidden><section class="panel">
 <h2>Pilot revenue and equipment budget</h2><p>Adjust illustrative values. These are estimates, not quotes or actual customer revenue.</p>

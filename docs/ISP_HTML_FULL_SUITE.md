@@ -7,7 +7,7 @@
 | URL path | Audience | Purpose |
 | --- | --- | --- |
 | `/isp.html` | Public | Existing premises Wi-Fi page, hybrid ISP overview and navigation |
-| `/isp-architecture.html` | Public | Forwards to the customer ISP page, or to the signed-in role desk. The architecture diagram is not published. |
+| `/isp-architecture.html` | Public | Illustrative hybrid fiber/wireless topology and operations roadmap; not live network telemetry. |
 | `/isp-equipment.html` | Public | Lower-cost ONT/CPE evaluation, 10 management requirements, supplier planning costs |
 | `/isp-customer.html` | Signed-in verified-email customers | Consent-based fiber survey, wireless survey, Wi-Fi installation and support enquiries |
 | `/isp-console.html` | Server-authorized admins | Full ISP administrative dashboard, modules, manual diagnostics, planning and records |

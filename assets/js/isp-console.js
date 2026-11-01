@@ -4,7 +4,7 @@ const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const escapeHTML=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const root=functionsBase?functionsBase+'/ispSuiteApi':'/api/ispSuiteApi';
 const state={modules:{},integrations:[],records:{},overview:null,view:'overview',current:null,busy:false};
-const labels={overview:'Operations overview',integrations:'Connectors & integrations',
+const labels={overview:'Operations overview',architecture:'Network architecture',integrations:'Connectors & integrations',
  economics:'Pilot business simulator',quality:'Network health & QoE','customer-requests':'Customer service requests'};
 const nf=x=>new Intl.NumberFormat('en-KE',{maximumFractionDigits:0}).format(x||0);
 const money=x=>'KSh '+nf(x);
@@ -30,7 +30,7 @@ function view(name){
  state.view=name;
  state.current=Object.hasOwn(state.modules,name)?name:null;
  const page=state.current?'module':name;
- for(const x of ['overview','integrations','economics','quality','customer-requests','module']){
+ for(const x of ['overview','architecture','integrations','economics','quality','customer-requests','module']){
   const e=$('#view-'+x);if(e)e.hidden=x!==page;
  }
  $$('#isp-nav button,#isp-modules-nav button').forEach(b=>{
