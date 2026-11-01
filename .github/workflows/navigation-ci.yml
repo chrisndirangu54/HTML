@@ -33,6 +33,7 @@ on:
       - 'assets/js/engineering-sculpt-editor.js'
       - 'tests/engineering-mesh-inspection.test.mjs'
       - 'assets/js/engineering-fabrication*.js'
+      - 'assets/js/engineering-tripo.js'
       - 'assets/js/engineering-mesh-inspection.js'
       - 'assets/css/engineering-fabrication.css'
       - 'functions-engineering/**'
@@ -99,6 +100,7 @@ on:
       - 'assets/js/engineering-sculpt-editor.js'
       - 'tests/engineering-mesh-inspection.test.mjs'
       - 'assets/js/engineering-fabrication*.js'
+      - 'assets/js/engineering-tripo.js'
       - 'assets/js/engineering-mesh-inspection.js'
       - 'assets/css/engineering-fabrication.css'
       - 'functions-engineering/**'
@@ -153,6 +155,7 @@ jobs:
       - run: node --check assets/js/engineering-models.js
       - run: node --check assets/js/engineering-studio.js
       - run: node --check assets/js/engineering-fabrication.js
+      - run: node --check assets/js/engineering-tripo.js
       - run: node --check assets/js/engineering-fabrication-preview.js
       - run: node --check assets/js/engineering-sculpt-core.mjs
       - run: node --check assets/js/engineering-sculpt-editor.js
