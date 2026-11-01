@@ -62,15 +62,25 @@
       }catch(error){output.textContent='Input validation: '+error.message;}
     });
   }
-  $('eng-cad-form').addEventListener('submit',event=>{
-    event.preventDefault();
+  const updateCadSource=()=>{
     try{
-      const model=M.mountingPlate(parseForm(event.currentTarget));
+      const model=M.mountingPlate(parseForm($('eng-cad-form')));
       scad=model.scad;
       text('eng-scad-preview',scad+'\n// Nominal solid volume estimate: '+fmt(model.volumeMm3,6)+' mm³');
       $('eng-download-scad').disabled=false;
-    }catch(error){scad=null;$('eng-download-scad').disabled=true;text('eng-scad-preview','CAD dimensions invalid: '+error.message);}
+    }catch(error){
+      scad=null;
+      $('eng-download-scad').disabled=true;
+      text('eng-scad-preview','CAD dimensions invalid: '+error.message);
+    }
+  };
+  $('eng-cad-form').addEventListener('input',updateCadSource);
+  $('eng-cad-form').addEventListener('submit',event=>{
+    event.preventDefault();
+    updateCadSource();
   });
+  // Source and 3D viewer both read from validated form dimensions.
+  updateCadSource();
   $('eng-download-scad').addEventListener('click',()=>{
     if(scad)save('tekntandao-mounting-plate.scad',scad,'text/plain');
   });
