@@ -27,7 +27,7 @@ test('Microsoft customers are routed to self-service product discovery and secur
   assert.match(cloud, /module=microsoft-reseller-saas/);
   assert.match(site, /module=microsoft-marketplace/);
   assert.match(site, /id="ms-buy-form"/);
-  assert.match(site, /pricing, the Microsoft Customer Agreement/);
+  assert.match(site, /Pricing, the Microsoft Customer Agreement/);
   assert.match(cloud, /id="migrate"/);
   assert.match(cloud, /mode:"planning-only"/);
 });
