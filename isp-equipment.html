@@ -1,36 +1,48 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Managed ONTs, CPEs and Routers | TeknTandao ISP</title><meta name="description" content="TeknTandao managed router, GPON ONT, COMFAST wireless, TR-069, SNMP and VLAN procurement evaluation.">
-<link rel="icon" href="assets/images/tekntandao-favicon.png"><link rel="stylesheet" href="assets/css/isp-console.css">
-<style>.layout{max-width:1150px;padding:20px;margin:auto}.title{background:#0b1b35;color:#fff;padding:44px 36px;border-radius:22px;margin:17px 0 24px}.title h1{font-size:clamp(32px,5vw,55px);line-height:1.08;max-width:860px;margin:7px 0 15px}.title p{color:#c8daf0;max-width:820px}.spec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.spec{border:1px solid #dce6f1;background:#fff;border-radius:14px;padding:20px}.spec h3{margin:0 0 10px}.spec p{color:#5f7189;font-size:13px}.price{font-size:22px;font-weight:800;color:#2153b1}.hint{display:block;color:#5f7189;font-size:11px}.warning{font-size:13px}@media(max-width:850px){.spec-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){.spec-grid{grid-template-columns:1fr}.layout{padding:12px}.title{padding:27px}}</style></head><body><nav class="tt-site-nav" aria-label="Primary navigation"></nav><div class="layout">
-<nav class="inline" style="justify-content:space-between"><a href="index.html" style="font-weight:900;font-size:22px;text-decoration:none">TeknTandao.</a><div class="inline"><a href="isp.html">ISP services</a><a href="isp-architecture.html">Architecture</a><a href="isp-customer.html">Request survey</a></div></nav>
-<header class="title"><span class="eyebrow" style="color:#6de4bf">ISP infrastructure procurement</span><h1>Lower-cost ONTs and CPEs without losing control.</h1>
-<p>Our proposed hybrid network separates subscriber control at the MikroTik core from managed access devices at each home. The aim is to use GPON OMCI and compatible TR-069/USP management where possible, rather than requiring a full REST API and SNMP on every inexpensive customer router.</p></header>
-<section class="panel"><h2>Networking equipment from our shop</h2>
-<p>Browse the same active networking products and images as our shop. Confirm hardware revision, firmware compatibility, stock, VAT and type approval before ordering.</p>
-<p id="isp-products-status" role="status">Loading shop inventory�</p>
-<div class="spec-grid" id="isp-products" aria-live="polite"></div>
-<p><a href="shop.html">Browse all shop products</a></p></section>
-<section class="panel"><h2>Equipment shortlist and price guidance</h2><p>These are historic Kenyan listing figures or engineering estimates, not verified current quotations. Confirm hardware revision, firmware, stock, VAT and type approval before ordering.</p><div class="spec-grid">
-<article class="spec"><span class="status good">Fiber ONT candidate</span><h3>Huawei EG8145V5</h3><div class="price">~KSh 2,899</div><span class="hint">Prior VAT-inclusive estimate</span><p>Test OMCI/TR-069 support against the exact OLT, ACS and supplier firmware.</p></article>
-<article class="spec"><span class="status">Ethernet WAN CPE</span><h3>TP-Link EC220-G5</h3><div class="price">~KSh 4,504</div><span class="hint">Prior listing; VAT unconfirmed</span><p>Verify TR-069 profiles, PPPoE, remote firmware management and hardware revision.</p></article>
-<article class="spec"><span class="status">Managed Wi-Fi 5</span><h3>MikroTik hAP ac²</h3><div class="price">~KSh 9,900</div><span class="hint">Prior local price reference</span><p>RouterOS features require secure management access and controlled testing.</p></article>
-<article class="spec"><span class="status">Managed Wi-Fi 6</span><h3>MikroTik hAP ax²</h3><div class="price">~KSh 13,471</div><span class="hint">Prior listing</span><p>Validate port speeds, radio coverage and power requirements for the intended site.</p></article>
-<article class="spec"><span class="status off">Fast Ethernet constraint</span><h3>MikroTik hAP lite / ac lite</h3><div class="price">~KSh 3,500–7,540</div><span class="hint">Past price indications</span><p>100 Mbps wired ports may constrain higher-speed service plans.</p></article>
-<article class="spec"><span class="status off">Wireless backhaul candidate</span><h3>COMFAST CF-E313AC V2</h3><div class="price">~KSh 15,000</div><span class="hint">Planning allowance, not a quote</span><p>Validate line of sight, throughput, tagged VLAN, PoE and radio authorization.</p></article>
-</div></section>
-<section class="panel"><h2>Ten critical acceptance requirements</h2>
-<div class="table-wrap"><table class="table"><thead><tr><th>Requirement</th><th>Why it matters</th><th>Procurement evidence to request</th></tr></thead><tbody>
-<tr><td>SNMP and MIBs</td><td>Interface counters, alarms and health data</td><td>Official MIB download, supported SNMP versions and MIB coverage</td></tr>
-<tr><td>REST API, SSH or other integration</td><td>Authorized automation and diagnostics</td><td>Vendor management API / secure CLI documentation</td></tr>
-<tr><td>Central management</td><td>Across apartments and sites</td><td>ACS/controller compatibility, role access and device limits</td></tr>
-<tr><td>Syslog / events</td><td>Correlated outages and audit evidence</td><td>Log export feature and sample events</td></tr>
-<tr><td>VLAN and isolation</td><td>Separate customer traffic and management</td><td>Transparent VLAN tests, port/client isolation support</td></tr>
-<tr><td>RADIUS / captive portal</td><td>Authentication and subscriptions</td><td>PPPoE/RADIUS client support or compatible gateway/control plane</td></tr>
-<tr><td>Firmware upgrade and rollback</td><td>Secure fleet maintenance</td><td>Signed firmware, staged deployment, failed-upgrade recovery</td></tr>
-<tr><td>PoE voltage / standards</td><td>Prevent hardware damage</td><td>802.3af/at/bt vs passive PoE voltage, exact injectors</td></tr>
-<tr><td>Confirmed Ethernet ports</td><td>Avoid 100 Mbps bottlenecks</td><td>Verified 1GbE / multigigabit port specifications</td></tr>
-<tr><td>Hardware revision and support lifecycle</td><td>Long-term integration</td><td>Revision/firmware matrix, warranties and security update commitments</td></tr></tbody></table></div>
-<div class="banner warning" style="margin-top:20px"><strong>Fiber distinction:</strong> An Ethernet WAN router does not replace an optical GPON ONT. Low-cost Huawei or VSOL ONTs require lab-based OLT interoperability checks. TR-069 or TR-369 support does not guarantee every Wi-Fi diagnostic is exposed.</div></section>
-<section class="panel"><h2>50-customer planning budget</h2><p>Original concept: 32 GPON fiber homes and 18 wireless-fed customers, one PoP and two remote buildings. Physical capital costs were estimated at KSh 223,500 core, KSh 330,480 fiber, KSh 341,400 wireless and KSh 134,307 contingency, or approximately <strong>KSh 1,029,687</strong>. Reserve nearer KSh 1.15 million until VAT and site-specific costs are quoted. Major wayleaves, trenching, licensing, staff, and separate software development were not fully priced.</p>
-<p><a class="btn primary" href="isp-customer.html" style="text-decoration:none">Request a site assessment</a> <a class="btn" href="isp-architecture.html">Explore full network diagram</a></p></section>
-<footer class="footer">TeknTandao • Equipment assessments are provisional and subject to Kenyan type-approval, radio rules and verified supplier quotations.</footer></div><script src="assets/js/site-config.js"></script><script type="module" src="assets/js/isp-products.js"></script><script src="assets/js/nav-responsive.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Wi-Fi, Routers & Network Equipment | TeknTandao</title>
+  <meta name="description" content="Browse networking equipment for home and business Wi-Fi, fiber and wireless installations in Kenya. View product photos and explore each model in the TeknTandao shop.">
+  <link rel="icon" href="assets/images/tekntandao-favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+  <link rel="stylesheet" href="assets/css/commerce.css">
+  <link rel="stylesheet" href="assets/css/isp-shop-pages.css">
+</head>
+<body class="isp-catalogue">
+  <nav class="commerce-nav" aria-label="Site navigation"><a class="brand" href="index.html">TeknTandao</a></nav>
+  <main class="isp-customer-shell">
+    <div class="isp-crumbs"><a href="index.html">Home</a><span>›</span><a href="isp.html">ISP & networking</a><span>›</span><span>Equipment</span></div>
+    <header class="isp-hero">
+      <div>
+        <span class="isp-eyebrow">Equipment for stronger connections</span>
+        <h1 class="isp-title">Find the right <em>network hardware.</em></h1>
+        <p class="isp-lead">Explore routers, Wi-Fi access solutions and outdoor network equipment. Each photo links to the matching listing in our shop. We can help identify what works for your premises before you buy.</p>
+        <div class="isp-actions">
+          <a class="isp-button primary" href="shop.html?collection=isp">Browse network products <i class="las la-arrow-right" aria-hidden="true"></i></a>
+          <a class="isp-button" href="isp-customer.html">Request equipment advice</a>
+        </div>
+      </div>
+      <div class="isp-hero-media"><img src="assets/images/services/wifi.jpg" alt="Wi-Fi networking equipment and technician installing connectivity" width="550" height="440"></div>
+    </header>
+    <section class="isp-section" aria-labelledby="equipment-heading">
+      <div class="isp-section-head">
+        <div><span class="isp-eyebrow">Product directory</span><h2 id="equipment-heading">Network equipment catalogue</h2><p>Photographs represent the named models. Actual stock, pricing and installation compatibility require confirmation.</p></div>
+        <p id="isp-products-status" class="isp-product-count" role="status">Loading equipment…</p>
+      </div>
+      <div id="isp-products" class="isp-inventory-grid" aria-live="polite"></div>
+      <p class="isp-catalogue-note"><i class="las la-info-circle" aria-hidden="true"></i> Some models are listed for quotation only. A listing is not a promise of stock, installation compatibility or final selling price.</p>
+    </section>
+    <section class="isp-banner" aria-label="Installation advice">
+      <div><span class="isp-eyebrow">Not sure what fits?</span><h2>We can help you choose.</h2><p>A short site survey can identify the most suitable equipment for your rooms, users and connection type.</p></div>
+      <a class="isp-button primary" href="isp-customer.html">Request a survey <i class="las la-arrow-right" aria-hidden="true"></i></a>
+    </section>
+    <footer class="isp-page-footer"><span>TeknTandao · Nairobi, Kenya</span><span><a href="shop.html">All shop products</a> · <a href="contact_page.html">Contact</a></span></footer>
+  </main>
+  <script src="assets/js/nav-responsive.js"></script>
+  <script type="module" src="assets/js/isp-products.js"></script>
+</body></html>
