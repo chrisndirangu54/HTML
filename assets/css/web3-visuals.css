@@ -1,0 +1,56 @@
+/* Original Web3 imagery and low-cost motion. Scoped to the Web3 briefing and Studio. */
+.tt-web3-studio .tt-w3-hero-aside{padding:16px;overflow:hidden;position:relative;border-color:#406958}
+.tt-w3-hero-art,.tt-w3-briefing-hero-picture{position:relative;overflow:hidden;isolation:isolate;border-radius:15px;background:#091f1d}
+.tt-w3-hero-art{aspect-ratio:5/3;min-height:180px;border:1px solid #2b6053}
+.tt-w3-hero-art img,.tt-w3-briefing-hero-picture img{display:block;width:100%;height:100%;object-fit:cover}
+.tt-w3-hero-art img{filter:saturate(1.12)}
+.tt-w3-hero-caption{padding:12px 9px 8px}
+.tt-w3-hero-caption i{font-size:30px!important}
+.tt-web3-studio .tt-w3-hero-caption h2{margin:8px 0!important}
+.tt-w3-network-motion{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.tt-w3-network-motion::before{content:"";position:absolute;inset:9% 27%;border:1px dashed rgba(93,239,204,.46);border-radius:50%;animation:tt-w3-orbit 38s linear infinite}
+.tt-w3-network-motion::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 32%,rgba(66,245,191,.1) 50%,transparent 68%);transform:translateX(-130%);animation:tt-w3-scan 14s linear infinite}
+.tt-w3-particle{position:absolute;width:8px;height:8px;border-radius:50%;background:#5bffe0;box-shadow:0 0 0 5px rgba(62,230,185,.12),0 0 19px rgba(85,255,221,.55);animation:tt-w3-node-drift 6.4s ease-in-out infinite}
+.tt-w3-particle.p1{top:17%;left:15%;animation-delay:0s}
+.tt-w3-particle.p2{top:72%;left:25%;animation-delay:1.2s}
+.tt-w3-particle.p3{top:24%;left:74%;animation-delay:2.4s}
+.tt-w3-particle.p4{top:68%;left:85%;animation-delay:3.1s}
+.tt-w3-particle.p5{top:44%;left:50%;animation-delay:1.7s}
+.tt-w3-network-line{position:absolute;height:1px;transform-origin:0 50%;background:linear-gradient(90deg,transparent,#6dffe4,transparent);background-size:200% 100%;opacity:.55;animation:tt-w3-energy-flow 5.8s ease-in-out infinite}
+.tt-w3-network-line.l1{width:27%;top:22%;left:15%;transform:rotate(24deg)}
+.tt-w3-network-line.l2{width:33%;top:24%;left:50%;transform:rotate(18deg);animation-delay:.9s}
+.tt-w3-network-line.l3{width:29%;top:69%;left:26%;transform:rotate(-23deg);animation-delay:2.2s}
+.tt-w3-network-line.l4{width:28%;top:61%;left:57%;transform:rotate(13deg);animation-delay:1.5s}
+.tt-w3-feature-banner{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:22px;align-items:center;overflow:hidden;min-height:190px;padding:13px;margin:0 0 20px;border:1px solid #436755;border-radius:20px;background:linear-gradient(115deg,#0b2427,#112c29 60%,#10243a)}
+.tt-w3-feature-banner img{display:block;width:100%;max-height:213px;height:100%;aspect-ratio:5/3;object-fit:cover;border-radius:12px}
+.tt-w3-feature-banner figcaption{padding:13px 15px}
+.tt-w3-feature-banner figcaption span{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#7ce7b3}
+.tt-w3-feature-banner figcaption p{color:#e4f7ed;font:400 clamp(15px,1.8vw,20px)/1.5 Inter,system-ui,sans-serif;margin:14px 0 0}
+.tt-w3-feature-banner:hover{border-color:#55cdab;box-shadow:0 9px 32px rgba(4,11,13,.29)}
+.tt-w3-panel{transition:transform .23s ease,border-color .23s ease,box-shadow .23s ease}
+.tt-w3-panel:hover{transform:translateY(-2px);border-color:#53816b;box-shadow:0 12px 26px rgba(0,0,0,.18)}
+.tt-w3-panel:focus-within{border-color:#72d6ab}
+body.tt-home-aligned.tt-web3-page .tt-w3-briefing-hero-picture{aspect-ratio:5/3;margin:0 0 18px;border:1px solid #356f5c}
+body.tt-home-aligned.tt-web3-page .tt-w3-briefing-hero-picture img{object-fit:cover}
+body.tt-home-aligned.tt-web3-page .tt-w3-briefing-hero-glint{position:absolute;top:0;left:-65%;width:60%;height:100%;background:linear-gradient(110deg,transparent 15%,rgba(76,239,197,.14) 50%,transparent 80%);transform:skewX(-15deg);animation:tt-w3-scan-image 12s linear infinite}
+body.tt-home-aligned.tt-web3-page .tt-w3-briefing-card{overflow:hidden;transition:transform .24s ease,border-color .24s ease,box-shadow .24s ease}
+body.tt-home-aligned.tt-web3-page .tt-w3-briefing-card>img{display:block;width:100%;aspect-ratio:16/9;height:auto;max-height:200px;object-fit:cover;border:1px solid #3b5d52;border-radius:14px;margin:0 0 17px}
+body.tt-home-aligned.tt-web3-page .tt-w3-briefing-card:hover{transform:translateY(-4px);border-color:#58d9ab;box-shadow:0 18px 34px rgba(0,0,0,.2)}
+/* Keep initial content visible when JS, IntersectionObserver or motion controls are unavailable. */
+body.tt-w3-motion-ready .tt-w3-reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s cubic-bezier(.16,1,.3,1)}
+body.tt-w3-motion-ready .tt-w3-reveal.is-visible{opacity:1;transform:translateY(0)}
+body.tt-w3-motion-off .tt-w3-network-motion *,
+body.tt-w3-motion-off .tt-w3-briefing-hero-glint{animation:none!important}
+body.tt-w3-motion-off .tt-w3-reveal{opacity:1!important;transform:none!important;transition:none!important}
+@keyframes tt-w3-node-drift{0%,100%{translate:0 0;opacity:.68}50%{translate:3px -8px;opacity:1}}
+@keyframes tt-w3-energy-flow{0%,100%{background-position:100% 50%;opacity:.27}50%{background-position:0% 50%;opacity:.8}}
+@keyframes tt-w3-orbit{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes tt-w3-scan{0%,18%{transform:translateX(-130%)}70%,100%{transform:translateX(130%)}}
+@keyframes tt-w3-scan-image{0%,12%{left:-65%}65%,100%{left:140%}}
+@media(max-width:900px){.tt-w3-feature-banner{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}.tt-w3-feature-banner figcaption{padding:10px}}
+@media(max-width:640px){.tt-w3-feature-banner{grid-template-columns:1fr;padding:10px;gap:0}.tt-w3-feature-banner img{max-height:186px}.tt-w3-feature-banner figcaption{padding:15px}.tt-w3-feature-banner figcaption p{margin-top:6px}}
+@media(prefers-reduced-motion:reduce){
+.tt-w3-network-motion *,.tt-w3-briefing-hero-glint{animation:none!important}
+body.tt-w3-motion-ready .tt-w3-reveal{opacity:1!important;transform:none!important;transition:none!important}
+.tt-w3-panel,body.tt-home-aligned.tt-web3-page .tt-w3-briefing-card{transition:none!important;transform:none!important}
+}
