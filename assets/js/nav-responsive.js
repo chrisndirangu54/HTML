@@ -14,7 +14,8 @@
       { label: 'Media Cloud', href: 'media-cloud.html' },
       { label: 'Web3', href: 'web3.html' },
       { label: 'Web3 Studio', href: 'web3-studio.html' },
-      { label: 'Engineering & Prototyping', href: 'engineering.html' }
+      { label: 'Engineering & Prototyping', href: 'engineering.html' },
+      { label: 'Engineering Fabrication', href: 'engineering-fabrication.html' }
     ] },
     { label: 'Shop', href: 'shop.html' },
     { label: 'Explore', children: [
@@ -179,6 +180,7 @@
       'Web3': 'las la-cube',
       'Web3 Studio': 'las la-tools',
       'Engineering & Prototyping': 'las la-drafting-compass',
+      'Engineering Fabrication': 'las la-cubes',
       'Shop': 'las la-shopping-cart',
       'Explore': 'las la-compass',
       'About us': 'lar la-user',

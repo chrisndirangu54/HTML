@@ -7,8 +7,28 @@
     {
       "source": "functions-ict-commerce",
       "codebase": "ict-commerce",
-      "ignore": ["node_modules", ".git", "firebase-debug.log", "firebase-debug.*.log"],
-      "predeploy": ["npm --prefix functions-ict-commerce run check"]
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ],
+      "predeploy": [
+        "npm --prefix functions-ict-commerce run check"
+      ]
+    },
+    {
+      "source": "functions-engineering",
+      "codebase": "engineering",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ],
+      "predeploy": [
+        "npm --prefix functions-engineering run check"
+      ]
     }
   ],
   "firestore": {
@@ -37,12 +57,21 @@
       ".firebase/**",
       ".github/**",
       "security-workers/**",
-      "cms/**"
+      "cms/**",
+      "functions-engineering/**"
     ],
     "predeploy": [
       "node scripts/build-rss.cjs"
     ],
     "rewrites": [
+      {
+        "source": "/api/engineeringUpload",
+        "function": {
+          "functionId": "engineeringUploadDesign",
+          "region": "europe-west1",
+          "codebase": "engineering"
+        }
+      },
       {
         "source": "/api/ispSuiteApi",
         "function": {

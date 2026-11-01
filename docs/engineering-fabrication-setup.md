@@ -1,0 +1,83 @@
+# Engineering Fabrication Hub — secure activation and operating guide
+
+Status: **source implemented, external services NOT automatically activated or deployed**. `firebase deploy --only hosting` uploads web pages only, not these new Cloud Functions. All payment and fabrication amounts here are preliminary operator-configurable settings. Review compliance, pricing, refunds, privacy, and upload processes before launch.
+
+## What is implemented
+
+- Existing Engineering Studio retains unrestricted local CAD, load-sweep and OpenSCAD/STL export. Its new *Request fabrication quote* control carries validated plate dimensions to `engineering-fabrication.html`.
+- Separate customer self-service hub: build a four-hole plate, import STL/OBJ/GLB for local WebGL inspection, analyze approximate mesh boundaries/degenerates (non-certified), submit PDF, 3MF, STEP/STP, SCAD, DXF and other permitted files for review, track quote status.
+- **Server-side** credit wallet: three one-time free credits per verified Firebase Auth UID; one credit per hosted AI request; fixed proposed starter pack (10 / KSh 250) and maker pack (50 / KSh 1,000). Set intended prices in `functions-engineering/core.mjs` and matching presentation before deploying the merchant's live payment credentials.
+- AI review or server-validated editable plate dimensions from `gemini-2.5-flash` with an authorized service key. Model failures refund reservations and stale reservations are reconciled. No API key in the browser.
+- Paystack transaction initialization, HMAC-SHA512 webhook, server-side reference/amount/currency/status verification, idempotent transactional credit settlement. No free credits on client redirect alone.
+- Owner-scoped draft creations and authenticated binary uploads to a **separate engineering folder within a configured bucket**. Upload limit 15 MB; no public Firestore/Storage security rule changes. Uploads are unscanned and need safe operator review.
+- Operator-only queue, quote decisions and temporary download links, restricted to verified users with the `engineering_admin` Firebase custom claim.
+- No fabrication scheduling, machinery activation, automatic bill, stock reservation, CAD/FEM certification, AI-driven manufacturing authorization or guaranteed printing turnaround.
+
+## Required Firebase setup
+
+1. Use a Firebase project with billing and required APIs enabled for Cloud Functions 2nd gen, Cloud Storage, Firestore, Firebase Auth and App Check. Enable Google sign-in in Firebase Authentication, authorize your website domains, and configure App Check with a genuine site key.
+2. In `assets/js/commerce-config.js`, set the project's **public** Firebase web configuration (apiKey, authDomain, projectId, storageBucket, messagingSenderId and appId). Those are project identifiers, **not** server secrets. In `assets/js/engineering-fabrication-config.js`, set `appCheckSiteKey` to your **public** reCAPTCHA v3 site key. Do **not** commit private keys.
+3. Set the nonsecret Functions parameter `ENGINEERING_STORAGE_BUCKET` to the exact authorized Firebase Storage bucket, e.g. in a codebase-specific `.env.tekntandao` excluded from Git, or when prompted by Firebase CLI. Never guess a bucket name.
+4. Store the two secrets with Firebase CLI (separately from GitHub):
+
+   `firebase functions:secrets:set ENGINEERING_GEMINI_API_KEY`
+
+   `firebase functions:secrets:set ENGINEERING_PAYSTACK_SECRET_KEY`
+
+   Do not use an existing unrelated payment secret; this service has its own merchant-scoped key.
+
+5. From a current checkout of the repo, install dependencies:
+
+   `npm --prefix functions-engineering install`
+
+   `npm --prefix functions-engineering run check`
+
+   `firebase deploy --only functions:engineering,firestore:indexes --project tekntandao`
+
+   After backend activation, deploy the frontend and Hosting upload rewrite:
+
+   `firebase deploy --only hosting --project tekntandao`
+
+   Hosting quota may need cleanup if Firebase returns HTTP 429. The new HTTPS function must be deployed before the Hosting rewrite can process uploads.
+
+6. Set **Paystack** webhook URL in your merchant dashboard to the HTTPS endpoint for the deployed function:
+
+   `https://europe-west1-tekntandao.cloudfunctions.net/engineeringPaystackWebhook`
+
+   Confirm the actual deployed URL in the Functions dashboard. Test in provider sandbox; verify credit grant exactly once for both webhook and callback confirmation. Confirm account supports KES before enabling live checkout.
+7. Assign `engineering_admin: true` **only** to authorized TeknTandao operators using Firebase Admin SDK via a secure operator environment; preserve their other custom claims. Require operator re-login/ID-token refresh.
+8. Check Cloud Storage bucket permissions and any required service-account signing permission for short-lived download links. File uploads run through the server-authorized `/api/engineeringUpload` endpoint; this feature deliberately does **not** replace any existing Cloud Storage rules protecting other apps.
+9. Carry out a private-data impact review, define file retention/deletion policy, implement malware scanning and any production-specific data residency requirements. Until scanning exists, quarantine uploads operationally and do not execute macros, scripts, SCAD files, or unsafe documents.
+10. Configure merchant policies for AI fees, refund/chargeback reconciliations, tax invoices, quote validity, cancellation, customer communications, safe fabrication practices and Kenyan consumer/privacy compliance. Monitor runaway cost and unusual multi-account credit grants.
+
+## Open-source dependencies and reference projects
+
+| Project | Role | Upstream | Status in our site |
+| --- | --- | --- | --- |
+| Three.js | Browser 3D CAD view, STL/OBJ/GLB loaders, orbit controls | https://github.com/mrdoob/three.js | Integrated |
+| OpenSCAD | Editable parametric code export | https://github.com/openscad/openscad | Export integrated; editor external |
+| replicad / OCCT | BREP workflow and production-grade solid modelling | https://github.com/sgenoud/replicad | External resource; not bundled |
+| ToubkalCAD | Browser OCCT parametric CAD | https://github.com/ToubkalCAD/ToubkalCAD | External resource; not bundled |
+| FreeCAD | Native CAD and technical drawings | https://github.com/FreeCAD/FreeCAD | External resource |
+| KiCad | PCB CAD manufacturing toolchain | https://github.com/KiCad/kicad-source-mirror | External resource |
+| MeshRight | Mesh repair, **GPLv3** | https://github.com/Huzy85/MeshRight | External resource; not copied |
+| Webots | Robot simulation | https://github.com/cyberbotics/webots | External resource |
+| OpenFOAM | CFD solver, **GPL** | https://github.com/OpenFOAM/OpenFOAM-dev | External resource |
+
+The link directory is **not** an automatic integration, and OpenFOAM/MeshRight GPL code is not copied into the commercial frontend. Check repository licences before commercial bundling, adaptation or redistribution.
+
+## Testing and limitations
+
+`node --test functions-engineering/tests/core.test.mjs tests/engineering-fabrication.test.cjs tests/engineering-mesh-inspection.test.mjs`
+
+These are numerical/contract and static UI/security tests. A production launch additionally requires **Firebase Emulator integration tests**, end-to-end auth/App Check, real Paystack sandbox verification, upload/download isolation tests, file malware screening, model provider evaluation, and actual fabrication-partner onboarding. No cloud credentials, payment history or test merchant account have been created by committing code.
+
+## Data handling
+
+- Draft and quote data: private server-managed `engineeringProjects`; wallet `engineeringWallets`; AI jobs `engineeringAiJobs/{uid}/requests/{requestId}`; transactions `engineeringPurchases`.
+- Files: `engineeringFiles/{uid}/{projectId}/design.{ext}` in the *configured* Cloud Storage bucket. Metadata marked unscanned and project must be owner-created, type `upload`, status `draft`.
+- Client never receives Paystack/AI secrets, never writes a credit balance, and cannot directly change manufacturing quote status. Operators can view files via time-limited signed URLs only with privileged claims.
+
+## Pricing and operations note
+
+The credit packages are implementation defaults, **not approved public commercial terms**. Review margins, payment processing fees, model inference costs, tax obligations and free-credit abuse protections before activating checkout. The fabrication quote is **independent** of AI credits and must be approved with a separate sales/purchase contract.
