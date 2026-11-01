@@ -46,6 +46,20 @@
  const viewportNote=build('p','eng-pipeline-mesh-state','Drag to orbit, wheel to zoom and right-drag to pan. Use Refine to sculpt this same model.');
  viewportNote.id='eng-pipeline-viewport-status';
  visual.append(top,viewport,sourceInfo,simState,viewportNote);
+ const measurements=build('p','eng-pipeline-mesh-state','Active model dimensions: awaiting geometry…');
+ measurements.id='eng-pipeline-dimensions';
+ const unitTools=build('div','eng-pipeline-unit-controls');
+ const unitLabel=build('label',null,'Original mesh units');
+ const unitSelect=build('select');unitSelect.id='eng-pipeline-input-units';
+ for(const [value,label] of [['','Select units'],['mm','Millimetres'],['cm','Centimetres'],['m','Metres'],['in','Inches']]){
+  const option=document.createElement('option');option.value=value;option.textContent=label;unitSelect.append(option);
+ }
+ unitLabel.append(unitSelect);
+ const unitApply=build('button','tt-svc-button','Convert input to mm');unitApply.type='button';unitApply.id='eng-pipeline-units-apply';
+ const unitStatus=build('p','eng-pipeline-mesh-state','Model units are unverified until you explicitly choose and apply them.');
+ unitStatus.id='eng-pipeline-unit-status';unitStatus.setAttribute('role','status');unitStatus.setAttribute('aria-live','polite');
+ unitTools.append(unitLabel,unitApply,unitStatus);
+ visual.append(measurements,unitTools);
  const toolbar=build('div','eng-pipeline-view-actions');
  const cameraBar=$('eng-cad-viewport')?.parentElement?.querySelector('.eng-cad-controlbar');
  if(cameraBar)toolbar.append(cameraBar);
@@ -86,6 +100,7 @@
  const fieldKeys=['length','width','thickness','hole','offset'];
  const currentDims=()=>Object.fromEntries(fieldKeys.map(name=>[name,Number(cadForm.elements.namedItem(name).value)]));
  let stage='model',source='parametric',generation=0,viewer=null,loading=false,renderTimer=null,renderAgain=false,wireframe=false;
+ let unitsVerified=true,sourceUnits='mm',activeBounds=null,activeVertices=0;
  let lastSnapshot=window.TeknPlateSimulationSnapshot||null;
  const fromHash=hash=>{
   if(/^#eng-pipeline-(brief|model|refine|analyze|deliver)$/.test(String(hash||'')))return String(hash).slice('#eng-pipeline-'.length);
@@ -116,6 +131,17 @@
  const updateContext=()=>{
   const available=analysisSupported();
   main.dataset.exactPlate=String(available);
+  main.dataset.unitsVerified=String(unitsVerified);
+  unitTools.hidden=available||source==='primitive';
+  unitApply.disabled=!viewer||!unitSelect.value;
+  unitStatus.textContent=unitsVerified?
+   'Verified source units: '+sourceUnits+'. The displayed and exported model uses millimetres.':
+   'Units unverified: choose the source units and convert before preparing this mesh for fabrication.';
+  measurements.textContent=activeBounds?
+   'Active bounds (mm'+(unitsVerified?'':', interpretation unverified')+'): '+
+    activeBounds.map(n=>Number(n).toFixed(2)).join(' × ')+' · '+activeVertices.toLocaleString()+' vertices.':
+   'Waiting for an active mesh to measure.';
+
   const labels={
    parametric:'Parametric plate · editable',
    primitive:'Primitive mesh · editable',
@@ -138,7 +164,7 @@
   if(scad)scad.disabled=!available;
   rebuild.hidden=available;
   $('eng-download-stl').disabled=!viewer;
-  use.disabled=!viewer;
+  use.disabled=!viewer||!unitsVerified;
   const warning='Design source: '+source+'. '+(available?'Plate surrogate available.':'No verified structural solver for this geometry.');
   viewportNote.textContent=warning;
   document.dispatchEvent(new CustomEvent('eng:pipeline-state',{detail:{source,generation,analysisSupported:available}}));
@@ -177,7 +203,7 @@
  });
  use.disabled=true;
  use.addEventListener('click',()=>{
-  if(!viewer)return;
+  if(!viewer||!unitsVerified){unitStatus.textContent='Choose and verify model units before selecting an edited STL for fabrication.';return;}
   $('fab-sculpt-use')?.click();
   setStage('deliver');
  });
@@ -216,11 +242,32 @@
  });
  document.addEventListener('eng:geometry-loaded',event=>{
   if(!event.detail?.source)return;
+  unitsVerified=event.detail.unitsVerified===true;
+  sourceUnits=event.detail.sourceUnits||'unknown';
+  activeBounds=Array.isArray(event.detail.bounds)?event.detail.bounds:null;
+  activeVertices=Number(event.detail.vertices)||0;
   setSource(event.detail.source);
   if(!analysisSupported())setStage('refine');
   if(analysisSupported()&&lastSnapshot)viewer?.showPlateSimulation(lastSnapshot);
  });
  document.addEventListener('fab:sculpt-changed',()=>markEdited());
+ unitSelect.addEventListener('change',()=>{unitApply.disabled=!unitSelect.value||!viewer;});
+ unitApply.addEventListener('click',async()=>{
+  if(!viewer||!unitSelect.value){unitStatus.textContent='Select known source units to continue.';return;}
+  if(source==='parametric'||source==='primitive')return;
+  if(source.startsWith('sculpted-')&&!window.confirm(
+   'Changing input units re-imports the original model and discards its current sculpt edits. Continue?'))return;
+  unitApply.disabled=true;unitStatus.textContent='Re-importing original geometry in '+unitSelect.value+' and converting to millimetres…';
+  try{
+   const api=viewer||await import('./engineering-fabrication-preview.js');
+   const result=await api.reopenCurrentModelWithUnits(unitSelect.value);
+   if(!result)return;
+   // Clear previously prepared upload files. Re-export the active converted mesh explicitly.
+   document.dispatchEvent(new CustomEvent('fab:sculpt-changed'));
+   unitStatus.textContent='Converted from '+unitSelect.value+' to millimetres. Inspect measured bounds, then choose Use active mesh for quote.';
+  }catch(error){unitStatus.textContent='Unit conversion failed: '+error.message;}
+  finally{unitApply.disabled=!unitSelect.value;}
+ });
  document.addEventListener('fab:edited-stl-ready',()=>{
   // Selection uses the explicit existing upload consent workflow.
   setStage('deliver');viewPipeline();
@@ -266,6 +313,8 @@
   get source(){return source;},
   get stage(){return stage;},
   get requiresMeshSelection(){return !analysisSupported();},
+  get requiresUnitVerification(){return !unitsVerified;},
+  get activeModelBounds(){return activeBounds?[...activeBounds]:null;},
   openStage(next){setStage(next);viewPipeline();},
   usePlate(){rebuild.click();}
  };

@@ -29,6 +29,8 @@ function kind(){
 }
 function stateFromForm(){
  const source=window.TeknEngineeringPipeline;
+ if(source?.requiresUnitVerification&&form.elements.namedItem('kind').value==='upload')
+  throw Error('Active mesh units have not been verified. Choose source units and convert to millimetres in the shared viewport before submitting a fabrication file.');
  if(source?.requiresMeshSelection&&form.elements.namedItem('kind').value==='generated')
   throw Error('The active design is a mesh, not the parametric plate. Choose "Use edited STL for quote" or explicitly replace the model with a new parametric plate before submitting.');
  const data=Object.fromEntries(new FormData(form).entries());
