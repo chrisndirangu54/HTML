@@ -4,6 +4,8 @@ const state = {
   cart: new Map(),
   category: 'All',
   query: '',
+  collection: new URLSearchParams(location.search).get('collection') || '',
+  requestedProduct: new URLSearchParams(location.search).get('product') || '',
   firebase: null,
   functions: null,
   db: null
@@ -150,14 +152,28 @@ async function loadProducts() {
       const { collection, getDocs, limit, query, where } = state.firebase.firestoreSdk;
       const snap = await getDocs(query(collection(state.db, 'ictCommerceCatalog'), where('active', '==', true), limit(100)));
       if (!snap.empty) {
-        state.products = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const live = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        // Quotation-only ISP reference models stay visible even before a merchant
+        // publishes them to the authorized inventory; never enable their checkout.
+        const quoteOnly = local.filter(product => product.active !== false && product.quoteOnly === true);
+        state.products = [...live, ...quoteOnly.filter(p => !live.some(item => item.id === p.id))];
       }
     } catch (error) {
       console.warn('Firestore catalogue unavailable; using sourced local catalogue.', error);
     }
   }
+  const highlighted = state.products.find(p => p.id === state.requestedProduct);
+  if (highlighted) {
+    state.category = 'All';
+    state.query = highlighted.name;
+    const search = document.getElementById('tt-product-search');
+    if (search) search.value = highlighted.name;
+  }
   hydrateCategories();
   renderProducts();
+  if (highlighted) {
+    requestAnimationFrame(() => document.getElementById('product-' + highlighted.id)?.scrollIntoView({block:'center', behavior:'smooth'}));
+  }
 }
 
 function hydrateCategories() {
@@ -171,8 +187,11 @@ function visibleProducts() {
   const q = state.query.trim().toLowerCase();
   return state.products.filter(product => {
     const matchesCategory = state.category === 'All' || product.category === state.category;
+    const productName = String(product.name || '').toLowerCase();
+    const isNetworkCable = ['ethernet cable', 'cat6', 'patch cable'].some(term => productName.includes(term));
+    const matchesCollection = state.collection !== 'isp' || ['ISP Equipment', 'Networking', 'Starlink'].includes(product.category) || product.ispDirectory || isNetworkCable;
     const haystack = `${product.name} ${product.brand || ''} ${product.category || ''} ${product.description || ''}`.toLowerCase();
-    return matchesCategory && (!q || haystack.includes(q));
+    return matchesCollection && matchesCategory && (!q || haystack.includes(q));
   });
 }
 
@@ -187,23 +206,26 @@ function renderProducts() {
   grid.innerHTML = products.map(product => {
     const img = safeHttpUrl(product.imageUrl);
     const source = safeHttpUrl(product.sourcePriceUrl);
-    const compare = Number(product.compareAtKes || 0) > Number(product.priceKes || 0)
+    const isQuote = product.quoteOnly === true || !Number.isFinite(Number(product.priceKes)) || Number(product.priceKes) <= 0;
+    const compare = !isQuote && Number(product.compareAtKes || 0) > Number(product.priceKes || 0)
       ? `<span class="tt-compare">${formatKes(product.compareAtKes)}</span>` : '';
-    return `<article class="tt-product-card">
+    const price = isQuote ? 'Price on request' : formatKes(product.priceKes);
+    const sourceMarkup = source === '#' ? '' : `<div class="tt-source">Model reference: <a href="${source}" target="_blank" rel="noopener noreferrer">${safeText(product.sourceLabel || 'product information')}</a>. ${safeText(product.sourceNote || '')}<br>${safeText(product.imageCredit || '')}</div>`;
+    return `<article class="tt-product-card${product.id === state.requestedProduct ? ' is-selected' : ''}" id="product-${safeText(product.id)}">
       <div class="tt-product-media">
-        <img src="${img}" alt="${safeText(product.name)}" loading="lazy" referrerpolicy="no-referrer">
+        <img src="${img}" alt="${safeText(product.name)}" loading="lazy" referrerpolicy="no-referrer" onerror="if (!this.dataset.fallback) { this.dataset.fallback='1'; this.src='assets/images/services/wifi.jpg'; }">
         ${product.featured ? '<span class="tt-badge">Featured</span>' : ''}
       </div>
       <div class="tt-product-body">
         <span class="tt-product-brand">${safeText(product.brand || product.category)}</span>
         <h3 class="tt-product-title">${safeText(product.name)}</h3>
         <p class="tt-product-desc">${safeText(product.description)}</p>
-        <div class="tt-price-row"><span class="tt-price">${formatKes(product.priceKes)}</span>${compare}<span class="tt-stock">Confirm stock</span></div>
+        <div class="tt-price-row"><span class="tt-price${isQuote ? ' is-quote' : ''}">${safeText(price)}</span>${compare}<span class="tt-stock">${isQuote ? 'Quotation only' : 'Confirm stock'}</span></div>
         <div class="tt-product-actions">
-          <button class="tt-action is-primary" type="button" data-add-product="${safeText(product.id)}"><i class="las la-cart-plus"></i> Add to cart</button>
-          <button class="tt-action" type="button" data-whatsapp-product="${safeText(product.id)}"><i class="lab la-whatsapp"></i> Ask</button>
+          ${!isQuote ? `<button class="tt-action is-primary" type="button" data-add-product="${safeText(product.id)}"><i class="las la-cart-plus"></i> Add to cart</button>` : ''}
+          <button class="tt-action${isQuote ? ' is-primary' : ''}" type="button" data-whatsapp-product="${safeText(product.id)}"><i class="lab la-whatsapp"></i> ${isQuote ? 'Request a quote' : 'Ask'}</button>
         </div>
-        <div class="tt-source">Market reference: <a href="${source}" target="_blank" rel="noopener">${safeText(product.sourceLabel || 'online seller')}</a>. ${safeText(product.sourceNote || '')}<br>${safeText(product.imageCredit || '')}</div>
+        ${sourceMarkup}
       </div>
     </article>`;
   }).join('');
@@ -227,7 +249,7 @@ function productById(id) { return state.products.find(product => product.id === 
 
 function addToCart(id, amount = 1) {
   const product = productById(id);
-  if (!product) return;
+  if (!product || product.quoteOnly === true || !Number.isFinite(Number(product.priceKes)) || Number(product.priceKes) <= 0) return;
   const current = state.cart.get(id) || 0;
   const maximum = Math.max(1, Number(product.stock || 99));
   state.cart.set(id, Math.min(maximum, current + amount));
@@ -245,7 +267,8 @@ function setQuantity(id, qty) {
 }
 
 function cartEntries() {
-  return [...state.cart.entries()].map(([id, quantity]) => ({ product: productById(id), quantity })).filter(row => row.product);
+  return [...state.cart.entries()].map(([id, quantity]) => ({ product: productById(id), quantity }))
+    .filter(row => row.product && row.product.quoteOnly !== true && Number(row.product.priceKes) > 0);
 }
 
 function cartTotal() {
@@ -258,6 +281,8 @@ function renderCart() {
   const count = document.getElementById('tt-cart-count');
   const total = document.getElementById('tt-cart-total');
   if (count) count.textContent = String(rows.reduce((sum, row) => sum + row.quantity, 0));
+  const navCartCount = document.getElementById('cart-count');
+  if (navCartCount) navCartCount.textContent = String(rows.reduce((sum, row) => sum + row.quantity, 0));
   if (total) total.textContent = formatKes(cartTotal());
   if (!target) return;
   target.innerHTML = rows.length ? rows.map(({ product, quantity }) => `<div class="tt-cart-item">
@@ -269,7 +294,7 @@ function renderCart() {
 
 function whatsappMessage(product = null) {
   const lines = ['Hello TeknTandao, I am interested in the following ICT equipment:'];
-  if (product) lines.push(`• ${product.name} — ${formatKes(product.priceKes)}`);
+  if (product) lines.push(`• ${product.name} — ${product.quoteOnly ? 'please provide a quotation' : formatKes(product.priceKes)}`);
   else cartEntries().forEach(({ product: row, quantity }) => lines.push(`• ${row.name} × ${quantity} — ${formatKes(Number(row.priceKes) * quantity)}`));
   if (!product) lines.push(`Total shown: ${formatKes(cartTotal())}`);
   lines.push('', 'Please confirm current stock, final price and delivery/installation options.');
@@ -357,6 +382,7 @@ function bindUi() {
     renderProducts();
   });
   document.getElementById('tt-cart-open')?.addEventListener('click', () => toggleCart(true));
+  document.getElementById('cart-button')?.addEventListener('click', () => toggleCart(true));
   document.getElementById('tt-checkout-open')?.addEventListener('click', () => {
     if (!cartEntries().length) return;
     toggleCart(false);

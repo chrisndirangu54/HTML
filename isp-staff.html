@@ -39,6 +39,14 @@
 </div>
 <button class="btn btn-ghost" id="isp-refresh" type="button">Refresh ISP records</button>
 <p aria-live="polite" id="isp-feedback" role="status"></p>
+<details class="content-card" style="margin:25px 0;padding:22px">
+<summary style="cursor:pointer;font-weight:700;font-size:18px;color:#fff">Engineering reference for technicians</summary>
+<p class="muted">Reference only: design assumptions are not live network state. No credentials or customer access codes are stored here.</p>
+<p><strong>Review before installation:</strong> GPON ONT/OLT interoperability, wireless line of sight and Kenyan radio approvals, VLAN separation, supported SNMP/syslog reporting, PoE requirements, router firmware, and approved upgrade recovery.</p>
+<div style="overflow:auto"><img src="assets/isp/architecture.svg" alt="Illustrative fiber and wireless architecture for internal planning" style="width:100%;min-width:520px;max-width:100%"></div>
+<p class="muted">An Ethernet WAN router does not replace a GPON optical ONT. Every site requires equipment- and carrier-specific validation.</p>
+<p><a href="isp-console.html">Open administrator network architecture and procurement review (authorized administrators)</a></p>
+</details>
 <h3>Equipment on record</h3>
 <div id="isp-list-devices"></div>
 <h3>Planned subscribers</h3>

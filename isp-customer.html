@@ -1,29 +1,29 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ISP Service Requests | TeknTandao</title><meta name="description" content="Request a hybrid fiber, Wi-Fi or wireless network survey from TeknTandao.">
-<link rel="icon" href="assets/images/tekntandao-favicon.png"><link rel="stylesheet" href="assets/css/isp-console.css">
+<link rel="icon" href="assets/images/tekntandao-favicon.png"><link rel="stylesheet" href="assets/css/isp-console.css"><link rel="stylesheet" href="assets/css/isp-shop-pages.css">
 <style>.customer-wrap{max-width:920px;margin:auto;padding:24px}.customer-hero{border-radius:24px;padding:40px;background:linear-gradient(125deg,#061a34,#164581);color:#fff}.customer-hero h1{font-size:clamp(34px,6vw,55px);line-height:1.08;max-width:650px;margin:0 0 14px}.customer-hero p{color:#d1e2f7}.service-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:20px}.service{border-radius:14px;padding:18px;border:1px solid #dce5f0;background:#fff}.service strong{display:block}.service p{font-size:13px;color:#5f7189}.service-grid+.panel{margin-top:20px}@media(max-width:600px){.service-grid{grid-template-columns:1fr}.customer-wrap{padding:12px}.customer-hero{padding:25px}}</style>
-</head><body><nav class="tt-site-nav" aria-label="Primary navigation"></nav><main class="customer-wrap">
-<nav class="inline" style="justify-content:space-between;margin-bottom:20px"><a style="font-weight:900;text-decoration:none;font-size:22px" href="index.html">TeknTandao<span style="color:#177bc7">.</span></a><div class="inline"><a href="isp.html">ISP services</a><a href="isp-architecture.html">Architecture</a><a href="login.html?next=isp-customer.html">Sign in</a></div></nav>
-<div class="customer-hero"><span class="eyebrow" style="color:#6ce5bf">Customer experience & premises coverage</span>
-<h1>Request an installation or network health consultation.</h1><p>Tell us which site needs a fiber or wireless connectivity survey, better indoor Wi-Fi, or a support callback. We will review your request; this is not a confirmation of network availability, pricing, installation dates, or an active ISP subscription.</p>
-<a class="btn primary" href="#request" style="display:inline-block;text-decoration:none">Start a request ↓</a></div>
+</head><body class="isp-request"><nav class="tt-site-nav" aria-label="Primary navigation"></nav><main class="customer-wrap"><div class="isp-crumbs"><a href="index.html">Home</a><span>›</span><a href="isp.html">ISP &amp; networking</a><span>›</span>Service request</div>
+
+<div class="customer-hero"><span class="isp-eyebrow">Tell us what you need</span>
+<h1>Let’s get you <span style="color:#28e98c">connected.</span></h1><p>Tell us which site needs a fiber or wireless connectivity survey, better indoor Wi-Fi, or a support callback. We will review your request; this is not a confirmation of network availability, pricing, installation dates, or an active ISP subscription.</p>
+<a class="isp-button primary" href="#request">Start your request <span aria-hidden="true">↓</span></a></div>
 <div class="service-grid">
-<article class="service"><strong>Fiber site survey</strong><p>Confirm suitable optical access, building permission and fiber distribution costs.</p></article>
-<article class="service"><strong>Wireless distribution survey</strong><p>Evaluate rooftop line of sight, bridge capacity, signal and customer isolation.</p></article>
-<article class="service"><strong>Home and office Wi-Fi</strong><p>Access-point placement, equipment advice, client separation and managed handover.</p></article>
+<article class="service"><strong>Fiber installation enquiry</strong><p>Ask about connecting an apartment, home or building to suitable services.</p></article>
+<article class="service"><strong>Outdoor wireless coverage</strong><p>Discuss linking buildings or improving connectivity over a larger site.</p></article>
+<article class="service"><strong>Home and office Wi-Fi</strong><p>Better signal, coverage planning and setup for your everyday devices.</p></article>
 <article class="service"><strong>Customer support callback</strong><p>Explain an issue to a technician. Do not include passwords, router credentials or payment PINs.</p></article>
 </div>
 <section class="panel" id="request" style="margin-top:22px"><h2>Submit a service enquiry</h2>
-<p class="pill-note">Requires a signed-in user with a verified email. Requests are limited to three per account per UTC day to reduce abuse. Only authorized TeknTandao admins can view the management queue.</p>
+<p class="pill-note">Please sign in with a verified email before submitting. We use your details to respond to this enquiry. For security, each account can submit up to three requests per day.</p>
 <form id="customer-request" class="form">
 <label class="field">Site / property / general neighborhood <input name="site" required maxlength="120" minlength="3" placeholder="Apartment or estate, city"></label>
-<label class="field">Type of service <select name="service" required><option value="fiber_survey">Fiber deployment survey</option><option value="wireless_survey">Wireless backhaul site survey</option><option value="home_wifi">Home/office Wi-Fi installation</option><option value="support_callback">Technical support callback</option></select></label>
+<label class="field">Type of service <select name="service" required><option value="fiber_survey">Fiber deployment survey</option><option value="wireless_survey">Outdoor wireless coverage survey</option><option value="home_wifi">Home/office Wi-Fi installation</option><option value="support_callback">Technical support callback</option></select></label>
 <label class="field">What would you like help with?<textarea name="message" required minlength="8" maxlength="800" placeholder="Describe the premises, approximate number of users and any connectivity issues. Do not share passwords."></textarea></label>
 <label class="field" style="grid-column:1/-1"><span><input type="checkbox" name="consent" required style="width:auto;margin-right:8px"> I agree to be contacted about this service request and to the necessary processing of my enquiry.</span></label>
 <div><button type="submit" class="btn primary" id="customer-submit">Submit service request</button></div></form>
 <p class="message" id="customer-result" role="status" aria-live="polite"></p>
-<p class="pill-note">No automated provisioning, bill payment or WhatsApp sending occurs upon submission. For urgent support, contact the team via <a href="https://wa.me/254702258870">WhatsApp +254 702 258 870</a>.</p></section>
+<p class="pill-note">Submitting this form does not automatically schedule an installation or charge you. For urgent support, contact the team via <a href="https://wa.me/254702258870">WhatsApp +254 702 258 870</a>.</p></section>
 <section class="panel"><h2>What happens next?</h2><p>A representative reviews your request, assesses network coverage and technical feasibility, and contacts you through an approved channel. Final equipment recommendations, regulatory conditions and quotations follow a site-specific assessment.</p></section>
-<footer class="footer">TeknTandao · Network that stays up after we leave. · Nairobi, Kenya</footer></main>
+<footer class="isp-page-footer"><span>TeknTandao · Nairobi, Kenya</span><span><a href="isp-equipment.html">Browse equipment</a> · <a href="shop.html">Shop</a></span></footer></main>
 <script src="assets/js/site-config.js"></script><script type="module" src="assets/js/isp-customer.js"></script>
 <script src="assets/js/nav-responsive.js"></script></body></html>

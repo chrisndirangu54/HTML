@@ -7,6 +7,11 @@ on:
       - 'assets/js/nav-responsive.js'
       - 'assets/css/site-navigation.css'
       - 'tests/site-navigation.test.cjs'
+      - 'tests/isp-shop-ux.test.cjs'
+      - 'data/products.json'
+      - 'assets/js/commerce.js'
+      - 'assets/js/isp-products.js'
+      - 'assets/css/isp-shop-pages.css'
       - '.github/workflows/navigation-ci.yml'
   pull_request:
     paths:
@@ -14,6 +19,11 @@ on:
       - 'assets/js/nav-responsive.js'
       - 'assets/css/site-navigation.css'
       - 'tests/site-navigation.test.cjs'
+      - 'tests/isp-shop-ux.test.cjs'
+      - 'data/products.json'
+      - 'assets/js/commerce.js'
+      - 'assets/js/isp-products.js'
+      - 'assets/css/isp-shop-pages.css'
       - '.github/workflows/navigation-ci.yml'
 
 jobs:
@@ -25,4 +35,6 @@ jobs:
         with:
           node-version: '22'
       - run: node --check assets/js/nav-responsive.js
-      - run: node --test tests/site-navigation.test.cjs
+      - run: node --check assets/js/commerce.js
+      - run: node --check assets/js/isp-products.js
+      - run: node --test tests/site-navigation.test.cjs tests/isp-shop-ux.test.cjs

@@ -9,7 +9,7 @@ const read = name => fs.readFileSync(path.join(root, name), 'utf8');
 const publicPages = [
   'index.html', 'cybersecurity.html', 'cloud-automation.html', 'seo-cloud.html',
   'security-monitoring.html', 'cybersecurity-portal.html',
-  'isp-architecture.html', 'isp-customer.html', 'isp-equipment.html',
+  'isp-customer.html', 'isp-equipment.html',
   'account.html', 'admin.html', 'attendant.html', 'awards.html', 'blog-post.html',
   'blog.html', 'contact_page.html', 'delivery.html', 'events.html', 'gallery.html',
   'isp.html', 'isp-staff.html', 'login.html', 'newsletter.html', 'podcasts.html',
@@ -47,10 +47,10 @@ test('homepage desktop and mobile fallbacks match and avoid old dead anchors', (
 test('specialist pages retain operational controls and contextual navigation', () => {
   const shop = read('shop.html');
   for (const id of ['cart-button', 'auth-link', 'whatsapp']) assert.ok(shop.includes('id="' + id + '"'));
-  for (const page of ['isp-architecture.html', 'isp-customer.html', 'isp-equipment.html']) {
-    assert.match(read(page), /class="tt-site-nav"/);
-    assert.match(read(page), /isp\.html/);
-  }
+  assert.match(read('isp-customer.html'), /class="tt-site-nav"/);
+  assert.match(read('isp-equipment.html'), /class="commerce-nav"/);
+  assert.match(read('isp-architecture.html'), /url=isp\.html/);
+  assert.match(read('isp-architecture.html'), /location\.replace\('isp\.html'\)/);
   assert.match(read('cybersecurity.html'), /id="cyber-nav-toggle"/);
   assert.match(read('cybersecurity.html'), /class="nav-cta"/);
 });
