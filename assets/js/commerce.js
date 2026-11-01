@@ -2,7 +2,7 @@ const config = window.TeknTandaoCommerceConfig || {};
 const state = {
   products: [],
   cart: new Map(),
-  category: 'All',
+  category: new URLSearchParams(location.search).get('category') || 'All',
   query: '',
   collection: new URLSearchParams(location.search).get('collection') || '',
   requestedProduct: new URLSearchParams(location.search).get('product') || '',
@@ -59,14 +59,14 @@ function installSections() {
   const holder = document.createElement('div');
   holder.innerHTML = sectionMarkup(
     'Shop', 'las la-shopping-cart', 'TeknTandao Shop',
-    'Smart gadgets, connectivity and ICT equipment',
-    'Shop practical networking, Starlink, CCTV, smart-home, power and computing equipment. Reference prices are for comparison; confirm current availability and selling price before ordering.',
+    'Production, robotics, connectivity and smart-property equipment',
+    'Browse podcast and YouTube production gear, robotics, drones, smart automation and gate power systems alongside everyday ICT equipment. New specialist items are quotation-only until pricing and stock are verified.',
     `<div class="tt-shop-toolbar">
       <input id="tt-product-search" type="search" placeholder="Search routers, CCTV, Starlink, smart gadgets…" aria-label="Search products">
       <select id="tt-category-filter" aria-label="Filter product category"><option>All</option></select>
       <button class="tt-action" id="tt-cart-open" type="button"><i class="las la-shopping-bag"></i> Cart <span id="tt-cart-count">0</span></button>
     </div>
-    <div class="tt-market-note"><i class="las la-info-circle"></i><span>Market-reference pricing is shown for transparency. Checkout revalidates the current private inventory and never trusts a browser-supplied total.</span></div>
+    <div class="tt-market-note"><i class="las la-info-circle"></i><span>Quotation-only items are not available for checkout. Displayed prices on existing items are indicative until confirmed; payment always revalidates private, authorized inventory.</span></div>
     <div id="tt-product-grid" class="tt-product-grid"><div class="tt-empty">Loading catalogue…</div></div>`
   );
   store.appendChild(holder.firstElementChild);
@@ -187,6 +187,17 @@ function hydrateCategories() {
   if (!select) return;
   const categories = [...new Set(state.products.map(p => p.category).filter(Boolean))].sort();
   select.innerHTML = '<option value="All">All categories</option>' + categories.map(category => `<option value="${safeText(category)}">${safeText(category)}</option>`).join('');
+  if (!categories.includes(state.category)) state.category = 'All';
+  select.value = state.category;
+  highlightDepartment();
+}
+function highlightDepartment() {
+  document.querySelectorAll('.tt-shop-dept').forEach(link => {
+    const href = new URL(link.href, location.href);
+    const active = href.searchParams.get('category') === state.category;
+    if (active) link.setAttribute('aria-current', 'true');
+    else link.removeAttribute('aria-current');
+  });
 }
 
 function visibleProducts() {
@@ -205,19 +216,29 @@ function renderProducts() {
   const grid = document.getElementById('tt-product-grid');
   if (!grid) return;
   const products = visibleProducts();
+  highlightDepartment();
   if (!products.length) {
     grid.innerHTML = '<div class="tt-empty">No products match your search.</div>';
     return;
   }
   grid.innerHTML = products.map(product => {
     const img = safeHttpUrl(product.imageUrl);
+    const illustrative = product.imageKind === 'illustration';
+    const fallbackImg = product.category === 'Podcast Production' ? 'podcast.svg'
+      : product.category === 'Video & YouTube' ? 'video.svg'
+      : product.category === 'Robotics' ? 'robotics.svg'
+      : product.category === 'Drones' ? 'drone.svg'
+      : product.category === 'Smart Cameras' ? 'camera.svg'
+      : product.category === 'Smart Gates' || product.category === 'Gate Power & Safety' ? 'gate.svg'
+      : product.category === 'Smart Home' ? 'home.svg' : 'automation.svg';
     const isQuote = product.quoteOnly === true || !Number.isFinite(Number(product.priceKes)) || Number(product.priceKes) <= 0;
     const compare = !isQuote && Number(product.compareAtKes || 0) > Number(product.priceKes || 0)
       ? `<span class="tt-compare">${formatKes(product.compareAtKes)}</span>` : '';
     const price = isQuote ? 'Price on request' : formatKes(product.priceKes);
     return `<article class="tt-product-card${product.id === state.requestedProduct ? ' is-selected' : ''}" id="product-${safeText(product.id)}">
       <div class="tt-product-media">
-        <img src="${img}" alt="${safeText(product.name)}" loading="lazy" referrerpolicy="no-referrer" onerror="if (!this.dataset.fallback) { this.dataset.fallback='1'; this.src='assets/images/services/wifi.jpg'; }">
+        <img src="${img}" alt="${safeText(product.name)}${illustrative ? ' — representative category illustration' : ''}" loading="lazy" referrerpolicy="no-referrer" onerror="if (!this.dataset.fallback) { this.dataset.fallback='1'; this.src='assets/images/shop/${fallbackImg}'; }">
+        ${illustrative ? '<span class="tt-image-disclosure">Illustrative image</span>' : ''}
         ${product.featured ? '<span class="tt-badge">Featured</span>' : ''}
       </div>
       <div class="tt-product-body">
