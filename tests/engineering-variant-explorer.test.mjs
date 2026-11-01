@@ -1,8 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createRequire} from 'node:module';
+import {readFileSync} from 'node:fs';
+import {runInNewContext} from 'node:vm';
 import {explorePlate} from '../assets/js/engineering-variant-core.mjs';
-const require=createRequire(import.meta.url),M=require('../assets/js/engineering-models.js');
+const scope={};
+runInNewContext(readFileSync(new URL('../assets/js/engineering-models.js',import.meta.url),'utf8'),{globalThis:scope});
+const M=scope.TeknEngineeringModels;
 const scenario={geometry:{length:100,width:60,thickness:6,hole:5,offset:8},process:'cnc-milling',material:'Aluminium',modelMaterial:'aluminum',forceN:25};
 test('seven valid thickness options are evaluated reproducibly with the existing physics model',()=>{
  const r=explorePlate(scenario,params=>M.plateSimulation(params),{maxDeflectionMm:1,minMargin:1.5});
