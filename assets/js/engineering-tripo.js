@@ -101,11 +101,11 @@ export function initTripo({call,reloadAccount,getUser,getAppCheck}){
   setTimeout(()=>URL.revokeObjectURL(url),1500);
  }));
  edit.addEventListener('click',()=>doWithFile(async file=>{
-  document.dispatchEvent(new CustomEvent('eng:open-view',{detail:{view:'sculpt'}}));
+  document.dispatchEvent(new CustomEvent('eng:open-view',{detail:{view:'pipeline',stage:'refine'}}));
   const viewer=await import('./engineering-fabrication-preview.js');
-  await viewer.previewFile(file,$('fab-preview'));
+  await viewer.previewFile(file,$('fab-preview'),{sourceType:'ai'});
   message('Generated GLB opened in the free sculpt editor. Review dimensions; manually select edited STL for a quote if desired.');
-  $('fab-sculpt-workbench').scrollIntoView({block:'start',behavior:'smooth'});
+  (document.getElementById('eng-pipeline')||$('fab-sculpt-workbench')).scrollIntoView({block:'start',behavior:'smooth'});
  }));
  return {setEnabled};
 }

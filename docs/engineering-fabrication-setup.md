@@ -131,3 +131,12 @@ The CAD workbench now supports up to 12 local plate revisions (strictly validate
 ### Constrained local design-space exploration
 
 The CAD Design Intelligence section includes a design-space explorer evaluating up to seven thickness perturbations using the independently tested beam simulation. It computes nominal mass, tip deflection and stress-to-yield margins against user-configured screening criteria, with a button to apply a candidate to the shared CAD/simulation/quotation input. It is a bounded study, not an optimizer, formal FEA, CNC toolpath or certification. Zero-force inputs cannot generate positive strength-screening recommendations.
+
+
+## Unified Engineering Pipeline and one shared viewport (Nov 2026)
+
+The Engineering Hub has a single Engineering Pipeline sidebar item with five stages: Brief, Model, Refine, Analyze, Deliver. One persistent central viewport area displays the active parametric, primitive, imported, AI-generated, or sculpted model; the original calculators, CAD controls, SCAD export, AI workflows, simulation controls, DFM preflight, Tripo generation and fabrication quote form are now stage-specific inspector tools. The original separate CAD WebGL renderer is disabled in pipeline mode. A single sculpt-capable renderer occupies the central fab-preview canvas and can recycle its WebGL context when the geometry source changes. Camera controls, mesh inspection, mesh edits and STL exports refer to this active scene.
+
+An unchanged parametric plate can display a non-destructive color overlay driven by the existing simplified beam model. This is a surrogate, not general finite-element analysis. Imported, AI-generated, primitive and sculpt-edited meshes are visibly marked as not having a validated structural simulation; stale plate-specific simulation results and DFM screens are hidden in those cases.
+
+The active model has explicit source provenance. Parametric field edits only regenerate an unmodified parametric model. Replacing a sculpted or imported mesh with the parametric plate requires an explicit action. Tripo GLB generation loads into the central scene rather than a separate editor page. Manufacturing file selection remains explicit, and the submission handler rejects a parametric-plate request when the active model is a mesh. Existing signed-in consent, server-backed payments and human quotation review remain separate. This change is not a BREP/STEP modeller, certified FEA solver, automated manufacturing system, or live deployment verification. Existing deep links route to relevant pipeline stages.

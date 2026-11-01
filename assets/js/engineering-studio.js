@@ -68,6 +68,7 @@
       scad=model.scad;
       text('eng-scad-preview',scad+'\n// Nominal solid volume estimate: '+fmt(model.volumeMm3,6)+' mm³');
       $('eng-download-scad').disabled=false;
+      if(window.TeknEngineeringPipeline?.requiresMeshSelection)$('eng-download-scad').disabled=true;
       $('eng-send-fabrication').href='#fab-design';
     }catch(error){
       scad=null;

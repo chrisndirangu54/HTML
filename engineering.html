@@ -32,11 +32,7 @@
 <div class="eng-dash-brand"><i class="las la-drafting-compass" aria-hidden="true"></i><div><strong>Engineering Hub</strong><small>Design to manufacture</small></div></div>
 <nav class="eng-dash-menu" aria-label="Engineering modules">
 <a href="#eng-dashboard-overview" data-eng-view="overview" aria-current="page"><i class="las la-th-large" aria-hidden="true"></i>Overview</a>
-<a href="#eng-workspace" data-eng-view="analysis"><i class="las la-calculator" aria-hidden="true"></i>Calculators &amp; simulations</a>
-<a href="#eng-cad" data-eng-view="cad"><i class="las la-cubes" aria-hidden="true"></i>Parametric CAD &amp; STL</a>
-<a href="#eng-ai" data-eng-view="ai"><i class="las la-brain" aria-hidden="true"></i>AI design studio</a>
-<a href="#eng-sculpt" data-eng-view="sculpt"><i class="las la-paint-brush" aria-hidden="true"></i>3D sculpting &amp; imports</a>
-<a href="#fab-design" data-eng-view="fabrication"><i class="las la-industry" aria-hidden="true"></i>Fabrication quotations</a>
+<a href="#eng-pipeline" data-eng-view="pipeline"><i class="las la-project-diagram" aria-hidden="true"></i>Unified engineering pipeline</a>
 <a href="#fab-account" data-eng-view="projects"><i class="las la-folder-open" aria-hidden="true"></i>Projects &amp; credits</a>
 </nav>
 <div class="eng-dash-wallet"><span>Engineering AI credits</span><strong id="eng-dash-side-credits">—</strong><a href="#fab-account" data-eng-view="projects">Manage wallet &amp; account</a></div>
@@ -49,7 +45,7 @@
 <section id="eng-dashboard-overview" class="eng-dash-panel eng-dash-overview" data-eng-panel="overview" aria-label="Engineering dashboard overview">
 <div class="eng-dash-intro"><div><span>ENGINEERING CONTROL CENTRE</span><h3>Design. Simulate. Refine. Fabricate.</h3>
 <p>One continuous workspace for engineering calculations, editable CAD, AI design, local mesh sculpting and private fabrication quotation requests.</p>
-<div class="eng-dash-actions"><a class="tt-svc-button primary" href="#eng-cad" data-eng-view="cad">Start CAD design</a><a class="tt-svc-button" href="#eng-sculpt" data-eng-view="sculpt">Open 3D editor</a></div></div>
+<div class="eng-dash-actions"><a class="tt-svc-button primary" href="#eng-pipeline" data-eng-view="pipeline">Open unified workbench</a></div></div>
 <ol class="eng-dash-steps"><li>Calculate</li><li>Build CAD</li><li>Refine with AI</li><li>Sculpt &amp; inspect</li><li>Request fabrication</li></ol></div>
 <div class="eng-dash-stats">
 <div><span>Available AI credits</span><strong id="eng-dash-credit-count" aria-live="polite">—</strong><small>Server-verified wallet</small></div>
@@ -59,11 +55,11 @@
 </div>
 <h3 class="eng-dash-section-title">Engineering applications</h3>
 <div class="eng-dash-cards">
-<a class="eng-dash-card" href="#eng-workspace" data-eng-view="analysis"><i class="las la-calculator"></i><strong>Calculators &amp; simulation</strong><p>Circuit, robotics and mechanics estimators, and open-source simulators.</p><span>Launch workbench →</span></a>
-<a class="eng-dash-card" href="#eng-cad" data-eng-view="cad"><i class="las la-cubes"></i><strong>Parametric CAD &amp; STL</strong><p>3D mounting plate designer, load visualization and editable exports.</p><span>Open CAD studio →</span></a>
-<a class="eng-dash-card" href="#eng-ai" data-eng-view="ai"><i class="las la-brain"></i><strong>AI design studio</strong><p>Free local critique, Gemini copilot and Tripo text/image-to-3D.</p><span>Open AI studio →</span></a>
-<a class="eng-dash-card" href="#eng-sculpt" data-eng-view="sculpt"><i class="las la-paint-brush"></i><strong>3D sculpting &amp; imports</strong><p>Vertex editing, transform gizmos, STL/OBJ/GLB and model inspection.</p><span>Open 3D editor →</span></a>
-<a class="eng-dash-card" href="#fab-design" data-eng-view="fabrication"><i class="las la-industry"></i><strong>Fabrication quotation</strong><p>3D printing, CNC and PCB production requests with human review.</p><span>Request a quote →</span></a>
+<a class="eng-dash-card" href="#eng-workspace" data-eng-view="pipeline"><i class="las la-calculator"></i><strong>Calculators &amp; simulation</strong><p>Circuit, robotics and mechanics estimators, and open-source simulators.</p><span>Launch workbench →</span></a>
+<a class="eng-dash-card" href="#eng-cad" data-eng-view="pipeline"><i class="las la-cubes"></i><strong>Parametric CAD &amp; STL</strong><p>3D mounting plate designer, load visualization and editable exports.</p><span>Open CAD studio →</span></a>
+<a class="eng-dash-card" href="#eng-ai" data-eng-view="pipeline"><i class="las la-brain"></i><strong>AI design studio</strong><p>Free local critique, Gemini copilot and Tripo text/image-to-3D.</p><span>Open AI studio →</span></a>
+<a class="eng-dash-card" href="#eng-sculpt" data-eng-view="pipeline"><i class="las la-paint-brush"></i><strong>3D sculpting &amp; imports</strong><p>Vertex editing, transform gizmos, STL/OBJ/GLB and model inspection.</p><span>Open 3D editor →</span></a>
+<a class="eng-dash-card" href="#fab-design" data-eng-view="pipeline"><i class="las la-industry"></i><strong>Fabrication quotation</strong><p>3D printing, CNC and PCB production requests with human review.</p><span>Request a quote →</span></a>
 <a class="eng-dash-card" href="#fab-account" data-eng-view="projects"><i class="las la-folder-open"></i><strong>Projects &amp; credits</strong><p>Track requests, credit balance, payment and account status.</p><span>Manage account →</span></a>
 </div>
 <p class="eng-dash-disclaimer">All simulations and AI outputs are exploratory. No design is certified or automatically ordered for fabrication; every production request requires separate authorization and human feasibility review.</p>
@@ -333,6 +329,7 @@
 <script defer src="assets/js/engineering-studio.js"></script>
 <script defer src="assets/js/engineering-workspace.js"></script>
 <script defer src="assets/js/engineering-dashboard.js"></script>
+<script defer src="assets/js/engineering-pipeline.js"></script>
 <script defer src="assets/js/engineering-simulator.js"></script>
 <script type="module" src="assets/js/engineering-cad-viewer.js"></script>
 <script type="module" src="assets/js/engineering-fabrication.js"></script>

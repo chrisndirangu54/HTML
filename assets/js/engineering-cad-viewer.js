@@ -289,5 +289,5 @@ if(viewport&&form&&status&&cadModel){
  form.addEventListener('submit',()=>{
   if(renderer){clearTimeout(pending);refresh(false);}
  });
- init();
+ if(!window.TeknUnifiedEngineeringPipeline)init();
 }
