@@ -401,6 +401,7 @@
       document.body.appendChild(script);
     };
     if (document.body.classList.contains('home1-page')) add('tt-footer-robot-loader', 'assets/js/footer-robot.js');
+    if (document.querySelector('#home')) add('tt-orb-hero-loader', 'assets/js/orb-hero.js');
   }
 
   function wireSettings() {
