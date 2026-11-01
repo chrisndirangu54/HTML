@@ -42,7 +42,8 @@ test('actual 3D editor uses Three.js transform gizmos, raycast brush strokes and
 
 test('edited geometry is never automatically uploaded and must be explicitly selected for review',()=>{
  assert.match(editor,/fab:edited-stl-ready/);
- assert.match(editor,/fab:sculpt-changed/);
+ assert.match(loader,/fab:sculpt-changed/);
+ assert.match(editor,/onDirty\(\)/);
  assert.match(editor,/fab-sculpt-use/);
  assert.match(app,/document\.addEventListener\('fab:edited-stl-ready'/);
  assert.match(app,/document\.addEventListener\('fab:sculpt-changed'/);
