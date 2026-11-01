@@ -27,7 +27,12 @@ test('catalogue has unique, sourced, priced or quote-only products', () => {
     if (product.quoteOnly === true) {
       assert.equal(product.priceKes, null, product.id + ' should not advertise an unverified price');
       assert.equal(product.stock, 0, product.id + ' should not claim verified stock');
-      assert.equal(product.ispDirectory, true, product.id + ' quote reference must be in ISP directory');
+      if (['ISP Equipment', 'Starlink'].includes(product.category)) {
+        assert.equal(product.ispDirectory, true, product.id + ' must remain in ISP directory');
+      } else {
+        // Quote-only equipment may also be podcast, robotics, drone or smart-gate stock enquiries.
+        assert.notEqual(product.ispDirectory, true, product.id + ' should not be miscategorised as ISP hardware');
+      }
     } else {
       assert.ok(Number.isSafeInteger(product.priceKes) && product.priceKes > 0);
       assert.ok(Number.isSafeInteger(product.stock) && product.stock >= 0);

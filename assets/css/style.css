@@ -2820,3 +2820,28 @@ h1 span:hover {
   filter: brightness(1.3);
   transition: filter 0.3s ease;
 }
+
+/* Microsoft product reseller relationship, not an unverified Solutions Partner badge. */
+.clients-logos .partner-microsoft-link {
+  display:flex; align-items:center; justify-content:center; gap:13px;
+  width:100%; min-height:120px; padding:18px 12px;
+  background:rgba(255,255,255,.96); border:1px solid #ddd;
+  border-radius:16px; color:#333; text-decoration:none;
+  box-shadow:0 4px 20px rgba(0,0,0,.08);
+}
+.clients-logos .partner-microsoft-link img {
+  width:47px; height:47px; object-fit:contain; flex:none;
+}
+.clients-logos .partner-microsoft-link > span {
+  font:600 22px/1.15 Inter,Arial,sans-serif; color:#373737;
+  text-align:left; letter-spacing:-.03em;
+}
+.clients-logos .partner-microsoft-link small {
+  display:block; margin-top:5px; color:#666;
+  font-size:11px; font-weight:500; letter-spacing:.01em;
+}
+.clients-logos .partner-microsoft-link:hover,
+.clients-logos .partner-microsoft-link:focus-visible {
+  border-color:var(--primary-color,#28e98c);
+  box-shadow:0 0 0 3px rgba(40,233,140,.13);
+}

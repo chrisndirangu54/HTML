@@ -18,6 +18,9 @@ on:
       - 'tests/service-pages-ux.test.cjs'
       - 'tests/site-shop-media-reseller.test.cjs'
       - 'tests/operational-dashboards.test.cjs'
+      - 'tests/expanded-ict-catalog.test.cjs'
+      - 'assets/css/shop-expansion.css'
+      - 'assets/images/shop/**'
       - 'assets/js/media-cloud-dashboard.js'
       - 'assets/css/media-cloud-dashboard.css'
       - 'assets/css/service-home-ux.css'
@@ -39,6 +42,9 @@ on:
       - 'tests/service-pages-ux.test.cjs'
       - 'tests/site-shop-media-reseller.test.cjs'
       - 'tests/operational-dashboards.test.cjs'
+      - 'tests/expanded-ict-catalog.test.cjs'
+      - 'assets/css/shop-expansion.css'
+      - 'assets/images/shop/**'
       - 'assets/js/media-cloud-dashboard.js'
       - 'assets/css/media-cloud-dashboard.css'
       - 'assets/css/service-home-ux.css'
@@ -57,4 +63,4 @@ jobs:
       - run: node --check assets/js/commerce.js
       - run: node --check assets/js/isp-products.js
       - run: node --check assets/js/media-cloud-dashboard.js
-      - run: node --test tests/site-navigation.test.cjs tests/isp-shop-ux.test.cjs tests/home-theme.test.cjs tests/service-pages-ux.test.cjs tests/site-shop-media-reseller.test.cjs tests/operational-dashboards.test.cjs
+      - run: node --test tests/site-navigation.test.cjs tests/isp-shop-ux.test.cjs tests/home-theme.test.cjs tests/service-pages-ux.test.cjs tests/site-shop-media-reseller.test.cjs tests/operational-dashboards.test.cjs tests/expanded-ict-catalog.test.cjs
